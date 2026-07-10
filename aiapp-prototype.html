@@ -1,0 +1,1791 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>AiApp 에이전트 자율 생성 — 프로토타입</title>
+<style>
+  :root {
+    --bg: #F2F5FB;
+    --bg-grad: linear-gradient(135deg, #E9F0FC 0%, #F5F8FE 45%, #EDF2FB 100%);
+    --surface: #FFFFFF;
+    --surface-2: #F4F7FC;
+    --ink: #1E2635;
+    --muted: #7B8598;
+    --line: #E3E8F1;
+    --line-strong: #CBD4E4;
+    --accent: #3B6EF5;
+    --accent-deep: #2A56D8;
+    --accent-soft: #EAF0FE;
+    --ok: #16A374;
+    --ok-soft: #E5F6EF;
+    --warn: #E08A00;
+    --warn-soft: #FCF3E1;
+    --shadow-sm: 0 1px 3px rgba(30,38,53,.05), 0 4px 14px rgba(30,38,53,.05);
+    --shadow-lg: 0 4px 12px rgba(59,110,245,.07), 0 18px 46px rgba(30,38,53,.09);
+    --mono: ui-monospace, "Cascadia Code", Consolas, "SF Mono", monospace;
+    --sans: Pretendard, -apple-system, BlinkMacSystemFont, "Segoe UI", "Malgun Gothic", "Apple SD Gothic Neo", sans-serif;
+    /* 생성되는 서비스(멍멍 산책)의 브랜드 팔레트 — 미리보기 전용 */
+    --pet-bg: #FBF6ED;
+    --pet-ink: #5F4A33;
+    --pet-soft: #F1E6D4;
+    --pet-accent: #D98E4A;
+  }
+
+  * { box-sizing: border-box; }
+  [hidden] { display: none !important; }   /* display 지정 요소에서도 hidden이 항상 이기도록 */
+  html, body { height: 100%; }
+  body {
+    margin: 0;
+    background: var(--bg);
+    color: var(--ink);
+    font-family: var(--sans);
+    font-size: 15px;
+    line-height: 1.6;
+    overflow: hidden;
+  }
+  button { font-family: inherit; cursor: pointer; }
+  button:focus-visible, a:focus-visible, textarea:focus-visible, input:focus-visible {
+    outline: 2px solid var(--accent);
+    outline-offset: 2px;
+  }
+  @media (prefers-reduced-motion: reduce) {
+    *, *::before, *::after { animation-duration: .01ms !important; transition-duration: .01ms !important; }
+  }
+
+  .tag { display: inline-flex; align-items: center; gap: 5px; font-family: var(--mono); font-size: 10.5px; padding: 2px 9px; border-radius: 999px; border: 1px solid var(--line-strong); color: var(--muted); white-space: nowrap; background: var(--surface); }
+  .tag.run { border-color: var(--accent); color: var(--accent); background: var(--accent-soft); }
+  .tag.ok  { border-color: var(--ok); color: var(--ok); background: var(--ok-soft); }
+  .tag.warn{ border-color: var(--warn); color: var(--warn); background: var(--warn-soft); }
+
+  /* ── 앱 셸 (전체 화면) ── */
+  .app { display: flex; height: 100vh; height: 100dvh; }
+  .side {
+    width: 56px; flex-shrink: 0;
+    border-right: 1px solid var(--line);
+    background: var(--surface);
+    display: flex; flex-direction: column; align-items: center;
+    padding: 14px 0;
+    gap: 6px;
+    z-index: 2;
+  }
+  .side .sp { flex: 1; }
+  .s-ic {
+    width: 36px; height: 36px;
+    border: none; background: none;
+    border-radius: 10px;
+    display: flex; align-items: center; justify-content: center;
+    color: var(--muted);
+  }
+  .s-ic:hover { background: var(--surface-2); }
+  .s-ic.on { background: var(--accent-soft); color: var(--accent); }
+  .s-ic svg { width: 18px; height: 18px; }
+  .s-avatar {
+    width: 32px; height: 32px; border-radius: 50%;
+    background: var(--accent);
+    color: #fff; font-size: 12.5px; font-weight: 700;
+    display: flex; align-items: center; justify-content: center;
+  }
+  .main { flex: 1; min-width: 0; display: flex; flex-direction: column; background: var(--bg-grad); }
+
+  .screen { display: none; flex: 1; flex-direction: column; min-width: 0; min-height: 0; }
+  .screen.active { display: flex; }
+
+  /* ── 공용 버튼 ── */
+  .btn {
+    border: 1px solid var(--line-strong);
+    background: var(--surface);
+    color: var(--ink);
+    border-radius: 10px;
+    padding: 8px 18px;
+    font-size: 13.5px;
+    font-weight: 600;
+    transition: filter .15s, border-color .15s;
+    box-shadow: var(--shadow-sm);
+  }
+  .btn:hover { border-color: var(--muted); }
+  .btn.primary { background: var(--accent); border-color: var(--accent); color: #fff; }
+  .btn.primary:hover { filter: brightness(1.07); }
+  .btn.ghost { box-shadow: none; background: transparent; }
+  .btn.lite { background: var(--accent-soft); border-color: var(--accent-soft); color: var(--accent); }
+  .btn:disabled { opacity: .45; cursor: not-allowed; }
+
+  /* ══════ B1 시작 화면 ══════ */
+  .b1 { flex: 1; overflow-y: auto; display: flex; flex-direction: column; align-items: center; padding: 25vh 32px 80px; gap: 24px; }
+  .b1-head { display: flex; flex-direction: column; align-items: center; gap: 8px; }
+  .b1 h2 { font-size: clamp(26px, 3.2vw, 34px); font-weight: 800; margin: 0; letter-spacing: -.02em; text-wrap: balance; text-align: center; }
+  .b1-sub { margin: 0; color: var(--muted); font-size: 14px; text-align: center; }
+  .idea-card {
+    width: 100%; max-width: 680px;
+    background: var(--surface);
+    border: 1px solid var(--line);
+    border-radius: 20px;
+    box-shadow: var(--shadow-lg);
+    padding: 18px 20px 14px;
+    display: flex; flex-direction: column; gap: 12px;
+  }
+  .idea-card textarea {
+    border: none; resize: none; background: none;
+    color: var(--ink);
+    font-family: inherit; font-size: 15.5px; line-height: 1.6;
+    min-height: 68px;
+    padding: 0;
+  }
+  .idea-card textarea:focus-visible { outline: none; }
+  .idea-foot { display: flex; align-items: flex-end; gap: 8px; flex-wrap: wrap; }
+  .opt-chip {
+    display: inline-flex; align-items: center; gap: 6px;
+    border: 1px solid var(--line);
+    background: var(--surface);
+    color: var(--muted);
+    border-radius: 999px;
+    padding: 5px 13px;
+    font-size: 12.5px;
+    transition: border-color .15s;
+  }
+  .opt-chip:hover { border-color: var(--line-strong); }
+  .opt-chip.on { border-color: var(--accent); color: var(--accent); background: var(--accent-soft); font-weight: 600; }
+  .opt-chip .sw { width: 24px; height: 13px; border-radius: 999px; background: var(--line-strong); position: relative; transition: background .15s; flex-shrink: 0; }
+  .opt-chip.on .sw { background: var(--accent); }
+  .opt-chip .sw::after { content: ""; position: absolute; top: 1.5px; left: 2px; width: 10px; height: 10px; border-radius: 50%; background: #fff; transition: left .15s; }
+  .opt-chip.on .sw::after { left: 12px; }
+  .send {
+    margin-left: auto;
+    width: 44px; height: 44px; border-radius: 50%;
+    border: none;
+    background: var(--accent);
+    color: #fff;
+    display: flex; align-items: center; justify-content: center;
+    box-shadow: 0 4px 12px rgba(59,110,245,.35);
+    transition: filter .15s, transform .1s;
+    flex-shrink: 0;
+  }
+  .send:hover { filter: brightness(1.08); }
+  .send:active { transform: scale(.95); }
+  .send svg { width: 19px; height: 19px; }
+  .micro { font-size: 12.5px; color: var(--warn); min-height: 20px; text-align: center; margin-top: -12px; }
+
+  .sugg { display: flex; flex-wrap: wrap; justify-content: center; gap: 8px; max-width: 700px; margin-top: -6px; margin-bottom: 8vh; }
+  .sg {
+    border: 1px solid var(--line);
+    background: var(--surface);
+    color: var(--muted);
+    border-radius: 999px;
+    padding: 6px 15px;
+    font-size: 12.5px;
+    box-shadow: var(--shadow-sm);
+    transition: border-color .15s, color .15s;
+  }
+  .sg:hover { border-color: var(--accent); color: var(--accent); }
+
+  /* 내 프로젝트 */
+  .proj { width: 100%; max-width: 980px; margin-top: 4vh; display: flex; flex-direction: column; gap: 14px; }
+  .proj-tabs { display: flex; align-items: center; gap: 14px; flex-wrap: wrap; }
+  .pt-main { display: flex; gap: 6px; }
+  .pt-main .pt { border: none; border-radius: 999px; padding: 6px 16px; font-size: 13px; font-weight: 600; background: none; color: var(--muted); }
+  .pt-main .pt.on { background: var(--accent); color: #fff; }
+  .pt-sub { display: flex; gap: 12px; border-left: 1px solid var(--line); padding-left: 14px; }
+  .pt-sub .pt { border: none; background: none; font-size: 13px; color: var(--muted); padding: 4px 2px; }
+  .pt-sub .pt.on { color: var(--accent); font-weight: 700; }
+  .proj-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(270px, 1fr)); gap: 14px; }
+  .pcard {
+    background: var(--surface);
+    border: 1px solid var(--line);
+    border-radius: 16px;
+    box-shadow: var(--shadow-sm);
+    padding: 16px;
+    display: flex; flex-direction: column; gap: 10px;
+    transition: box-shadow .15s, border-color .15s;
+  }
+  .pcard:hover { border-color: var(--line-strong); box-shadow: var(--shadow-lg); }
+  .pcard-head { display: flex; gap: 10px; align-items: flex-start; }
+  .pavatar { width: 42px; height: 42px; border-radius: 11px; color: #fff; font-size: 12px; font-weight: 700; display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
+  .pcard-t { font-size: 14.5px; font-weight: 700; line-height: 1.35; }
+  .pcard-meta { display: flex; gap: 6px; flex-wrap: wrap; margin-top: 3px; }
+  .badge-live { font-size: 10.5px; font-weight: 700; color: var(--ok); background: var(--ok-soft); border-radius: 999px; padding: 2px 9px; }
+  .badge-url { font-size: 10.5px; color: var(--accent); background: var(--accent-soft); border-radius: 999px; padding: 2px 9px; font-family: var(--mono); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; max-width: 170px; }
+  .pcard-d { font-size: 12.5px; color: var(--muted); border-top: 1px solid var(--line); padding-top: 10px; min-height: 30px; }
+  .pcard-time { font-size: 11.5px; color: var(--muted); display: flex; align-items: center; gap: 5px; }
+  .pcard-studio { width: 100%; padding: 9px 0; border-radius: 10px; font-size: 13.5px; }
+  .pcard-acts { display: flex; gap: 8px; }
+  .pcard-acts .btn { flex: 1; padding: 7px 0; font-size: 12.5px; border-radius: 10px; }
+  .pcard-acts .btn.lite { background: var(--accent-soft); border-color: var(--accent-soft); color: var(--accent); }
+
+  /* ══════ B2 스튜디오 ══════ */
+  .b2 { flex: 1; display: flex; flex-direction: column; min-width: 0; min-height: 0; }
+  .b2-toolbar {
+    display: flex; align-items: center; gap: 10px;
+    padding: 10px 18px;
+    border-bottom: 1px solid var(--line);
+    background: var(--surface);
+    flex-wrap: wrap;
+  }
+  .b2-toolbar .tb-title { font-size: 13.5px; font-weight: 700; display: flex; align-items: center; gap: 8px; }
+  .tb-title .ai-dot { width: 8px; height: 8px; border-radius: 50%; background: var(--accent); box-shadow: 0 0 0 3px var(--accent-soft); }
+  .b2-toolbar .sp { flex: 1; }
+  .b2-cols { display: grid; grid-template-columns: var(--feed-w, 35%) 6px minmax(0, 1fr); flex: 1; min-height: 0; }
+  @media (max-width: 820px) { .b2-cols { grid-template-columns: 1fr; } .resizer { display: none; } }
+
+  /* 드래그 리사이저 */
+  .resizer { cursor: col-resize; position: relative; z-index: 3; touch-action: none; background: var(--surface); }
+  .resizer::after { content: ""; position: absolute; top: 0; bottom: 0; left: 2px; right: 2px; background: var(--line); border-radius: 2px; transition: background .15s; }
+  .resizer:hover::after, .resizer.drag::after { background: var(--accent); }
+
+  /* ── 왼쪽: AI 채팅 ── */
+  .feed { background: var(--surface); display: flex; flex-direction: column; min-width: 0; min-height: 0; }
+
+  /* 진행 상태 카드 (대화 흐름 속 라이브 위젯) */
+  .status-card[hidden], .sc-row[hidden] { display: none !important; }
+  .status-card {
+    margin: 4px 0;
+    background: #1E2531;
+    border-radius: 14px;
+    padding: 14px 16px 12px;
+    color: #E9EDF5;
+    display: flex; flex-direction: column; gap: 9px;
+    flex-shrink: 0;
+    box-shadow: var(--shadow-sm);
+  }
+  .sc-title { font-size: 11px; font-weight: 700; color: rgba(255,255,255,.55); letter-spacing: .02em; }
+  .sc-row { display: flex; align-items: center; gap: 9px; font-size: 12.5px; font-weight: 600; }
+  .sc-row .sc-ic { width: 16px; height: 16px; border-radius: 50%; flex-shrink: 0; display: flex; align-items: center; justify-content: center; font-size: 9.5px; }
+  .sc-row .sc-detail { margin-left: auto; font-family: var(--mono); font-size: 10px; color: rgba(255,255,255,.5); white-space: nowrap; }
+  .sc-row.wait { color: rgba(255,255,255,.45); }
+  .sc-row.wait .sc-ic { border: 1.5px solid rgba(255,255,255,.25); }
+  .sc-row.run .sc-ic { border: 2px solid rgba(92,136,255,.25); border-top-color: #5C88FF; animation: spin 1s linear infinite; }
+  .sc-row.run .sc-detail { color: #8FB0FF; }
+  .sc-row.done .sc-ic { background: #16A374; }
+  .sc-row.done .sc-ic::before { content: "✓"; color: #fff; }
+  .sc-row.paused .sc-ic { border: 1.5px solid #E8A54B; }
+  .sc-row.paused .sc-ic::before { content: "⏸"; font-size: 7px; color: #E8A54B; }
+  .sc-row.paused .sc-detail { color: #E8A54B; }
+  .sc-foot { border-top: 1px solid rgba(255,255,255,.12); padding-top: 10px; margin-top: 2px; display: flex; justify-content: space-between; align-items: center; gap: 10px; font-size: 10.5px; color: rgba(255,255,255,.55); flex-wrap: wrap; }
+  .sc-foot b { color: #fff; font-variant-numeric: tabular-nums; }
+  .sc-cancel { border: none; background: none; color: rgba(255,255,255,.5); font-size: 10.5px; text-decoration: underline; cursor: pointer; padding: 0; }
+  .sc-cancel:hover { color: #fff; }
+
+  /* 채팅 피드 — Manus식 플레인 로그 (말풍선 없음, 중앙 컬럼) */
+  .feed-scroll { flex: 1; overflow-y: auto; padding: 16px 28px 16px; }
+  .chat-inner { max-width: 680px; margin: 0 auto; width: 100%; display: flex; flex-direction: column; gap: 9px; }
+  .step-div {
+    display: flex; align-items: center; gap: 10px;
+    color: var(--muted); font-size: 10.5px; font-weight: 700; letter-spacing: .05em;
+    margin: 8px 0 0;
+    flex-shrink: 0;
+    animation: blk-in .3s ease both;
+  }
+  .step-div::after { content: ""; flex: 1; height: 1px; background: var(--line); }
+  .ai-line {
+    font-size: 12.5px; line-height: 1.65; color: var(--ink);
+    animation: blk-in .3s ease both;
+    flex-shrink: 0;
+  }
+  .chk {
+    display: flex; gap: 8px; align-items: baseline;
+    font-size: 12px; color: var(--muted);
+    animation: blk-in .3s ease both;
+    flex-shrink: 0;
+  }
+  .chk::before { content: "✓"; color: var(--ok); font-weight: 700; flex-shrink: 0; }
+  .u-line {
+    align-self: flex-end;
+    background: var(--accent-soft); color: var(--accent-deep);
+    font-size: 12px; font-weight: 600;
+    border-radius: 999px;
+    padding: 5px 14px;
+    animation: blk-in .3s ease both;
+    flex-shrink: 0;
+  }
+  .wait-line {
+    display: flex; align-items: center; gap: 8px;
+    color: var(--warn); font-size: 12px; font-weight: 600;
+    animation: blk-in .3s ease both;
+    flex-shrink: 0;
+  }
+  .wait-line .wl-spin { width: 12px; height: 12px; border-radius: 50%; border: 2px dashed var(--warn); animation: spin 2.4s linear infinite; flex-shrink: 0; }
+  /* 완료 후 다음 행동 추천 */
+  .next-sugg { display: flex; flex-direction: column; gap: 7px; animation: blk-in .3s ease both; flex-shrink: 0; }
+  .next-sugg .ns-t { font-size: 11px; font-weight: 700; color: var(--muted); }
+  .next-sugg .ns-row { display: flex; flex-wrap: wrap; gap: 7px; }
+  .ns-chip {
+    border: 1px solid var(--line);
+    background: var(--surface);
+    color: var(--ink);
+    border-radius: 999px;
+    padding: 6px 14px;
+    font-size: 12px;
+    box-shadow: var(--shadow-sm);
+    transition: border-color .15s, color .15s;
+  }
+  .ns-chip:hover { border-color: var(--accent); color: var(--accent); }
+  .typing { display: flex; align-items: center; gap: 8px; color: var(--muted); font-size: 11.5px; padding: 0 2px; flex-shrink: 0; }
+  .typing .dots { display: inline-flex; gap: 3px; }
+  .typing .dots i { width: 5px; height: 5px; border-radius: 50%; background: var(--muted); animation: tdot 1.2s infinite; }
+  .typing .dots i:nth-child(2) { animation-delay: .2s; }
+  .typing .dots i:nth-child(3) { animation-delay: .4s; }
+  @keyframes tdot { 0%, 60%, 100% { opacity: .3; transform: none; } 30% { opacity: 1; transform: translateY(-3px); } }
+
+  /* 완료 보고 카드 */
+  .report {
+    border: 1px solid var(--ok);
+    background: var(--surface);
+    border-radius: 14px;
+    padding: 16px;
+    display: flex; flex-direction: column; gap: 10px;
+    flex-shrink: 0;
+    animation: rise .35s ease both;
+    box-shadow: 0 0 0 3px var(--ok-soft);
+  }
+  .rp-head { display: flex; align-items: center; gap: 9px; flex-wrap: wrap; }
+  .rp-head b { font-size: 15px; }
+  .live { display: inline-flex; align-items: center; gap: 6px; background: var(--ok); color: #fff; font-family: var(--mono); font-size: 10px; font-weight: 700; letter-spacing: .1em; padding: 3px 11px; border-radius: 999px; }
+  .live .led { width: 6px; height: 6px; border-radius: 50%; background: #fff; animation: blink 1.6s infinite; }
+  @keyframes blink { 0%,100% { opacity: 1; } 50% { opacity: .35; } }
+  .rp-url { font-family: var(--mono); font-size: 12px; color: var(--accent); background: var(--accent-soft); border-radius: 8px; padding: 7px 12px; text-decoration: none; display: inline-block; word-break: break-all; }
+  .rp-sec { font-size: 11px; font-weight: 700; color: var(--muted); margin-top: 2px; }
+  .rp-list { margin: 0; padding: 0; list-style: none; display: flex; flex-direction: column; gap: 4px; }
+  .rp-list li { font-size: 12.5px; display: flex; gap: 7px; align-items: baseline; }
+  .rp-list li::before { content: "✓"; color: var(--ok); font-weight: 700; flex-shrink: 0; }
+  .rp-foot { display: flex; justify-content: space-between; gap: 10px; border-top: 1px solid var(--line); padding-top: 10px; font-size: 11.5px; color: var(--muted); flex-wrap: wrap; }
+  .rp-foot b { color: var(--ink); font-variant-numeric: tabular-nums; }
+  .rp-acts { display: flex; gap: 8px; }
+  .rp-acts .btn { flex: 1; padding: 8px 0; font-size: 12.5px; border-radius: 10px; }
+  .rp-acts .btn.lite { background: var(--accent-soft); border-color: var(--accent-soft); color: var(--accent); }
+  @keyframes rise { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: none; } }
+
+  /* 설계안 — 미리보기 영역의 AI 제안 위저드 */
+  #pv-wrap { display: flex; flex-direction: column; flex: 1; min-height: 0; }
+  .bp { flex: 1; overflow-y: auto; padding: 18px; display: none; }
+  .bp.show { display: block; }
+  .bp-card {
+    background: var(--surface); color: var(--ink);
+    border: 1px solid var(--line);
+    border-radius: 16px;
+    width: 100%; max-width: 560px; margin: 0 auto;
+    display: flex; flex-direction: column;
+    box-shadow: var(--shadow-lg);
+    animation: rise .35s ease both;
+  }
+  @keyframes rise { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: none; } }
+  .bp-head { display: flex; align-items: center; gap: 10px; padding: 14px 18px; border-bottom: 1px solid var(--line); }
+  .bp-head .bp-ico { width: 32px; height: 32px; border-radius: 9px; background: var(--accent-soft); display: flex; align-items: center; justify-content: center; font-size: 15px; }
+  .bp-head b { font-size: 14px; }
+  .bp-head small { display: block; font-family: var(--mono); font-size: 10px; color: var(--muted); }
+  .bp-body { padding: 14px 18px; display: flex; flex-direction: column; gap: 10px; min-height: 250px; }
+  .bp-step { display: flex; flex-direction: column; gap: 9px; }
+  .bp-sec { font-size: 11px; color: var(--muted); font-weight: 700; }
+  .bp-li { display: flex; gap: 8px; font-size: 12px; line-height: 1.55; color: var(--ink); }
+  .bp-li::before { content: "•"; color: var(--line-strong); flex-shrink: 0; }
+  .bp-add { font-size: 11.5px; color: var(--muted); border: 1px dashed var(--line-strong); border-radius: 9px; padding: 7px 12px; text-align: center; margin-top: 2px; }
+  .bp-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; }
+  @media (max-width: 980px) { .bp-grid { grid-template-columns: repeat(2, 1fr); } }
+  .bp-tpl { border: none; border-radius: 12px; background: none; padding: 0; display: flex; flex-direction: column; gap: 6px; color: var(--muted); font-size: 11px; font-weight: 600; align-items: center; }
+  .bp-tpl .tpl-thumb { width: 100%; height: 62px; border-radius: 9px; display: flex; align-items: center; justify-content: center; font-size: 10px; font-weight: 800; letter-spacing: .06em; border: 1px solid var(--line); }
+  .bp-tpl.sel { color: var(--ink); }
+  .bp-tpl.sel .tpl-thumb { outline: 2px solid var(--accent); outline-offset: 2px; }
+  .bp-tpl .rec { font-size: 9px; color: var(--accent); }
+  .bp-chk { display: flex; gap: 8px; align-items: baseline; font-size: 12px; color: var(--ink); }
+  .bp-chk::before { content: "✓"; color: var(--ok); font-weight: 700; flex-shrink: 0; }
+  .bp-opt { border: 1px solid var(--line); border-radius: 12px; padding: 11px 13px; display: flex; gap: 10px; align-items: flex-start; cursor: pointer; }
+  .bp-opt:hover { border-color: var(--line-strong); }
+  .bp-opt .bo-tag { font-family: var(--mono); font-size: 9px; background: var(--surface-2); padding: 2px 7px; border-radius: 5px; color: var(--muted); }
+  .bp-opt .bo-t { font-size: 12.5px; font-weight: 700; margin-top: 3px; }
+  .bp-opt .bo-d { font-size: 11px; color: var(--muted); line-height: 1.5; }
+  .bp-opt input { margin-top: 3px; accent-color: var(--accent); width: 15px; height: 15px; flex-shrink: 0; }
+  .bp-foot { display: flex; align-items: center; gap: 8px; padding: 12px 18px 16px; border-top: 1px solid var(--line); }
+  .bp-count { flex: 1; text-align: center; font-family: var(--mono); font-size: 10.5px; color: var(--muted); letter-spacing: .04em; }
+  .bp-loading { display: flex; align-items: center; justify-content: center; gap: 10px; color: var(--muted); font-size: 12px; padding: 40px 0; }
+  .bp-editbox { display: flex; gap: 8px; align-items: flex-end; border: 1px solid var(--accent); border-radius: 12px; padding: 10px 12px; background: var(--accent-soft); }
+  .bp-editbox textarea { flex: 1; border: none; background: none; resize: none; color: var(--ink); font-family: inherit; font-size: 12px; line-height: 1.5; }
+  .bp-editbox textarea::placeholder { color: var(--muted); }
+  .bp-editbox textarea:focus-visible { outline: none; }
+  .bp-btn { border: 1px solid var(--line-strong); background: var(--surface); color: var(--ink); border-radius: 9px; padding: 7px 16px; font-size: 12.5px; font-weight: 600; }
+  .bp-btn:disabled { opacity: .35; cursor: default; }
+  .bp-btn.primary { background: var(--accent); color: #fff; border-color: var(--accent); }
+
+  /* 피드 하단 입력바 (중앙 컬럼 정렬) */
+  .feed-input { border-top: 1px solid var(--line); padding: 10px 28px; display: flex; align-items: center; justify-content: center; gap: 8px; }
+  .feed-input .fi {
+    flex: 1;
+    max-width: 680px;
+    border: 1px solid var(--line);
+    background: var(--surface-2);
+    border-radius: 999px;
+    padding: 9px 16px;
+    font-size: 12.5px;
+    color: var(--muted);
+  }
+  .feed-input input.fi {
+    background: var(--surface);
+    color: var(--ink);
+    font-family: inherit;
+  }
+  .feed-input input.fi::placeholder { color: var(--muted); }
+  .send.small { width: 36px; height: 36px; }
+  .send.small svg { width: 15px; height: 15px; }
+
+  /* ── 오른쪽: 미리보기 / 데이터베이스 / 관리·설정 ── */
+  .pvw { display: flex; flex-direction: column; min-width: 0; min-height: 0; background: var(--bg-grad); }
+  .rtabs {
+    display: flex; align-items: center; gap: 4px;
+    padding: 8px 16px;
+    border-bottom: 1px solid var(--line);
+    background: var(--surface);
+    flex-wrap: wrap;
+  }
+  .rtab {
+    border: none; background: none;
+    border-radius: 9px;
+    padding: 7px 14px;
+    font-size: 12.5px; font-weight: 600;
+    color: var(--muted);
+    display: inline-flex; align-items: center; gap: 6px;
+    position: relative;
+  }
+  .rtab:hover { background: var(--surface-2); }
+  .rtab.on { background: var(--accent-soft); color: var(--accent); }
+  .rtab .dot { width: 6px; height: 6px; border-radius: 50%; background: var(--warn); }
+  .rtabs .sp { flex: 1; }
+  .rpane { flex: 1; display: none; flex-direction: column; min-height: 0; }
+  .rpane.on { display: flex; }
+
+  /* 미리보기 페인 */
+  .pvw-bar {
+    display: flex; align-items: center; gap: 8px;
+    padding: 9px 16px;
+    border-bottom: 1px solid var(--line);
+    background: var(--surface);
+    flex-wrap: wrap;
+  }
+  .dev-toggle { display: flex; gap: 2px; background: var(--surface-2); border: 1px solid var(--line); border-radius: 9px; padding: 2px; }
+  .dev-toggle button { border: none; background: none; border-radius: 7px; width: 30px; height: 26px; display: flex; align-items: center; justify-content: center; color: var(--muted); }
+  .dev-toggle button.on { background: var(--surface); color: var(--accent); box-shadow: var(--shadow-sm); }
+  .dev-toggle svg { width: 14px; height: 14px; }
+  .pv-addr { flex: 1; min-width: 120px; font-family: var(--mono); font-size: 10.5px; color: var(--muted); background: var(--surface-2); border: 1px solid var(--line); border-radius: 7px; padding: 4px 11px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  .pv-badge { font-family: var(--mono); font-size: 9.5px; padding: 2px 9px; border-radius: 999px; border: 1px solid var(--line-strong); color: var(--muted); white-space: nowrap; }
+  .pv-badge.run  { border-color: var(--accent); color: var(--accent); background: var(--accent-soft); }
+  .pv-badge.ok   { border-color: var(--ok); color: #fff; background: var(--ok); }
+  .pv-badge.warn { border-color: var(--warn); color: var(--warn); background: var(--warn-soft); }
+
+  /* 에디터 자리 (편집 도구) */
+  .edit-tools { display: flex; gap: 4px; }
+  .et-btn { border: 1px solid var(--line); background: var(--surface); border-radius: 8px; padding: 4px 11px; font-size: 11.5px; font-weight: 600; color: var(--ink); }
+  .et-btn:hover { border-color: var(--accent); color: var(--accent); }
+  .et-btn.on { border-color: var(--accent); color: var(--accent); background: var(--accent-soft); }
+  .edit-bar {
+    display: flex; align-items: center; gap: 10px; flex-wrap: wrap;
+    padding: 7px 16px;
+    border-bottom: 1px dashed var(--accent);
+    background: var(--accent-soft);
+    font-size: 11.5px; color: var(--accent-deep); font-weight: 600;
+  }
+  .eb-tools { margin-left: auto; display: flex; gap: 5px; }
+  .eb-tools button { border: 1px solid var(--line-strong); background: var(--surface); border-radius: 7px; padding: 3px 10px; font-size: 11px; color: var(--ink); }
+  .eb-tools button:hover { border-color: var(--accent); color: var(--accent); }
+  .pv-canvas.edit-mode { outline: 2px dashed var(--accent); outline-offset: -2px; }
+
+  .pv-tabs { display: flex; gap: 4px; padding: 10px 18px 0; overflow-x: auto; min-height: 36px; flex-shrink: 0; }
+  .pv-tab {
+    font-size: 11px; padding: 4px 13px;
+    border: 1px solid var(--line); border-bottom: none;
+    border-radius: 8px 8px 0 0;
+    background: var(--surface-2); color: var(--muted);
+    white-space: nowrap;
+    animation: tab-in .3s ease both;
+  }
+  .pv-tab.on { color: var(--accent); background: var(--surface); font-weight: 700; border-color: var(--line-strong); }
+  @keyframes tab-in { from { opacity: 0; transform: translateY(4px); } to { opacity: 1; transform: none; } }
+
+  .pv-viewport { flex: 1; padding: 0 18px 10px; display: flex; justify-content: center; min-height: 0; overflow-y: auto; }
+  .pv-canvas {
+    background: var(--pet-bg);
+    border: 1px solid var(--line);
+    border-radius: 0 12px 12px 12px;
+    width: 100%;
+    display: flex; flex-direction: column;
+    transition: max-width .3s ease;
+    align-self: stretch;
+    box-shadow: var(--shadow-sm);
+  }
+  .pv-canvas.mobile { max-width: 300px; border-radius: 22px; margin-top: 8px; align-self: flex-start; }
+  .pv-empty { flex: 1; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 10px; color: var(--muted); font-size: 12.5px; text-align: center; padding: 40px 16px; background: var(--surface); border-radius: inherit; }
+  .pv-spin { width: 24px; height: 24px; border: 3px solid var(--line); border-top-color: var(--accent); border-radius: 50%; animation: spin 1s linear infinite; }
+  @keyframes spin { to { transform: rotate(360deg); } }
+  .pv-tokens { display: flex; gap: 7px; margin-top: 8px; }
+  .pv-tokens i { width: 26px; height: 26px; border-radius: 8px; border: 1px solid var(--line); animation: blk-in .35s ease both; }
+
+  /* 데이터베이스 페인 — 미니 사이드바 + 데이터 그리드 */
+  .db-pane { flex: 1; min-height: 0; display: flex; flex-direction: column; }
+  .db-shell { flex: 1; display: flex; min-height: 0; }
+  .db-side {
+    width: 190px; flex-shrink: 0;
+    border-right: 1px solid var(--line);
+    background: var(--surface);
+    padding: 14px 10px;
+    display: flex; flex-direction: column; gap: 3px;
+    overflow-y: auto;
+  }
+  .db-side-t { font-size: 10px; font-weight: 700; color: var(--muted); letter-spacing: .05em; padding: 6px 8px 2px; }
+  .db-item {
+    border: none; background: none; text-align: left;
+    border-radius: 8px; padding: 7px 10px;
+    font-size: 12.5px; font-weight: 600; color: var(--ink);
+    display: flex; align-items: center; gap: 6px;
+    animation: blk-in .3s ease both;
+  }
+  .db-item:hover { background: var(--surface-2); }
+  .db-item.on { background: var(--accent-soft); color: var(--accent); }
+  .dbi-n { margin-left: auto; font-family: var(--mono); font-size: 10px; color: var(--muted); background: var(--surface-2); border-radius: 999px; padding: 0 7px; }
+  .db-item.on .dbi-n { background: rgba(59,110,245,.15); color: var(--accent); }
+  .db-main { flex: 1; min-width: 0; overflow-y: auto; padding: 16px 18px; display: flex; flex-direction: column; gap: 12px; }
+  .db-head { display: flex; align-items: baseline; gap: 8px; }
+  .db-head b { font-size: 15px; }
+  .db-head small { font-family: var(--mono); font-size: 10.5px; color: var(--muted); }
+  .db-head .tbl-rows { margin-left: auto; }
+  .db-filter { display: flex; gap: 8px; flex-wrap: wrap; align-items: center; }
+  .db-search {
+    border: 1px solid var(--line); border-radius: 9px;
+    padding: 7px 12px; font-size: 12.5px; font-family: inherit;
+    color: var(--ink); background: var(--surface);
+    flex: 1; min-width: 150px; max-width: 260px;
+  }
+  .db-chips { display: flex; gap: 5px; flex-wrap: wrap; }
+  .db-chip { border: 1px solid var(--line); background: var(--surface); color: var(--muted); border-radius: 999px; padding: 4px 12px; font-size: 11.5px; font-weight: 600; }
+  .db-chip.on { border-color: var(--accent); color: var(--accent); background: var(--accent-soft); }
+  .pane-empty { flex: 1; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 8px; color: var(--muted); font-size: 12.5px; text-align: center; padding: 40px 20px; }
+  .pane-empty .pe-ico { font-size: 26px; opacity: .5; }
+  .tbl-card {
+    background: var(--surface); border: 1px solid var(--line); border-radius: 13px;
+    padding: 13px 15px; box-shadow: var(--shadow-sm);
+    display: flex; flex-direction: column; gap: 8px;
+    animation: rise .3s ease both;
+  }
+  .tbl-head { display: flex; align-items: center; gap: 8px; }
+  .tbl-name { font-weight: 700; font-size: 13.5px; }
+  .tbl-name small { font-family: var(--mono); font-size: 10px; color: var(--muted); font-weight: 400; margin-left: 6px; }
+  .tbl-rows { margin-left: auto; font-family: var(--mono); font-size: 10.5px; color: var(--muted); }
+  .tbl-cols { display: flex; flex-wrap: wrap; gap: 5px; }
+  .tbl-cols i { font-style: normal; font-size: 11px; background: var(--surface-2); border: 1px solid var(--line); border-radius: 6px; padding: 2px 9px; color: var(--muted); }
+  /* 데이터 그리드 */
+  .tbl-data { border: 1px solid var(--line); border-radius: 12px; background: var(--surface); box-shadow: var(--shadow-sm); overflow: hidden; }
+  .tbl-data .td-scroll { overflow-x: auto; }
+  .tbl-data table { border-collapse: collapse; width: 100%; font-size: 12px; }
+  .tbl-data th { text-align: left; font-size: 11px; color: var(--muted); font-weight: 700; background: var(--surface-2); padding: 8px 14px; border-bottom: 1px solid var(--line); white-space: nowrap; }
+  .tbl-data td { padding: 9px 14px; border-bottom: 1px solid var(--line); color: var(--ink); white-space: nowrap; font-variant-numeric: tabular-nums; }
+  .tbl-data tbody tr:last-child td { border-bottom: none; }
+  .tbl-data tbody tr:hover { background: var(--surface-2); }
+  .tbl-data td:first-child { font-weight: 600; }
+  .db-foot { display: flex; justify-content: space-between; align-items: center; gap: 10px; font-size: 11px; color: var(--muted); padding: 8px 14px; border-top: 1px solid var(--line); background: var(--surface); font-variant-numeric: tabular-nums; }
+
+  /* DB 대시보드 */
+  .db-sec { font-size: 11.5px; font-weight: 700; color: var(--muted); margin: 2px 2px 0; display: flex; gap: 7px; align-items: center; }
+  .db-sec .ex { font-size: 9px; font-family: var(--mono); color: var(--warn); background: var(--warn-soft); padding: 1px 8px; border-radius: 999px; }
+  .stat-row { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; }
+  .stat { background: var(--surface); border: 1px solid var(--line); border-radius: 13px; padding: 12px 14px; box-shadow: var(--shadow-sm); display: flex; flex-direction: column; gap: 1px; }
+  .stat .st-l { font-size: 11px; color: var(--muted); font-weight: 600; }
+  .stat .st-v { font-size: 22px; font-weight: 800; font-variant-numeric: tabular-nums; letter-spacing: -.02em; }
+  .stat .st-d { font-size: 10.5px; color: var(--ok); font-weight: 700; }
+  .chart-card { background: var(--surface); border: 1px solid var(--line); border-radius: 13px; padding: 13px 15px; box-shadow: var(--shadow-sm); display: flex; flex-direction: column; gap: 10px; }
+  .chart-t { font-size: 12px; font-weight: 700; }
+  .bars { display: flex; align-items: flex-end; gap: 6px; height: 82px; }
+  .bar-col { flex: 1; display: flex; flex-direction: column; align-items: center; justify-content: flex-end; gap: 4px; height: 100%; }
+  .bar-col .b-val { font-size: 10px; color: var(--ink); font-weight: 700; font-variant-numeric: tabular-nums; min-height: 13px; }
+  .bar-col .b { width: 100%; max-width: 26px; background: var(--accent); border-radius: 4px 4px 0 0; opacity: .5; transition: opacity .15s; }
+  .bar-col:hover .b { opacity: .8; }
+  .bar-col.hi .b { opacity: 1; }
+  .bar-col .b-lab { font-size: 9.5px; color: var(--muted); font-family: var(--mono); }
+
+  /* 관리·설정 페인 */
+  .adm-pane { flex: 1; overflow-y: auto; padding: 18px; display: flex; flex-direction: column; gap: 12px; }
+  .adm-sec { font-size: 11.5px; font-weight: 700; color: var(--muted); margin: 4px 2px 0; }
+  .adm-item {
+    background: var(--surface); border: 1px solid var(--line); border-radius: 13px;
+    padding: 12px 15px; box-shadow: var(--shadow-sm);
+    display: flex; align-items: center; gap: 10px;
+  }
+  .adm-item .ai-ico { width: 30px; height: 30px; border-radius: 9px; background: var(--surface-2); display: flex; align-items: center; justify-content: center; font-size: 14px; flex-shrink: 0; }
+  .adm-item .ai-t { font-size: 13px; font-weight: 700; }
+  .adm-item .ai-d { font-size: 11px; color: var(--muted); }
+  .adm-item .ai-state { margin-left: auto; }
+  .adm-url { font-family: var(--mono); font-size: 11px; color: var(--accent); word-break: break-all; }
+
+  /* 미리보기 안 "생성된 서비스" — 멍멍 산책 브랜드 */
+  @keyframes blk-in { from { opacity: 0; transform: translateY(6px); } to { opacity: 1; transform: none; } }
+  .pp { animation: blk-in .4s ease both; }
+  .pp-nav {
+    display: flex; align-items: center; gap: 12px;
+    padding: 12px 18px;
+    background: color-mix(in srgb, var(--pet-bg) 60%, #fff);
+    border-bottom: 1px solid var(--pet-soft);
+    font-size: 11px; color: var(--pet-ink);
+    border-radius: inherit;
+    border-bottom-left-radius: 0; border-bottom-right-radius: 0;
+  }
+  .pp-nav b { font-size: 13px; letter-spacing: -.01em; }
+  .pp-nav .lnk { opacity: .65; }
+  .pp-nav .pp-login { margin-left: auto; border: 1px solid var(--pet-ink); border-radius: 999px; padding: 2px 11px; font-size: 10px; }
+  .pp-hero { padding: 26px 22px 16px; display: flex; flex-direction: column; gap: 8px; color: var(--pet-ink); }
+  .pp-badge { align-self: flex-start; font-size: 9px; letter-spacing: .1em; background: var(--pet-soft); border-radius: 999px; padding: 3px 11px; }
+  .pp-hero h5 { margin: 0; font-size: clamp(17px, 2.2vw, 24px); line-height: 1.3; font-weight: 800; letter-spacing: -.02em; }
+  .pp-hero p { margin: 0; font-size: 11.5px; opacity: .75; }
+  .pp-btns { display: flex; gap: 7px; margin-top: 5px; }
+  .pp-btns i { font-style: normal; font-size: 10.5px; border-radius: 999px; padding: 6px 15px; }
+  .pp-btns .b1x { background: var(--pet-accent); color: #fff; }
+  .pp-btns .b2x { border: 1px solid var(--pet-ink); color: var(--pet-ink); }
+  .pp-cards { display: flex; gap: 9px; padding: 6px 22px 22px; }
+  .pp-cards .pc { flex: 1; background: #fff; border: 1px solid var(--pet-soft); border-radius: 11px; padding: 10px; display: flex; flex-direction: column; gap: 5px; }
+  .pp-cards .pc i { display: block; height: 40px; border-radius: 8px; background: var(--pet-soft); }
+  .pp-cards .pc span { font-size: 10px; color: var(--pet-ink); font-weight: 700; }
+  .pp-cards .pc em { font-style: normal; font-size: 9px; color: var(--pet-ink); opacity: .6; }
+  .pp-title { padding: 22px 22px 6px; color: var(--pet-ink); font-size: 15px; font-weight: 800; }
+  .pp-form { display: flex; flex-direction: column; gap: 7px; padding: 8px 22px; }
+  .pp-form .f { background: #fff; border: 1px solid var(--pet-soft); border-radius: 8px; padding: 8px 12px; font-size: 10.5px; color: var(--pet-ink); opacity: .85; }
+  .pp-form .fb { align-self: flex-start; background: var(--pet-accent); color: #fff; font-size: 10.5px; border-radius: 999px; padding: 6px 17px; margin-top: 3px; }
+  .pp-list { display: flex; flex-direction: column; gap: 7px; padding: 8px 22px 22px; }
+  .pp-list .li { background: #fff; border: 1px solid var(--pet-soft); border-radius: 10px; padding: 10px 13px; color: var(--pet-ink); }
+  .pp-list .li b { font-size: 11px; display: block; }
+  .pp-list .li span { font-size: 9.5px; opacity: .65; }
+  .pp .wired { box-shadow: 0 0 0 2px var(--accent); border-radius: 8px; }
+
+  /* ── 플로팅 헬프 버튼 ── */
+  .help-fab {
+    position: fixed; right: 22px; bottom: 22px;
+    width: 44px; height: 44px; border-radius: 50%;
+    border: none;
+    background: var(--accent);
+    color: #fff;
+    box-shadow: 0 6px 18px rgba(59,110,245,.4);
+    display: flex; align-items: center; justify-content: center;
+    z-index: 10;
+  }
+  .help-fab svg { width: 20px; height: 20px; }
+
+  /* ── 프로토타입 내비 (데모용) ── */
+  .proto-nav {
+    position: fixed; left: 50%; bottom: 18px; transform: translateX(-50%);
+    display: flex; align-items: center; gap: 2px;
+    background: rgba(30,38,53,.82);
+    backdrop-filter: blur(8px);
+    border-radius: 999px;
+    padding: 4px;
+    box-shadow: 0 8px 24px rgba(30,38,53,.3);
+    z-index: 15;
+  }
+  .proto-nav .pn-label { color: rgba(255,255,255,.55); font-family: var(--mono); font-size: 9.5px; letter-spacing: .08em; padding: 0 8px 0 12px; }
+  .proto-nav button {
+    border: none; background: none;
+    color: rgba(255,255,255,.75);
+    font-size: 12px; font-weight: 600;
+    border-radius: 999px;
+    padding: 6px 13px;
+    transition: background .15s, color .15s;
+  }
+  .proto-nav button:hover { color: #fff; }
+  .proto-nav button.on { background: var(--accent); color: #fff; }
+  .proto-nav .pn-reset { color: rgba(255,255,255,.6); font-size: 13px; padding: 6px 11px; }
+</style>
+</head>
+<body>
+
+<div class="app">
+  <!-- 사이드바 -->
+  <aside class="side" aria-label="사이드바">
+    <button class="s-ic" title="메뉴"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M4 7h16M4 12h16M4 17h16"/></svg></button>
+    <button class="s-ic" title="홈"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 11l9-7 9 7v9a1 1 0 0 1-1 1h-5v-6h-6v6H4a1 1 0 0 1-1-1z"/></svg></button>
+    <button class="s-ic on" title="AI 생성"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 19l10-10M13 5l1.5-1.5M18 10l1.5-1.5M14.5 3.5l.7 2.3 2.3.7-2.3.7-.7 2.3-.7-2.3-2.3-.7 2.3-.7z"/></svg></button>
+    <button class="s-ic" title="프로젝트"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><rect x="4" y="4" width="7" height="7" rx="1.5"/><rect x="13" y="4" width="7" height="7" rx="1.5"/><rect x="4" y="13" width="7" height="7" rx="1.5"/><rect x="13" y="13" width="7" height="7" rx="1.5"/></svg></button>
+    <button class="s-ic" title="가이드"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 5.5A2.5 2.5 0 0 1 6.5 3H20v15H6.5A2.5 2.5 0 0 0 4 20.5z"/><path d="M4 20.5V5.5"/></svg></button>
+    <button class="s-ic" title="결제"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><rect x="3" y="6" width="18" height="13" rx="2"/><path d="M3 10.5h18"/></svg></button>
+    <span class="sp"></span>
+    <span class="s-avatar">엠</span>
+  </aside>
+
+  <div class="main">
+
+    <!-- ══════ B1 시작 화면 ══════ -->
+    <section class="screen active" id="scr-b1" aria-label="B1 시작 화면">
+      <div class="b1">
+        <div class="b1-head">
+          <h2>어떤 서비스를 만들까요?</h2>
+          <p class="b1-sub">아이디어 한 문장이면 충분해요. 기획부터 출시까지 AI가 만들어 드려요.</p>
+        </div>
+
+        <div class="idea-card">
+          <textarea id="idea" rows="3" placeholder="예) 동네 반려견 산책 대행을 예약할 수 있는 서비스">우리 동네 반려견 산책 대행을 예약하고, 산책 후기를 게시판에서 볼 수 있는 서비스</textarea>
+          <div class="idea-foot">
+            <button class="opt-chip" onclick="fakeAttach(this)">📎 첨부</button>
+            <button class="opt-chip" onclick="fakeLink(this)">🔗 링크</button>
+            <button class="opt-chip on" id="confirmToggle" onclick="toggleConfirm()" aria-pressed="true"><span class="sw"></span> 확인 모드</button>
+            <button class="send" onclick="startGenerate()" title="생성 시작" aria-label="생성 시작">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M12 19V5M5 12l7-7 7 7"/></svg>
+            </button>
+          </div>
+        </div>
+
+        <div class="sugg" aria-label="추천 아이디어">
+          <button class="sg" onclick="useSugg(this)">로컬 특산물 브랜드</button>
+          <button class="sg" onclick="useSugg(this)">크리에이터 포트폴리오</button>
+          <button class="sg" onclick="useSugg(this)">감성 티카페</button>
+          <button class="sg" onclick="useSugg(this)">펫 라이프스타일</button>
+          <button class="sg" onclick="useSugg(this)">패션 룩북</button>
+          <button class="sg" onclick="useSugg(this)">병원·클리닉</button>
+        </div>
+
+        <div class="proj">
+          <div class="proj-tabs">
+            <div class="pt-main"><button class="pt on">내 프로젝트</button><button class="pt">템플릿</button></div>
+            <div class="pt-sub"><button class="pt on">전체</button><button class="pt">활성</button><button class="pt">초안</button></div>
+          </div>
+          <div class="proj-grid">
+            <div class="pcard">
+              <div class="pcard-head">
+                <span class="pavatar" style="background:#43B96E">청검</span>
+                <div><div class="pcard-t">청해 검수 pda 웹뷰</div>
+                <div class="pcard-meta"><span class="badge-live">출시됨</span><span class="badge-url">🌐 chungh….aiapp…</span></div></div>
+              </div>
+              <div class="pcard-d">청해 검수 pda 웹뷰</div>
+              <div class="pcard-time">🗓 22시간 전</div>
+              <button class="btn primary pcard-studio">스튜디오</button>
+              <div class="pcard-acts"><button class="btn">🗄 BaaS</button><button class="btn lite">🌐 공개 설정</button></div>
+            </div>
+            <div class="pcard">
+              <div class="pcard-head">
+                <span class="pavatar" style="background:#E4574F">청물</span>
+                <div><div class="pcard-t">청해해운 물자 검수 관리 시스템</div>
+                <div class="pcard-meta"><span class="badge-live">출시됨</span><span class="badge-url">🌐 chungh….aiapp…</span></div></div>
+              </div>
+              <div class="pcard-d">청해 물자검수 관리 시스템</div>
+              <div class="pcard-time">🗓 3일 전</div>
+              <button class="btn primary pcard-studio">스튜디오</button>
+              <div class="pcard-acts"><button class="btn">🗄 BaaS</button><button class="btn lite">🌐 공개 설정</button></div>
+            </div>
+            <div class="pcard">
+              <div class="pcard-head">
+                <span class="pavatar" style="background:#E4507A">ta</span>
+                <div><div class="pcard-t">takit</div>
+                <div class="pcard-meta"><span class="badge-live">출시됨</span><span class="badge-url">🌐 takit-….aiapp.h…</span></div></div>
+              </div>
+              <div class="pcard-d">매장 포인트·혜택을 한눈에 보여주는 20~30대 대상 서비스</div>
+              <div class="pcard-time">🗓 1주 전</div>
+              <button class="btn primary pcard-studio">스튜디오</button>
+              <div class="pcard-acts"><button class="btn">🗄 BaaS</button><button class="btn lite">🌐 공개 설정</button></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ══════ B2 스튜디오 (생성 + 완료 후 유지) ══════ -->
+    <section class="screen" id="scr-b2" aria-label="B2 스튜디오">
+      <div class="b2">
+        <div class="b2-cols">
+          <!-- 왼쪽: AI 채팅 -->
+          <div class="feed">
+            <div class="feed-scroll" id="chat">
+              <div class="chat-inner" id="chat-inner">
+              <div class="status-card" id="status-card" aria-label="진행 상태" hidden>
+                <span class="sc-title">진행 상태</span>
+                <div class="sc-row wait" data-stage="0" hidden><span class="sc-ic"></span><span>서비스 설계</span><span class="sc-detail" data-detail>대기 중</span></div>
+                <div class="sc-row wait" data-stage="1" hidden><span class="sc-ic"></span><span>화면 만들기</span><span class="sc-detail" data-detail>대기 중</span></div>
+                <div class="sc-row wait" data-stage="2" hidden><span class="sc-ic"></span><span>데이터 저장소</span><span class="sc-detail" data-detail>대기 중</span></div>
+                <div class="sc-row wait" data-stage="3" hidden><span class="sc-ic"></span><span>기능 연결</span><span class="sc-detail" data-detail>대기 중</span></div>
+                <div class="sc-row wait" data-stage="4" hidden><span class="sc-ic"></span><span>출시 · 운영 준비</span><span class="sc-detail" data-detail>대기 중</span></div>
+                <div class="sc-foot"><span>사용 크레딧 <b id="cr-used">0</b></span><span>🔒 안전한 전용 공간에서 만드는 중</span><button class="sc-cancel" id="cancel-btn" onclick="cancelRun()">취소</button></div>
+              </div>
+              <div class="typing" id="typing" hidden><span class="t-name"></span><span class="dots"><i></i><i></i><i></i></span></div>
+              </div><!-- /chat-inner -->
+            </div>
+
+            <div class="feed-input">
+              <span class="fi" id="fi-idle">만드는 동안 지켜봐 주세요 — 확인이 필요하면 여기서 알려드릴게요</span>
+              <input class="fi" id="fi-live" placeholder="수정하고 싶은 걸 말씀해 주세요 — 예: 메인 색을 초록으로" hidden>
+              <button class="send small" id="fi-send" onclick="sendLiveMsg()" title="보내기" aria-label="보내기" hidden>
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M12 19V5M5 12l7-7 7 7"/></svg>
+              </button>
+            </div>
+          </div>
+
+          <!-- 리사이저 -->
+          <div class="resizer" id="resizer" role="separator" aria-label="패널 크기 조절"></div>
+
+          <!-- 오른쪽: 미리보기 / 데이터베이스 / 관리·설정 -->
+          <div class="pvw">
+            <div class="rtabs" role="tablist">
+              <button class="rtab on" id="rt-preview" onclick="switchRTab('preview')">👁 미리보기</button>
+              <button class="rtab" id="rt-db" onclick="switchRTab('db')">🗄 데이터베이스 <i class="dot" id="dot-db" hidden></i></button>
+              <button class="rtab" id="rt-ext" onclick="switchRTab('ext')">🎨 브랜드·홍보 <i class="dot" id="dot-ext" hidden></i></button>
+              <button class="rtab" id="rt-admin" onclick="switchRTab('admin')">⚙️ 관리·설정 <i class="dot" id="dot-admin" hidden></i></button>
+            </div>
+
+            <!-- 미리보기 페인 -->
+            <div class="rpane on" id="rp-preview">
+
+              <!-- 설계안 위저드 (기획 완료 시 표시) -->
+              <div class="bp" id="bp">
+                <div class="bp-card">
+                  <div class="bp-head">
+                    <span class="bp-ico">📐</span>
+                    <div><b>설계안</b><small>멍멍 산책 예약</small></div>
+                  </div>
+                  <div class="bp-body">
+                    <div class="bp-step">
+                      <div class="bp-sec">기획안 검토</div>
+                      <div class="bp-li">히어로 섹션: 서비스 소개와 [지금 예약하기] 버튼</div>
+                      <div class="bp-li">산책러 추천 카드: 평점 · 산책 횟수 표시</div>
+                      <div class="bp-li">예약 폼: 이름 · 연락처 · 희망 날짜 입력 — 제출하면 연락처가 자동 저장돼요</div>
+                      <div class="bp-li">후기 게시판: 목록 · 상세 보기</div>
+                      <div class="bp-li">마이페이지: 다가오는 예약 · 지난 산책</div>
+                      <div class="bp-li">로그인 · 회원가입</div>
+                      <div class="bp-add">＋ 기능 추가</div>
+                    </div>
+                    <div class="bp-step" hidden>
+                      <div class="bp-sec">스타일 정의</div>
+                      <div class="bp-grid">
+                        <button class="bp-tpl" onclick="bpSelTpl(this)"><span class="tpl-thumb" style="background:var(--surface-2); border:1.5px dashed var(--line-strong); color:var(--muted)">?</span>영감을 주세요</button>
+                        <button class="bp-tpl sel" onclick="bpSelTpl(this)"><span class="tpl-thumb" style="background:linear-gradient(135deg,#FBF6ED,#F1E6D4); color:#5F4A33">CREAM</span>크림 & 라운드 <span class="rec">★ 추천</span></button>
+                        <button class="bp-tpl" onclick="bpSelTpl(this)"><span class="tpl-thumb" style="background:linear-gradient(135deg,#FFFFFF,#EEF1F5); color:#4A5468">MINIMAL</span>미니멀 화이트</button>
+                        <button class="bp-tpl" onclick="bpSelTpl(this)"><span class="tpl-thumb" style="background:linear-gradient(135deg,#14171D,#2A2F3C); color:#E9EDF5">DARK</span>다크 모던</button>
+                        <button class="bp-tpl" onclick="bpSelTpl(this)"><span class="tpl-thumb" style="background:linear-gradient(135deg,#FF7A59,#FFD166); color:#fff">VIVID</span>비비드 팝</button>
+                        <button class="bp-tpl" onclick="bpSelTpl(this)"><span class="tpl-thumb" style="background:linear-gradient(135deg,#DCEBFF,#FFE3EC); color:#5A6B8C">PASTEL</span>파스텔</button>
+                      </div>
+                      <div class="bp-li" style="margin-top:4px; color:var(--muted)">선택한 스타일에 맞춰 로고 시안과 브랜드 색도 함께 잡아드려요 — 출시 후 <b>브랜드·홍보</b> 탭에서 다듬을 수 있어요.</div>
+                    </div>
+                    <div class="bp-step" hidden>
+                      <div class="bp-sec">기능 추천</div>
+                      <div class="bp-chk">회원 가입 · 로그인</div>
+                      <div class="bp-chk">예약 접수 — 신청하면 연락처 자동 저장</div>
+                      <div class="bp-chk">후기 게시판</div>
+                      <div class="bp-chk">데이터 저장소 — 테이블 4개</div>
+                      <div class="bp-sec" style="margin-top:6px">사이트 강화 (선택)</div>
+                      <label class="bp-opt">
+                        <input type="checkbox">
+                        <div><span class="bo-tag">Notification</span><div class="bo-t">예약 알림 발송</div><div class="bo-d">예약이 들어오면 문자 · 알림톡으로 알려드려요. (곧 제공)</div></div>
+                      </label>
+                    </div>
+                    <!-- 다음 단계 준비 중 로딩 -->
+                    <div class="bp-loading" id="bp-loading" hidden>
+                      <span class="pv-spin"></span><span id="bp-loading-text">준비하고 있어요…</span>
+                    </div>
+                    <!-- 단계별 수정 입력 -->
+                    <div class="bp-editbox" id="bp-editbox" hidden>
+                      <textarea id="bp-editinput" rows="2" placeholder="이 단계에서 수정하고 싶은 내용을 적어주세요"></textarea>
+                      <button class="bp-btn primary" onclick="bpApplyEdit()">반영</button>
+                    </div>
+                  </div>
+                  <div class="bp-foot">
+                    <button class="bp-btn" id="bp-prev" onclick="bpNav(-1)">이전</button>
+                    <span class="bp-count" id="bp-count">1 / 3 · 기획안</span>
+                    <button class="bp-btn" id="bp-edit" onclick="bpEditToggle()">수정</button>
+                    <button class="bp-btn primary" id="bp-ok" onclick="bpConfirmStep()">확인</button>
+                  </div>
+                </div>
+              </div>
+
+              <div id="pv-wrap">
+                <div class="pvw-bar">
+                  <div class="dev-toggle" role="group" aria-label="디바이스">
+                    <button id="dev-m" onclick="setDevice('mobile')" title="모바일"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="8" y="3" width="8" height="18" rx="2"/><path d="M11 18h2"/></svg></button>
+                    <button id="dev-d" class="on" onclick="setDevice('desktop')" title="데스크톱"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="5" width="18" height="12" rx="2"/><path d="M9 21h6M12 17v4"/></svg></button>
+                  </div>
+                  <span class="pv-addr" id="pv-addr">preview://안전한 전용 공간</span>
+                  <span class="pv-badge" id="pv-badge">대기</span>
+                  <div class="edit-tools">
+                    <button class="et-btn" id="et-edit" onclick="toggleEditMode()">✏️ 편집</button>
+                    <button class="et-btn" onclick="extClick('AI 요청')">✨ AI 요청</button>
+                  </div>
+                </div>
+                <!-- 에디터 자리 (편집 모드 시 표시) -->
+                <div class="edit-bar" id="edit-bar" hidden>
+                  <span class="eb-note">✏️ 에디터 영역 — 요소를 선택해 편집해요 <span style="opacity:.6">(에디터 들어갈 자리)</span></span>
+                  <span class="eb-tools">
+                    <button onclick="extClick('텍스트 편집')">T 텍스트</button>
+                    <button onclick="extClick('이미지 편집')">🖼 이미지</button>
+                    <button onclick="extClick('섹션 편집')">▭ 섹션</button>
+                    <button onclick="extClick('되돌리기')">↩︎</button>
+                  </span>
+                </div>
+                <div class="pv-tabs" id="pv-tabs"></div>
+                <div class="pv-viewport">
+                  <div class="pv-canvas" id="pv-canvas">
+                    <div class="pv-empty"><span class="pv-spin"></span><span>생성을 시작하면 여기에 실시간으로 보여드려요</span></div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- 데이터베이스 페인 -->
+            <div class="rpane" id="rp-db">
+              <div class="db-pane" id="db-pane">
+                <div class="pane-empty"><span class="pe-ico">🗄</span><span>데이터 저장소가 아직 없어요.<br>'데이터 저장소' 단계에서 자동으로 만들어져요.</span></div>
+              </div>
+            </div>
+
+            <!-- 브랜드·홍보 페인 (출시 후 성장 기능) -->
+            <div class="rpane" id="rp-ext">
+              <div class="adm-pane">
+                <div class="adm-sec">브랜드</div>
+                <div class="adm-item">
+                  <span class="ai-ico">🎨</span>
+                  <div><div class="ai-t">로고 · 브랜드 만들기</div><div class="ai-d">서비스에 어울리는 로고 시안과 색 · 글꼴을 만들어 전체 화면에 입혀드려요 (BI/CI)</div></div>
+                  <button class="btn lite ai-state" style="font-size:12px; padding:6px 14px;" onclick="extClick('로고 · 브랜드 만들기')">만들기</button>
+                </div>
+                <div class="adm-item">
+                  <span class="ai-ico">📄</span>
+                  <div><div class="ai-t">브랜드 가이드</div><div class="ai-d">로고를 만들면 색 · 글꼴 사용 규칙을 정리한 가이드를 함께 드려요</div></div>
+                  <span class="ai-state tag">로고 생성 후</span>
+                </div>
+                <div class="adm-sec">홍보</div>
+                <div class="adm-item">
+                  <span class="ai-ico">🎬</span>
+                  <div><div class="ai-t">숏폼 영상 만들기</div><div class="ai-d">내 서비스 화면으로 15초 세로 홍보 영상을 만들어요 — 릴스 · 틱톡 · 쇼츠용</div></div>
+                  <button class="btn lite ai-state" style="font-size:12px; padding:6px 14px;" onclick="extClick('숏폼 영상 만들기')">만들기</button>
+                </div>
+                <div class="adm-item">
+                  <span class="ai-ico">🖼</span>
+                  <div><div class="ai-t">홍보 이미지</div><div class="ai-d">SNS에 올릴 소개 카드 이미지를 만들어요</div></div>
+                  <button class="btn lite ai-state" style="font-size:12px; padding:6px 14px;" onclick="extClick('홍보 이미지 만들기')">만들기</button>
+                </div>
+              </div>
+            </div>
+
+            <!-- 관리·설정 페인 (사이드바 + 상세 설정) -->
+            <div class="rpane" id="rp-admin">
+              <div class="db-pane">
+                <div class="db-shell">
+                  <div class="db-side" id="adm-side"></div>
+                  <div class="db-main" id="adm-main"></div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </section>
+
+  </div><!-- /main -->
+</div><!-- /app -->
+
+<!-- 헬프 플로팅 버튼 -->
+<button class="help-fab" title="도움말" aria-label="도움말">
+  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M4 13a8 8 0 0 1 16 0"/><rect x="3" y="13" width="4" height="6" rx="2"/><rect x="17" y="13" width="4" height="6" rx="2"/></svg>
+</button>
+
+<!-- 프로토타입 데모 내비 -->
+<nav class="proto-nav" aria-label="프로토타입 화면 이동">
+  <span class="pn-label">PROTO</span>
+  <button id="pn-b1" class="on" onclick="goto('B1')">B1 시작</button>
+  <button id="pn-b2" onclick="goto('B2')">B2 스튜디오</button>
+  <button class="pn-reset" onclick="resetAll()" title="처음부터 다시">↺</button>
+</nav>
+
+<script>
+  const $ = s => document.querySelector(s);
+  const $$ = s => [...document.querySelectorAll(s)];
+
+  let confirmMode = true;
+  let timers = [];
+  let credits = 0;
+  let pipelineDone = false;
+  let cancelledRun = false;
+
+  const STAGE_META = [
+    { dur: 3000 },
+    { dur: 6600, sub: { unit: "화면", total: 6 } },
+    { dur: 2600 },
+    { dur: 3600, sub: { unit: "기능", total: 4 } },
+    { dur: 2800 },
+  ];
+
+  /* ── 추천 칩 ── */
+  const SUGG_MAP = {
+    "로컬 특산물 브랜드": "우리 지역 특산물을 소개하고 주문을 받을 수 있는 로컬 브랜드 서비스",
+    "크리에이터 포트폴리오": "작업물을 갤러리로 보여주고 협업 문의를 받는 크리에이터 포트폴리오",
+    "감성 티카페": "시그니처 메뉴를 소개하고 예약과 공지를 관리하는 감성 티카페 서비스",
+    "펫 라이프스타일": "반려견 옷과 소품을 소개하고 스타일링 후기를 공유하는 펫 라이프스타일 브랜드",
+    "패션 룩북": "시즌별 룩북을 보여주고 신상품 소식을 알리는 패션 브랜드 서비스",
+    "병원·클리닉": "진료 안내와 상담 예약을 받을 수 있는 병원 클리닉 서비스",
+  };
+  function useSugg(btn) {
+    $("#idea").value = SUGG_MAP[btn.textContent] || btn.textContent;
+    validateIdea();
+    $("#idea").focus();
+  }
+
+  /* ── 내비게이션 ── */
+  function goto(where) {
+    showScreen(where);
+    if (where === "B2" && !pipelineDone && !timers.length && !cancelledRun) runPipeline();
+  }
+  function showScreen(id) {
+    $$(".screen").forEach(s => s.classList.remove("active"));
+    $("#scr-" + id.toLowerCase()).classList.add("active");
+    ["b1","b2"].forEach(k => $("#pn-" + k).classList.toggle("on", k === id.toLowerCase()));
+  }
+
+  /* ── B1 ── */
+  const ideaEl = $("#idea");
+  ideaEl.addEventListener("input", validateIdea);
+  function validateIdea() {
+    const v = ideaEl.value.trim();
+    const m = $("#micro");   /* 안내 영역이 없을 수도 있음 (레이아웃상 제거됨) */
+    if (m) m.textContent = (v.length > 0 && v.length < 10)
+      ? "조금 더 구체적으로 적어주시면 결과가 좋아져요. (최소 10자)"
+      : "";
+    if (v.length > 0 && v.length < 10) ideaEl.placeholder = "조금 더 구체적으로 적어주세요 (최소 10자)";
+    return v.length >= 10;
+  }
+  function toggleConfirm() {
+    confirmMode = !confirmMode;
+    const t = $("#confirmToggle");
+    t.classList.toggle("on", confirmMode);
+    t.setAttribute("aria-pressed", String(confirmMode));
+  }
+  function fakeAttach(btn) { btn.textContent = "📎 참고자료.pdf ✓"; btn.classList.add("on"); }
+  function fakeLink(btn) { btn.textContent = "🔗 링크 1개 ✓"; btn.classList.add("on"); }
+
+  function startGenerate() {
+    if (!validateIdea()) { ideaEl.focus(); return; }
+    resetPipeline();
+    showScreen("B2");
+    runPipeline();
+  }
+
+  /* ── 파이프라인 ── */
+  function later(fn, ms) { timers.push(setTimeout(fn, ms)); }
+  function statusRow(i, state, detail) {
+    const el = $(`.sc-row[data-stage="${i}"]`);
+    el.hidden = false;   /* 해당 단계가 시작될 때 행이 나타남 */
+    el.className = "sc-row " + state;
+    el.querySelector("[data-detail]").textContent = detail;
+  }
+
+  /* ── AI 채팅 (Manus식 플레인 로그) ── */
+  const CHAT = [
+    [ ["step", 100,  "서비스 설계"],
+      ["line", 300,  "말씀해주신 아이디어를 분석하고 있어요."],
+      ["line", 1500, "<b>동네 반려견 산책 예약 + 후기 게시판</b> 서비스로 이해했어요. 화면 6개와 기능 4가지를 담은 설계안을 준비할게요."],
+      ["card", 2500] ],
+    [ ["step", 200,  "화면 만들기"],
+      ["line", 400,  "선택하신 스타일로 홈 화면부터 그리고 있어요. 오른쪽 미리보기에서 실시간으로 볼 수 있어요."],
+      ["chk",  3600, "홈 · 예약 · 후기 화면 완성"],
+      ["chk",  6200, "화면 6개 완성 — 페이지 연결까지 끝났어요"] ],
+    [ ["step", 200,  "데이터 저장소"],
+      ["line", 400,  "예약 · 후기 · 회원 정보를 담을 저장소를 만들고 있어요."],
+      ["chk",  2100, "테이블 4개 준비 — 데이터베이스 탭에서 확인할 수 있어요"] ],
+    [ ["step", 200,  "기능 연결"],
+      ["line", 400,  "예약 신청이 들어오면 연락처가 자동으로 저장되도록 연결하고 있어요."],
+      ["chk",  2400, "회원 · 예약 접수 · 게시판 연결 완료"] ],
+    [ ["step", 200,  "출시 준비"],
+      ["line", 400,  "안전한 전용 공간에서 최종 점검 후 출시하고 있어요."],
+      ["chk",  2200, "회원 · 연락처 · 게시판 · 저장소 모두 활성화"] ],
+  ];
+
+  function chatInsert(el) {
+    $("#chat-inner").insertBefore(el, $("#typing"));
+    scrollChat();
+  }
+  function addLine(html) {
+    const el = document.createElement("div");
+    el.className = "ai-line";
+    el.innerHTML = html;
+    chatInsert(el);
+  }
+  function addChk(text) {
+    const el = document.createElement("div");
+    el.className = "chk";
+    el.textContent = text;
+    chatInsert(el);
+  }
+  function addStep(label) {
+    const el = document.createElement("div");
+    el.className = "step-div";
+    el.textContent = label;
+    chatInsert(el);
+  }
+  function addUser(text) {
+    const el = document.createElement("div");
+    el.className = "u-line";
+    el.textContent = text;
+    chatInsert(el);
+  }
+  function addWait(text) {
+    const el = document.createElement("div");
+    el.className = "wait-line";
+    el.id = "wait-line";
+    el.innerHTML = `<span class="wl-spin"></span>${text}`;
+    chatInsert(el);
+  }
+  function removeWait() { const w = $("#wait-line"); if (w) w.remove(); }
+  function revealCard() {
+    const c = $("#status-card");
+    c.hidden = false;
+    chatInsert(c);   /* 현재 대화 위치로 이동 */
+  }
+  function setTyping(on) {
+    const t = $("#typing");
+    t.hidden = !on;
+    if (on) { t.querySelector(".t-name").textContent = "만드는 중"; scrollChat(); }
+  }
+  function scrollChat() { const c = $("#chat"); c.scrollTop = c.scrollHeight; }
+
+  function tickCredits(target, dur) {
+    const start = credits, t0 = performance.now();
+    function frame(t) {
+      const p = Math.min(1, (t - t0) / dur);
+      credits = Math.round(start + (target - start) * p);
+      $("#cr-used").textContent = credits;
+      if (p < 1 && !pipelineDone && !cancelledRun) requestAnimationFrame(frame);
+    }
+    requestAnimationFrame(frame);
+  }
+
+  function runPipeline() { runStage(0); }
+
+  function runStage(i) {
+    if (cancelledRun) return;
+    if (i >= STAGE_META.length) { finishPipeline(); return; }
+    const m = STAGE_META[i];
+    const creditTargets = [60, 180, 240, 330, 388];
+    tickCredits(creditTargets[i], m.dur);
+
+    /* 오른쪽 패널 동기화 */
+    if (i === 0) pvPlanning();
+    if (i === 2) { pvDb(m.dur); fillDbPane(m.dur); }
+    if (i === 3) pvApi(m.dur);
+    if (i === 4) { pvDeploying(); admConnecting(); }
+
+    /* 상태 카드 + 채팅 */
+    statusRow(i, "run", "진행 중");
+    setTyping(true);
+    (CHAT[i] || []).forEach(([kind, d, payload]) =>
+      later(() => {
+        if (kind === "step") addStep(payload);
+        else if (kind === "line") addLine(payload);
+        else if (kind === "chk") addChk(payload);
+        else if (kind === "card") revealCard();
+      }, d));
+
+    if (m.sub) {
+      const per = m.dur / m.sub.total;
+      for (let k = 1; k <= m.sub.total; k++) {
+        later(() => {
+          statusRow(i, "run", `${k}/${m.sub.total} ${m.sub.unit}`);
+          if (i === 1) pvBuildScreen(k);
+        }, per * (k - 1) + 200);
+      }
+    }
+
+    later(() => {
+      statusRow(i, "done", "완료");
+      if (i === 0 && confirmMode) pauseAtCheckpoint();
+      else runStage(i + 1);
+    }, m.dur);
+  }
+
+  function pauseAtCheckpoint() {
+    statusRow(0, "paused", "확인 대기");
+    setTyping(false);
+    addLine("설계안이 준비됐어요. 오른쪽에서 <b>기획안 · 스타일 · 기능</b>을 확인해 주세요.");
+    addWait("확인해 주시면 계속 작업을 진행합니다");
+    pvBadge("확인 대기", "warn");
+    bpShow();
+  }
+
+  /* ── 설계안 위저드 (단계별 확인/수정 게이트) ── */
+  let bpStepIdx = 0;
+  const BP_TITLES = ["기획안", "스타일", "기능"];
+  function bpShow() {
+    bpStepIdx = 0;
+    bpRender();
+    $("#bp").classList.add("show");
+    $("#pv-wrap").style.display = "none";
+    switchRTab("preview");
+  }
+  function bpHide() {
+    $("#bp").classList.remove("show");
+    $("#pv-wrap").style.display = "";
+  }
+  function bpRender() {
+    $$(".bp-step").forEach((el, i) => el.hidden = i !== bpStepIdx);
+    $("#bp-loading").hidden = true;
+    $("#bp-count").textContent = `${bpStepIdx + 1} / 3 · ${BP_TITLES[bpStepIdx]}`;
+    $("#bp-prev").disabled = bpStepIdx === 0;
+    $("#bp-ok").disabled = false;
+    $("#bp-edit").disabled = false;
+    $("#bp-ok").textContent = bpStepIdx === 2 ? "만들기 시작" : "확인";
+    $("#bp-editbox").hidden = true;
+  }
+  function bpNav(d) {
+    bpStepIdx = Math.min(2, Math.max(0, bpStepIdx + d));
+    bpRender();
+  }
+  function bpSelTpl(el) {
+    $$(".bp-tpl").forEach(t => t.classList.remove("sel"));
+    el.classList.add("sel");
+  }
+  function selectedTplName() {
+    const s = $(".bp-tpl.sel");
+    return s ? s.textContent.replace("★ 추천", "").trim() : "크림 & 라운드";
+  }
+  /* 확인하면 AI가 다음 단계를 '준비해서' 보여줌 — 순차 생성 흐름 */
+  function bpConfirmStep() {
+    if (bpStepIdx === 0) {
+      addChk("기획안 확인 (1/3)");
+      bpPrepareNext("어울리는 스타일 후보를 고르고 있어요…");
+    } else if (bpStepIdx === 1) {
+      addChk(`스타일 확인 — ${selectedTplName()} (2/3)`);
+      bpPrepareNext("필요한 기능을 정리하고 있어요…");
+    } else {
+      addChk("기능 확인 (3/3)");
+      bpBuild();
+    }
+  }
+  function bpPrepareNext(loadingMsg) {
+    $$(".bp-step").forEach(el => el.hidden = true);
+    $("#bp-editbox").hidden = true;
+    $("#bp-loading-text").textContent = loadingMsg;
+    $("#bp-loading").hidden = false;
+    $("#bp-ok").disabled = true;
+    $("#bp-edit").disabled = true;
+    $("#bp-prev").disabled = true;
+    later(() => {
+      bpStepIdx++;
+      bpRender();
+    }, 1100);
+  }
+  function bpEditToggle() {
+    const b = $("#bp-editbox");
+    b.hidden = !b.hidden;
+    if (!b.hidden) $("#bp-editinput").focus();
+  }
+  function bpApplyEdit() {
+    const v = $("#bp-editinput").value.trim();
+    $("#bp-editinput").value = "";
+    $("#bp-editbox").hidden = true;
+    addUser(v || `${BP_TITLES[bpStepIdx]} 수정 요청`);
+    later(() => addLine("설계안에 반영했어요. 확인 후 다음으로 넘어가 주세요."), 500);
+  }
+  function bpBuild() {
+    bpHide();
+    removeWait();
+    statusRow(0, "done", "완료");
+    addUser("이대로 만들어 주세요");
+    addChk("설계안 확인 완료 — 만들기 시작");
+    later(() => runStage(1), 400);
+  }
+
+  function cancelRun() {
+    if (pipelineDone || cancelledRun) return;
+    cancelledRun = true;
+    timers.forEach(clearTimeout); timers = [];
+    pvBadge("취소됨", "warn");
+    bpHide();
+    removeWait();
+    setTyping(false);
+    addLine("만들기를 취소했어요. 지금까지 사용한 크레딧만 계산돼요.");
+    $$(".sc-row").forEach(el => {
+      if (el.classList.contains("run") || el.classList.contains("paused")) {
+        statusRow(+el.dataset.stage, "wait", "취소");
+      }
+    });
+  }
+
+  /* ── 완료: 화면 유지 + 채팅 보고 ── */
+  function finishPipeline() {
+    pipelineDone = true;
+    $("#cr-used").textContent = "388";
+    $("#cancel-btn").hidden = true;
+    setTyping(false);
+    pvLive();
+    admLive();
+    dbLive();
+    later(() => addReport(), 500);
+    later(() => {
+      addLine("수정하고 싶은 부분이 있으면 아래 입력창에 편하게 말씀해 주세요 ✏️");
+      enableLiveInput();
+    }, 1300);
+    later(() => addNextSuggestions(), 1900);
+  }
+
+  /* 완료 후 다음 행동 추천 */
+  function addNextSuggestions() {
+    const el = document.createElement("div");
+    el.className = "next-sugg";
+    el.innerHTML = `
+      <div class="ns-t">이어서 이런 걸 해볼 수 있어요</div>
+      <div class="ns-row">
+        <button class="ns-chip" onclick="nsClick(this)">홈 문구를 더 따뜻하게 바꿔줘</button>
+        <button class="ns-chip" onclick="nsClick(this)">우리 로고로 바꾸고 싶어</button>
+        <button class="ns-chip" onclick="nsClick(this)">예약 완료 안내 문구 추가해줘</button>
+        <button class="ns-chip" onclick="switchRTab('ext')">🎨 로고 · 브랜드 만들기</button>
+        <button class="ns-chip" onclick="switchRTab('ext')">🎬 홍보 숏폼 만들기</button>
+        <button class="ns-chip" onclick="switchRTab('admin')">🌐 서비스 공개 설정하기</button>
+        <button class="ns-chip" onclick="switchRTab('db')">🗄 저장된 데이터 구경하기</button>
+      </div>`;
+    chatInsert(el);
+  }
+  function nsClick(btn) {
+    addUser(btn.textContent);
+    later(() => addLine("네, 반영해볼게요! <span style='color:var(--muted)'>(프로토타입에서는 시연용 응답이에요 🙂)</span>"), 700);
+  }
+
+  function addReport() {
+    const el = document.createElement("div");
+    el.className = "report";
+    el.innerHTML = `
+      <div class="rp-head"><span class="live"><span class="led"></span>LIVE</span><b>멍멍 산책 예약</b></div>
+      <a class="rp-url" href="#" onclick="return false">🌐 https://mungmung-walk.aiapp.site</a>
+      <div class="rp-sec">이렇게 만들었어요</div>
+      <ul class="rp-list">
+        <li>화면 6개 — 홈 · 예약 · 후기 · 소개 · 마이 · 로그인</li>
+        <li>회원 가입 · 로그인</li>
+        <li>예약 접수 — 신청하면 연락처가 자동 저장돼요</li>
+        <li>후기 게시판</li>
+        <li>데이터 저장소 — 테이블 4개</li>
+      </ul>
+      <div class="rp-foot"><span>사용 크레딧 <b>388</b></span><span>소요 시간 <b>1분 42초</b></span></div>
+      <div class="rp-acts">
+        <button class="btn primary" onclick="switchRTab('admin')">🌐 공개 설정</button>
+        <button class="btn lite" onclick="switchRTab('db')">🗄 데이터 보기</button>
+      </div>`;
+    chatInsert(el);
+  }
+
+  function enableLiveInput() {
+    $("#fi-idle").hidden = true;
+    $("#fi-live").hidden = false;
+    $("#fi-send").hidden = false;
+    $("#fi-live").addEventListener("keydown", e => { if (e.key === "Enter") sendLiveMsg(); });
+  }
+  function sendLiveMsg() {
+    const inp = $("#fi-live");
+    const v = inp.value.trim();
+    if (!v) return;
+    inp.value = "";
+    addUser(v);
+    later(() => addLine("네, 반영해볼게요! <span style='color:var(--muted)'>(프로토타입에서는 시연용 응답이에요 🙂)</span>"), 700);
+  }
+
+  function resetPipeline() {
+    timers.forEach(clearTimeout); timers = [];
+    credits = 0; pipelineDone = false; cancelledRun = false;
+    $("#cr-used").textContent = "0";
+    $("#cancel-btn").hidden = false;
+    $$("#chat .ai-line, #chat .chk, #chat .u-line, #chat .wait-line, #chat .step-div, #chat .report, #chat .next-sugg").forEach(el => el.remove());
+    setTyping(false);
+    bpHide();
+    const card = $("#status-card");
+    card.hidden = true;
+    $$(".sc-row").forEach(el => { el.hidden = true; });
+    $("#fi-idle").hidden = false;
+    $("#fi-live").hidden = true;
+    $("#fi-send").hidden = true;
+    for (let i = 0; i < STAGE_META.length; i++) {
+      const el = $(`.sc-row[data-stage="${i}"]`);
+      el.className = "sc-row wait";
+      el.querySelector("[data-detail]").textContent = "대기 중";
+      el.hidden = true;
+    }
+    pvReset();
+    dbReset();
+    admReset();
+    switchRTab("preview");
+  }
+  function resetAll() { resetPipeline(); showScreen("B1"); }
+
+  /* ── 오른쪽 패널: 탭 ── */
+  function switchRTab(key) {
+    ["preview","db","ext","admin"].forEach(k => {
+      $("#rt-" + k).classList.toggle("on", k === key);
+      $("#rp-" + k).classList.toggle("on", k === key);
+    });
+    const dot = { db: "#dot-db", ext: "#dot-ext", admin: "#dot-admin" }[key];
+    if (dot) $(dot).hidden = true;
+  }
+
+  /* 브랜드·홍보 확장 태스크 (데모) */
+  function extClick(label) {
+    addUser(label);
+    later(() => addLine("좋아요! 준비되는 대로 만들어 드릴게요. <span style='color:var(--muted)'>(출시 후 제공 예정 기능 — 프로토타입 시연 응답이에요 🙂)</span>"), 700);
+  }
+  function showDot(key) {
+    if (!$("#rt-" + key).classList.contains("on")) $("#dot-" + key).hidden = false;
+  }
+
+  /* ── 미리보기 ── */
+  const PV_PAGES = [
+    { name: "홈", blocks: [
+      '<div class="pp pp-nav"><b>🐾 멍멍산책</b><span class="lnk">예약</span><span class="lnk">후기</span><span class="lnk">소개</span><span class="pp-login">로그인</span></div>',
+      '<div class="pp pp-hero"><span class="pp-badge">🐾 PET WALKING SERVICE</span><h5>산책이 필요한 순간,<br>멍멍 산책 예약</h5></div>',
+      '<div class="pp pp-hero" style="padding-top:0"><p>우리 동네 검증된 산책러와 함께, 오늘도 신나는 산책을.</p><div class="pp-btns"><i class="b1x">지금 예약하기</i><i class="b2x">서비스 소개</i></div></div>',
+      '<div class="pp pp-cards"><div class="pc"><i></i><span>김산책 산책러</span><em>★ 4.9 · 128회</em></div><div class="pc"><i></i><span>박멍멍 산책러</span><em>★ 4.8 · 96회</em></div><div class="pc"><i></i><span>이초코 산책러</span><em>★ 5.0 · 201회</em></div></div>',
+    ]},
+    { name: "예약", blocks: [
+      '<div class="pp pp-nav"><b>🐾 멍멍산책</b><span class="lnk">예약</span><span class="lnk">후기</span><span class="pp-login">로그인</span></div>',
+      '<div class="pp pp-title">산책 예약하기</div>',
+      '<div class="pp pp-form"><div class="f">보호자 이름</div><div class="f">연락처 (010-0000-0000)</div><div class="f">희망 날짜 · 시간</div></div>',
+      '<div class="pp pp-form" style="padding-top:0"><div class="f">요청사항 (선택)</div><span class="fb">예약 신청</span></div>',
+    ]},
+    { name: "후기", blocks: [
+      '<div class="pp pp-nav"><b>🐾 멍멍산책</b><span class="lnk">예약</span><span class="lnk">후기</span><span class="pp-login">로그인</span></div>',
+      '<div class="pp pp-title">산책 후기</div>',
+      '<div class="pp pp-list"><div class="li"><b>초코가 너무 행복해했어요 🐕</b><span>김산책 산책러 · 2026.07.02</span></div></div>',
+      '<div class="pp pp-list" style="padding-top:0"><div class="li"><b>시간 약속 정확하고 사진도 보내주셨어요</b><span>박멍멍 산책러 · 2026.06.28</span></div></div>',
+    ]},
+    { name: "소개", blocks: [
+      '<div class="pp pp-nav"><b>🐾 멍멍산책</b><span class="lnk">소개</span><span class="pp-login">로그인</span></div>',
+      '<div class="pp pp-hero"><span class="pp-badge">OUR WALKERS</span><h5>검증된 동네 산책러</h5><p>신원 확인과 교육을 마친 산책러만 활동해요.</p></div>',
+      '<div class="pp pp-cards"><div class="pc"><i></i><span>신원 인증</span></div><div class="pc"><i></i><span>산책 교육</span></div><div class="pc"><i></i><span>실시간 공유</span></div></div>',
+    ]},
+    { name: "마이", blocks: [
+      '<div class="pp pp-nav"><b>🐾 멍멍산책</b><span class="pp-login">내 계정</span></div>',
+      '<div class="pp pp-title">마이페이지</div>',
+      '<div class="pp pp-list"><div class="li"><b>다가오는 예약 1건</b><span>7월 12일 (일) 오후 3시 · 김산책</span></div><div class="li"><b>지난 산책 3건</b><span>후기를 남겨보세요</span></div></div>',
+    ]},
+    { name: "로그인", blocks: [
+      '<div class="pp pp-nav"><b>🐾 멍멍산책</b></div>',
+      '<div class="pp pp-title">로그인</div>',
+      '<div class="pp pp-form"><div class="f">이메일</div><div class="f">비밀번호</div><span class="fb">로그인</span></div>',
+    ]},
+  ];
+
+  function pvBadge(text, cls) {
+    const b = $("#pv-badge");
+    b.textContent = text;
+    b.className = "pv-badge" + (cls ? " " + cls : "");
+  }
+  function pvCanvas(html) { $("#pv-canvas").innerHTML = html; }
+  function pvReset() {
+    pvBadge("대기", "");
+    $("#pv-addr").textContent = "preview://안전한 전용 공간";
+    $("#pv-tabs").innerHTML = "";
+    pvCanvas('<div class="pv-empty"><span class="pv-spin"></span><span>생성을 시작하면 여기에 실시간으로 보여드려요</span></div>');
+    $("#edit-bar").hidden = true;
+    $("#et-edit").classList.remove("on");
+    $("#pv-canvas").classList.remove("edit-mode");
+  }
+
+  function pvPlanning() {
+    pvBadge("설계 중", "run");
+    pvCanvas('<div class="pv-empty"><span class="pv-spin"></span><span>아이디어를 분석하고 있어요</span></div>');
+    later(() => {
+      pvCanvas(
+        '<div class="pv-empty"><span class="pv-spin"></span><span>어울리는 색을 고르고 있어요</span>' +
+        '<span class="pv-tokens">' +
+        ["#FBF6ED", "#F1E6D4", "#D98E4A", "#8FAF8B", "#5F4A33"]
+          .map((c, i) => `<i style="background:${c}; animation-delay:${i * .12}s"></i>`).join("") +
+        "</span></div>"
+      );
+    }, 1500);
+  }
+
+  function pvBuildScreen(k) {
+    const page = PV_PAGES[k - 1];
+    pvBadge(`화면 만드는 중 ${k}/6`, "run");
+    const tabs = $("#pv-tabs");
+    if (!tabs.children[k - 1]) {
+      const t = document.createElement("span");
+      t.className = "pv-tab";
+      t.textContent = page.name;
+      tabs.appendChild(t);
+    }
+    [...tabs.children].forEach((t, i) => t.classList.toggle("on", i === k - 1));
+    pvCanvas("");
+    const cv = $("#pv-canvas");
+    page.blocks.forEach((html, i) => {
+      later(() => { cv.insertAdjacentHTML("beforeend", html); }, 140 + i * 210);
+    });
+  }
+  function pvBuildScreenInstant(k) {
+    const page = PV_PAGES[k - 1];
+    [...$("#pv-tabs").children].forEach((t, i) => t.classList.toggle("on", i === k - 1));
+    pvCanvas(page.blocks.join(""));
+  }
+
+  function pvDb(dur) { pvBadge("저장소 준비 중", "warn"); }
+  function pvApi(dur) {
+    pvBadge("기능 연결 중", "run");
+    pvBuildScreenInstant(2);
+    const cv = $("#pv-canvas");
+    const targets = cv.querySelectorAll(".pp-form .f, .pp-form .fb");
+    targets.forEach((el, i) => later(() => el.classList.add("wired"), (dur / targets.length) * i + 300));
+  }
+  function pvDeploying() {
+    pvBadge("출시 중", "run");
+    $("#pv-addr").textContent = "출시 준비 중…";
+  }
+  function pvLive() {
+    pvBadge("LIVE", "ok");
+    $("#pv-addr").textContent = "https://mungmung-walk.aiapp.site";
+    pvBuildScreenInstant(1);
+  }
+
+  function setDevice(mode) {
+    $("#pv-canvas").classList.toggle("mobile", mode === "mobile");
+    $("#dev-m").classList.toggle("on", mode === "mobile");
+    $("#dev-d").classList.toggle("on", mode === "desktop");
+  }
+
+  /* 편집 모드 (에디터 들어갈 자리) */
+  function toggleEditMode() {
+    const bar = $("#edit-bar");
+    bar.hidden = !bar.hidden;
+    $("#et-edit").classList.toggle("on", !bar.hidden);
+    $("#pv-canvas").classList.toggle("edit-mode", !bar.hidden);
+  }
+
+  /* ── 데이터베이스 페인 ── */
+  const TABLES = [
+    { name: "예약", code: "bookings", cols: ["보호자", "연락처", "날짜·시간", "상태"], rows: "0행" },
+    { name: "산책러", code: "walkers", cols: ["이름", "평점", "산책 횟수", "소개"], rows: "시드 3행" },
+    { name: "후기", code: "reviews", cols: ["제목", "내용", "작성일"], rows: "시드 2행" },
+    { name: "회원", code: "members", cols: ["이메일", "이름", "가입일"], rows: "0행" },
+  ];
+  /* 테이블 행 데이터 (예시) */
+  const TBL_DATA = {
+    bookings: { head: ["보호자", "연락처", "희망 일시", "상태"], rows: [["김하늘", "010-1234-5678", "7/12 (일) 15:00", "확정"], ["이보람", "010-9876-5432", "7/13 (월) 11:00", "대기"]] },
+    walkers:  { head: ["이름", "평점", "산책 횟수"], rows: [["김산책", "4.9", "128"], ["박멍멍", "4.8", "96"], ["이초코", "5.0", "201"]] },
+    reviews:  { head: ["제목", "작성일"], rows: [["초코가 너무 행복해했어요 🐕", "7/02"], ["시간 약속 정확하고 사진도 보내주셨어요", "6/28"]] },
+    members:  { head: ["이메일", "이름", "가입일"], rows: [["hana@example.com", "김하늘", "7/10"]] },
+  };
+  /* DB 콘솔 상태: 사이드바에서 테이블 선택 → 오른쪽에 그리드 + 검색·필터 */
+  const DB_STATE = { live: false, view: null, q: "", chip: "전체" };
+  function tblRows(code) {
+    /* 출시 전에는 예약·회원 데이터가 아직 없음 */
+    if (!DB_STATE.live && (code === "bookings" || code === "members")) return [];
+    return TBL_DATA[code].rows;
+  }
+  function fillDbPane(dur) {
+    DB_STATE.live = false;
+    $("#db-pane").innerHTML = `
+      <div class="db-shell">
+        <div class="db-side" id="db-side">
+          <button class="db-item" id="db-dash-item" onclick="dbSelect('dash')" hidden>📊 대시보드</button>
+          <div class="db-side-t">테이블</div>
+        </div>
+        <div class="db-main" id="db-main">
+          <div class="pane-empty"><span class="pv-spin"></span><span>테이블을 만들고 있어요…</span></div>
+        </div>
+      </div>`;
+    TABLES.forEach((t, i) => later(() => {
+      $("#db-side").insertAdjacentHTML("beforeend",
+        `<button class="db-item" data-code="${t.code}" onclick="dbSelect('${t.code}')">${t.name}<span class="dbi-n" data-n>${tblRows(t.code).length}</span></button>`);
+      showDot("db");
+      if (i === 0) dbSelect(t.code);
+    }, (dur / TABLES.length) * i + 200));
+  }
+  function dbSelect(key) {
+    DB_STATE.view = key; DB_STATE.q = ""; DB_STATE.chip = "전체";
+    $$("#db-side .db-item").forEach(b => b.classList.toggle("on", (b.dataset.code || "dash") === key));
+    if (key === "dash") dbRenderDash();
+    else dbRenderTable(key);
+  }
+  function dbRenderTable(code) {
+    const t = TABLES.find(x => x.code === code);
+    const d = TBL_DATA[code];
+    const si = d.head.indexOf("상태");
+    const chips = si >= 0 ? ["전체", ...new Set(d.rows.map(r => r[si]))] : null;
+    $("#db-main").innerHTML = `
+      <div class="db-head"><b>${t.name}</b><small>${t.code}</small><span class="tbl-rows">${tblRows(code).length}행</span></div>
+      <div class="db-filter">
+        <input class="db-search" placeholder="🔍 검색" oninput="DB_STATE.q = this.value; dbRenderRows()">
+        ${chips ? `<div class="db-chips">${chips.map(c => `<button class="db-chip${c === "전체" ? " on" : ""}" onclick="dbChip(this)">${c}</button>`).join("")}</div>` : ""}
+        <span style="flex:1"></span>
+        <button class="btn lite" style="font-size:11.5px; padding:5px 12px;" onclick="extClick('행 추가')">＋ 행 추가</button>
+        <button class="btn" style="font-size:11.5px; padding:5px 12px;" onclick="extClick('CSV 내보내기')">내보내기</button>
+      </div>
+      <div class="tbl-data" id="db-rows"></div>`;
+    dbRenderRows();
+  }
+  function dbChip(btn) {
+    $$(".db-chip").forEach(b => b.classList.remove("on"));
+    btn.classList.add("on");
+    DB_STATE.chip = btn.textContent;
+    dbRenderRows();
+  }
+  function dbCell(v, isStatus) {
+    if (!isStatus) return `<td>${v}</td>`;
+    const cls = v === "확정" ? "tag ok" : v === "대기" ? "tag warn" : "tag";
+    return `<td><span class="${cls}">${v}</span></td>`;
+  }
+  function dbRenderRows() {
+    const d = TBL_DATA[DB_STATE.view];
+    const si = d.head.indexOf("상태");
+    const total = tblRows(DB_STATE.view);
+    let rows = total;
+    if (DB_STATE.chip !== "전체" && si >= 0) rows = rows.filter(r => r[si] === DB_STATE.chip);
+    if (DB_STATE.q) rows = rows.filter(r => r.join(" ").includes(DB_STATE.q));
+    $("#db-rows").innerHTML = rows.length
+      ? `<div class="td-scroll"><table>
+           <thead><tr>${d.head.map(h => `<th>${h}</th>`).join("")}</tr></thead>
+           <tbody>${rows.map(r => `<tr>${r.map((c, ci) => dbCell(c, ci === si)).join("")}</tr>`).join("")}</tbody>
+         </table></div>
+         <div class="db-foot"><span>전체 ${total.length}행 중 ${rows.length}행 표시</span><span>‹ 1 ›</span></div>`
+      : `<div class="pane-empty" style="padding:28px 16px"><span class="pe-ico">🗂</span><span>${total.length ? "조건에 맞는 데이터가 없어요" : "아직 데이터가 없어요 — 출시하면 쌓이기 시작해요"}</span></div>`;
+  }
+  function dbRenderDash() {
+    const days = [["금", 2], ["토", 4], ["일", 3], ["월", 1], ["화", 3], ["수", 4], ["오늘", 5]];
+    const max = Math.max(...days.map(x => x[1]));
+    $("#db-main").innerHTML = `
+      <div class="db-sec">대시보드 <span class="ex">예시 데이터</span></div>
+      <div class="stat-row">
+        <div class="stat"><span class="st-l">이번 주 예약</span><span class="st-v">8건</span><span class="st-d">▲ 2 지난주 대비</span></div>
+        <div class="stat"><span class="st-l">신규 회원</span><span class="st-v">23명</span><span class="st-d">▲ 5</span></div>
+        <div class="stat"><span class="st-l">새 후기</span><span class="st-v">5개</span><span class="st-d">▲ 1</span></div>
+      </div>
+      <div class="chart-card">
+        <span class="chart-t">최근 7일 예약</span>
+        <div class="bars">${days.map(([dy, v], i) => `
+          <div class="bar-col${i === days.length - 1 ? " hi" : ""}" title="${dy} · 예약 ${v}건">
+            <span class="b-val">${i === days.length - 1 ? v + "건" : ""}</span>
+            <span class="b" style="height:${Math.round(v / max * 100)}%"></span>
+            <span class="b-lab">${dy}</span>
+          </div>`).join("")}</div>
+      </div>`;
+  }
+  /* 출시 후: 대시보드 열림 + 행 수 갱신 */
+  function dbLive() {
+    DB_STATE.live = true;
+    const dash = $("#db-dash-item");
+    if (!dash) return;
+    dash.hidden = false;
+    $$("#db-side .db-item[data-code]").forEach(b => {
+      const n = b.querySelector("[data-n]");
+      if (n) n.textContent = tblRows(b.dataset.code).length;
+    });
+    dbSelect("dash");
+    showDot("db");
+  }
+  function dbReset() {
+    DB_STATE.live = false; DB_STATE.view = null; DB_STATE.q = ""; DB_STATE.chip = "전체";
+    $("#db-pane").innerHTML = '<div class="pane-empty"><span class="pe-ico">🗄</span><span>데이터 저장소가 아직 없어요.<br>\'데이터 저장소\' 단계에서 자동으로 만들어져요.</span></div>';
+    $("#dot-db").hidden = true;
+  }
+
+  /* ── 관리·설정: 사이드바 + 상세 패널 ── */
+  const ADM_STATE = { live: false, connecting: false, view: "auth", active: true };
+  const ADM_ITEMS = [
+    { sec: "서비스 기능" },
+    { key: "auth", ico: "👤", name: "회원 인증" },
+    { key: "recipient", ico: "📇", name: "연락처 저장소" },
+    { key: "board", ico: "📋", name: "게시판" },
+    { key: "db", ico: "🗄", name: "데이터베이스" },
+    { sec: "공개 · 운영" },
+    { key: "pub", ico: "🌐", name: "공개 상태" },
+    { key: "domain", ico: "🔗", name: "도메인" },
+    { key: "seo", ico: "🔍", name: "검색 노출" },
+    { key: "active", ico: "⏻", name: "서비스 상태" },
+    { sec: "연동" },
+    { key: "github", ico: "🐙", name: "GitHub" },
+  ];
+  function admBuild() {
+    $("#adm-side").innerHTML = ADM_ITEMS.map(it => it.sec
+      ? `<div class="db-side-t">${it.sec}</div>`
+      : `<button class="db-item${it.key === ADM_STATE.view ? " on" : ""}" data-key="${it.key}" onclick="admSelect('${it.key}')">${it.ico} ${it.name}</button>`
+    ).join("");
+  }
+  function admSelect(key) {
+    ADM_STATE.view = key;
+    $$("#adm-side .db-item").forEach(b => b.classList.toggle("on", b.dataset.key === key));
+    admRender();
+  }
+  function featState() {
+    return ADM_STATE.live ? '<span class="tag ok">✓ 사용 중</span>'
+      : ADM_STATE.connecting ? '<span class="tag run">연결 중…</span>'
+      : '<span class="tag">출시 때 자동 연결</span>';
+  }
+  function admHead(t, right) {
+    return `<div class="db-head"><b>${t}</b><span style="margin-left:auto">${right || ""}</span></div>`;
+  }
+  function admRow(t, d, right) {
+    return `<div class="adm-item"><div><div class="ai-t">${t}</div><div class="ai-d">${d}</div></div><span class="ai-state">${right || ""}</span></div>`;
+  }
+  function admBtn(label, onclick) {
+    return `<button class="btn lite" style="font-size:12px; padding:6px 14px;" onclick="${onclick || `extClick('${label}')`}">${label}</button>`;
+  }
+  function admRender() {
+    const url = ADM_STATE.live ? "https://mungmung-walk.aiapp.site" : "아직 주소가 없어요";
+    const st = featState();
+    const P = {
+      auth: admHead("회원 인증", st)
+        + admRow("가입 방식", "이메일 + 휴대폰 인증으로 가입해요", '<span class="tag">기본</span>')
+        + admRow("로그인 유지", "로그인 상태를 30일 동안 유지해요", '<span class="tag">30일</span>')
+        + admRow("소셜 로그인", "카카오 · 구글 계정으로 간편 가입", '<span class="tag">곧 제공</span>'),
+      recipient: admHead("연락처 저장소", st)
+        + admRow("예약 폼 자동 저장", "예약 신청이 들어오면 연락처가 자동으로 저장돼요", st)
+        + admRow("전화번호 검증", "010-0000-0000 형식만 저장돼요", '<span class="tag ok">✓ 켜짐</span>')
+        + admRow("수집 · 이용 동의 문구", "폼 아래에 표시되는 동의 문구를 다듬어요", admBtn("편집")),
+      board: admHead("게시판", st)
+        + admRow("공지사항", "관리자가 소식을 올리는 공간이에요", st)
+        + admRow("후기 게시판", "방문자가 후기를 남기는 공간이에요", st)
+        + admRow("댓글", "게시글에 댓글을 허용할지 정해요", '<span class="tag ok">✓ 허용</span>'),
+      db: admHead("데이터베이스", st)
+        + admRow("테이블", "예약 · 산책러 · 후기 · 회원", '<span class="tag">4개</span>')
+        + admRow("자동 백업", "매일 새벽에 자동으로 백업해요", '<span class="tag ok">✓ 매일</span>')
+        + admRow("데이터 보기", "수집된 데이터와 대시보드를 봐요", admBtn("열기", "switchRTab('db')")),
+      pub: admHead("공개 상태", ADM_STATE.live ? '<span class="tag ok">공개</span>' : '<span class="tag">비공개</span>')
+        + admRow("서비스 주소", `<span class="adm-url">${url}</span>`, "")
+        + admRow("검색엔진 노출", "네이버 · 구글 검색을 허용해요", '<span class="tag ok">✓ 허용</span>')
+        + admRow("공개 설정", "공개 범위와 접근 권한을 정해요", admBtn("설정")),
+      domain: admHead("도메인", "")
+        + admRow("기본 주소", `<span class="adm-url">${url}</span>`, ADM_STATE.live ? '<span class="tag ok">✓ 연결됨</span>' : '<span class="tag">출시 후</span>')
+        + admRow("내 도메인 연결", "예: mungmung.co.kr — 갖고 있는 주소를 연결해요", admBtn("연결")),
+      seo: admHead("검색 노출 (SEO)", "")
+        + admRow("검색 제목", "멍멍 산책 예약 — 우리 동네 반려견 산책", admBtn("편집"))
+        + admRow("검색 설명", "검증된 산책러와 함께하는 반려견 산책 예약 서비스", admBtn("편집"))
+        + `<div class="adm-item" style="flex-direction:column; align-items:flex-start; gap:2px;">
+            <div class="ai-d" style="margin-bottom:2px">검색 결과 미리보기</div>
+            <div class="ai-t" style="color:var(--accent)">멍멍 산책 예약 — 우리 동네 반려견 산책</div>
+            <div class="adm-url">${ADM_STATE.live ? "mungmung-walk.aiapp.site" : "(출시 후 주소가 생겨요)"}</div>
+            <div class="ai-d">검증된 산책러와 함께하는 반려견 산책 예약 서비스. 실시간 예약과 후기 확인까지.</div>
+          </div>`,
+      active: admHead("서비스 상태", ADM_STATE.active ? '<span class="tag ok">✓ 활성</span>' : '<span class="tag warn">비활성</span>')
+        + admRow("서비스 열기 / 내리기", "잠시 내려두면 방문자에게 준비 중 화면이 보여요", admBtn(ADM_STATE.active ? "내리기" : "다시 열기", "admToggleActive()"))
+        + admRow("점검 안내 문구", "내려둔 동안 보여줄 안내 문구예요", admBtn("편집")),
+      github: admHead("GitHub 연동", '<span class="tag">곧 제공</span>')
+        + admRow("코드 내보내기", "만들어진 코드를 내 GitHub 저장소로 보내요", '<span class="tag">곧 제공</span>')
+        + admRow("버전 관리", "수정할 때마다 변경 이력이 남아요", '<span class="tag">곧 제공</span>'),
+    };
+    $("#adm-main").innerHTML = P[ADM_STATE.view] || "";
+  }
+  function admToggleActive() {
+    ADM_STATE.active = !ADM_STATE.active;
+    admRender();
+  }
+  function admConnecting() { ADM_STATE.connecting = true; showDot("admin"); admRender(); }
+  function admLive() { ADM_STATE.connecting = false; ADM_STATE.live = true; showDot("admin"); admRender(); }
+  function admReset() {
+    ADM_STATE.live = false; ADM_STATE.connecting = false; ADM_STATE.active = true; ADM_STATE.view = "auth";
+    admBuild(); admRender();
+    $("#dot-admin").hidden = true;
+  }
+  admBuild(); admRender();
+
+  /* ── 패널 드래그 리사이즈 ── */
+  (function () {
+    const rs = $("#resizer");
+    const cols = $(".b2-cols");
+    if (!rs || !cols) return;
+    rs.addEventListener("pointerdown", e => {
+      e.preventDefault();
+      rs.classList.add("drag");
+      rs.setPointerCapture(e.pointerId);
+      const startX = e.clientX;
+      const startW = $(".feed").getBoundingClientRect().width;
+      const move = ev => {
+        const w = Math.min(640, Math.max(280, startW + (ev.clientX - startX)));
+        cols.style.setProperty("--feed-w", w + "px");
+      };
+      const up = () => {
+        rs.classList.remove("drag");
+        rs.removeEventListener("pointermove", move);
+        rs.removeEventListener("pointerup", up);
+      };
+      rs.addEventListener("pointermove", move);
+      rs.addEventListener("pointerup", up);
+    });
+  })();
+</script>
+</body>
+</html>
