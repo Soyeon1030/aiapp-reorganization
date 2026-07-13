@@ -168,6 +168,50 @@
   .micro { font-size: 12.5px; color: var(--warn); min-height: 20px; text-align: center; margin-top: -12px; }
 
   .sugg { display: flex; flex-wrap: wrap; justify-content: center; gap: 8px; max-width: 700px; margin-top: -6px; margin-bottom: 8vh; }
+
+  /* 쇼케이스 — 이렇게 만들어졌어요 */
+  .showcase { width: 100%; max-width: 980px; display: flex; flex-direction: column; gap: 10px; margin-top: -4vh; }
+  .sc-h2 { font-size: 13px; font-weight: 700; color: var(--muted); }
+  .showcase-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 14px; }
+  .case {
+    text-align: left;
+    background: var(--surface); border: 1px solid var(--line);
+    border-radius: 14px; padding: 12px;
+    display: flex; flex-direction: column; gap: 8px;
+    box-shadow: var(--shadow-sm);
+    cursor: pointer;
+    transition: border-color .15s, box-shadow .15s;
+  }
+  .case:hover { border-color: var(--accent); box-shadow: 0 0 0 3px var(--accent-soft); }
+  .case-thumb {
+    height: 92px; border-radius: 9px;
+    background: linear-gradient(135deg, var(--c1), color-mix(in srgb, var(--c1) 55%, var(--c2)));
+    border: 1px solid var(--line);
+    display: flex; flex-direction: column; gap: 5px;
+    padding: 9px 10px;
+  }
+  .case-thumb i { display: block; border-radius: 4px; background: var(--c2); opacity: .8; }
+  .ct-nav { height: 7px; width: 55%; }
+  .ct-hero { height: 26px; width: 85%; opacity: .5 !important; }
+  .ct-row { height: 12px; width: 70%; }
+  .case-q { font-size: 12.5px; font-weight: 700; color: var(--ink); }
+  .case-m { font-size: 11px; color: var(--muted); }
+
+  /* 설계안 화면 체크박스 */
+  .chk-li { cursor: pointer; }
+  .chk-li::before { content: none; }
+  .chk-li input { accent-color: var(--accent); margin-top: 2px; flex-shrink: 0; }
+  .chk-li:has(input:not(:checked)) { opacity: .45; text-decoration: line-through; }
+
+  /* 생성 중 표시 (프로토 내비) */
+  .proto-nav button.running::after {
+    content: "";
+    display: inline-block;
+    width: 6px; height: 6px; border-radius: 50%;
+    background: #5C88FF;
+    margin-left: 6px;
+    animation: blink 1.2s infinite;
+  }
   .sg {
     border: 1px solid var(--line);
     background: var(--surface);
@@ -649,6 +693,67 @@
   .pp-list .li span { font-size: 9.5px; opacity: .65; }
   .pp .wired { box-shadow: 0 0 0 2px var(--accent); border-radius: 8px; }
 
+  /* ── 알림 (벨 · 패널 · 토스트) ── */
+  .s-ic { position: relative; }
+  .bell-badge {
+    position: absolute; top: 3px; right: 3px;
+    min-width: 14px; height: 14px; border-radius: 999px;
+    background: #E4574F; color: #fff;
+    font-size: 9px; font-weight: 700;
+    display: flex; align-items: center; justify-content: center;
+    padding: 0 3px;
+  }
+  .notif-panel {
+    position: fixed; left: 64px; bottom: 20px;
+    width: 300px;
+    background: var(--surface); border: 1px solid var(--line);
+    border-radius: 14px; box-shadow: var(--shadow-lg);
+    z-index: 25;
+    display: flex; flex-direction: column; overflow: hidden;
+    animation: rise .25s ease both;
+  }
+  .np-head { padding: 12px 16px; font-weight: 800; font-size: 13px; border-bottom: 1px solid var(--line); }
+  .np-list { max-height: 260px; overflow-y: auto; }
+  .np-item { padding: 11px 16px; border-bottom: 1px solid var(--line); display: flex; flex-direction: column; gap: 2px; cursor: pointer; }
+  .np-item:last-child { border-bottom: none; }
+  .np-item:hover { background: var(--surface-2); }
+  .np-item.unread { background: var(--accent-soft); }
+  .np-item .ni-t { font-size: 12.5px; font-weight: 700; display: flex; gap: 6px; align-items: center; }
+  .np-item .ni-d { font-size: 11.5px; color: var(--muted); }
+  .np-empty { padding: 22px; text-align: center; color: var(--muted); font-size: 12px; }
+  .np-foot { padding: 9px 16px; font-size: 10.5px; color: var(--muted); background: var(--surface-2); border-top: 1px solid var(--line); }
+  .toast {
+    position: fixed; right: 22px; bottom: 78px;
+    background: #1E2531; color: #fff;
+    border-radius: 12px; padding: 12px 16px;
+    box-shadow: var(--shadow-lg);
+    display: flex; gap: 10px; align-items: center;
+    z-index: 30; font-size: 12.5px;
+    animation: rise .3s ease both;
+    max-width: 320px;
+  }
+  .toast .tst-act { color: #8FB0FF; font-weight: 700; cursor: pointer; border: none; background: none; font-size: 12px; flex-shrink: 0; }
+
+  /* ── 버전 히스토리 ── */
+  .pvw-bar { position: relative; }
+  .ver-panel {
+    position: absolute; top: calc(100% + 6px); right: 14px;
+    width: 280px;
+    background: var(--surface); border: 1px solid var(--line);
+    border-radius: 13px; box-shadow: var(--shadow-lg);
+    z-index: 20; overflow: hidden;
+    animation: rise .25s ease both;
+  }
+  .vp-head { padding: 10px 14px; font-weight: 800; font-size: 12.5px; border-bottom: 1px solid var(--line); }
+  .vp-item { padding: 10px 14px; display: flex; align-items: center; gap: 8px; border-bottom: 1px solid var(--line); font-size: 12px; }
+  .vp-item:last-child { border-bottom: none; }
+  .vp-item b { font-size: 12.5px; }
+  .vp-item .vp-time { color: var(--muted); font-size: 10.5px; font-family: var(--mono); }
+  .vp-item .sp { flex: 1; }
+  .vp-cur { font-size: 10px; color: var(--ok); font-weight: 700; white-space: nowrap; }
+  .vp-btn { border: 1px solid var(--line-strong); background: var(--surface); border-radius: 7px; padding: 3px 10px; font-size: 11px; cursor: pointer; white-space: nowrap; }
+  .vp-btn:hover { border-color: var(--accent); color: var(--accent); }
+
   /* ── 플로팅 헬프 버튼 ── */
   .help-fab {
     position: fixed; right: 22px; bottom: 22px;
@@ -721,6 +826,8 @@
 <symbol id="ph-power" viewBox="0 0 256 256"><path d="M120,128V48a8,8,0,0,1,16,0v80a8,8,0,0,1-16,0Zm60.37-78.7a8,8,0,0,0-8.74,13.4C194.74,77.77,208,101.57,208,128a80,80,0,0,1-160,0c0-26.43,13.26-50.23,36.37-65.3a8,8,0,0,0-8.74-13.4C47.9,67.38,32,96.06,32,128a96,96,0,0,0,192,0C224,96.06,208.1,67.38,180.37,49.3Z"/></symbol>
 <symbol id="ph-github-logo" viewBox="0 0 256 256"><path d="M208.31,75.68A59.78,59.78,0,0,0,202.93,28,8,8,0,0,0,196,24a59.75,59.75,0,0,0-48,24H124A59.75,59.75,0,0,0,76,24a8,8,0,0,0-6.93,4,59.78,59.78,0,0,0-5.38,47.68A58.14,58.14,0,0,0,56,104v8a56.06,56.06,0,0,0,48.44,55.47A39.8,39.8,0,0,0,96,192v8H72a24,24,0,0,1-24-24A40,40,0,0,0,8,136a8,8,0,0,0,0,16,24,24,0,0,1,24,24,40,40,0,0,0,40,40H96v16a8,8,0,0,0,16,0V192a24,24,0,0,1,48,0v40a8,8,0,0,0,16,0V192a39.8,39.8,0,0,0-8.44-24.53A56.06,56.06,0,0,0,216,112v-8A58.14,58.14,0,0,0,208.31,75.68ZM200,112a40,40,0,0,1-40,40H112a40,40,0,0,1-40-40v-8a41.74,41.74,0,0,1,6.9-22.48A8,8,0,0,0,80,73.83a43.81,43.81,0,0,1,.79-33.58,43.88,43.88,0,0,1,32.32,20.06A8,8,0,0,0,119.82,64h32.35a8,8,0,0,0,6.74-3.69,43.87,43.87,0,0,1,32.32-20.06A43.81,43.81,0,0,1,192,73.83a8.09,8.09,0,0,0,1,7.65A41.72,41.72,0,0,1,200,104Z"/></symbol>
 <symbol id="ph-headset" viewBox="0 0 256 256"><path d="M201.89,54.66A103.43,103.43,0,0,0,128.79,24H128A104,104,0,0,0,24,128v56a24,24,0,0,0,24,24H64a24,24,0,0,0,24-24V144a24,24,0,0,0-24-24H40.36A88.12,88.12,0,0,1,190.54,65.93,87.39,87.39,0,0,1,215.65,120H192a24,24,0,0,0-24,24v40a24,24,0,0,0,24,24h24a24,24,0,0,1-24,24H136a8,8,0,0,0,0,16h56a40,40,0,0,0,40-40V128A103.41,103.41,0,0,0,201.89,54.66ZM64,136a8,8,0,0,1,8,8v40a8,8,0,0,1-8,8H48a8,8,0,0,1-8-8V136Zm128,56a8,8,0,0,1-8-8V144a8,8,0,0,1,8-8h24v56Z"/></symbol>
+<symbol id="ph-bell" viewBox="0 0 256 256"><path d="M221.8,175.94C216.25,166.38,208,139.33,208,104a80,80,0,1,0-160,0c0,35.34-8.26,62.38-13.81,71.94A16,16,0,0,0,48,200H88.81a40,40,0,0,0,78.38,0H208a16,16,0,0,0,13.8-24.06ZM128,216a24,24,0,0,1-22.62-16h45.24A24,24,0,0,1,128,216ZM48,184c7.7-13.24,16-43.92,16-80a64,64,0,1,1,128,0c0,36.05,8.28,66.73,16,80Z"/></symbol>
+<symbol id="ph-clock-counter-clockwise" viewBox="0 0 256 256"><path d="M136,80v43.47l36.12,21.67a8,8,0,0,1-8.24,13.72l-40-24A8,8,0,0,1,120,128V80a8,8,0,0,1,16,0Zm-8-48A95.44,95.44,0,0,0,60.08,60.15C52.81,67.51,46.35,74.59,40,82V64a8,8,0,0,0-16,0v40a8,8,0,0,0,8,8H72a8,8,0,0,0,0-16H49c7.15-8.42,14.27-16.35,22.39-24.57a80,80,0,1,1,1.66,114.75,8,8,0,1,0-11,11.64A96,96,0,1,0,128,32Z"/></symbol>
 </svg>
 <div class="app">
   <!-- 사이드바 -->
@@ -732,6 +839,10 @@
     <button class="s-ic" title="가이드"><svg class="ph"><use href="#ph-book-open"/></svg></button>
     <button class="s-ic" title="결제"><svg class="ph"><use href="#ph-credit-card"/></svg></button>
     <span class="sp"></span>
+    <button class="s-ic" id="bell-btn" onclick="toggleNotif()" title="알림">
+      <svg class="ph"><use href="#ph-bell"/></svg>
+      <i class="bell-badge" id="bell-badge" hidden></i>
+    </button>
     <span class="s-avatar">엠</span>
   </aside>
 
@@ -764,6 +875,27 @@
           <button class="sg" onclick="useSugg(this)">펫 라이프스타일</button>
           <button class="sg" onclick="useSugg(this)">패션 룩북</button>
           <button class="sg" onclick="useSugg(this)">병원·클리닉</button>
+        </div>
+
+        <div class="showcase" aria-label="생성 사례">
+          <span class="sc-h2">이렇게 만들어졌어요</span>
+          <div class="showcase-grid">
+            <button class="case" onclick="useCase(this)" data-idea="동네 필라테스 스튜디오 클래스를 소개하고 수업 예약을 받을 수 있는 서비스">
+              <span class="case-thumb" style="--c1:#EDE7F6; --c2:#7E57C2"><i class="ct-nav"></i><i class="ct-hero"></i><i class="ct-row"></i></span>
+              <span class="case-q">"동네 필라테스 스튜디오 예약 서비스"</span>
+              <span class="case-m">화면 5개 · 2분 10초 만에 출시</span>
+            </button>
+            <button class="case" onclick="useCase(this)" data-idea="핸드메이드 캔들을 소개하고 주문을 받는 판매 브랜드 서비스">
+              <span class="case-thumb" style="--c1:#FFF3E0; --c2:#FF8A65"><i class="ct-nav"></i><i class="ct-hero"></i><i class="ct-row"></i></span>
+              <span class="case-q">"핸드메이드 캔들 판매 브랜드"</span>
+              <span class="case-m">화면 6개 · 2분 40초 만에 출시</span>
+            </button>
+            <button class="case" onclick="useCase(this)" data-idea="동아리 신입 회원을 모집하고 활동 사진을 갤러리로 보여주는 서비스">
+              <span class="case-thumb" style="--c1:#E3F2FD; --c2:#42A5F5"><i class="ct-nav"></i><i class="ct-hero"></i><i class="ct-row"></i></span>
+              <span class="case-q">"동아리 회원 모집 + 활동 갤러리"</span>
+              <span class="case-m">화면 4개 · 1분 50초 만에 출시</span>
+            </button>
+          </div>
         </div>
 
         <div class="proj">
@@ -864,13 +996,13 @@
                   </div>
                   <div class="bp-body">
                     <div class="bp-step">
-                      <div class="bp-sec">기획안 검토</div>
-                      <div class="bp-li">히어로 섹션: 서비스 소개와 [지금 예약하기] 버튼</div>
-                      <div class="bp-li">산책러 추천 카드: 평점 · 산책 횟수 표시</div>
-                      <div class="bp-li">예약 폼: 이름 · 연락처 · 희망 날짜 입력 — 제출하면 연락처가 자동 저장돼요</div>
-                      <div class="bp-li">후기 게시판: 목록 · 상세 보기</div>
-                      <div class="bp-li">마이페이지: 다가오는 예약 · 지난 산책</div>
-                      <div class="bp-li">로그인 · 회원가입</div>
+                      <div class="bp-sec">기획안 검토 — 필요 없는 건 체크를 풀어주세요</div>
+                      <label class="bp-li chk-li"><input type="checkbox" checked> 히어로 섹션: 서비스 소개와 [지금 예약하기] 버튼</label>
+                      <label class="bp-li chk-li"><input type="checkbox" checked> 산책러 추천 카드: 평점 · 산책 횟수 표시</label>
+                      <label class="bp-li chk-li"><input type="checkbox" checked> 예약 폼: 이름 · 연락처 · 희망 날짜 입력 — 제출하면 연락처가 자동 저장돼요</label>
+                      <label class="bp-li chk-li"><input type="checkbox" checked> 후기 게시판: 목록 · 상세 보기</label>
+                      <label class="bp-li chk-li"><input type="checkbox" checked> 마이페이지: 다가오는 예약 · 지난 산책</label>
+                      <label class="bp-li chk-li"><input type="checkbox" checked> 로그인 · 회원가입</label>
                       <div class="bp-add">＋ 기능 추가</div>
                     </div>
                     <div class="bp-step" hidden>
@@ -927,7 +1059,9 @@
                   <div class="edit-tools">
                     <button class="et-btn" id="et-edit" onclick="toggleEditMode()"><svg class="ph"><use href="#ph-pencil-simple"/></svg> 편집</button>
                     <button class="et-btn" onclick="extClick('AI 요청')"><svg class="ph"><use href="#ph-sparkle"/></svg> AI 요청</button>
+                    <button class="et-btn" id="ver-btn" onclick="toggleVerPanel()"><svg class="ph"><use href="#ph-clock-counter-clockwise"/></svg> 버전</button>
                   </div>
+                  <div class="ver-panel" id="ver-panel" hidden></div>
                 </div>
                 <!-- 에디터 자리 (편집 모드 시 표시) -->
                 <div class="edit-bar" id="edit-bar" hidden>
@@ -1006,6 +1140,16 @@
   <svg class="ph" style="width:20px;height:20px"><use href="#ph-headset"/></svg>
 </button>
 
+<!-- 알림 패널 -->
+<div class="notif-panel" id="notif-panel" hidden>
+  <div class="np-head">알림</div>
+  <div class="np-list" id="notif-list"><div class="np-empty">알림이 없어요</div></div>
+  <div class="np-foot">문자 · 알림톡으로 받기는 곧 제공돼요</div>
+</div>
+
+<!-- 토스트 -->
+<div class="toast" id="toast" hidden></div>
+
 <!-- 프로토타입 데모 내비 -->
 <nav class="proto-nav" aria-label="프로토타입 화면 이동">
   <span class="pn-label">PROTO</span>
@@ -1076,6 +1220,14 @@
     t.classList.toggle("on", confirmMode);
     t.setAttribute("aria-pressed", String(confirmMode));
   }
+  /* 쇼케이스 카드 → 문장 채우기 */
+  function useCase(btn) {
+    ideaEl.value = btn.dataset.idea;
+    validateIdea();
+    ideaEl.focus();
+    ideaEl.scrollIntoView({ behavior: "smooth", block: "center" });
+  }
+
   function fakeAttach(btn) { btn.innerHTML = '<svg class="ph"><use href="#ph-paperclip"/></svg> 참고자료.pdf ✓'; btn.classList.add("on"); }
   function fakeLink(btn) { btn.innerHTML = '<svg class="ph"><use href="#ph-link"/></svg> 링크 1개 ✓'; btn.classList.add("on"); }
 
@@ -1083,6 +1235,7 @@
     if (!validateIdea()) { ideaEl.focus(); return; }
     resetPipeline();
     showScreen("B2");
+    $("#pn-b2").classList.add("running");
     runPipeline();
   }
 
@@ -1103,6 +1256,7 @@
       ["card", 2500] ],
     [ ["step", 200,  "화면 만들기"],
       ["line", 400,  "선택하신 스타일로 홈 화면부터 그리고 있어요. 오른쪽 미리보기에서 실시간으로 볼 수 있어요."],
+      ["line", 1800, "생성은 서버에서 계속 진행돼요 — 이 화면을 벗어나도 끝나면 알림으로 알려드릴게요 🔔"],
       ["chk",  3600, "홈 · 예약 · 후기 화면 완성"],
       ["chk",  6200, "화면 6개 완성 — 페이지 연결까지 끝났어요"] ],
     [ ["step", 200,  "데이터 저장소"],
@@ -1266,7 +1420,8 @@
   /* 확인하면 AI가 다음 단계를 '준비해서' 보여줌 — 순차 생성 흐름 */
   function bpConfirmStep() {
     if (bpStepIdx === 0) {
-      addChk("기획안 확인 (1/3)");
+      const n = $$(".chk-li input:checked").length;
+      addChk(`기획안 확인 — 구성 ${n}개 (1/3)`);
       bpPrepareNext("어울리는 스타일 후보를 고르고 있어요…");
     } else if (bpStepIdx === 1) {
       addChk(`스타일 확인 — ${selectedTplName()} (2/3)`);
@@ -1314,6 +1469,7 @@
     if (pipelineDone || cancelledRun) return;
     cancelledRun = true;
     timers.forEach(clearTimeout); timers = [];
+    $("#pn-b2").classList.remove("running");
     pvBadge("취소됨", "warn");
     bpHide();
     removeWait();
@@ -1331,6 +1487,11 @@
     pipelineDone = true;
     $("#cr-used").textContent = "388";
     $("#cancel-btn").hidden = true;
+    $("#pn-b2").classList.remove("running");
+    /* 다른 화면을 보고 있으면 완료 알림 */
+    if (!$("#scr-b2").classList.contains("active")) {
+      pushNotif("서비스가 완성됐어요 🎉", "멍멍 산책 예약 · 출시 완료", null);
+    }
     setTyping(false);
     pvLive();
     admLive();
@@ -1341,6 +1502,9 @@
       enableLiveInput();
     }, 1300);
     later(() => addNextSuggestions(), 1900);
+    /* v1 저장 + 잠시 후 새 예약 도착 시뮬레이션 */
+    later(() => { saveVersion("첫 출시"); pvApplyVersion(1); }, 700);
+    later(() => arriveBooking(), 9000);
   }
 
   /* 완료 후 다음 행동 추천 */
@@ -1361,8 +1525,7 @@
     chatInsert(el);
   }
   function nsClick(btn) {
-    addUser(btn.textContent);
-    later(() => addLine("네, 반영해볼게요! <span style='color:var(--muted)'>(프로토타입에서는 시연용 응답이에요 🙂)</span>"), 700);
+    applyEditRequest(btn.textContent);
   }
 
   function addReport() {
@@ -1398,8 +1561,131 @@
     const v = inp.value.trim();
     if (!v) return;
     inp.value = "";
-    addUser(v);
-    later(() => addLine("네, 반영해볼게요! <span style='color:var(--muted)'>(프로토타입에서는 시연용 응답이에요 🙂)</span>"), 700);
+    applyEditRequest(v);
+  }
+  /* 수정 요청 → 반영 + 버전 저장 */
+  function applyEditRequest(text) {
+    addUser(text);
+    later(() => {
+      const n = saveVersion(text.length > 14 ? text.slice(0, 14) + "…" : text);
+      pvApplyVersion(n);
+      addLine(`반영했어요! 화면에 적용하고 <b>v${n}</b>으로 저장했어요. 마음에 안 들면 미리보기의 <b>버전</b>에서 언제든 되돌릴 수 있어요.`);
+    }, 800);
+  }
+
+  /* ── 버전 히스토리 (화면 + 대화 기록 동시 복구) ── */
+  let VERSIONS = [];
+  const VER_COLORS = ["#D98E4A", "#5F8D4E", "#4A7BD9", "#B85CA6", "#C2703E"];
+  function nowTime() {
+    return new Date().toLocaleTimeString("ko-KR", { hour: "numeric", minute: "2-digit" });
+  }
+  function lastChatNode() {
+    const c = $("#chat-inner");
+    let n = c.lastElementChild;
+    while (n && n.id === "typing") n = n.previousElementSibling;
+    return n;
+  }
+  function saveVersion(label) {
+    VERSIONS.push({ label, time: nowTime(), mark: lastChatNode() });
+    verRender();
+    return VERSIONS.length;
+  }
+  function pvApplyVersion(n) {
+    $("#pv-canvas").style.setProperty("--pet-accent", VER_COLORS[(n - 1) % VER_COLORS.length]);
+  }
+  function toggleVerPanel() {
+    const p = $("#ver-panel");
+    p.hidden = !p.hidden;
+    if (!p.hidden) verRender();
+  }
+  function verRender() {
+    const p = $("#ver-panel");
+    if (!VERSIONS.length) {
+      p.innerHTML = '<div class="vp-head">버전 기록</div><div class="np-empty">아직 저장된 버전이 없어요 — 출시하면 v1이 생겨요</div>';
+      return;
+    }
+    p.innerHTML = '<div class="vp-head">버전 기록</div>' +
+      VERSIONS.map((v, i) => `
+        <div class="vp-item">
+          <div><b>v${i + 1} · ${v.label}</b><div class="vp-time">${v.time}</div></div>
+          <span class="sp"></span>
+          ${i === VERSIONS.length - 1
+            ? '<span class="vp-cur">현재</span>'
+            : `<button class="vp-btn" onclick="restoreVersion(${i})">되돌리기</button>`}
+        </div>`).reverse().join("");
+  }
+  function restoreVersion(i) {
+    const v = VERSIONS[i];
+    /* 대화 기록 복구: 해당 버전 이후 항목 제거 */
+    if (v.mark) {
+      let n = v.mark.nextSibling;
+      while (n) {
+        const nx = n.nextSibling;
+        if (n.id !== "typing") n.remove();
+        n = nx;
+      }
+    }
+    VERSIONS = VERSIONS.slice(0, i + 1);
+    pvApplyVersion(i + 1);
+    addLine(`⏪ <b>v${i + 1} · ${v.label}</b> 시점으로 되돌렸어요. 화면과 대화 기록을 함께 복구했어요 — 여기서 다시 이어가면 돼요.`);
+    verRender();
+    $("#ver-panel").hidden = true;
+  }
+
+  /* ── 알림 (새 예약 등) ── */
+  let NOTIFS = [];
+  let BOOKINGS_BASE = null;   /* TBL_DATA 선언 후 스크립트 하단에서 초기화 */
+  function pushNotif(title, desc, action) {
+    NOTIFS.unshift({ title, desc, action, read: false });
+    renderNotifs();
+    updateBellBadge();
+    const t = $("#toast");
+    t.innerHTML = `<svg class="ph" style="color:#8FB0FF; width:16px; height:16px"><use href="#ph-bell"/></svg>
+      <div><b style="font-size:12.5px">${title}</b><div style="font-size:11px; opacity:.7">${desc}</div></div>
+      <button class="tst-act" onclick="notifAction(0)">보기</button>`;
+    t.hidden = false;
+    later(() => { t.hidden = true; }, 5000);
+  }
+  function updateBellBadge() {
+    const n = NOTIFS.filter(x => !x.read).length;
+    const b = $("#bell-badge");
+    b.hidden = n === 0;
+    b.textContent = n;
+  }
+  function toggleNotif() {
+    const p = $("#notif-panel");
+    p.hidden = !p.hidden;
+    if (!p.hidden) renderNotifs();
+  }
+  function renderNotifs() {
+    $("#notif-list").innerHTML = NOTIFS.length
+      ? NOTIFS.map((x, i) => `
+          <div class="np-item${x.read ? "" : " unread"}" onclick="notifAction(${i})">
+            <span class="ni-t"><svg class="ph"><use href="#ph-bell"/></svg>${x.title}</span>
+            <span class="ni-d">${x.desc}</span>
+          </div>`).join("")
+      : '<div class="np-empty">알림이 없어요</div>';
+  }
+  function notifAction(i) {
+    const x = NOTIFS[i];
+    if (!x) return;
+    x.read = true;
+    updateBellBadge();
+    renderNotifs();
+    $("#notif-panel").hidden = true;
+    $("#toast").hidden = true;
+    showScreen("B2");
+    if (x.action) x.action();
+  }
+  /* 출시 후 새 예약 도착 시뮬레이션 */
+  function arriveBooking() {
+    if (!pipelineDone) return;
+    TBL_DATA.bookings.rows.unshift(["박서연", "010-4477-8899", "7/14 (화) 10:00", "대기"]);
+    const b = $('#db-side .db-item[data-code="bookings"] [data-n]');
+    if (b) b.textContent = tblRows("bookings").length;
+    if (DB_STATE.view === "bookings") dbRenderTable("bookings");
+    showDot("db");
+    pushNotif("새 예약이 들어왔어요", "박서연 · 7/14 (화) 10:00 · 대기", () => { switchRTab("db"); dbSelect("bookings"); });
   }
 
   function resetPipeline() {
@@ -1426,6 +1712,17 @@
     dbReset();
     admReset();
     switchRTab("preview");
+    /* 버전·알림 초기화 */
+    VERSIONS = [];
+    $("#ver-panel").hidden = true;
+    $("#pv-canvas").style.removeProperty("--pet-accent");
+    NOTIFS = [];
+    updateBellBadge();
+    $("#notif-panel").hidden = true;
+    $("#toast").hidden = true;
+    if (BOOKINGS_BASE) TBL_DATA.bookings.rows = BOOKINGS_BASE.map(r => [...r]);
+    $("#pn-b2").classList.remove("running");
+    $$(".chk-li input").forEach(c => { c.checked = true; });
   }
   function resetAll() { resetPipeline(); showScreen("B1"); }
 
@@ -1796,6 +2093,7 @@
     $("#dot-admin").hidden = true;
   }
   admBuild(); admRender();
+  BOOKINGS_BASE = TBL_DATA.bookings.rows.map(r => [...r]);   /* 예약 시드 스냅샷 (리셋용) */
 
   /* ── 패널 드래그 리사이즈 ── */
   (function () {
