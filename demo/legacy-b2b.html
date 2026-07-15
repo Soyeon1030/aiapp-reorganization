@@ -291,8 +291,8 @@
 </center>
 
 <!-- ═══ 데모 연출 모듈 (index.html에서 postMessage로 조종) ═══ -->
-<div id="demo-spot" style="position:fixed; display:none; z-index:9998; border:3px solid #FF3B30; border-radius:10px; box-shadow:0 0 0 9999px rgba(11,23,48,.62); transition:all .45s ease; pointer-events:none;"></div>
-<div id="demo-note" style="position:fixed; display:none; z-index:9999; max-width:400px; background:#FFFFFF; border-radius:14px; padding:16px 20px; font-family:Pretendard,'Malgun Gothic',sans-serif; box-shadow:0 18px 50px rgba(0,0,0,.45); pointer-events:none;">
+<div id="demo-spot" style="position:fixed; opacity:0; z-index:9998; border:3px solid #FF3B30; border-radius:10px; box-shadow:0 0 0 9999px rgba(11,23,48,.62); transition:opacity .35s ease; pointer-events:none;"></div>
+<div id="demo-note" style="position:fixed; opacity:0; z-index:9999; max-width:400px; background:#FFFFFF; border-radius:14px; padding:16px 20px; font-family:Pretendard,'Malgun Gothic',sans-serif; box-shadow:0 18px 50px rgba(0,0,0,.45); transition:opacity .35s ease; pointer-events:none;">
   <div id="demo-note-t" style="font-size:17px; font-weight:800; color:#1E2635; line-height:1.4;"></div>
   <div id="demo-note-d" style="font-size:14px; color:#4A5468; margin-top:5px; line-height:1.55;"></div>
 </div>
@@ -300,17 +300,35 @@
 (function () {
   var spot = document.getElementById("demo-spot");
   var note = document.getElementById("demo-note");
-  var t;
+  var settleTimer = null;
+
+  function hideOverlay() {
+    spot.style.opacity = "0";
+    note.style.opacity = "0";
+  }
+
+  /* 스크롤이 완전히 멈춘 뒤 콜백 (90ms 간격 위치 비교, 최대 1.6s 대기) */
+  function waitScrollSettle(cb) {
+    clearTimeout(settleTimer);
+    var last = -1, waited = 0;
+    (function check() {
+      if (scrollY === last || waited > 1600) { cb(); return; }
+      last = scrollY;
+      waited += 90;
+      settleTimer = setTimeout(check, 90);
+    })();
+  }
+
   window.addEventListener("message", function (e) {
     var m = e.data || {};
     if (m.act === "focus") {
       var el = document.querySelector(m.sel);
       if (!el) return;
+      /* ① 이전 스포트라이트를 먼저 끄고 → ② 스크롤 → ③ 멈추면 제자리에서 페이드인 */
+      hideOverlay();
       el.scrollIntoView({ behavior: "smooth", block: "center" });
-      clearTimeout(t);
-      t = setTimeout(function () {
+      waitScrollSettle(function () {
         var r = el.getBoundingClientRect();
-        spot.style.display = "block";
         spot.style.left = (r.left - 8) + "px";
         spot.style.top = (r.top - 8) + "px";
         spot.style.width = (r.width + 16) + "px";
@@ -318,13 +336,14 @@
         spot.style.borderColor = m.tone === "warn" ? "#FF9500" : "#FF3B30";
         document.getElementById("demo-note-t").innerHTML = m.title || "";
         document.getElementById("demo-note-d").innerHTML = m.desc || "";
-        note.style.display = "block";
-        note.style.left = Math.max(16, Math.min(innerWidth - 390, r.left)) + "px";
-        note.style.top = (r.bottom + 120 < innerHeight ? r.bottom + 16 : Math.max(16, r.top - 108)) + "px";
-      }, 520);
+        note.style.left = Math.max(16, Math.min(innerWidth - 430, r.left)) + "px";
+        note.style.top = (r.bottom + 130 < innerHeight ? r.bottom + 16 : Math.max(16, r.top - 118)) + "px";
+        spot.style.opacity = "1";
+        note.style.opacity = "1";
+      });
     }
-    if (m.act === "clear") { clearTimeout(t); spot.style.display = "none"; note.style.display = "none"; }
-    if (m.act === "top") { scrollTo({ top: 0, behavior: "smooth" }); }
+    if (m.act === "clear") { clearTimeout(settleTimer); hideOverlay(); }
+    if (m.act === "top") { clearTimeout(settleTimer); hideOverlay(); scrollTo({ top: 0, behavior: "smooth" }); }
   });
 })();
 </script>

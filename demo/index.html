@@ -261,40 +261,58 @@
   .ib-foot { padding: 11px 20px; font-size: 11.5px; color: var(--muted); background: #F6F8FB; border-top: 1px solid var(--line); }
 
   /* ══════ 링크 입력 컴포저 ══════ */
-  #dim { position: fixed; inset: 0; z-index: 6; background: rgba(11,23,48,.5); opacity: 0; pointer-events: none; transition: opacity .5s; }
+  #dim { position: fixed; inset: 0; z-index: 6; background: rgba(6,12,26,.68); opacity: 0; pointer-events: none; transition: opacity .5s; }
   #dim.show { opacity: 1; }
   #composer {
-    position: fixed; left: 50%; top: 44%; transform: translate(-50%, -50%) scale(.92);
+    position: fixed; left: 50%; top: 42%; transform: translate(-50%, -50%) scale(.92);
     z-index: 7;
-    width: min(680px, 88vw);
-    background: #fff; border-radius: 22px;
-    box-shadow: 0 30px 90px rgba(11,23,48,.5);
-    padding: 22px 24px 18px;
+    width: min(780px, 92vw);
+    background: #fff; border-radius: 26px;
+    /* 파란 글로우 링으로 화면의 주인공임을 표시 */
+    box-shadow:
+      0 0 0 1px rgba(59,110,245,.3),
+      0 0 0 10px rgba(59,110,245,.14),
+      0 0 90px rgba(59,110,245,.35),
+      0 40px 110px rgba(6,12,26,.65);
+    padding: 26px 30px 22px;
     opacity: 0; pointer-events: none;
-    transition: opacity .4s, transform .4s;
+    transition: opacity .4s, transform .45s cubic-bezier(.3,1.2,.4,1);
   }
   #composer.show { opacity: 1; transform: translate(-50%, -50%) scale(1); }
-  #composer .c-brand { display: flex; align-items: center; gap: 8px; font-size: 13px; font-weight: 800; color: var(--ink); margin-bottom: 12px; }
-  #composer .c-brand i { width: 24px; height: 24px; border-radius: 7px; background: linear-gradient(135deg, #4C7DFF, #2A56D8); color: #fff; font-style: normal; font-size: 12px; display: flex; align-items: center; justify-content: center; }
-  #composer .c-row { display: flex; align-items: center; gap: 14px; }
-  #composer .c-text { flex: 1; font-size: 17px; color: var(--ink); min-height: 27px; }
-  #composer .c-text::after { content: "▍"; color: var(--accent); animation: caret .8s step-start infinite; }
+  #composer .c-brand { display: flex; align-items: center; gap: 9px; font-size: 14.5px; font-weight: 800; color: var(--ink); margin-bottom: 14px; }
+  #composer .c-brand i { width: 28px; height: 28px; border-radius: 8px; background: linear-gradient(135deg, #4C7DFF, #2A56D8); color: #fff; font-style: normal; font-size: 14px; display: flex; align-items: center; justify-content: center; }
+  #composer .c-row { display: flex; align-items: center; gap: 16px; }
+  #composer .c-text { flex: 1; font-size: 21px; font-weight: 600; color: var(--ink); min-height: 34px; letter-spacing: -.01em; }
+  #composer .c-text::after { content: "▌"; color: var(--accent); animation: caret .8s step-start infinite; }
   @keyframes caret { 50% { opacity: 0; } }
-  #composer .c-send { width: 46px; height: 46px; border-radius: 50%; background: linear-gradient(135deg, #4C7DFF, #2A56D8); color: #fff; display: flex; align-items: center; justify-content: center; font-size: 19px; box-shadow: 0 6px 18px rgba(59,110,245,.45); flex-shrink: 0; }
+  #composer .c-send { width: 54px; height: 54px; border-radius: 50%; background: linear-gradient(135deg, #4C7DFF, #2A56D8); color: #fff; display: flex; align-items: center; justify-content: center; font-size: 23px; box-shadow: 0 8px 24px rgba(59,110,245,.5); flex-shrink: 0; }
   #composer .c-send.pulse { animation: sendpulse .5s ease; }
-  @keyframes sendpulse { 40% { transform: scale(.82); } 100% { transform: scale(1); } }
+  @keyframes sendpulse { 40% { transform: scale(.8); } 100% { transform: scale(1); } }
 
   /* ══════ 자막 · 토스트 · 엔드 ══════ */
+  /* 자막 — 프로스티드 글래스: 색이 아니라 블러·보더로 분리되는 시스템 레이어 */
   #cap {
     position: fixed; left: 50%; bottom: 6vh; transform: translateX(-50%) translateY(14px);
     z-index: 8;
-    background: rgba(8,17,36,.96); backdrop-filter: blur(8px);
-    color: #fff; font-size: clamp(18px, 2vw, 24px); font-weight: 700; letter-spacing: -.01em;
-    border-radius: 999px; padding: 15px 34px;
-    border: 1px solid rgba(255,255,255,.14);
-    box-shadow: 0 10px 40px rgba(0,0,0,.35);
+    background: rgba(11, 14, 24, .86);
+    backdrop-filter: blur(18px) saturate(1.3);
+    border: 1px solid rgba(255, 255, 255, .18);
+    color: #fff;
+    font-size: clamp(18px, 2vw, 23px);
+    font-weight: 700;
+    letter-spacing: -.01em;
+    border-radius: 999px;
+    padding: 14px 32px;
+    box-shadow: 0 12px 44px rgba(0, 0, 0, .4);
     opacity: 0; transition: opacity .45s, transform .45s;
     white-space: nowrap;
+  }
+  /* AiApp 내레이터 마커 */
+  #cap::before {
+    content: "✦";
+    color: #7FA4FF;
+    margin-right: 12px;
+    font-weight: 400;
   }
   #cap.show { opacity: 1; transform: translateX(-50%); }
 
