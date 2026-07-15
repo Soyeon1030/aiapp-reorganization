@@ -1,0 +1,125 @@
+/* ============================================================
+   AiApp 디자인 토큰
+   - 모든 화면이 공유하는 원자 값. 컴포넌트/페이지 CSS는
+     반드시 이 토큰을 참조하고, 원시 hex/px 값을 직접 쓰지 않는다.
+   ============================================================ */
+
+:root {
+  /* ── 컬러: 그라운드 ── */
+  --color-bg: #F2F5FB;                /* 앱 배경 */
+  --gradient-bg: linear-gradient(135deg, #E9F0FC 0%, #F5F8FE 45%, #EDF2FB 100%);
+  --color-surface: #FFFFFF;           /* 카드·패널 */
+  --color-surface-sub: #F4F7FC;       /* 보조 서피스 (입력 배경, 헤더 행) */
+
+  /* ── 컬러: 텍스트 ── */
+  --color-ink: #1E2635;               /* 본문 */
+  --color-muted: #7B8598;             /* 보조 텍스트 */
+
+  /* ── 컬러: 라인 ── */
+  --color-line: #E3E8F1;              /* 기본 보더 */
+  --color-line-strong: #CBD4E4;       /* 강조 보더 */
+
+  /* ── 컬러: 브랜드 ── */
+  --color-accent: #3B6EF5;            /* 프라이머리 블루 */
+  --color-accent-deep: #2A56D8;       /* 텍스트용 진한 블루 */
+  --color-accent-soft: #EAF0FE;       /* 블루 틴트 배경 */
+
+  /* ── 컬러: 시맨틱 ── */
+  --color-ok: #16A374;
+  --color-ok-soft: #E5F6EF;
+  --color-warn: #E08A00;
+  --color-warn-soft: #FCF3E1;
+  --color-danger: #E4574F;
+
+  /* ── 컬러: 다크 콘솔 (진행 상태 카드·토스트 등 고정 다크 요소) ── */
+  --color-console: #1E2531;
+  --color-console-ink: #E9EDF5;
+
+  /* ── 타이포그래피 ── */
+  --font-sans: Pretendard, -apple-system, BlinkMacSystemFont, "Segoe UI",
+               "Malgun Gothic", "Apple SD Gothic Neo", sans-serif;
+  --font-mono: ui-monospace, "Cascadia Code", Consolas, "SF Mono", monospace;
+
+  --text-2xs: 10.5px;   /* 모노 태그, 캡션 최소 */
+  --text-xs: 11.5px;    /* 캡션, 메타 */
+  --text-sm: 12.5px;    /* 보조 본문, 칩 */
+  --text-base: 14px;    /* 기본 UI 텍스트 */
+  --text-md: 15px;      /* 본문 입력 */
+  --text-lg: 18px;      /* 섹션 제목 */
+  --text-xl: 22px;      /* 페이지 제목 */
+  --text-display: clamp(26px, 3.2vw, 34px);  /* 히어로 헤드라인 */
+
+  --leading-body: 1.6;
+  --leading-tight: 1.35;
+
+  /* ── 스페이싱 (4px 기반) ── */
+  --space-1: 4px;
+  --space-2: 8px;
+  --space-3: 12px;
+  --space-4: 16px;
+  --space-5: 20px;
+  --space-6: 24px;
+  --space-8: 32px;
+  --space-10: 40px;
+
+  /* ── 라디우스 ── */
+  --radius-sm: 8px;      /* 작은 버튼, 인풋 */
+  --radius-md: 10px;     /* 버튼 */
+  --radius-lg: 14px;     /* 카드 */
+  --radius-xl: 20px;     /* 대형 카드 (입력 컴포저) */
+  --radius-full: 999px;  /* 필·칩 */
+
+  /* ── 그림자 ── */
+  --shadow-sm: 0 1px 3px rgba(30, 38, 53, .05), 0 4px 14px rgba(30, 38, 53, .05);
+  --shadow-lg: 0 4px 12px rgba(59, 110, 245, .07), 0 18px 46px rgba(30, 38, 53, .09);
+  --shadow-accent: 0 4px 12px rgba(59, 110, 245, .35);   /* 전송 버튼 등 */
+  --shadow-ring: 0 0 0 4px var(--color-accent-soft);     /* 포커스·호버 링 */
+
+  /* ── 그라디언트 ── */
+  --gradient-accent: linear-gradient(135deg, #4C7DFF 0%, #2A56D8 100%);  /* 프라이머리 CTA */
+
+  /* ── 레이아웃 ── */
+  --gnb-width: 56px;           /* 좌측 글로벌 내비 */
+  --content-max: 1400px;       /* 본문 최대 폭 (내 프로젝트 등 그리드 섹션) */
+  --composer-max: 860px;       /* 입력 컴포저 최대 폭 */
+}
+
+/* ── 베이스 리셋 ── */
+* { box-sizing: border-box; }
+[hidden] { display: none !important; }
+
+html, body { height: 100%; }
+body {
+  margin: 0;
+  background: var(--color-bg);
+  color: var(--color-ink);
+  font-family: var(--font-sans);
+  font-size: var(--text-base);
+  line-height: var(--leading-body);
+}
+
+button { font-family: inherit; cursor: pointer; }
+button:focus-visible,
+a:focus-visible,
+textarea:focus-visible,
+input:focus-visible {
+  outline: 2px solid var(--color-accent);
+  outline-offset: 2px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: .01ms !important;
+    transition-duration: .01ms !important;
+  }
+}
+
+/* ── Phosphor 아이콘 공통 ── */
+.ph {
+  width: 1em;
+  height: 1em;
+  fill: currentColor;
+  display: inline-block;
+  vertical-align: -0.125em;
+  flex-shrink: 0;
+}

@@ -1,0 +1,228 @@
+/* ============================================================
+   AiApp 공통 컴포넌트
+   - 여러 화면에서 재사용하는 요소. 페이지 전용 스타일은
+     각 페이지 CSS(b1.css 등)에 둔다.
+   - 명명 규칙: BEM-lite  (block / block__elem / block--mod / is-*)
+   ============================================================ */
+
+/* ── 앱 셸: 좌측 글로벌 내비 + 메인 ── */
+.app {
+  display: flex;
+  height: 100vh;
+  height: 100dvh;
+}
+
+.gnb {
+  width: var(--gnb-width);
+  flex-shrink: 0;
+  border-right: 1px solid var(--color-line);
+  background: var(--color-surface);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: var(--space-4) 0;
+  gap: 6px;
+  z-index: 2;
+}
+.gnb__spacer { flex: 1; }
+
+.gnb__item {
+  position: relative;
+  width: 36px;
+  height: 36px;
+  border: none;
+  background: none;
+  border-radius: var(--radius-md);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--color-muted);
+}
+.gnb__item:hover { background: var(--color-surface-sub); }
+.gnb__item.is-active { background: var(--color-accent-soft); color: var(--color-accent); }
+.gnb__item .ph { width: 18px; height: 18px; }
+
+.gnb__badge {
+  position: absolute;
+  top: 3px; right: 3px;
+  min-width: 14px; height: 14px;
+  border-radius: var(--radius-full);
+  background: var(--color-danger);
+  color: #fff;
+  font-size: 9px;
+  font-weight: 700;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0 3px;
+}
+
+.gnb__avatar {
+  width: 32px; height: 32px;
+  border-radius: 50%;
+  background: var(--color-accent);
+  color: #fff;
+  font-size: var(--text-sm);
+  font-weight: 700;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.main {
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  background: var(--gradient-bg);
+}
+
+/* ── 버튼 ── */
+.btn {
+  border: 1px solid var(--color-line-strong);
+  background: var(--color-surface);
+  color: var(--color-ink);
+  border-radius: var(--radius-md);
+  padding: 8px 18px;
+  font-size: 13.5px;
+  font-weight: 600;
+  box-shadow: var(--shadow-sm);
+  transition: filter .15s, border-color .15s;
+}
+.btn:hover { border-color: var(--color-muted); }
+.btn:disabled { opacity: .45; cursor: not-allowed; }
+
+.btn--primary {
+  background: var(--gradient-accent);
+  border-color: var(--color-accent);
+  color: #fff;
+}
+.btn--primary:hover { filter: brightness(1.07); }
+
+.btn--lite {
+  background: var(--color-accent-soft);
+  border-color: var(--color-accent-soft);
+  color: var(--color-accent);
+}
+
+.btn--ghost { box-shadow: none; background: transparent; }
+
+/* ── 태그 (상태 필) ── */
+.tag {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  font-family: var(--font-mono);
+  font-size: var(--text-2xs);
+  padding: 2px 9px;
+  border-radius: var(--radius-full);
+  border: 1px solid var(--color-line-strong);
+  color: var(--color-muted);
+  white-space: nowrap;
+  background: var(--color-surface);
+}
+.tag--run  { border-color: var(--color-accent); color: var(--color-accent); background: var(--color-accent-soft); }
+.tag--ok   { border-color: var(--color-ok); color: var(--color-ok); background: var(--color-ok-soft); }
+.tag--warn { border-color: var(--color-warn); color: var(--color-warn); background: var(--color-warn-soft); }
+
+/* ── 옵션 칩 (토글 겸용) ── */
+.chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  border: 1px solid var(--color-line);
+  background: var(--color-surface);
+  color: var(--color-muted);
+  border-radius: var(--radius-full);
+  padding: 5px 13px;
+  font-size: var(--text-sm);
+  transition: border-color .15s;
+}
+.chip:hover { border-color: var(--color-line-strong); }
+.chip.is-on {
+  border-color: var(--color-accent);
+  color: var(--color-accent);
+  background: var(--color-accent-soft);
+  font-weight: 600;
+}
+
+/* 칩 내부 스위치 (확인 모드 등) */
+.chip__switch {
+  width: 24px; height: 13px;
+  border-radius: var(--radius-full);
+  background: var(--color-line-strong);
+  position: relative;
+  transition: background .15s;
+  flex-shrink: 0;
+}
+.chip.is-on .chip__switch { background: var(--color-accent); }
+.chip__switch::after {
+  content: "";
+  position: absolute;
+  top: 1.5px; left: 2px;
+  width: 10px; height: 10px;
+  border-radius: 50%;
+  background: #fff;
+  transition: left .15s;
+}
+.chip.is-on .chip__switch::after { left: 12px; }
+
+/* ── 배지 ── */
+.badge-live {
+  font-size: var(--text-2xs);
+  font-weight: 700;
+  color: var(--color-ok);
+  background: var(--color-ok-soft);
+  border-radius: var(--radius-full);
+  padding: 2px 9px;
+}
+.badge-url {
+  font-size: var(--text-2xs);
+  color: var(--color-accent);
+  background: var(--color-accent-soft);
+  border-radius: var(--radius-full);
+  padding: 2px 9px;
+  font-family: var(--font-mono);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  max-width: 170px;
+}
+
+/* ── 아바타 (프로젝트 이니셜) ── */
+.avatar {
+  width: 42px; height: 42px;
+  border-radius: 11px;
+  color: #fff;
+  font-size: 12px;
+  font-weight: 700;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+/* ── 카드 (기본) ── */
+.card {
+  background: var(--color-surface);
+  border: 1px solid var(--color-line);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-sm);
+}
+
+/* ── 플로팅 헬프 버튼 ── */
+.help-fab {
+  position: fixed;
+  right: 22px; bottom: 22px;
+  width: 44px; height: 44px;
+  border-radius: 50%;
+  border: none;
+  background: var(--color-accent);
+  color: #fff;
+  box-shadow: 0 6px 18px rgba(59, 110, 245, .4);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 10;
+}
+.help-fab .ph { width: 20px; height: 20px; }
