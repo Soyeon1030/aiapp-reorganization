@@ -441,6 +441,11 @@
   .bp-foot { display: flex; align-items: center; gap: 8px; padding: 12px 18px 16px; border-top: 1px solid var(--line); }
   .bp-count { flex: 1; text-align: center; font-family: var(--mono); font-size: 10.5px; color: var(--muted); letter-spacing: .04em; }
   .bp-loading { display: flex; align-items: center; justify-content: center; gap: 10px; color: var(--muted); font-size: 12px; padding: 40px 0; }
+  .bp-ref { border-top: 1px dashed var(--line); padding-top: 10px; display: flex; flex-direction: column; gap: 7px; }
+  .bp-ref-row { display: flex; gap: 7px; }
+  .bp-ref-row input { flex: 1; border: 1px solid var(--line); border-radius: 9px; padding: 7px 12px; font-size: 12px; font-family: inherit; color: var(--ink); background: var(--surface); }
+  .bp-ref-row input::placeholder { color: var(--muted); }
+  .bp-ref-hint { font-size: 10.5px; color: var(--muted); }
   .bp-editbox { display: flex; gap: 8px; align-items: flex-end; border: 1px solid var(--accent); border-radius: 12px; padding: 10px 12px; background: var(--accent-soft); }
   .bp-editbox textarea { flex: 1; border: none; background: none; resize: none; color: var(--ink); font-family: inherit; font-size: 12px; line-height: 1.5; }
   .bp-editbox textarea::placeholder { color: var(--muted); }
@@ -859,8 +864,8 @@
         <div class="idea-card">
           <textarea id="idea" rows="3" placeholder="예) 동네 반려견 산책 대행을 예약할 수 있는 서비스">우리 동네 반려견 산책 대행을 예약하고, 산책 후기를 게시판에서 볼 수 있는 서비스</textarea>
           <div class="idea-foot">
-            <button class="opt-chip" onclick="fakeAttach(this)"><svg class="ph"><use href="#ph-paperclip"/></svg> 첨부</button>
-            <button class="opt-chip" onclick="fakeLink(this)"><svg class="ph"><use href="#ph-link"/></svg> 링크</button>
+            <button class="opt-chip" onclick="fakeAttach(this)"><svg class="ph"><use href="#ph-paperclip"/></svg> 로고·사진</button>
+            <button class="opt-chip" onclick="fakeLink(this)"><svg class="ph"><use href="#ph-link"/></svg> 인스타·참고 링크</button>
             <button class="opt-chip on" id="confirmToggle" onclick="toggleConfirm()" aria-pressed="true"><span class="sw"></span> 확인 모드</button>
             <button class="send" onclick="startGenerate()" title="생성 시작" aria-label="생성 시작">
               <svg class="ph" style="width:19px;height:19px"><use href="#ph-arrow-up"/></svg>
@@ -1016,6 +1021,15 @@
                         <button class="bp-tpl" onclick="bpSelTpl(this)"><span class="tpl-thumb" style="background:linear-gradient(135deg,#DCEBFF,#FFE3EC); color:#5A6B8C">PASTEL</span>파스텔</button>
                       </div>
                       <div class="bp-li" style="margin-top:4px; color:var(--muted)">선택한 스타일에 맞춰 로고 시안과 브랜드 색도 함께 잡아드려요 — 출시 후 <b>브랜드·홍보</b> 탭에서 다듬을 수 있어요.</div>
+                      <!-- 참고 자료 컨텍스트 요청 (선택) — 몰입된 시점에 한 번만 묻기 -->
+                      <div class="bp-ref">
+                        <div class="bp-sec">참고 자료 (선택)</div>
+                        <div class="bp-ref-row">
+                          <input id="bp-ref-input" placeholder="인스타그램 · 사이트 주소를 붙여넣어 주세요">
+                          <button class="bp-btn" onclick="bpAddRef()">추가</button>
+                        </div>
+                        <div class="bp-ref-hint" id="bp-ref-hint">건너뛰어도 괜찮아요 — 주시면 스타일에 반영해요</div>
+                      </div>
                     </div>
                     <div class="bp-step" hidden>
                       <div class="bp-sec">기능 추천</div>
@@ -1228,8 +1242,8 @@
     ideaEl.scrollIntoView({ behavior: "smooth", block: "center" });
   }
 
-  function fakeAttach(btn) { btn.innerHTML = '<svg class="ph"><use href="#ph-paperclip"/></svg> 참고자료.pdf ✓'; btn.classList.add("on"); }
-  function fakeLink(btn) { btn.innerHTML = '<svg class="ph"><use href="#ph-link"/></svg> 링크 1개 ✓'; btn.classList.add("on"); }
+  function fakeAttach(btn) { btn.innerHTML = '<svg class="ph"><use href="#ph-paperclip"/></svg> 로고.png ✓'; btn.classList.add("on"); }
+  function fakeLink(btn) { btn.innerHTML = '<svg class="ph"><use href="#ph-link"/></svg> instagram.com/mung… ✓'; btn.classList.add("on"); }
 
   function startGenerate() {
     if (!validateIdea()) { ideaEl.focus(); return; }
@@ -1444,6 +1458,17 @@
       bpRender();
     }, 1100);
   }
+  /* 스타일 단계의 선택적 참고 자료 */
+  function bpAddRef() {
+    const inp = $("#bp-ref-input");
+    const v = inp.value.trim();
+    if (!v) { inp.focus(); return; }
+    inp.value = "";
+    addUser(`참고: ${v}`);
+    addChk("참고 자료 반영 예정 — 스타일에 참고할게요");
+    $("#bp-ref-hint").innerHTML = `✓ <b>${v}</b> — 스타일에 반영해요`;
+  }
+
   function bpEditToggle() {
     const b = $("#bp-editbox");
     b.hidden = !b.hidden;
@@ -1723,6 +1748,8 @@
     if (BOOKINGS_BASE) TBL_DATA.bookings.rows = BOOKINGS_BASE.map(r => [...r]);
     $("#pn-b2").classList.remove("running");
     $$(".chk-li input").forEach(c => { c.checked = true; });
+    $("#bp-ref-input").value = "";
+    $("#bp-ref-hint").textContent = "건너뛰어도 괜찮아요 — 주시면 스타일에 반영해요";
   }
   function resetAll() { resetPipeline(); showScreen("B1"); }
 

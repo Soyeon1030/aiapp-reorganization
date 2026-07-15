@@ -1,0 +1,525 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>AiApp 제품 영상 데모 · 웹서비스 복구 (ETL)</title>
+<style>
+  :root{
+    --bg:#F2F5FB; --bg-grad:linear-gradient(135deg,#E9F0FC 0%,#F5F8FE 45%,#EDF2FB 100%);
+    --surface:#FFFFFF; --surface-2:#F4F7FC; --ink:#1E2635; --muted:#7B8598;
+    --line:#E3E8F1; --line-strong:#CBD4E4;
+    --accent:#3B6EF5; --accent-deep:#2A56D8; --accent-soft:#EAF0FE;
+    --E:#3B6EF5; --T:#16A374; --L:#E0932A;
+    --T-soft:#E5F6EF; --L-soft:#FBF0DE;
+    --dead:#8A93A3; --bad:#E0574C; --bad-soft:#FBEAE8;
+    --shadow-sm:0 1px 3px rgba(30,38,53,.05),0 4px 14px rgba(30,38,53,.05);
+    --shadow-lg:0 4px 12px rgba(59,110,245,.07),0 18px 46px rgba(30,38,53,.09);
+    --mono:ui-monospace,"Cascadia Code",Consolas,"SF Mono",monospace;
+    --sans:Pretendard,-apple-system,BlinkMacSystemFont,"Segoe UI","Malgun Gothic","Apple SD Gothic Neo",sans-serif;
+  }
+  *{box-sizing:border-box}
+  html,body{height:100%}
+  body{margin:0;background:var(--bg);color:var(--ink);font-family:var(--sans);font-size:15px;line-height:1.6;overflow:hidden}
+  @media (prefers-reduced-motion:reduce){*{animation-duration:.01ms!important;transition-duration:.01ms!important}}
+
+  .app{display:flex;flex-direction:column;height:100vh;height:100dvh;background:var(--bg-grad);position:relative}
+
+  /* ── 도메인 입력 오프닝 ── */
+  .start-ov{position:absolute;inset:0;z-index:200;display:flex;align-items:center;justify-content:center;background:rgba(242,245,251,.94);backdrop-filter:blur(8px);opacity:0;pointer-events:none;transition:opacity .45s}
+  .start-ov.show{opacity:1}
+  .ov-card{display:flex;flex-direction:column;align-items:center;gap:18px;background:var(--surface);border:1px solid var(--line);border-radius:22px;box-shadow:var(--shadow-lg);padding:38px 46px;min-width:480px}
+  .ov-logo{font-size:22px;font-weight:800;color:var(--accent)} .ov-logo span{color:var(--ink)}
+  .ov-t{font-size:16px;font-weight:700;color:var(--ink)}
+  .ov-input{display:flex;align-items:center;width:100%;border:1.5px solid var(--accent);border-radius:12px;padding:12px 16px;font-family:var(--mono);font-size:13.5px;background:var(--surface-2)}
+  .ov-input .ph2{color:var(--muted)}
+  .ov-input #ov-in{color:var(--ink);font-weight:600}
+  .ov-input .caret{width:1.5px;height:16px;background:var(--accent);margin-left:1px;animation:blink 1s infinite}
+  .ov-btn{border:none;border-radius:11px;background:var(--accent);color:#fff;font-family:inherit;font-size:14px;font-weight:700;padding:11px 34px;box-shadow:0 4px 14px rgba(59,110,245,.35);transition:transform .12s,background .12s}
+  .ov-btn.press{transform:scale(.93);background:var(--accent-deep)}
+
+  /* ── 소스 리뉴얼 패널 (T 단계) ── */
+  .codebox{position:absolute;left:16px;bottom:16px;width:330px;background:#101623;border:1px solid #26314a;border-radius:12px;padding:11px 14px;font-family:var(--mono);font-size:10.5px;z-index:35;opacity:0;transform:translateY(8px);transition:.35s;box-shadow:var(--shadow-lg)}
+  .codebox.show{opacity:1;transform:none}
+  .cb-t{color:rgba(255,255,255,.55);font-size:9.5px;font-weight:700;margin-bottom:7px;letter-spacing:.04em;display:flex;align-items:center;gap:6px}
+  .cb-t::before{content:"";width:6px;height:6px;border-radius:50%;background:var(--T);animation:blink 1.4s infinite}
+  .cl{display:none;flex-direction:column;gap:1px;padding:4px 0;border-bottom:1px dashed rgba(255,255,255,.08)}
+  .cl:last-child{border-bottom:none}
+  .cl.show{display:flex;animation:in .25s both}
+  .cl .del{color:#E08A8A;text-decoration:line-through;opacity:.7}
+  .cl .add{color:#5FD9A8}
+  .top{display:flex;align-items:center;gap:12px;padding:11px 18px;border-bottom:1px solid var(--line);background:var(--surface);flex-shrink:0}
+  .logo{font-weight:800;font-size:16px;letter-spacing:-.02em;color:var(--accent)}
+  .logo .d{color:var(--ink)}
+  .top .t{font-size:13px;font-weight:700;display:flex;align-items:center;gap:8px}
+  .top .t .dot{width:8px;height:8px;border-radius:50%;background:var(--accent);box-shadow:0 0 0 3px var(--accent-soft)}
+  .urlbar{flex:1;min-width:80px;font-family:var(--mono);font-size:11px;color:var(--muted);background:var(--surface-2);border:1px solid var(--line);border-radius:8px;padding:6px 12px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+  .pill{font-family:var(--mono);font-size:10px;padding:3px 11px;border-radius:999px;border:1px solid var(--line-strong);color:var(--muted);white-space:nowrap}
+  .pill.dead{border-color:var(--bad);color:var(--bad);background:var(--bad-soft)}
+  .pill.run{border-color:var(--accent);color:var(--accent);background:var(--accent-soft)}
+  .pill.live{border-color:var(--T);color:#fff;background:var(--T)}
+  .replay{border:1px solid var(--line-strong);background:var(--surface);border-radius:9px;padding:6px 13px;font-size:12px;font-weight:600;color:var(--ink);cursor:pointer;font-family:inherit}
+  .replay:hover{border-color:var(--accent);color:var(--accent)}
+
+  .cols{display:grid;grid-template-columns:36% 1fr;flex:1;min-height:0}
+  .feed{background:var(--surface);border-right:1px solid var(--line);display:flex;flex-direction:column;min-height:0}
+  .feed-scroll{flex:1;overflow-y:auto;padding:18px 22px}
+  .chat{display:flex;flex-direction:column;gap:9px;max-width:520px;margin:0 auto}
+  .step{display:flex;align-items:center;gap:10px;font-size:10.5px;font-weight:800;letter-spacing:.05em;margin:10px 0 2px;animation:in .3s both}
+  .step .b{width:20px;height:20px;border-radius:6px;display:flex;align-items:center;justify-content:center;color:#fff;font-size:11px;font-weight:800}
+  .step::after{content:"";flex:1;height:1px;background:var(--line)}
+  .step.E .b{background:var(--E)} .step.E{color:var(--E)}
+  .step.T .b{background:var(--T)} .step.T{color:var(--T)}
+  .step.L .b{background:var(--L)} .step.L{color:var(--L)}
+  .step.intro{color:var(--muted)} .step.intro .b{background:var(--dead)}
+  .step.op{color:var(--T)} .step.op .b{background:var(--T)}
+  .line{font-size:12.5px;line-height:1.65;color:var(--ink);animation:in .3s both}
+  .chk{display:flex;gap:8px;align-items:baseline;font-size:12px;color:var(--muted);animation:in .3s both}
+  .chk::before{content:"✓";color:var(--T);font-weight:700;flex-shrink:0}
+  .diag{display:flex;gap:8px;align-items:center;font-size:12px;color:#B7433A;background:var(--bad-soft);border:1px solid #F1C7C2;border-radius:8px;padding:6px 11px;animation:in .3s both}
+  .diag::before{content:"!";width:15px;height:15px;border-radius:50%;background:var(--bad);color:#fff;font-size:10px;font-weight:800;display:flex;align-items:center;justify-content:center;flex-shrink:0}
+  @keyframes in{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:none}}
+
+  .sc{margin:6px 0;background:#1E2531;border-radius:14px;padding:14px 16px 12px;color:#E9EDF5;display:flex;flex-direction:column;gap:9px;box-shadow:var(--shadow-sm)}
+  .sc-t{font-size:11px;font-weight:700;color:rgba(255,255,255,.55)}
+  .sc-row{display:flex;align-items:center;gap:9px;font-size:12.5px;font-weight:600;opacity:.4;transition:opacity .3s}
+  .sc-row.on{opacity:1}
+  .sc-ic{width:17px;height:17px;border-radius:50%;flex-shrink:0;display:flex;align-items:center;justify-content:center;font-size:9px;border:1.5px solid rgba(255,255,255,.25)}
+  .sc-row .lbl .k{font-family:var(--mono);font-size:9px;padding:1px 5px;border-radius:4px;margin-right:6px}
+  .sc-row.e .lbl .k{background:rgba(59,110,245,.25);color:#8FB0FF}
+  .sc-row.t .lbl .k{background:rgba(22,163,116,.25);color:#5FD9A8}
+  .sc-row.l .lbl .k{background:rgba(224,147,42,.25);color:#F2C071}
+  .sc-detail{margin-left:auto;font-family:var(--mono);font-size:10px;color:rgba(255,255,255,.5);white-space:nowrap}
+  .sc-row.run .sc-ic{border:2px solid rgba(92,136,255,.3);border-top-color:#5C88FF;animation:spin 1s linear infinite}
+  .sc-row.run .sc-detail{color:#8FB0FF}
+  .sc-row.done .sc-ic{background:var(--T);border-color:var(--T)} .sc-row.done .sc-ic::before{content:"✓";color:#fff}
+  @keyframes spin{to{transform:rotate(360deg)}}
+  .sc-foot{border-top:1px solid rgba(255,255,255,.12);padding-top:10px;display:flex;justify-content:space-between;font-size:10.5px;color:rgba(255,255,255,.55)}
+  .sc-foot b{color:#fff;font-variant-numeric:tabular-nums}
+
+  .report{border:1px solid var(--T);background:var(--surface);border-radius:14px;padding:16px;display:flex;flex-direction:column;gap:10px;animation:rise .4s both;box-shadow:0 0 0 3px var(--T-soft)}
+  @keyframes rise{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:none}}
+  .rp-h{display:flex;align-items:center;gap:9px;flex-wrap:wrap}
+  .rp-h b{font-size:15px}
+  .live{display:inline-flex;align-items:center;gap:6px;background:var(--T);color:#fff;font-family:var(--mono);font-size:10px;font-weight:700;letter-spacing:.1em;padding:3px 11px;border-radius:999px}
+  .live .led{width:6px;height:6px;border-radius:50%;background:#fff;animation:blink 1.5s infinite}
+  @keyframes blink{0%,100%{opacity:1}50%{opacity:.35}}
+  .rp-url{font-family:var(--mono);font-size:12px;color:var(--accent);background:var(--accent-soft);border-radius:8px;padding:7px 12px;word-break:break-all}
+  .rp-list{margin:0;padding:0;list-style:none;display:flex;flex-direction:column;gap:4px}
+  .rp-list li{font-size:12.5px;display:flex;gap:7px;align-items:baseline}
+  .rp-list li::before{content:"✓";color:var(--T);font-weight:700}
+  .rp-foot{display:flex;justify-content:space-between;gap:10px;border-top:1px solid var(--line);padding-top:10px;font-size:11.5px;color:var(--muted);flex-wrap:wrap}
+  .rp-foot b{color:var(--ink);font-variant-numeric:tabular-nums}
+
+  .pv{display:flex;flex-direction:column;min-height:0;padding:22px}
+  .browser{flex:1;min-height:0;background:var(--surface);border:1px solid var(--line-strong);border-radius:14px;box-shadow:var(--shadow-lg);display:flex;flex-direction:column;overflow:hidden}
+  .chrome{display:flex;align-items:center;gap:8px;padding:10px 14px;border-bottom:1px solid var(--line);background:var(--surface-2);flex-shrink:0}
+  .chrome .dots{display:flex;gap:6px} .chrome .dots i{width:10px;height:10px;border-radius:50%;background:var(--line-strong)}
+  .chrome.live .dots i:nth-child(1){background:#E0574C}.chrome.live .dots i:nth-child(2){background:#E0932A}.chrome.live .dots i:nth-child(3){background:#16A374}
+  .chrome .u{flex:1;font-family:var(--mono);font-size:10.5px;color:var(--muted);background:var(--surface);border:1px solid var(--line);border-radius:7px;padding:4px 11px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+  .vp{position:relative;flex:1;min-height:0;overflow:hidden;background:#F7F9FC}
+
+  .layer{position:absolute;inset:0;padding:22px 26px;display:flex;flex-direction:column;gap:12px}
+
+  /* ── 죽은 사이트 (옛날 레이아웃) ── */
+  .dead{background:#ECEEF1;filter:grayscale(.4)}
+  .dead .d-head{display:flex;align-items:center;gap:18px;border-bottom:2px solid #C9CED6;padding-bottom:10px}
+  .dead .d-logo{font-size:19px;font-weight:800;color:#8A91A0}
+  .dead .d-nav{display:flex;gap:14px;font-size:12px;color:#9AA1AC}
+  .dead .d-nav span{cursor:default}
+  .dead .d-nav span.hot{text-decoration:underline}
+  .dead .d-body{flex:1;display:grid;grid-template-columns:1.3fr 1fr;gap:16px;min-height:0}
+  .dead .d-hero{background:#E2E5EA;border:1px solid #C9CED6;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:8px;color:#9AA1AC}
+  .dead .d-hero .x{width:96px;height:66px;border:3px solid #B9BFC8;border-radius:6px;position:relative}
+  .dead .d-hero .x::before{content:"";position:absolute;inset:0;background:linear-gradient(45deg,transparent 46%,#B9BFC8 47%,#B9BFC8 53%,transparent 54%)}
+  .dead .d-hero .err{font-size:13px;font-weight:700;color:#8A91A0}
+  .dead .d-hero .old{font-size:10.5px;font-family:var(--mono);color:#A6ACB6}
+  .dead .d-side{display:flex;flex-direction:column;gap:10px}
+  .dead .d-box{background:#E7EAEE;border:1px solid #C9CED6;border-radius:4px;padding:12px;font-size:12px;color:#8A91A0}
+  .dead .d-btn{margin-top:auto;background:#B7BDC7;color:#fff;border:none;border-radius:4px;padding:12px 0;font-size:14px;font-weight:700;font-family:inherit;cursor:default}
+  .dead .d-btn.shake{animation:shake .4s}
+  @keyframes shake{0%,100%{transform:none}25%{transform:translateX(-5px)}75%{transform:translateX(5px)}}
+  .rust{position:absolute;inset:0;pointer-events:none;background:
+     radial-gradient(circle at 20% 30%,rgba(150,90,50,.16),transparent 22%),
+     radial-gradient(circle at 70% 60%,rgba(120,70,40,.14),transparent 24%),
+     radial-gradient(circle at 45% 82%,rgba(100,110,70,.12),transparent 20%),
+     radial-gradient(circle at 85% 25%,rgba(140,80,45,.13),transparent 20%);opacity:0;transition:opacity .5s}
+  .vp.stage-intro .rust,.vp.stage-E .rust{opacity:1}
+
+  /* 오류 팝업 */
+  .errpop{position:absolute;z-index:40;background:#fff;border:1.5px solid var(--bad);border-radius:10px;box-shadow:var(--shadow-lg);padding:10px 14px;font-size:12px;font-weight:700;color:var(--bad);display:flex;gap:8px;align-items:center;opacity:0;transform:translateY(6px);transition:.25s;pointer-events:none}
+  .errpop.show{opacity:1;transform:none}
+  .errpop::before{content:"⚠";font-size:14px}
+
+  /* 커서 */
+  .cursor{position:absolute;z-index:60;width:20px;height:20px;pointer-events:none;opacity:0;transition:left .5s cubic-bezier(.4,.1,.2,1),top .5s cubic-bezier(.4,.1,.2,1),opacity .3s}
+  .cursor.show{opacity:1}
+  .cursor svg{width:20px;height:20px;filter:drop-shadow(0 1px 2px rgba(0,0,0,.35))}
+  .cursor .ring{position:absolute;left:-6px;top:-6px;width:32px;height:32px;border-radius:50%;border:2.5px solid var(--accent);opacity:0;transform:scale(.4)}
+  .cursor.click .ring{animation:clickring .45s ease-out}
+  @keyframes clickring{0%{opacity:.9;transform:scale(.4)}100%{opacity:0;transform:scale(1.35)}}
+
+  /* E 스캔 */
+  .scan{position:absolute;left:0;right:0;height:60px;background:linear-gradient(180deg,transparent,rgba(59,110,245,.16),transparent);border-top:2px solid rgba(59,110,245,.65);opacity:0}
+  .vp.stage-E .scan{opacity:1;animation:scanmove 1.6s linear infinite}
+  @keyframes scanmove{0%{top:-60px}100%{top:100%}}
+  .diags{position:absolute;right:18px;top:64px;display:flex;flex-direction:column;gap:8px;z-index:30}
+  .dg{opacity:0;transform:translateX(10px);transition:.3s;font-size:11px;color:#B7433A;background:#fff;border:1px solid #F1C7C2;border-radius:8px;padding:5px 10px;display:flex;gap:7px;align-items:center;box-shadow:var(--shadow-sm)}
+  .dg.show{opacity:1;transform:none}
+  .dg::before{content:"!";width:14px;height:14px;border-radius:50%;background:var(--bad);color:#fff;font-size:9px;font-weight:800;display:flex;align-items:center;justify-content:center}
+  .dg.ok{color:#0E7A55;border-color:#BEE7D5;background:#F2FBF7}
+  .dg.ok::before{content:"✓";background:var(--T)}
+
+  /* ── 복구된 서비스 ── */
+  .newl{background:#fff;clip-path:inset(0 100% 0 0)}
+  .newl .nh{display:flex;align-items:center;gap:16px;border-bottom:1px solid var(--line);padding-bottom:10px}
+  .newl .brand{font-size:17px;font-weight:800;color:var(--accent)}
+  .newl .nav{display:flex;gap:4px}
+  .newl .nav button{border:none;background:none;font-family:inherit;font-size:12px;font-weight:600;color:var(--muted);border-radius:8px;padding:5px 13px;cursor:default}
+  .newl .nav button.on{background:var(--accent-soft);color:var(--accent)}
+  .newl .livechip{margin-left:auto;display:inline-flex;align-items:center;gap:6px;font-family:var(--mono);font-size:10px;font-weight:700;color:var(--T);background:var(--T-soft);border-radius:999px;padding:3px 10px;opacity:0;transition:.4s}
+  .vp.stage-L .newl .livechip,.vp.stage-op .newl .livechip{opacity:1}
+  .newl .livechip .led{width:6px;height:6px;border-radius:50%;background:var(--T);animation:blink 1.5s infinite}
+  .view{flex:1;min-height:0;display:none;flex-direction:column;gap:12px}
+  .view.on{display:flex}
+  /* 홈 */
+  .hero{background:linear-gradient(120deg,var(--accent),#5C88FF);color:#fff;border-radius:14px;padding:16px 20px;font-weight:700;font-size:15px;box-shadow:var(--shadow-sm)}
+  .hero small{display:block;font-weight:500;font-size:11.5px;opacity:.85;margin-top:2px}
+  .hgrid{display:grid;grid-template-columns:1.4fr 1fr;gap:12px;flex:1;min-height:0}
+  .card{background:var(--surface);border:1px solid var(--line);border-radius:12px;padding:13px;display:flex;flex-direction:column;gap:9px;min-height:0}
+  .cc-t{font-size:11px;font-weight:700;color:var(--muted)}
+  .bars{flex:1;display:flex;align-items:flex-end;gap:8px;padding-top:4px}
+  .bars i{flex:1;background:linear-gradient(180deg,#5C88FF,var(--accent));border-radius:5px 5px 0 0;height:10%;transition:height .6s cubic-bezier(.22,1,.36,1)}
+  .mods{display:flex;flex-direction:column;gap:8px}
+  .mod{display:flex;align-items:center;gap:8px;font-size:12px}
+  .mod .c{width:17px;height:17px;border-radius:50%;background:var(--line);flex-shrink:0;display:flex;align-items:center;justify-content:center;color:#fff;font-size:9px;transition:background .3s}
+  .mod.on .c{background:var(--T)} .mod.on .c::before{content:"✓"}
+  .kpis{display:flex;gap:10px}
+  .kpi{flex:1;background:var(--surface-2);border:1px solid var(--line);border-radius:10px;padding:9px 12px}
+  .kpi .kv{font-size:16px;font-weight:800;font-variant-numeric:tabular-nums}
+  .kpi .kl{font-size:10px;color:var(--muted)}
+  /* 예약 */
+  .slots{display:grid;grid-template-columns:repeat(4,1fr);gap:8px}
+  .slot{border:1px solid var(--line);border-radius:9px;padding:9px 0;text-align:center;font-size:12px;font-weight:600;color:var(--ink);background:var(--surface)}
+  .slot.off{color:var(--line-strong);text-decoration:line-through}
+  .slot.sel{border-color:var(--accent);background:var(--accent-soft);color:var(--accent);font-weight:800}
+  .field{display:flex;gap:8px;align-items:center;border:1px solid var(--line);border-radius:9px;padding:8px 12px;font-size:12.5px;background:var(--surface)}
+  .field .fl{color:var(--muted);font-size:11px;width:52px;flex-shrink:0}
+  .bbtn{border:none;border-radius:10px;background:var(--accent);color:#fff;font-family:inherit;font-size:13.5px;font-weight:700;padding:11px 0;cursor:default;box-shadow:0 4px 12px rgba(59,110,245,.3)}
+  /* 후기 */
+  .rev{border:1px solid var(--line);border-radius:11px;padding:11px 13px;display:flex;flex-direction:column;gap:4px;opacity:0;transform:translateY(8px);transition:.35s;background:var(--surface)}
+  .rev.show{opacity:1;transform:none}
+  .rev .rh{display:flex;gap:8px;align-items:center;font-size:12px;font-weight:700}
+  .rev .stars{color:#F2B01E;font-size:11px;letter-spacing:1px}
+  .rev .rb{font-size:12px;color:var(--muted)}
+  .rev .rtag{margin-left:auto;font-size:10px;color:var(--T);background:var(--T-soft);border-radius:999px;padding:2px 8px}
+
+  /* 대화 편집 바 */
+  .chatbar{position:absolute;left:50%;bottom:18px;transform:translate(-50%,14px);width:min(430px,80%);display:flex;align-items:center;gap:9px;background:#fff;border:1.5px solid var(--accent);border-radius:999px;padding:9px 8px 9px 18px;box-shadow:var(--shadow-lg);opacity:0;transition:.35s;z-index:48}
+  .chatbar.show{opacity:1;transform:translate(-50%,0)}
+  .chatbar .ct{flex:1;font-size:12.5px;color:var(--ink);font-weight:600;white-space:nowrap;overflow:hidden}
+  .chatbar .snd{width:32px;height:32px;border-radius:50%;border:none;background:var(--accent);color:#fff;display:flex;align-items:center;justify-content:center;font-size:13px;flex-shrink:0}
+  .okchip{position:absolute;z-index:49;font-size:11.5px;font-weight:700;color:var(--T);background:var(--T-soft);border:1px solid #BEE7D5;border-radius:999px;padding:5px 13px;opacity:0;transform:translateY(6px);transition:.3s;box-shadow:var(--shadow-sm)}
+  .okchip.show{opacity:1;transform:none}
+  .bbtn.green{background:var(--T);box-shadow:0 4px 12px rgba(22,163,116,.35)}
+  .toasts{position:absolute;right:16px;bottom:16px;display:flex;flex-direction:column;gap:8px;align-items:flex-end;z-index:45}
+  .toast{font-size:11.5px;font-weight:600;color:var(--T);background:#fff;border:1px solid #BEE7D5;border-radius:10px;padding:7px 13px;box-shadow:var(--shadow-lg);opacity:0;transform:translateX(20px);transition:.4s}
+  .toast.show{opacity:1;transform:none}
+  .seam{position:absolute;top:0;bottom:0;width:3px;background:#fff;box-shadow:0 0 22px 6px rgba(22,163,116,.55);opacity:0;z-index:20}
+  .vp.stage-T .seam{opacity:1}
+
+  .feed-scroll::-webkit-scrollbar{width:8px}.feed-scroll::-webkit-scrollbar-thumb{background:var(--line-strong);border-radius:4px}
+</style>
+</head>
+<body>
+<div class="app">
+  <div class="top">
+    <span class="logo">Ai<span class="d">.App</span></span>
+    <span class="t"><span class="dot"></span>웹서비스 복구 스튜디오</span>
+    <span class="urlbar" id="url">⚠ mongmong-walk.co.kr</span>
+    <span class="pill dead" id="pill">방치됨 · 응답 없음</span>
+    <button class="replay" onclick="start()">↻ 다시 재생</button>
+  </div>
+  <div class="cols">
+    <div class="feed"><div class="feed-scroll"><div class="chat" id="chat"></div></div></div>
+    <div class="pv">
+      <div class="browser">
+        <div class="chrome" id="chrome"><span class="dots"><i></i><i></i><i></i></span><span class="u" id="cu">http://mongmong-walk.co.kr</span></div>
+        <div class="vp stage-intro" id="vp">
+
+          <!-- 죽은 사이트 -->
+          <div class="layer dead">
+            <div class="d-head">
+              <span class="d-logo">멍멍 산책</span>
+              <nav class="d-nav"><span>홈</span><span id="d-nav-book">산책 예약</span><span class="hot" id="d-nav-rev">후기</span><span>문의</span></nav>
+            </div>
+            <div class="d-body">
+              <div class="d-hero"><div class="x"></div><div class="err">이미지를 불러올 수 없습니다</div><div class="old">최종 업데이트 2013.04</div></div>
+              <div class="d-side">
+                <div class="d-box">공지사항 (2013.03)<br>봄맞이 산책 이벤트 안내…</div>
+                <div class="d-box">전화 예약만 가능합니다</div>
+                <button class="d-btn" id="d-btn">산책 예약하기</button>
+              </div>
+            </div>
+          </div>
+          <div class="rust"></div>
+          <div class="scan"></div>
+          <div class="diags">
+            <div class="dg" data-d="0">구버전 프레임워크</div>
+            <div class="dg" data-d="1">깨진 링크 37개</div>
+            <div class="dg" data-d="2">DB 연결 끊김</div>
+          </div>
+
+          <!-- 복구된 서비스 -->
+          <div class="layer newl" id="newl">
+            <div class="nh">
+              <span class="brand">멍멍 산책</span>
+              <nav class="nav">
+                <button id="nav-home" class="on">홈</button>
+                <button id="nav-book">산책 예약</button>
+                <button id="nav-rev">후기</button>
+              </nav>
+              <span class="livechip"><span class="led"></span>LIVE</span>
+            </div>
+            <!-- 홈 -->
+            <div class="view on" id="v-home">
+              <div class="hero">지금 예약 접수 중<small>동네 반려견 산책 예약 · 후기</small></div>
+              <div class="kpis">
+                <div class="kpi"><div class="kv" id="k1">0</div><div class="kl">이번 주 예약</div></div>
+                <div class="kpi"><div class="kv" id="k2">0</div><div class="kl">누적 후기</div></div>
+                <div class="kpi"><div class="kv" id="k3">0%</div><div class="kl">재방문율</div></div>
+              </div>
+              <div class="hgrid">
+                <div class="card"><div class="cc-t">주간 예약</div><div class="bars"><i></i><i></i><i></i><i></i><i></i><i></i></div></div>
+                <div class="card"><div class="cc-t">운영 기능</div><div class="mods">
+                  <div class="mod" data-m="0"><span class="c"></span>회원 관리</div>
+                  <div class="mod" data-m="1"><span class="c"></span>예약 접수</div>
+                  <div class="mod" data-m="2"><span class="c"></span>결제 연동</div>
+                  <div class="mod" data-m="3"><span class="c"></span>후기 게시판</div>
+                </div></div>
+              </div>
+            </div>
+            <!-- 예약 -->
+            <div class="view" id="v-book">
+              <div class="cc-t" style="font-size:13px;color:var(--ink);font-weight:800">산책 예약 · 7월 12일 (일)</div>
+              <div class="slots">
+                <div class="slot off">09:00</div><div class="slot" id="slot1">10:30</div><div class="slot">14:00</div><div class="slot off">16:30</div>
+              </div>
+              <div class="field"><span class="fl">반려견</span><span id="f-dog" style="color:var(--muted)"></span></div>
+              <div class="field"><span class="fl">연락처</span><span id="f-tel" style="color:var(--muted)"></span></div>
+              <button class="bbtn" id="bk-btn">예약하기</button>
+            </div>
+            <!-- 후기 -->
+            <div class="view" id="v-rev">
+              <div class="cc-t" style="font-size:13px;color:var(--ink);font-weight:800">산책 후기</div>
+              <div class="rev" data-r="0"><div class="rh">초코 보호자 <span class="stars">★★★★★</span><span class="rtag">예약 이용</span></div><div class="rb">10년 된 단골인데 사이트가 새로 열려서 너무 편해요. 예약도 바로 돼요!</div></div>
+              <div class="rev" data-r="1"><div class="rh">뭉치 보호자 <span class="stars">★★★★★</span><span class="rtag">예약 이용</span></div><div class="rb">전화 안 해도 앱처럼 예약되고 알림까지 와요.</div></div>
+              <div class="rev" data-r="2"><div class="rh">보리 보호자 <span class="stars">★★★★☆</span><span class="rtag">신규</span></div><div class="rb">동네에서 검색하다 찾았어요. 결제까지 한 번에 되네요.</div></div>
+            </div>
+          </div>
+
+          <div class="chatbar" id="chatbar"><span class="ct" id="chat-t"></span><button class="snd">➤</button></div>
+          <div class="okchip" id="okchip">변경 적용 완료</div>
+          <div class="codebox" id="codebox">
+            <div class="cb-t">소스 리뉴얼 중…</div>
+            <div class="cl" data-c="0"><span class="del">&lt;table border="1" width="800"&gt;</span><span class="add">&lt;section class="booking"&gt;</span></div>
+            <div class="cl" data-c="1"><span class="del">&lt;font color="blue" size="2"&gt;</span><span class="add">&lt;h2 class="title"&gt;산책 예약&lt;/h2&gt;</span></div>
+            <div class="cl" data-c="2"><span class="del">charset=euc-kr</span><span class="add">charset=utf-8 · 반응형 레이아웃</span></div>
+            <div class="cl" data-c="3"><span class="del">예약은 전화로만 가능합니다</span><span class="add">POST /api/reservations ✓ 연결</span></div>
+            <div class="cl" data-c="4"><span class="del">// last update 2013.04</span><span class="add">deploy v2.0 — 방금 전</span></div>
+          </div>
+          <div class="seam" id="seam"></div>
+          <div class="errpop" id="errpop">서버 응답 없음</div>
+          <div class="toasts">
+            <div class="toast" data-t="0">예약 완료 · 알림 발송</div>
+            <div class="toast" data-t="1">새 후기 등록</div>
+            <div class="toast" data-t="2">신규 방문 +18</div>
+          </div>
+          <div class="cursor" id="cur"><span class="ring"></span><svg viewBox="0 0 24 24" fill="#1E2635" stroke="#fff" stroke-width="1.4"><path d="M5 3l14 8-6.5 1.5L9 19z"/></svg></div>
+
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 도메인 입력 오프닝 -->
+  <div class="start-ov" id="start-ov">
+    <div class="ov-card">
+      <div class="ov-logo">Ai<span>.App</span></div>
+      <div class="ov-t">방치된 웹서비스, 주소만 입력하면 그대로 복구합니다</div>
+      <div class="ov-input"><span class="ph2">https://&nbsp;</span><span id="ov-in"></span><span class="caret"></span></div>
+      <button class="ov-btn" id="ov-btn">복구 시작</button>
+    </div>
+  </div>
+</div>
+<script>
+(function(){
+  const $=s=>document.querySelector(s);
+  const chat=$("#chat"), vp=$("#vp"), pill=$("#pill"), chrome=$("#chrome"), cur=$("#cur"), errpop=$("#errpop");
+  const ov=$("#start-ov"), ovBtn=$("#ov-btn");
+  let timers=[], elTick=null;
+  const SPEED=0.6; /* 전역 배속 — 0.6 = 1.67배 빠르게 (사이클 약 20초) */
+  const later=(fn,ms)=>timers.push(setTimeout(fn,ms*SPEED));
+
+  function clearAll(){ timers.forEach(clearTimeout); timers=[]; if(elTick)clearInterval(elTick); chat.innerHTML=""; }
+  function el(cls,html){ const d=document.createElement("div"); d.className=cls; d.innerHTML=html; chat.appendChild(d); scroll(); return d; }
+  function scroll(){ const s=$(".feed-scroll"); s.scrollTop=s.scrollHeight; }
+  function step(agent,txt){ const map={intro:"·",E:"E",T:"T",L:"L",op:"▶"}; el("step "+agent,`<span class="b">${map[agent]}</span>${txt}`); }
+  function line(h){ el("line",h); }
+  function chk(t){ el("chk",t); }
+  function diagLine(t){ el("diag",t); }
+  function setPill(cls,txt){ pill.className="pill "+cls; pill.textContent=txt; }
+  function setStage(s){ vp.className="vp stage-"+s; }
+
+  /* 커서 이동/클릭 — 대상 요소 중심으로 */
+  function moveTo(sel,dx=0,dy=0){ const t=$(sel); if(!t)return; const vr=vp.getBoundingClientRect(), r=t.getBoundingClientRect();
+    cur.style.left=(r.left-vr.left+r.width/2+dx)+"px"; cur.style.top=(r.top-vr.top+r.height/2+dy)+"px"; cur.classList.add("show"); }
+  function click(){ cur.classList.remove("click"); void cur.offsetWidth; cur.classList.add("click"); }
+  function popAt(sel,msg){ const t=$(sel); if(!t)return; const vr=vp.getBoundingClientRect(), r=t.getBoundingClientRect();
+    errpop.textContent=msg; errpop.style.left=Math.min(r.left-vr.left+10, vr.width-230)+"px"; errpop.style.top=(r.top-vr.top-44)+"px";
+    errpop.classList.add("show"); later(()=>errpop.classList.remove("show"),1500); }
+
+  function statusCard(){
+    el("sc",`<div class="sc-t">복구 파이프라인</div>
+      <div class="sc-row e"><span class="sc-ic"></span><span class="lbl"><span class="k">E</span>진단 · Extract</span><span class="sc-detail" data-d>대기</span></div>
+      <div class="sc-row t"><span class="sc-ic"></span><span class="lbl"><span class="k">T</span>재생 · Transform</span><span class="sc-detail" data-d>대기</span></div>
+      <div class="sc-row l"><span class="sc-ic"></span><span class="lbl"><span class="k">L</span>운영 · Load</span><span class="sc-detail" data-d>대기</span></div>
+      <div class="sc-foot"><span>경과 <b id="el">00:00</b></span><span>복구 항목 <b id="items">0</b></span></div>`);
+  }
+  function setRow(k,state,detail){ const r=chat.querySelector(".sc-row."+k); if(!r)return; r.classList.add("on"); r.classList.remove("run","done"); if(state)r.classList.add(state); r.querySelector("[data-d]").textContent=detail; }
+  function tickItems(to,dur){ dur*=SPEED; const e0=$("#items"); if(!e0)return; const s=+e0.textContent,start=performance.now();
+    (function f(t){ const p=Math.min(1,(t-start)/dur); const e=$("#items"); if(e)e.textContent=Math.round(s+(to-s)*p); if(p<1)requestAnimationFrame(f);})(performance.now()); }
+  function elapsed(){ const t0=performance.now(); elTick=setInterval(()=>{ const s=Math.floor((performance.now()-t0)/1000); const e=$("#el"); if(e)e.textContent=String(Math.floor(s/60)).padStart(2,"0")+":"+String(s%60).padStart(2,"0"); },250); }
+  function wipe(dur){ dur*=SPEED; const nl=$("#newl"), seam=$("#seam"), start=performance.now();
+    (function f(t){ const p=Math.min(1,(t-start)/dur); nl.style.clipPath=`inset(0 ${100-p*100}% 0 0)`; seam.style.left=(p*100)+"%"; if(p<1)requestAnimationFrame(f); })(performance.now()); }
+  function typeInto(sel,txt,dur){ dur*=SPEED; const t=$(sel); if(!t)return; t.style.color="var(--ink)"; let i=0; const per=dur/txt.length;
+    (function nx(){ if(i<=txt.length){ t.textContent=txt.slice(0,i); i++; timers.push(setTimeout(nx,per)); } })(); }
+  function view(k){ ["home","book","rev"].forEach(v=>{ $("#v-"+v).classList.toggle("on",v===k); $("#nav-"+v).classList.toggle("on",v===k); }); }
+  function kpi(id,to,dur,suf=""){ dur*=SPEED; const start=performance.now();
+    (function f(t){ const p=Math.min(1,(t-start)/dur); const e=$(id); if(e)e.textContent=Math.round(to*p)+suf; if(p<1)requestAnimationFrame(f);})(performance.now()); }
+
+  function start(){
+    clearAll();
+    setStage("intro"); setPill("dead","방치됨 · 응답 없음"); chrome.classList.remove("live");
+    $("#newl").style.clipPath="inset(0 100% 0 0)";
+    document.querySelectorAll(".dg,.toast,.rev").forEach(d=>d.classList.remove("show"));
+    const dgTxt=["구버전 프레임워크","깨진 링크 37개","DB 연결 끊김"];
+    document.querySelectorAll(".dg").forEach((d,k)=>{ d.classList.remove("ok"); d.textContent=dgTxt[k]; });
+    document.querySelectorAll(".newl .mod").forEach(m=>m.classList.remove("on"));
+    document.querySelectorAll(".bars i").forEach(b=>b.style.height="10%");
+    $("#slot1").classList.remove("sel"); $("#f-dog").textContent=""; $("#f-tel").textContent="";
+    $("#chatbar").classList.remove("show"); $("#chat-t").textContent="";
+    $("#okchip").classList.remove("show"); $("#bk-btn").classList.remove("green");
+    ["#k1","#k2","#k3"].forEach(k=>$(k).textContent="0");
+    cur.classList.remove("show"); view("home");
+    $("#codebox").classList.remove("show");
+    document.querySelectorAll(".cl").forEach(c=>c.classList.remove("show"));
+    elapsed();
+
+    /* ── 오프닝: 도메인 입력 → 복구 시작 ── */
+    $("#ov-in").textContent=""; ovBtn.classList.remove("press"); ov.classList.add("show");
+    $("#url").textContent="복구할 서비스 주소 입력…";
+    later(()=>typeInto("#ov-in","mongmong-walk.co.kr",1300),700);
+    later(()=>ovBtn.classList.add("press"),2700);
+    later(()=>{ ov.classList.remove("show"); $("#url").textContent="⚠ mongmong-walk.co.kr"; },3200);
+    later(main,3500);
+  }
+
+  function main(){
+    /* ── 인트로: 고장난 모습 실사용 시연 ── */
+    later(()=>step("intro","방치된 웹서비스"),200);
+    later(()=>line("몇 년째 방치된 <b>멍멍 산책</b> 사이트입니다. 실제로 눌러볼게요."),600);
+    later(()=>moveTo("#d-btn"),1400);
+    later(()=>{ click(); $("#d-btn").classList.add("shake"); popAt("#d-btn","서버 응답 없음"); },2300);
+    later(()=>{ $("#d-btn").classList.remove("shake"); diagLine("예약 버튼 — 눌러도 반응이 없습니다"); },2900);
+    later(()=>moveTo("#d-nav-rev"),3500);
+    later(()=>{ click(); popAt("#d-nav-rev","404 · 페이지를 찾을 수 없음"); },4300);
+    later(()=>diagLine("후기 페이지 — 링크가 끊어졌습니다"),4900);
+    later(()=>line("이 서비스를 버리지 않고, <b>그대로 복구</b>합니다."),5600);
+    later(()=>{ statusCard(); cur.classList.remove("show"); },6300);
+
+    /* ── E 진단 ── */
+    later(()=>{ step("E","E · 진단"); setStage("E"); setPill("run","진단 중"); setRow("e","run","스캔 중"); tickItems(6,3000); },7000);
+    later(()=>line("사이트 전체를 스캔해 어디가 고장났는지 찾아냅니다."),7300);
+    later(()=>$('.dg[data-d="0"]').classList.add("show"),8100);
+    later(()=>$('.dg[data-d="1"]').classList.add("show"),8800);
+    later(()=>$('.dg[data-d="2"]').classList.add("show"),9500);
+    later(()=>chk("복구 가능한 데이터·화면 추출 완료"),10200);
+    later(()=>setRow("e","done","완료"),10400);
+
+    /* ── T 재생 ── */
+    later(()=>{ step("T","T · 재생"); setStage("T"); setPill("run","복구 중"); setRow("t","run","복구 0%"); tickItems(11,4000); },11000);
+    later(()=>line("흩어진 데이터를 <b>ETL</b>로 정리하고, 화면을 현대적으로 다시 구성합니다."),11300);
+    later(()=>wipe(3400),11800);
+    [1,2,3].forEach(k=>later(()=>setRow("t","run","복구 "+Math.round(k/3*100)+"%"),11800+k*1050));
+    /* 소스 리뉴얼 패널 — 옛 코드가 새 코드로 교체 */
+    later(()=>$("#codebox").classList.add("show"),11900);
+    [0,1,2,3,4].forEach(k=>later(()=>document.querySelector(`.cl[data-c="${k}"]`).classList.add("show"),12200+k*550));
+    later(()=>$("#codebox").classList.remove("show"),15300);
+    /* 진단 배지 → 복구 완료(초록)로 전환 */
+    const dgFix=[["최신 프레임워크 적용",12400],["깨진 링크 37개 복구",13200],["DB 연결 복구",14000]];
+    dgFix.forEach(([t,ms],k)=>later(()=>{ const d=document.querySelector(`.dg[data-d="${k}"]`); d.textContent=t; d.classList.add("ok"); },ms));
+    later(()=>chk("홈 · 예약 · 후기 화면 재구성 완료"),14400);
+    later(()=>setRow("t","done","완료"),15000);
+
+    /* ── L 운영 연결 ── */
+    later(()=>{ step("L","L · 운영"); setStage("L"); setPill("run","연결 중"); setRow("l","run","연결 중"); chrome.classList.add("live"); tickItems(15,2400); },15600);
+    later(()=>line("회원·결제·예약·게시판을 자동으로 연결합니다."),15900);
+    [0,1,2,3].forEach(k=>later(()=>document.querySelector(`.newl .mod[data-m="${k}"]`).classList.add("on"),16400+k*420));
+    later(()=>{ setRow("l","done","완료"); setPill("live","정상 운영 중"); chk("운영 기능 4종 연결 완료"); },18400);
+
+    /* ── 운영: 실제 서비스 작동 시연 ── */
+    later(()=>{ step("op","정상 운영 — 실제 화면"); setStage("op");
+      document.querySelectorAll(".dg").forEach(d=>d.classList.remove("show")); },19200);
+    later(()=>line("이제 <b>구색을 갖춘 서비스</b>로 작동합니다. 예약을 직접 해볼게요."),19500);
+    later(()=>{ moveTo("#nav-book"); },20300);
+    later(()=>{ click(); view("book"); },21100);
+    later(()=>{ moveTo("#slot1"); },21600);
+    later(()=>{ click(); $("#slot1").classList.add("sel"); },22400);
+    later(()=>typeInto("#f-dog","초코 (푸들 · 5살)",600),22800);
+    later(()=>typeInto("#f-tel","010-1234-5678",600),23600);
+    later(()=>moveTo("#bk-btn"),24400);
+    later(()=>{ click(); $('.toast[data-t="0"]').classList.add("show"); },25200);
+    later(()=>chk("예약 접수 → 자동 알림 발송까지 정상 동작"),25800);
+    later(()=>{ moveTo("#nav-rev"); },26600);
+    later(()=>{ click(); view("rev"); },27400);
+    [0,1,2].forEach(k=>later(()=>document.querySelector(`.rev[data-r="${k}"]`).classList.add("show"),27800+k*550));
+    later(()=>{ $('.toast[data-t="1"]').classList.add("show"); chk("후기 게시판 — 새 글이 올라옵니다"); },29600);
+    later(()=>{ moveTo("#nav-home"); },30400);
+    later(()=>{ click(); view("home"); cur.classList.remove("show");
+      document.querySelectorAll(".bars i").forEach((b,i)=>b.style.height=(26+i*13)+"%");
+      kpi("#k1",24,1200); kpi("#k2",18,1200); kpi("#k3",67,1200,"%");
+      $('.toast[data-t="2"]').classList.add("show"); },31200);
+
+    /* ── 대화 한 줄 편집 시연 ── */
+    later(()=>line("이번엔 <b>대화 한 줄</b>로 직접 바꿔봅니다."),32400);
+    later(()=>{ view("book"); $("#chatbar").classList.add("show"); },32900);
+    later(()=>typeInto("#chat-t","“예약 버튼을 초록색으로 바꿔줘”",1300),33400);
+    later(()=>{ const b=$("#bk-btn"); b.classList.add("green");
+      const vr=vp.getBoundingClientRect(), r=b.getBoundingClientRect(), oc=$("#okchip");
+      oc.style.left=(r.left-vr.left+r.width/2-52)+"px"; oc.style.top=(r.top-vr.top-40)+"px";
+      oc.classList.add("show"); },35200);
+    later(()=>chk("대화 한 줄 — 즉시 반영, 개발자 없이 직접 수정"),36000);
+    later(()=>{ $("#chatbar").classList.remove("show"); $("#okchip").classList.remove("show"); },36800);
+
+    /* ── 리포트 ── */
+    later(()=>{ if(elTick)clearInterval(elTick);
+      el("report",`<div class="rp-h"><b>정상 운영을 시작했습니다</b> <span class="live"><span class="led"></span>LIVE</span></div>
+      <div class="rp-url">https://mongmong-walk.co.kr</div>
+      <ul class="rp-list">
+        <li>새로 만들지 않고, 기존 서비스를 그대로 복구</li>
+        <li>예약 접수 · 자동 알림 · 후기 게시판 실제 동작 확인</li>
+        <li>외주 없이, 대화 한 줄로 직접 수정·운영</li>
+      </ul>
+      <div class="rp-foot"><span>복구 소요 <b>1분 이내</b> <span style="color:var(--dead)">(외주 재제작 3–6개월)</span></span><span>운영 비용 <b>30%↓</b></span></div>`); },37400);
+
+    /* 루프 */
+    later(()=>start(),46000);
+  }
+
+  window.start=start;
+  start();
+})();
+</script>
+</body>
+</html>
