@@ -4,6 +4,8 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>OO정밀 — CNC 정밀가공 파트너 | 온라인 견적</title>
+<!-- 데모: 제품 추가 씬에서 카드가 빈 채로 뜨지 않도록 신제품 사진 프리로드 -->
+<link rel="preload" as="image" href="img/product-05.png">
 <!-- ============================================================
      [영상 데모용 After 화면 v2 — 트렌디 리디자인]
      컨셉: "정밀함"을 비주얼 모티프로 — 블루프린트 그리드,
@@ -190,23 +192,47 @@
     100% { background: transparent; }
   }
 
-  /* 데모: 채팅으로 올리는 공지 바 (내비 아래 슬라이드 다운) */
-  .notice-bar {
-    position: sticky; top: 66px; z-index: 9;
+  /* 데모: 채팅으로 올리는 공지 팝업 — 2015년 레이어 팝업의 오늘 버전 */
+  .notice-pop {
+    position: fixed; inset: 0; z-index: 40;
+    display: flex; align-items: center; justify-content: center;
+    background: rgba(10, 18, 36, .5);
+    backdrop-filter: blur(4px);
+    opacity: 0; pointer-events: none;
+    transition: opacity .45s;
+  }
+  .notice-pop.on { opacity: 1; pointer-events: auto; }
+  .notice-pop__card {
+    width: min(460px, calc(100vw - 48px));
+    background: #fff;
+    border-radius: 22px;
+    padding: 30px 32px 24px;
+    box-shadow: 0 30px 90px rgba(6, 14, 32, .45);
+    transform: translateY(22px) scale(.94);
+    transition: transform .55s cubic-bezier(.28, 1.25, .4, 1);
+  }
+  .notice-pop.on .notice-pop__card { transform: none; }
+  .notice-pop__head { display: flex; align-items: center; gap: 10px; margin-bottom: 16px; }
+  .notice-pop__badge {
+    background: var(--orange-soft); color: #B34700;
+    border: 1px solid rgba(232,100,27,.35);
+    border-radius: 999px;
+    font-size: 12px; font-weight: 800;
+    padding: 4px 12px;
+  }
+  .notice-pop__head small { font-family: var(--mono); font-size: 11px; color: #9AA7BC; letter-spacing: .08em; }
+  .notice-pop__x { margin-left: auto; border: none; background: #F1F4FA; color: #5A6A85; width: 30px; height: 30px; border-radius: 50%; font-size: 14px; cursor: pointer; }
+  .notice-pop__card h3 { margin: 0 0 10px; font-size: 22px; font-weight: 800; letter-spacing: -.02em; color: var(--navy-900); }
+  .notice-pop__dates {
+    font-size: 16px; font-weight: 700; color: #B34700;
     background: var(--orange-soft);
-    border-bottom: 1px solid rgba(232,100,27,.35);
-    color: #B34700;
-    font-size: 14.5px; font-weight: 600;
+    border-radius: 12px;
+    padding: 12px 16px;
+    margin: 0 0 12px;
     text-align: center;
-    padding: 11px 20px;
-    overflow: hidden;
   }
-  .notice-bar b { font-weight: 800; }
-  .notice-bar.slide { animation: notice-in .7s cubic-bezier(.3,1.2,.4,1), demo-flash 2s .3s ease; }
-  @keyframes notice-in {
-    from { max-height: 0; padding-top: 0; padding-bottom: 0; opacity: 0; }
-    to   { max-height: 60px; padding-top: 11px; padding-bottom: 11px; opacity: 1; }
-  }
+  .notice-pop__card p { margin: 0 0 18px; font-size: 14px; line-height: 1.65; color: #5A6A85; }
+  .notice-pop__foot { display: flex; align-items: center; justify-content: space-between; border-top: 1px solid #EDF1F7; padding-top: 14px; font-size: 12px; color: #9AA7BC; }
   .hero p { margin: 0 0 14px; font-size: 17.5px; color: rgba(255,255,255,.72); max-width: 46ch; }
   .hero__spec {
     font-family: var(--mono);
@@ -302,6 +328,23 @@
     letter-spacing: 0;
   }
   .prod:hover .prod__spec { opacity: 1; transform: none; }
+  /* 데모: 채팅으로 등록되는 신제품 카드 */
+  .prod.demo-add { animation: prod-in .65s cubic-bezier(.28,1.25,.4,1), prod-ring 2s .35s ease; }
+  @keyframes prod-in { from { opacity: 0; transform: translateY(28px) scale(.93); } to { opacity: 1; transform: none; } }
+  @keyframes prod-ring {
+    0%   { box-shadow: 0 0 0 5px rgba(232,100,27,.5), var(--shadow); }
+    100% { box-shadow: var(--shadow); }
+  }
+  .prod__new {
+    display: inline-block;
+    background: var(--orange);
+    color: #fff;
+    font-size: 10px; font-weight: 800; letter-spacing: .06em;
+    border-radius: 999px;
+    padding: 2px 8px;
+    margin-left: 6px;
+    vertical-align: 2px;
+  }
 
   /* ── 설비: 스펙 시트 ── */
   .facility { background: var(--navy-950); color: #fff; position: relative; overflow: hidden; }
@@ -456,9 +499,19 @@
   </div>
 </nav>
 
-<!-- 데모: 채팅으로 올리는 공지 바 -->
-<div id="notice-bar" class="notice-bar" hidden>
-  📢 <b>여름휴가 안내</b> — 8/4(화)~8/8(토) 휴무 · 휴무 중 견적은 온라인으로 접수됩니다
+<!-- 데모: 채팅으로 올리는 공지 팝업 -->
+<div id="notice-pop" class="notice-pop">
+  <div class="notice-pop__card">
+    <div class="notice-pop__head">
+      <span class="notice-pop__badge">📢 공지</span>
+      <small>NOTICE · 2026.07</small>
+      <button class="notice-pop__x" aria-label="닫기">✕</button>
+    </div>
+    <h3>여름휴가 휴무 안내</h3>
+    <div class="notice-pop__dates">8월 4일(화) ~ 8월 8일(토) 휴무</div>
+    <p>휴무 기간에도 <b>온라인 견적은 24시간 접수</b>되며, 8월 10일(월)부터 순차적으로 회신드립니다.</p>
+    <div class="notice-pop__foot"><span>(주)OO정밀 드림</span><span>방금 게시됨</span></div>
+  </div>
 </div>
 
 <!-- ═══ 히어로 ═══ -->
@@ -635,11 +688,32 @@
       if (el) el.scrollIntoView({ behavior: "smooth", block: "start" });
     }
     if (m.act === "top") scrollTo({ top: 0, behavior: "auto" });
-    /* 공지 씬: 공지 바 슬라이드 다운 */
+    /* 제품 추가 씬: 신제품 카드가 그리드에 등장 */
+    if (m.act === "addProduct") {
+      const sec = document.getElementById("sec-products");
+      if (sec) sec.scrollIntoView({ behavior: "smooth", block: "start" });
+      setTimeout(() => {
+        const grid = document.querySelector(".prods");
+        if (!grid || document.getElementById("prod-new")) return;
+        const el = document.createElement("div");
+        el.className = "prod demo-add";
+        el.id = "prod-new";
+        el.innerHTML = `
+          <div class="img-slot">DP-7120<img src="img/product-05.png" alt="유니버설 커플링" onerror="this.remove()"></div>
+          <div class="prod__body">
+            <span class="prod__code">DP-7120<span class="prod__new">NEW</span></span>
+            <div class="prod__name">유니버설 커플링</div>
+            <p class="prod__desc">2축 요크 구조 · 소량 시제작 대응</p>
+          </div>`;
+        grid.appendChild(el);
+        el.scrollIntoView({ behavior: "smooth", block: "center" });
+      }, 650);
+    }
+    /* 공지 씬: 공지 팝업 등장 */
     if (m.act === "notice") {
-      const nb = document.getElementById("notice-bar");
-      if (nb) { nb.hidden = false; nb.classList.add("slide"); }
       scrollTo({ top: 0, behavior: "smooth" });
+      const np = document.getElementById("notice-pop");
+      if (np) setTimeout(() => np.classList.add("on"), 350);
     }
     /* 채팅 수정 씬: 히어로 문구 실시간 교체 + 하이라이트 */
     if (m.act === "setHero") {
