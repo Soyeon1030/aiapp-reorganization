@@ -1,0 +1,209 @@
+/* ============================================================
+   관리·설정 화면 — 기능별 사이드바 + 설정 상세
+   - 스튜디오 프레임(b2.css) 위에 얹는 설정 패널 전용 스타일
+   - 원칙: 설정은 저장 버튼 없이 즉시 적용(스위치),
+     결과가 밖에서 어떻게 보이는지 미리보기로 보여줌(검색 결과),
+     위험한 동작은 일반 설정과 시각적으로 분리(주의 카드)
+   - 사이드바 패턴은 db.css의 db__side와 동일 — 세 번째 사용처
+     (브랜드·홍보)가 생기면 components.css로 추출 검토
+   ============================================================ */
+
+.set {
+  flex: 1;
+  display: flex;
+  min-height: 0;
+  container-type: inline-size;
+}
+
+/* ── 사이드바: 설정 묶음 ── */
+.set__side {
+  width: 200px;
+  flex-shrink: 0;
+  border-right: 1px solid var(--color-line);
+  background: var(--color-surface);
+  padding: 14px 10px 12px;
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+  overflow-y: auto;
+}
+.set__side-label {
+  font-size: 10px;
+  font-weight: 700;
+  color: var(--color-muted);
+  letter-spacing: .05em;
+  padding: 8px 10px 3px;
+}
+.set__item {
+  text-align: left;
+  border: none;
+  background: none;
+  border-radius: 9px;
+  padding: 8px 10px;
+  font-size: var(--text-sm);
+  font-weight: 600;
+  color: var(--color-ink);
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+.set__item .ph { color: var(--color-muted); }
+.set__item:hover { background: var(--color-surface-sub); }
+.set__item.is-on { background: var(--color-accent-soft); color: var(--color-accent); }
+.set__item.is-on .ph { color: var(--color-accent); }
+.set__soon {
+  margin-left: auto;
+  font-size: 9px;
+  font-weight: 700;
+  color: var(--color-muted);
+  background: var(--color-surface-sub);
+  border-radius: var(--radius-full);
+  padding: 1px 7px;
+}
+.set__side-foot {
+  margin-top: auto;
+  padding: 10px 10px 2px;
+  border-top: 1px solid var(--color-line);
+  font-size: var(--text-2xs);
+  color: var(--color-muted);
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+.set__side-foot b { color: var(--color-ok); }
+
+/* ── 메인 ── */
+.set__main {
+  flex: 1;
+  min-width: 0;
+  overflow-y: auto;
+  padding: 20px 24px 24px;
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-4);
+}
+.set__head { display: flex; align-items: flex-start; gap: var(--space-3); }
+.set__head h3 {
+  margin: 0;
+  font-size: var(--text-lg);
+  font-weight: 800;
+  letter-spacing: -.01em;
+}
+.set__head p {
+  margin: 3px 0 0;
+  font-size: 12px;
+  color: var(--color-muted);
+}
+.set__head .tag { margin-left: auto; flex-shrink: 0; }
+
+/* ── 설정 그룹: 라벨 + 카드 ── */
+.set__group {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+}
+.set__group-label {
+  font-size: var(--text-xs);
+  font-weight: 700;
+  color: var(--color-muted);
+  letter-spacing: .04em;
+  padding-left: 2px;
+}
+.set__card {
+  background: var(--color-surface);
+  border: 1px solid var(--color-line);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-sm);
+  overflow: hidden;
+}
+/* 주의가 필요한 설정 — 일반 설정과 시각적으로 분리 */
+.set__card--warn { border-color: color-mix(in srgb, var(--color-warn) 40%, var(--color-line)); }
+.set__card--warn .set__row-t { color: var(--color-warn); }
+
+/* ── 설정 행: 제목·설명 + 컨트롤 ── */
+.set__row {
+  display: flex;
+  align-items: center;
+  gap: var(--space-4);
+  padding: 14px 18px;
+  border-bottom: 1px solid var(--color-line);
+}
+.set__row:last-child { border-bottom: none; }
+.set__row-text { flex: 1; min-width: 0; }
+.set__row-t {
+  font-size: 13.5px;
+  font-weight: 700;
+  display: flex;
+  align-items: center;
+  gap: 7px;
+}
+.set__row-d {
+  font-size: var(--text-xs);
+  color: var(--color-muted);
+  margin-top: 2px;
+  line-height: var(--leading-tight);
+}
+.set__row-ctrl {
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+}
+.set__row-ctrl .btn { font-size: 12px; padding: 6px 14px; box-shadow: none; }
+
+/* 서비스 주소 — 모노 + 복사 */
+.set__url {
+  font-family: var(--font-mono);
+  font-size: var(--text-xs);
+  color: var(--color-accent);
+  background: var(--color-accent-soft);
+  border-radius: var(--radius-sm);
+  padding: 4px 10px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  max-width: 280px;
+}
+
+/* ── 검색 결과 미리보기 — "밖에서 이렇게 보여요" ── */
+.serp {
+  margin: 0 18px 16px;
+  border: 1px dashed var(--color-line-strong);
+  border-radius: var(--radius-md);
+  background: var(--color-surface-sub);
+  padding: 12px 16px;
+}
+.serp__label {
+  font-size: 10px;
+  font-weight: 700;
+  color: var(--color-muted);
+  letter-spacing: .05em;
+  margin-bottom: 6px;
+}
+.serp__title {
+  font-size: var(--text-md);
+  font-weight: 600;
+  color: var(--color-accent-deep);
+}
+.serp__url {
+  font-family: var(--font-mono);
+  font-size: var(--text-2xs);
+  color: var(--color-ok);
+  margin: 1px 0 3px;
+}
+.serp__desc {
+  font-size: var(--text-xs);
+  color: var(--color-muted);
+  line-height: var(--leading-tight);
+}
+
+/* ── 패널이 좁아지면 (드래그 대응) ── */
+@container (max-width: 620px) {
+  .set__row { flex-wrap: wrap; }
+  .set__row-text { flex-basis: 100%; }
+  .set__row-ctrl { margin-left: auto; }
+  .set__url { max-width: 100%; }
+}
+@container (max-width: 520px) {
+  .set__side { width: 164px; }
+}

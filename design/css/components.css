@@ -23,8 +23,210 @@
   padding: var(--space-4) 0;
   gap: 6px;
   z-index: 2;
+  transition: width .25s ease;
+  overflow: hidden;
 }
 .gnb__spacer { flex: 1; }
+
+/* ── 펼친 상태 — 아이콘 레일이 라벨 있는 패널로 확장 ── */
+.gnb.is-open {
+  width: 264px;
+  align-items: stretch;
+  padding: var(--space-4) 12px;
+}
+/* 라벨·워드마크·섹션 제목은 펼쳤을 때만 */
+.gnb:not(.is-open) :is(.gnb__label, .gnb__brand, .gnb__sec) { display: none; }
+/* 개별 프로젝트 행도 펼쳤을 때만 — 접힌 레일엔 나열하지 않음 */
+.gnb:not(.is-open) .gnb__row--proj { display: none; }
+
+.gnb__top {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 6px;
+}
+.gnb.is-open .gnb__top {
+  flex-direction: row;
+  gap: 9px;
+  padding: 0 2px;
+  margin-bottom: 2px;
+}
+.gnb__brand {
+  font-size: var(--text-md);
+  font-weight: 800;
+  letter-spacing: -.01em;
+  flex: 1;
+}
+.gnb__sec {
+  font-size: 10px;
+  font-weight: 700;
+  color: var(--color-muted);
+  letter-spacing: .05em;
+  padding: 8px 9px 3px;
+}
+
+/* 항목 행 — 접힘: 아이콘 정사각 / 펼침: 아이콘+라벨 행 */
+.gnb__row {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 36px; height: 36px;
+  border: none;
+  background: none;
+  border-radius: var(--radius-md);
+  color: var(--color-ink);
+  font-size: var(--text-sm);
+  font-weight: 600;
+  text-align: left;
+}
+.gnb__row .ph { width: 18px; height: 18px; color: var(--color-muted); flex-shrink: 0; }
+.gnb__row:hover { background: var(--color-surface-sub); }
+.gnb__row.is-active { background: var(--color-accent-soft); color: var(--color-accent); }
+.gnb__row.is-active .ph { color: var(--color-accent); }
+.gnb.is-open .gnb__row {
+  width: 100%;
+  height: auto;
+  justify-content: flex-start;
+  gap: 9px;
+  padding: 8px 9px;
+}
+/* 상단 토글 버튼은 펼쳐도 정사각 아이콘 버튼 유지 */
+.gnb.is-open .gnb__top .gnb__row {
+  width: 32px; height: 32px;
+  padding: 0;
+  justify-content: center;
+  flex-shrink: 0;
+}
+.gnb__label {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  min-width: 0;
+  flex: 1;
+}
+
+/* 알림 개수 — 펼친 행에서는 라벨 오른쪽에 인라인 */
+.gnb__badge--inline {
+  position: static;
+  margin-left: auto;
+}
+
+/* 하단 계정 행 — 클릭 시 계정 메뉴 */
+.gnb__account {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 9px;
+  padding: 2px 0;
+  border: none;
+  background: none;
+  border-radius: var(--radius-md);
+  color: var(--color-ink);
+  font-size: var(--text-sm);
+  text-align: left;
+}
+.gnb__account:hover .gnb__avatar { box-shadow: var(--shadow-ring); }
+.gnb.is-open .gnb__account {
+  justify-content: flex-start;
+  padding: 8px 5px;
+  margin-top: 6px;
+  border-top: 1px solid var(--color-line);
+  border-radius: 0;
+}
+.gnb.is-open .gnb__account:hover { background: var(--color-surface-sub); }
+.gnb__account .gnb__label { font-weight: 700; }
+
+/* ── 팝업 메뉴 (계정 메뉴 등) ── */
+.menu-pop {
+  min-width: 200px;
+  background: var(--color-surface);
+  border: 1px solid var(--color-line);
+  border-radius: var(--radius-md);
+  box-shadow: var(--shadow-lg);
+  padding: 5px;
+  display: flex;
+  flex-direction: column;
+  z-index: 20;
+}
+.menu-pop button {
+  text-align: left;
+  border: none;
+  background: none;
+  border-radius: 7px;
+  padding: 8px 11px;
+  font-size: var(--text-sm);
+  font-weight: 600;
+  color: var(--color-ink);
+}
+.menu-pop button:hover { background: var(--color-surface-sub); }
+.menu-pop button.is-danger { color: var(--color-danger); }
+.menu-pop hr {
+  border: none;
+  border-top: 1px solid var(--color-line);
+  margin: 4px 6px;
+}
+/* 메뉴 상단 계정 요약 */
+.menu-pop__id {
+  padding: 8px 11px 6px;
+  display: flex;
+  flex-direction: column;
+}
+.menu-pop__id b { font-size: var(--text-sm); }
+.menu-pop__id small { font-size: var(--text-xs); color: var(--color-muted); }
+/* 계정 메뉴: 사이드바 하단 아바타 위에 고정 (gnb overflow에 안 잘리게 fixed) */
+.menu-pop--account {
+  position: fixed;
+  left: 12px;
+  bottom: 64px;
+}
+
+/* 레일 상단 로고 (AiApp 심볼) — 클릭 = 홈(B1). '홈'과 'AI 생성' 아이콘의 중복을 대체 */
+.gnb__logo {
+  width: 36px; height: 36px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-decoration: none;
+  margin-bottom: 2px;
+  flex-shrink: 0;
+}
+.gnb__logo img {
+  height: 27px;
+  width: auto;
+  display: block;
+}
+
+/* 새로 만들기 — 레일의 유일한 프라이머리 액션 */
+.gnb__new {
+  width: 36px; height: 36px;
+  border: none;
+  border-radius: var(--radius-md);
+  background: var(--color-accent-soft);
+  color: var(--color-accent);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  font-size: var(--text-sm);
+  font-weight: 700;
+  transition: box-shadow .15s;
+}
+.gnb__new:hover { box-shadow: var(--shadow-ring); }
+.gnb__new .ph { width: 18px; height: 18px; }
+.gnb.is-open .gnb__new {
+  width: 100%;
+  justify-content: flex-start;
+  padding: 0 10px;
+}
+
+.gnb__divider {
+  width: 22px; height: 1px;
+  background: var(--color-line);
+  margin: 5px 0;
+  align-self: center;
+}
+.gnb.is-open .gnb__divider { width: 100%; }
 
 .gnb__item {
   position: relative;
@@ -107,13 +309,19 @@
 
 .btn--ghost { box-shadow: none; background: transparent; }
 
-/* ── 태그 (상태 필) ── */
+.btn--warn {
+  background: var(--color-warn-soft);
+  border-color: var(--color-warn);
+  color: var(--color-warn);
+}
+
+/* ── 태그 (상태 필) — 한글이 들어가므로 모노 금지, 본문 폰트 + 세미볼드 ── */
 .tag {
   display: inline-flex;
   align-items: center;
   gap: 5px;
-  font-family: var(--font-mono);
-  font-size: var(--text-2xs);
+  font-size: 11px;
+  font-weight: 600;
   padding: 2px 9px;
   border-radius: var(--radius-full);
   border: 1px solid var(--color-line-strong);
@@ -167,6 +375,30 @@
 }
 .chip.is-on .chip__switch::after { left: 12px; }
 
+/* ── 스위치 (설정 온·오프) — 저장 버튼 없이 즉시 적용되는 설정에 사용 ── */
+.switch {
+  position: relative;
+  width: 40px; height: 22px;
+  border: none;
+  border-radius: var(--radius-full);
+  background: var(--color-line-strong);
+  padding: 0;
+  flex-shrink: 0;
+  transition: background .18s;
+}
+.switch::after {
+  content: "";
+  position: absolute;
+  top: 2px; left: 2px;
+  width: 18px; height: 18px;
+  border-radius: 50%;
+  background: var(--color-surface);
+  box-shadow: var(--shadow-sm);
+  transition: left .18s;
+}
+.switch.is-on { background: var(--color-accent); }
+.switch.is-on::after { left: 20px; }
+
 /* ── 배지 ── */
 .badge-live {
   font-size: var(--text-2xs);
@@ -201,6 +433,16 @@
   justify-content: center;
   flex-shrink: 0;
 }
+.avatar--sm {
+  width: 33px; height: 33px;
+  border-radius: 9px;
+  font-size: 10.5px;
+}
+.avatar--xs {
+  width: 24px; height: 24px;
+  border-radius: 7px;
+  font-size: 9px;
+}
 
 /* ── 카드 (기본) ── */
 .card {
@@ -209,6 +451,200 @@
   border-radius: var(--radius-lg);
   box-shadow: var(--shadow-sm);
 }
+
+/* ── 크레딧 칩 (우상단 고정) — 잔액 확인 + 클릭 시 결제로 ── */
+.credit-chip {
+  position: fixed;
+  top: 18px; right: 22px;
+  z-index: 5;
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  border: 1px solid var(--color-line);
+  background: var(--color-surface);
+  border-radius: var(--radius-full);
+  padding: 7px 15px;
+  font-size: var(--text-sm);
+  font-weight: 600;
+  color: var(--color-ink);
+  box-shadow: var(--shadow-sm);
+  transition: border-color .15s;
+}
+.credit-chip:hover { border-color: var(--color-accent); }
+.credit-chip .ph { color: var(--color-accent); }
+.credit-chip b {
+  font-family: var(--font-mono);
+  font-weight: 600;
+  font-variant-numeric: tabular-nums;
+}
+
+/* ── 알림 패널 — 사이드바 알림 클릭 시 (예약·후기·작업 소식) ── */
+.notif-pop {
+  position: fixed;
+  left: 12px;
+  bottom: 104px;
+  width: 302px;
+  background: var(--color-surface);
+  border: 1px solid var(--color-line);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-lg);
+  z-index: 20;
+  overflow: hidden;
+}
+.notif-pop__head {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 11px 14px 9px;
+  font-size: var(--text-sm);
+  font-weight: 800;
+  border-bottom: 1px solid var(--color-line);
+}
+.notif-pop__head button {
+  border: none;
+  background: none;
+  font-size: var(--text-2xs);
+  font-weight: 600;
+  color: var(--color-accent);
+}
+.notif-item {
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+  padding: 11px 14px;
+  border-bottom: 1px solid var(--color-line);
+}
+.notif-item:hover { background: var(--color-surface-sub); }
+.notif-item__ico {
+  width: 30px; height: 30px;
+  border-radius: 9px;
+  background: var(--color-accent-soft);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 14px;
+  flex-shrink: 0;
+}
+.notif-item__ico--ok { background: var(--color-ok-soft); }
+.notif-item__body { flex: 1; min-width: 0; }
+.notif-item__t {
+  font-size: var(--text-sm);
+  font-weight: 700;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+.notif-item__t .dot-new {
+  width: 6px; height: 6px;
+  border-radius: 50%;
+  background: var(--color-danger);
+  flex-shrink: 0;
+}
+.notif-item__d {
+  font-size: var(--text-xs);
+  color: var(--color-muted);
+  margin-top: 1px;
+  line-height: var(--leading-tight);
+}
+.notif-item__time {
+  font-size: var(--text-2xs);
+  color: var(--color-muted);
+  flex-shrink: 0;
+}
+.notif-pop__foot {
+  padding: 9px 14px;
+  font-size: var(--text-2xs);
+  color: var(--color-muted);
+  background: var(--color-surface-sub);
+}
+
+/* ── 설정 모달 — 좌측 탭(일반·계정…) + 우측 상세 ── */
+.modal-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 30;
+  background: color-mix(in srgb, var(--color-console) 45%, transparent);
+  backdrop-filter: blur(2px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: var(--space-6);
+}
+.modal {
+  width: min(760px, 100%);
+  height: min(540px, 100%);
+  background: var(--color-surface);
+  border-radius: var(--radius-xl);
+  box-shadow: var(--shadow-lg);
+  display: flex;
+  overflow: hidden;
+}
+.modal__side {
+  width: 190px;
+  flex-shrink: 0;
+  background: var(--color-surface-sub);
+  border-right: 1px solid var(--color-line);
+  padding: 18px 12px;
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+}
+.modal__side-title {
+  font-size: var(--text-lg);
+  font-weight: 800;
+  padding: 0 9px 10px;
+}
+.modal__tab {
+  text-align: left;
+  border: none;
+  background: none;
+  border-radius: var(--radius-sm);
+  padding: 8px 11px;
+  font-size: var(--text-sm);
+  font-weight: 600;
+  color: var(--color-ink);
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+.modal__tab:hover { background: var(--color-surface); }
+.modal__tab.is-on { background: var(--color-accent-soft); color: var(--color-accent); }
+.modal__main {
+  flex: 1;
+  min-width: 0;
+  position: relative;
+  padding: 22px 26px;
+  overflow-y: auto;
+}
+.modal__x {
+  position: absolute;
+  top: 14px; right: 14px;
+  width: 30px; height: 30px;
+  border: none;
+  background: none;
+  border-radius: var(--radius-sm);
+  color: var(--color-muted);
+  font-size: 14px;
+}
+.modal__x:hover { background: var(--color-surface-sub); color: var(--color-ink); }
+.modal__main h4 {
+  margin: 0 0 12px;
+  font-size: var(--text-md);
+  font-weight: 800;
+}
+.modal__row {
+  display: flex;
+  align-items: center;
+  gap: var(--space-4);
+  padding: 13px 2px;
+  border-bottom: 1px solid var(--color-line);
+}
+.modal__row:last-child { border-bottom: none; }
+.modal__row-text { flex: 1; min-width: 0; }
+.modal__row-t { font-size: 13.5px; font-weight: 700; }
+.modal__row-d { font-size: var(--text-xs); color: var(--color-muted); margin-top: 2px; }
+.modal__row .btn { font-size: 12px; padding: 6px 14px; box-shadow: none; flex-shrink: 0; }
+.modal__row--danger .modal__row-t { color: var(--color-danger); }
 
 /* ── 플로팅 헬프 버튼 ── */
 .help-fab {

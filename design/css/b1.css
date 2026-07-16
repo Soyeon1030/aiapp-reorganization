@@ -171,6 +171,81 @@
 .composer__send:active { transform: scale(.96); }
 .composer__send .ph { width: 20px; height: 20px; }
 
+/* 파일·링크 토큰의 아이콘 */
+.attach-token .ph { width: 14px; height: 14px; color: var(--color-accent); }
+
+/* ── 첨부 피커 — 칩 클릭 시 컴포저 아래에 뜨는 선택/입력 패널 ── */
+/* z-index: 뒤에 오는 작업 유형 칩(.sugg) 위로 피커가 뜨도록 컴포저 자체를 올림 */
+.composer { position: relative; z-index: 6; }
+.picker {
+  position: absolute;
+  top: calc(100% + 8px);
+  left: 18px;
+  width: min(380px, calc(100% - 36px));
+  background: var(--color-surface);
+  border: 1px solid var(--color-line);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-lg);
+  padding: var(--space-2);
+  z-index: 8;
+  animation: b1-rise .18s ease both;
+}
+.picker__head {
+  padding: 6px 9px 8px;
+  font-size: var(--text-sm);
+  font-weight: 700;
+}
+.picker__head small {
+  display: block;
+  font-size: var(--text-xs);
+  font-weight: 500;
+  color: var(--color-muted);
+  margin-top: 1px;
+}
+.picker__item {
+  display: flex;
+  align-items: center;
+  gap: 9px;
+  width: 100%;
+  border: none;
+  background: none;
+  border-radius: var(--radius-sm);
+  padding: 8px 9px;
+  font-size: var(--text-sm);
+  font-weight: 600;
+  color: var(--color-ink);
+  text-align: left;
+}
+.picker__item:hover { background: var(--color-surface-sub); }
+.picker__meta {
+  margin-left: auto;
+  font-size: var(--text-2xs);
+  color: var(--color-muted);
+  flex-shrink: 0;
+}
+.picker__form {
+  display: flex;
+  gap: var(--space-2);
+  padding: 2px 6px 6px;
+}
+.picker__input {
+  flex: 1;
+  min-width: 0;
+  border: 1px solid var(--color-line);
+  border-radius: var(--radius-sm);
+  padding: 8px 12px;
+  font-family: inherit;
+  font-size: var(--text-sm);
+  color: var(--color-ink);
+}
+.picker__input:focus-visible { outline: none; border-color: var(--color-accent); }
+.picker__form .btn {
+  font-size: var(--text-sm);
+  padding: 7px 14px;
+  box-shadow: none;
+  flex-shrink: 0;
+}
+
 /* ── 작업 유형 칩 (웹사이트·로고·숏폼·홍보 이미지) ── */
 .sugg {
   display: flex;
@@ -260,34 +335,153 @@
 @media (max-width: 1024px) { .proj__grid { grid-template-columns: repeat(2, 1fr); } }
 @media (max-width: 640px)  { .proj__grid { grid-template-columns: 1fr; } }
 
-/* 프로젝트 카드 */
+/* ── 프로젝트 카드: 썸네일 갤러리형 ──
+   커버(=만들어진 사이트)가 카드의 주인공. 실서비스에선 출시 시점
+   캡처 이미지가 들어가고, 스캐폴드에선 CSS 미니 목업으로 자리를 잡는다.
+   액션은 카드 클릭(스튜디오)과 ⋯ 메뉴로 정리 — 버튼 나열 없음 */
 .pcard {
   background: var(--color-surface);
   border: 1px solid var(--color-line);
   border-radius: 16px;
   box-shadow: var(--shadow-sm);
-  padding: var(--space-4);
+  overflow: hidden;
   display: flex;
   flex-direction: column;
-  gap: 10px;
   transition: box-shadow .18s, border-color .18s, transform .18s;
 }
 .pcard:hover {
   border-color: var(--color-accent);
   box-shadow: var(--shadow-ring), var(--shadow-lg);
-  transform: translateY(-2px);
+  transform: translateY(-3px);
 }
-.pcard__head { display: flex; gap: 11px; align-items: center; }
-.pcard__id { min-width: 0; }
+
+/* 커버 — 프로젝트 브랜드색 틴트 배경 위에 사이트 미니 목업 */
+.pcard__cover {
+  position: relative;
+  display: block;
+  width: 100%;
+  aspect-ratio: 16 / 10;
+  border: none;
+  padding: 0;
+  background: color-mix(in srgb, var(--mini-c, var(--color-accent)) 9%, var(--color-surface));
+  border-bottom: 1px solid var(--color-line);
+  overflow: hidden;
+  cursor: pointer;
+}
+/* 미니 사이트 목업 (캡처 이미지 자리) — 호버 시 살짝 떠올라 "들어가 보기" 힌트 */
+.mini {
+  position: absolute;
+  left: 11%; right: 11%; top: 13%; bottom: -3%;
+  background: var(--color-surface);
+  border-radius: 7px 7px 0 0;
+  box-shadow: var(--shadow-lg);
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  transition: transform .3s ease;
+}
+.pcard:hover .mini { transform: translateY(-5px); }
+.mini__nav {
+  height: 15px;
+  flex-shrink: 0;
+  background: var(--mini-c, var(--color-accent));
+  display: flex;
+  align-items: center;
+  gap: 3px;
+  padding: 0 8px;
+}
+.mini__nav i {
+  width: 4px; height: 4px;
+  border-radius: 50%;
+  background: color-mix(in srgb, var(--color-surface) 55%, transparent);
+}
+.mini__body {
+  flex: 1;
+  padding: 8px 9px;
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+  min-height: 0;
+}
+.mini--console .mini__body { flex-direction: row; }
+.mini__side {
+  width: 22%;
+  border-radius: 4px;
+  background: var(--color-surface-sub);
+  border: 1px solid var(--color-line);
+}
+.mini__main {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+  min-width: 0;
+}
+.mini__hero {
+  border-radius: 5px;
+  flex: 1;
+  min-height: 22px;
+  background: color-mix(in srgb, var(--mini-c, var(--color-accent)) 16%, var(--color-surface));
+}
+.mini__line {
+  height: 5px;
+  border-radius: 3px;
+  background: color-mix(in srgb, var(--mini-c, var(--color-accent)) 30%, var(--color-surface));
+  flex-shrink: 0;
+}
+.mini__row {
+  height: 12px;
+  border-radius: 4px;
+  background: var(--color-surface-sub);
+  border: 1px solid var(--color-line);
+  flex-shrink: 0;
+}
+.mini__cards {
+  display: flex;
+  gap: 5px;
+  flex-shrink: 0;
+}
+.mini__cards i {
+  flex: 1;
+  height: 22px;
+  border-radius: 4px;
+  background: var(--color-surface-sub);
+  border: 1px solid var(--color-line);
+}
+
+/* 초안 폴백 커버 — 아직 캡처가 없을 때 (출시 전) */
+.pcard__cover--draft {
+  background: linear-gradient(135deg,
+    var(--mini-c, var(--color-accent)),
+    color-mix(in srgb, var(--mini-c, var(--color-accent)) 55%, var(--color-console)));
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.pcard__draft-initial {
+  color: var(--color-surface);
+  font-size: 30px;
+  font-weight: 800;
+  letter-spacing: -.02em;
+  opacity: .92;
+}
+
+/* 하단 한 줄: 아바타 · 이름 · 상태 + ⋯ 메뉴 */
+.pcard__meta {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 11px 10px 11px 14px;
+}
+.pcard__id { min-width: 0; flex: 1; }
 .pcard__title {
-  font-size: 14.5px;
+  font-size: 14px;
   font-weight: 700;
   line-height: var(--leading-tight);
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
 }
-/* 상태 라인: 라이브 닷 + 상태 + 상대 시간 */
 .pcard__status {
   display: flex;
   align-items: center;
@@ -302,36 +496,52 @@
   background: var(--color-ok);
   box-shadow: 0 0 0 3px var(--color-ok-soft);
 }
-.pcard__url {
-  align-self: flex-start;
-  max-width: 100%;
+.pcard__status .dot--draft {
+  background: var(--color-line-strong);
+  box-shadow: 0 0 0 3px var(--color-surface-sub);
 }
-.pcard__desc {
-  font-size: var(--text-sm);
+
+/* ⋯ 메뉴 */
+.pcard__more-wrap { position: relative; flex-shrink: 0; }
+.pcard__more {
+  width: 30px; height: 30px;
+  border: none;
+  background: none;
+  border-radius: var(--radius-sm);
   color: var(--color-muted);
-  border-top: 1px solid var(--color-line);
-  padding-top: 10px;
-  margin: 0;
-  min-height: 30px;
-  display: -webkit-box;
-  -webkit-line-clamp: 2;
-  -webkit-box-orient: vertical;
-  overflow: hidden;
+  font-size: 17px;
+  font-weight: 700;
+  line-height: 1;
 }
-.pcard__studio {
-  width: 100%;
-  padding: 10px 0;
+.pcard__more:hover { background: var(--color-surface-sub); color: var(--color-ink); }
+.pcard__menu {
+  position: absolute;
+  right: 0;
+  bottom: calc(100% + 6px);
+  min-width: 160px;
+  background: var(--color-surface);
+  border: 1px solid var(--color-line);
   border-radius: var(--radius-md);
-  font-size: 13.5px;
+  box-shadow: var(--shadow-lg);
+  padding: 5px;
+  display: flex;
+  flex-direction: column;
+  z-index: 6;
 }
-.pcard__acts { display: flex; gap: var(--space-2); }
-.pcard__acts .btn {
-  flex: 1;
-  padding: 7px 0;
+.pcard__menu button {
+  text-align: left;
+  border: none;
+  background: none;
+  border-radius: 7px;
+  padding: 8px 11px;
   font-size: var(--text-sm);
-  border-radius: var(--radius-md);
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  gap: 6px;
+  font-weight: 600;
+  color: var(--color-ink);
+}
+.pcard__menu button:hover { background: var(--color-surface-sub); }
+.pcard__menu button.is-danger { color: var(--color-danger); }
+.pcard__menu hr {
+  border: none;
+  border-top: 1px solid var(--color-line);
+  margin: 4px 6px;
 }

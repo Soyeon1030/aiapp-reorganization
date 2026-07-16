@@ -255,6 +255,203 @@
   flex-wrap: wrap;
 }
 
+/* ── 뷰 전환 — 사이드바 항목별 템플릿 유형 (인박스/게시글/명부/표) ── */
+.db__view {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-4);
+}
+/* 유형 라벨 (디자인 레퍼런스용) — 우측 정렬, 내려받기 버튼이 있으면 그 앞에 */
+.db__head > .tag { flex-shrink: 0; align-self: center; margin-left: auto; }
+.db__head > .tag ~ .btn { margin-left: 0; }
+
+/* ── 게시글형 (feed) — 후기·게시글: 내용이 주인공 ── */
+.review {
+  background: var(--color-surface);
+  border: 1px solid var(--color-line);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-sm);
+  padding: 14px 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+.review__head { display: flex; align-items: center; gap: 10px; }
+.review__stars {
+  color: var(--color-warn);
+  font-size: var(--text-sm);
+  letter-spacing: 1px;
+}
+.review__when { margin-left: auto; font-size: var(--text-2xs); color: var(--color-muted); }
+.review__body {
+  margin: 0;
+  font-size: var(--text-sm);
+  line-height: var(--leading-body);
+  color: var(--color-ink);
+}
+.review__acts { display: flex; gap: var(--space-2); }
+.review__acts .btn { font-size: 12px; padding: 5px 13px; box-shadow: none; }
+
+/* ── 명부형 (directory) — 회원·산책러·제품: 엔티티 카드 ── */
+.dir {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: var(--space-3);
+}
+.dir__card {
+  background: var(--color-surface);
+  border: 1px solid var(--color-line);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-sm);
+  padding: 16px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+  text-align: center;
+}
+.dir__avatar {
+  width: 52px; height: 52px;
+  border-radius: 50%;
+  background: var(--color-accent-soft);
+  color: var(--color-accent-deep);
+  font-size: 17px;
+  font-weight: 800;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.dir__name { font-size: var(--text-base); font-weight: 700; }
+.dir__attrs { display: flex; flex-wrap: wrap; justify-content: center; gap: 5px; }
+.dir__meta { font-size: var(--text-2xs); color: var(--color-muted); }
+.dir__card .btn { font-size: 12px; padding: 6px 16px; box-shadow: none; margin-top: 2px; }
+
+/* ── 표형 (grid) — 폴백: 컬럼을 그대로 그리는 데이터 그리드 ── */
+.tbl-wrap {
+  background: var(--color-surface);
+  border: 1px solid var(--color-line);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-sm);
+  overflow-x: auto;
+}
+.tbl {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: var(--text-sm);
+  white-space: nowrap;
+}
+.tbl th {
+  text-align: left;
+  font-size: var(--text-2xs);
+  font-weight: 700;
+  color: var(--color-muted);
+  letter-spacing: .04em;
+  background: var(--color-surface-sub);
+  padding: 9px 16px;
+  border-bottom: 1px solid var(--color-line);
+}
+.tbl td {
+  padding: 11px 16px;
+  border-bottom: 1px solid var(--color-line);
+}
+.tbl tr:last-child td { border-bottom: none; }
+.tbl tr:hover td { background: var(--color-surface-sub); }
+.tbl .mono { font-family: var(--font-mono); font-size: var(--text-xs); color: var(--color-muted); }
+
+/* ── 요약 대시보드 — 스탯 타일 + 최근 7일 방문자 (단일 시리즈 막대) ── */
+.stats {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: var(--space-3);
+}
+.stat {
+  background: var(--color-surface);
+  border: 1px solid var(--color-line);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-sm);
+  padding: 14px 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+}
+.stat__l {
+  font-size: var(--text-xs);
+  font-weight: 600;
+  color: var(--color-muted);
+}
+.stat__v {
+  font-size: 24px;
+  font-weight: 800;
+  letter-spacing: -.01em;
+  font-variant-numeric: tabular-nums;
+}
+.stat__v small { font-size: var(--text-sm); font-weight: 700; margin-left: 1px; }
+.stat__d { font-size: var(--text-2xs); color: var(--color-muted); }
+.stat__d--up { color: var(--color-ok); }
+
+.chart-card {
+  background: var(--color-surface);
+  border: 1px solid var(--color-line);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-sm);
+  padding: 16px 18px 14px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+.chart-card__head { display: flex; align-items: baseline; gap: 8px; }
+.chart-card__head b { font-size: 13.5px; font-weight: 700; }
+.chart-card__head span { font-size: var(--text-2xs); color: var(--color-muted); }
+/* 플롯: 베이스라인 하나만 — 그리드는 최대한 물러남 */
+.bars {
+  display: flex;
+  align-items: flex-end;
+  gap: 10px;
+  height: 150px;
+  border-bottom: 1px solid var(--color-line);
+  padding: 0 4px;
+}
+.bar-col {
+  flex: 1;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 6px;
+  min-width: 0;
+}
+/* 단일 시리즈 = 단일 색조. 오늘만 진하게, 나머지는 같은 색의 연한 단계 */
+.bar-col i {
+  display: block;
+  width: min(30px, 70%);
+  background: var(--color-accent);
+  opacity: .3;
+  border-radius: 4px 4px 0 0;   /* 데이터 끝만 둥글게, 베이스라인은 각지게 */
+  transition: opacity .15s;
+}
+.bar-col:hover i { opacity: .65; }
+.bar-col.is-today i { opacity: 1; }
+/* 직접 라벨은 오늘 하나만 — 값은 텍스트 토큰(잉크)으로 */
+.bar-col b {
+  font-size: var(--text-xs);
+  font-weight: 700;
+  font-variant-numeric: tabular-nums;
+}
+.bars-x { display: flex; gap: 10px; padding: 0 4px; }
+.bars-x span {
+  flex: 1;
+  text-align: center;
+  font-size: var(--text-2xs);
+  color: var(--color-muted);
+}
+.bars-x span.is-today { color: var(--color-ink); font-weight: 700; }
+
+@container (max-width: 700px) {
+  .dir { grid-template-columns: repeat(2, 1fr); }
+  .stats { grid-template-columns: repeat(2, 1fr); }
+}
+
 /* 패널이 좁아지면 행을 2단으로 접음 (드래그 대응) */
 @container (max-width: 640px) {
   .inbox__row {
