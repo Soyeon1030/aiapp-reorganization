@@ -3,10 +3,11 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>AiApp — 스튜디오 (B2)</title>
+<title>AiApp — 스튜디오 · 관리·설정 (B2)</title>
 <link rel="stylesheet" href="css/tokens.css">
 <link rel="stylesheet" href="css/components.css">
 <link rel="stylesheet" href="css/b2.css">
+<link rel="stylesheet" href="css/settings.css">
 </head>
 <body>
 
@@ -24,17 +25,18 @@
 <symbol id="ph-palette" viewBox="0 0 256 256"><path d="M200.77,53.89A103.27,103.27,0,0,0,128,24h-1.07A104,104,0,0,0,24,128c0,43,26.58,79.06,69.36,94.17A32,32,0,0,0,136,192a16,16,0,0,1,16-16h46.21a31.81,31.81,0,0,0,31.2-24.88,104.43,104.43,0,0,0,2.59-24A103.28,103.28,0,0,0,200.77,53.89Zm13,93.71A15.89,15.89,0,0,1,198.21,160H152a32,32,0,0,0-32,32,16,16,0,0,1-21.31,15.07C62.49,194.3,40,164,40,128a88,88,0,0,1,87.09-88h.9a88.35,88.35,0,0,1,88,87.25A88.86,88.86,0,0,1,213.81,147.6ZM140,76a12,12,0,1,1-12-12A12,12,0,0,1,140,76ZM96,100A12,12,0,1,1,84,88,12,12,0,0,1,96,100Zm0,56a12,12,0,1,1-12-12A12,12,0,0,1,96,156Zm88-56a12,12,0,1,1-12-12A12,12,0,0,1,184,100Z"/></symbol>
 <symbol id="ph-gear" viewBox="0 0 256 256"><path d="M128,80a48,48,0,1,0,48,48A48.05,48.05,0,0,0,128,80Zm0,80a32,32,0,1,1,32-32A32,32,0,0,1,128,160Zm88-29.84q.06-2.16,0-4.32l14.92-18.64a8,8,0,0,0,1.48-7.06,107.21,107.21,0,0,0-10.88-26.25,8,8,0,0,0-6-3.93l-23.72-2.64q-1.48-1.56-3-3L186,40.54a8,8,0,0,0-3.94-6,107.71,107.71,0,0,0-26.25-10.87,8,8,0,0,0-7.06,1.49L130.16,40Q128,40,125.84,40L107.2,25.11a8,8,0,0,0-7.06-1.48A107.6,107.6,0,0,0,73.89,34.51a8,8,0,0,0-3.93,6L67.32,64.27q-1.56,1.49-3,3L40.54,70a8,8,0,0,0-6,3.94,107.71,107.71,0,0,0-10.87,26.25,8,8,0,0,0,1.49,7.06L40,125.84Q40,128,40,130.16L25.11,148.8a8,8,0,0,0-1.48,7.06,107.21,107.21,0,0,0,10.88,26.25,8,8,0,0,0,6,3.93l23.72,2.64q1.49,1.56,3,3L70,215.46a8,8,0,0,0,3.94,6,107.71,107.71,0,0,0,26.25,10.87,8,8,0,0,0,7.06-1.49L125.84,216q2.16.06,4.32,0l18.64,14.92a8,8,0,0,0,7.06,1.48,107.21,107.21,0,0,0,26.25-10.88,8,8,0,0,0,3.93-6l2.64-23.72q1.56-1.48,3-3L215.46,186a8,8,0,0,0,6-3.94,107.71,107.71,0,0,0,10.87-26.25,8,8,0,0,0-1.49-7.06Zm-16.1-6.5a73.93,73.93,0,0,1,0,8.68,8,8,0,0,0,1.74,5.48l14.19,17.73a91.57,91.57,0,0,1-6.23,15L187,173.11a8,8,0,0,0-5.1,2.64,74.11,74.11,0,0,1-6.14,6.14,8,8,0,0,0-2.64,5.1l-2.51,22.58a91.32,91.32,0,0,1-15,6.23l-17.74-14.19a8,8,0,0,0-5-1.75h-.48a73.93,73.93,0,0,1-8.68,0,8,8,0,0,0-5.48,1.74L100.45,215.8a91.57,91.57,0,0,1-15-6.23L82.89,187a8,8,0,0,0-2.64-5.1,74.11,74.11,0,0,1-6.14-6.14,8,8,0,0,0-5.1-2.64L46.43,170.6a91.32,91.32,0,0,1-6.23-15l14.19-17.74a8,8,0,0,0,1.74-5.48,73.93,73.93,0,0,1,0-8.68,8,8,0,0,0-1.74-5.48L40.2,100.45a91.57,91.57,0,0,1,6.23-15L69,82.89a8,8,0,0,0,5.1-2.64,74.11,74.11,0,0,1,6.14-6.14A8,8,0,0,0,82.89,69L85.4,46.43a91.32,91.32,0,0,1,15-6.23l17.74,14.19a8,8,0,0,0,5.48,1.74,73.93,73.93,0,0,1,8.68,0,8,8,0,0,0,5.48-1.74L155.55,40.2a91.57,91.57,0,0,1,15,6.23L173.11,69a8,8,0,0,0,2.64,5.1,74.11,74.11,0,0,1,6.14,6.14,8,8,0,0,0,5.1,2.64l22.58,2.51a91.32,91.32,0,0,1,6.23,15l-14.19,17.74A8,8,0,0,0,199.87,123.66Z"/></symbol>
 <symbol id="ph-globe" viewBox="0 0 256 256"><path d="M128,24h0A104,104,0,1,0,232,128,104.12,104.12,0,0,0,128,24Zm88,104a87.61,87.61,0,0,1-3.33,24H174.16a157.44,157.44,0,0,0,0-48h38.51A87.61,87.61,0,0,1,216,128ZM102,168H154a115.11,115.11,0,0,1-26,45A115.27,115.27,0,0,1,102,168Zm-3.9-16a140.84,140.84,0,0,1,0-48h59.88a140.84,140.84,0,0,1,0,48ZM40,128a87.61,87.61,0,0,1,3.33-24H81.84a157.44,157.44,0,0,0,0,48H43.33A87.61,87.61,0,0,1,40,128ZM154,88H102a115.11,115.11,0,0,1,26-45A115.27,115.27,0,0,1,154,88Zm52.33,0H170.71a135.28,135.28,0,0,0-22.3-45.6A88.29,88.29,0,0,1,206.37,88ZM107.59,42.4A135.28,135.28,0,0,0,85.29,88H49.63A88.29,88.29,0,0,1,107.59,42.4ZM49.63,168H85.29a135.28,135.28,0,0,0,22.3,45.6A88.29,88.29,0,0,1,49.63,168Zm98.78,45.6a135.28,135.28,0,0,0,22.3-45.6h35.66A88.29,88.29,0,0,1,148.41,213.6Z"/></symbol>
-<symbol id="ph-device-mobile" viewBox="0 0 256 256"><path d="M176,16H80A24,24,0,0,0,56,40V216a24,24,0,0,0,24,24h96a24,24,0,0,0,24-24V40A24,24,0,0,0,176,16ZM72,64H184V192H72Zm8-32h96a8,8,0,0,1,8,8v8H72V40A8,8,0,0,1,80,32Zm96,192H80a8,8,0,0,1-8-8v-8H184v8A8,8,0,0,1,176,224Z"/></symbol>
-<symbol id="ph-monitor" viewBox="0 0 256 256"><path d="M208,40H48A24,24,0,0,0,24,64V176a24,24,0,0,0,24,24H208a24,24,0,0,0,24-24V64A24,24,0,0,0,208,40Zm8,136a8,8,0,0,1-8,8H48a8,8,0,0,1-8-8V64a8,8,0,0,1,8-8H208a8,8,0,0,1,8,8Zm-48,48a8,8,0,0,1-8,8H96a8,8,0,0,1,0-16h64A8,8,0,0,1,168,224Z"/></symbol>
-<symbol id="ph-pencil-simple" viewBox="0 0 256 256"><path d="M227.31,73.37,182.63,28.68a16,16,0,0,0-22.63,0L36.69,152A15.86,15.86,0,0,0,32,163.31V208a16,16,0,0,0,16,16H92.69A15.86,15.86,0,0,0,104,219.31L227.31,96a16,16,0,0,0,0-22.63ZM92.69,208H48V163.31l88-88L180.69,120ZM192,108.68,147.31,64l24-24L216,84.68Z"/></symbol>
-<symbol id="ph-sparkle" viewBox="0 0 256 256"><path d="M197.58,129.06,146,110l-19-51.62a15.92,15.92,0,0,0-29.88,0L78,110l-51.62,19a15.92,15.92,0,0,0,0,29.88L78,178l19,51.62a15.92,15.92,0,0,0,29.88,0L146,178l51.62-19a15.92,15.92,0,0,0,0-29.88ZM137,164.22a8,8,0,0,0-4.74,4.74L112,223.85,91.78,169A8,8,0,0,0,87,164.22L32.15,144,87,123.78A8,8,0,0,0,91.78,119L112,64.15,132.22,119a8,8,0,0,0,4.74,4.74L191.85,144ZM144,40a8,8,0,0,1,8-8h16V16a8,8,0,0,1,16,0V32h16a8,8,0,0,1,0,16H184V64a8,8,0,0,1-16,0V48H152A8,8,0,0,1,144,40ZM248,88a8,8,0,0,1-8,8h-8v8a8,8,0,0,1-16,0V96h-8a8,8,0,0,1,0-16h8V72a8,8,0,0,1,16,0v8h8A8,8,0,0,1,248,88Z"/></symbol>
+<symbol id="ph-magnifying-glass" viewBox="0 0 256 256"><path d="M229.66,218.34l-50.07-50.06a88.11,88.11,0,1,0-11.31,11.31l50.06,50.07a8,8,0,0,0,11.32-11.32ZM40,112a72,72,0,1,1,72,72A72.08,72.08,0,0,1,40,112Z"/></symbol>
+<symbol id="ph-power" viewBox="0 0 256 256"><path d="M120,128V48a8,8,0,0,1,16,0v80a8,8,0,0,1-16,0Zm60.37-78.7a8,8,0,0,0-8.74,13.4C194.74,77.77,208,101.57,208,128a80,80,0,0,1-160,0c0-26.43,13.26-50.23,36.37-65.3a8,8,0,0,0-8.74-13.4C47.9,67.38,32,96.06,32,128a96,96,0,0,0,192,0C224,96.06,208.1,67.38,180.37,49.3Z"/></symbol>
+<symbol id="ph-user" viewBox="0 0 256 256"><path d="M230.92,212c-15.23-26.33-38.7-45.21-66.09-54.16a72,72,0,1,0-73.66,0C63.78,166.78,40.31,185.66,25.08,212a8,8,0,1,0,13.85,8c18.84-32.56,52.14-52,89.07-52s70.23,19.44,89.07,52a8,8,0,1,0,13.85-8ZM72,96a56,56,0,1,1,56,56A56.06,56.06,0,0,1,72,96Z"/></symbol>
+<symbol id="ph-chat-circle" viewBox="0 0 256 256"><path d="M128,24A104,104,0,0,0,36.18,176.88L24.83,210.93a16,16,0,0,0,20.24,20.24l34.05-11.35A104,104,0,1,0,128,24Zm0,192a87.87,87.87,0,0,1-44.06-11.81,8,8,0,0,0-6.54-.67L40,216,52.47,178.6a8,8,0,0,0-.66-6.54A88,88,0,1,1,128,216Z"/></symbol>
+<symbol id="ph-address-book" viewBox="0 0 256 256"><path d="M83.19,174.4a8,8,0,0,0,11.21-1.6,52,52,0,0,1,83.2,0,8,8,0,1,0,12.8-9.6A67.88,67.88,0,0,0,163,141.51a40,40,0,1,0-53.94,0A67.88,67.88,0,0,0,81.6,163.2,8,8,0,0,0,83.19,174.4ZM112,112a24,24,0,1,1,24,24A24,24,0,0,1,112,112Zm96-88H64A16,16,0,0,0,48,40V64H32a8,8,0,0,0,0,16H48v40H32a8,8,0,0,0,0,16H48v40H32a8,8,0,0,0,0,16H48v24a16,16,0,0,0,16,16H208a16,16,0,0,0,16-16V40A16,16,0,0,0,208,24Zm0,192H64V40H208Z"/></symbol>
 <symbol id="ph-clock-counter-clockwise" viewBox="0 0 256 256"><path d="M136,80v43.47l36.12,21.67a8,8,0,0,1-8.24,13.72l-40-24A8,8,0,0,1,120,128V80a8,8,0,0,1,16,0Zm-8-48A95.44,95.44,0,0,0,60.08,60.15C52.81,67.51,46.35,74.59,40,82V64a8,8,0,0,0-16,0v40a8,8,0,0,0,8,8H72a8,8,0,0,0,0-16H49c7.15-8.42,14.27-16.35,22.39-24.57a80,80,0,1,1,1.66,114.75,8,8,0,1,0-11,11.64A96,96,0,1,0,128,32Z"/></symbol>
+<symbol id="ph-github-logo" viewBox="0 0 256 256"><path d="M208.31,75.68A59.78,59.78,0,0,0,202.93,28,8,8,0,0,0,196,24a59.75,59.75,0,0,0-48,24H124A59.75,59.75,0,0,0,76,24a8,8,0,0,0-6.93,4,59.78,59.78,0,0,0-5.38,47.68A58.14,58.14,0,0,0,56,104v8a56.06,56.06,0,0,0,48.44,55.47A39.8,39.8,0,0,0,96,192v8H72a24,24,0,0,1-24-24A40,40,0,0,0,8,136a8,8,0,0,0,0,16,24,24,0,0,1,24,24,40,40,0,0,0,40,40H96v16a8,8,0,0,0,16,0V192a24,24,0,0,1,48,0v40a8,8,0,0,0,16,0V192a39.8,39.8,0,0,0-8.44-24.53A56.06,56.06,0,0,0,216,112v-8A58.14,58.14,0,0,0,208.31,75.68ZM200,112a40,40,0,0,1-40,40H112a40,40,0,0,1-40-40v-8a41.74,41.74,0,0,1,6.9-22.48A8,8,0,0,0,80,73.83a43.81,43.81,0,0,1,.79-33.58,43.88,43.88,0,0,1,32.32,20.06A8,8,0,0,0,119.82,64h32.35a8,8,0,0,0,6.74-3.69,43.87,43.87,0,0,1,32.32-20.06A43.81,43.81,0,0,1,192,73.83a8.09,8.09,0,0,0,1,7.65A41.72,41.72,0,0,1,200,104Z"/></symbol>
 </svg>
 
 
 <div class="app">
 
-  <!-- ═══════════ 좌측 글로벌 내비 ═══════════ -->
   <!-- 접이식 사이드바 (b1과 동일 구조) — 스튜디오에선 접힌 상태가 기본 -->
   <aside class="gnb" id="gnb" aria-label="글로벌 내비게이션">
     <div class="gnb__top">
@@ -124,16 +126,13 @@
   <!-- ═══════════ 스튜디오: 채팅 + 패널 ═══════════ -->
   <main class="main studio">
 
-    <!-- ── 왼쪽: AI 채팅 ── -->
+    <!-- ── 왼쪽: AI 채팅 (b2와 동일 상태) ── -->
     <section class="feed" aria-label="AI 채팅">
       <div class="feed__scroll">
         <div class="chat">
-
           <p class="log-line">말씀해주신 아이디어를 분석하고 있어요.</p>
           <p class="log-line"><b>동네 반려견 산책 예약 + 후기 게시판</b> 서비스로 이해했어요. 화면 6개와 기능 4가지를 담은 설계안을 준비할게요.</p>
 
-          <!-- 진행 상태 카드: 대화 흐름 속 라이브 위젯.
-               진행 중 상태는 is-run, 대기는 is-wait로 변형 -->
           <div class="console-card" aria-label="진행 상태">
             <span class="console-card__title">진행 상태</span>
             <div class="console-row is-done"><span class="console-row__icon"></span><span>서비스 설계</span><span class="console-row__detail">완료</span></div>
@@ -150,58 +149,25 @@
           <span class="log-user">이대로 만들어 주세요</span>
           <div class="log-chk">설계안 확인 완료 — 만들기 시작</div>
 
-          <div class="log-step">화면 만들기</div>
-          <p class="log-line">선택하신 스타일로 홈 화면부터 그리고 있어요. 오른쪽 미리보기에서 실시간으로 볼 수 있어요.</p>
-          <div class="log-chk">화면 6개 완성 — 페이지 연결까지 끝났어요</div>
-
-          <div class="log-step">데이터 저장소 · 기능 연결</div>
-          <div class="log-chk">테이블 4개 준비 — 데이터베이스 탭에서 확인할 수 있어요</div>
-          <div class="log-chk">회원 · 예약 접수 · 게시판 연결 완료</div>
-
           <div class="log-step">출시</div>
 
-          <!-- 완료 보고 카드 -->
           <div class="report">
             <div class="report__head">
               <span class="live-badge"><i></i>LIVE</span>
               <b>멍멍 산책 예약</b>
             </div>
             <a class="report__url" href="#" onclick="return false">🌐 https://mungmung-walk.aiapp.site</a>
-            <div class="report__sec">이렇게 만들었어요</div>
-            <ul class="report__list">
-              <li>화면 6개 — 홈 · 예약 · 후기 · 소개 · 마이 · 로그인</li>
-              <li>회원 가입 · 로그인</li>
-              <li>예약 접수 — 신청하면 연락처가 자동 저장돼요</li>
-              <li>후기 게시판</li>
-              <li>데이터 저장소 — 테이블 4개</li>
-            </ul>
             <div class="report__foot">
               <span>사용 크레딧 <b>388</b></span>
               <span>소요 시간 <b>1분 42초</b></span>
             </div>
-            <div class="report__acts">
-              <button class="btn btn--primary"><svg class="ph"><use href="#ph-globe"/></svg> 공개 설정</button>
-              <button class="btn btn--lite"><svg class="ph"><use href="#ph-database"/></svg> 데이터 보기</button>
-            </div>
           </div>
 
-          <p class="log-line">수정하고 싶은 부분이 있으면 아래 입력창에 편하게 말씀해 주세요 ✏️</p>
-
-          <!-- 다음 행동 추천 -->
-          <div class="next-sugg">
-            <span class="next-sugg__title">이어서 이런 걸 해볼 수 있어요</span>
-            <div class="next-sugg__row">
-              <button class="next-sugg__chip">홈 문구를 더 따뜻하게 바꿔줘</button>
-              <button class="next-sugg__chip">우리 로고로 바꾸고 싶어</button>
-              <button class="next-sugg__chip">🎨 로고 · 브랜드 만들기</button>
-              <button class="next-sugg__chip">🎬 홍보 숏폼 만들기</button>
-            </div>
-          </div>
-
+          <p class="log-line">설정은 오른쪽 <b>관리·설정</b>에서 바꿀 수 있어요. 바꾸는 즉시 적용돼요.</p>
         </div>
       </div>
 
-      <!-- 하단 입력바: Enter로 줄바꿈, 내용에 맞춰 자동으로 높이가 늘어남 -->
+      <!-- 하단 입력바 -->
       <div class="feed__input">
         <div class="chatbox">
           <textarea rows="1" placeholder="수정하고 싶은 걸 말씀해 주세요 — 예: 메인 색을 초록으로"></textarea>
@@ -215,92 +181,120 @@
     <!-- ── 리사이저 ── -->
     <div class="studio__divider" role="separator" aria-label="패널 크기 조절"></div>
 
-    <!-- ── 오른쪽: 패널 ── -->
+    <!-- ── 오른쪽: 패널 (관리·설정 탭 활성) ── -->
     <section class="panel" aria-label="작업 패널">
       <div class="panel__tabs" role="tablist">
-        <button class="ptab is-on"><svg class="ph"><use href="#ph-eye"/></svg> 미리보기</button>
-        <button class="ptab" onclick="location.href='db.html'"><svg class="ph"><use href="#ph-database"/></svg> 데이터베이스 <i class="ptab__dot"></i></button>
+        <button class="ptab" onclick="location.href='b2.html'"><svg class="ph"><use href="#ph-eye"/></svg> 미리보기</button>
+        <button class="ptab" onclick="location.href='db.html'"><svg class="ph"><use href="#ph-database"/></svg> 데이터베이스</button>
         <button class="ptab" onclick="location.href='brand.html'"><svg class="ph"><use href="#ph-palette"/></svg> 브랜드·홍보</button>
-        <button class="ptab" onclick="location.href='settings.html'"><svg class="ph"><use href="#ph-gear"/></svg> 관리·설정</button>
+        <button class="ptab is-on"><svg class="ph"><use href="#ph-gear"/></svg> 관리·설정</button>
       </div>
 
-      <!-- 미리보기 페인 -->
-      <div class="pv">
-        <div class="pv__bar">
-          <div class="device-toggle" role="group" aria-label="디바이스">
-            <button title="모바일"><svg class="ph"><use href="#ph-device-mobile"/></svg></button>
-            <button class="is-on" title="데스크톱"><svg class="ph"><use href="#ph-monitor"/></svg></button>
-          </div>
-          <span class="pv__addr">https://mungmung-walk.aiapp.site</span>
-          <span class="pv__badge">LIVE</span>
-          <button class="et-btn"><svg class="ph"><use href="#ph-pencil-simple"/></svg> 편집</button>
-          <button class="et-btn"><svg class="ph"><use href="#ph-sparkle"/></svg> AI 요청</button>
-          <button class="et-btn"><svg class="ph"><use href="#ph-clock-counter-clockwise"/></svg> 버전</button>
-        </div>
+      <!-- 설정 패널 -->
+      <div class="set">
 
-        <div class="pv__viewport">
-          <!-- 생성된 서비스 목업 (멍멍 산책 브랜드) — 엣지-투-엣지 풀 캔버스 -->
-          <div class="pv__canvas">
-            <div class="site-nav">
-              <b>🐾 멍멍산책</b>
-              <span class="lnk">예약</span><span class="lnk">후기</span><span class="lnk">소개</span>
-              <span class="login">로그인</span>
+        <!-- 사이드바: 설정 묶음 (개발 용어 대신 하는 일 중심) -->
+        <aside class="set__side" aria-label="설정 묶음">
+          <span class="set__side-label">공개 · 운영</span>
+          <button class="set__item is-on"><svg class="ph"><use href="#ph-globe"/></svg> 공개·주소</button>
+          <button class="set__item"><svg class="ph"><use href="#ph-magnifying-glass"/></svg> 검색 노출</button>
+          <button class="set__item"><svg class="ph"><use href="#ph-power"/></svg> 서비스 상태</button>
+
+          <span class="set__side-label">기능 설정</span>
+          <button class="set__item"><svg class="ph"><use href="#ph-user"/></svg> 회원 가입·로그인</button>
+          <button class="set__item"><svg class="ph"><use href="#ph-chat-circle"/></svg> 게시판·후기</button>
+          <button class="set__item"><svg class="ph"><use href="#ph-bell"/></svg> 예약 알림</button>
+
+          <span class="set__side-label">데이터 · 이력</span>
+          <button class="set__item"><svg class="ph"><use href="#ph-address-book"/></svg> 연락처 저장</button>
+          <button class="set__item"><svg class="ph"><use href="#ph-clock-counter-clockwise"/></svg> 버전·되돌리기</button>
+
+          <span class="set__side-label">연동</span>
+          <button class="set__item"><svg class="ph"><use href="#ph-github-logo"/></svg> GitHub <span class="set__soon">곧 제공</span></button>
+
+          <div class="set__side-foot"><b>✓</b> 바꾸면 바로 적용돼요</div>
+        </aside>
+
+        <!-- 메인: 공개·주소 -->
+        <div class="set__main">
+          <div class="set__head">
+            <div>
+              <h3>공개·주소</h3>
+              <p>서비스가 어디에, 어떻게 공개될지 정해요.</p>
             </div>
+            <span class="tag tag--ok">● 공개 중</span>
+          </div>
 
-            <div class="site-hero">
-              <div class="site-hero__copy">
-                <span class="site-hero__badge">🐾 PET WALKING SERVICE</span>
-                <h3>산책이 필요한 순간,<br>멍멍 산책 예약</h3>
-                <p>우리 동네 검증된 산책러와 함께, 오늘도 신나는 산책을.</p>
-                <div class="site-hero__btns">
-                  <i class="primary">지금 예약하기</i>
-                  <i class="ghost">서비스 소개</i>
+          <div class="set__group">
+            <span class="set__group-label">서비스 주소</span>
+            <div class="set__card">
+              <div class="set__row">
+                <div class="set__row-text">
+                  <div class="set__row-t">기본 주소</div>
+                  <div class="set__row-d">출시할 때 자동으로 만들어진 주소예요.</div>
+                </div>
+                <div class="set__row-ctrl">
+                  <span class="set__url">https://mungmung-walk.aiapp.site</span>
+                  <button class="btn">복사</button>
                 </div>
               </div>
-              <div class="site-hero__img" aria-hidden="true">🐕</div>
-            </div>
-
-            <div class="site-strip">
-              <div><b>1,240+</b><span>완료된 산책</span></div>
-              <div><b>4.9</b><span>평균 평점</span></div>
-              <div><b>32명</b><span>검증 산책러</span></div>
-            </div>
-
-            <div class="site-section">
-              <h4>우리 동네 산책러</h4>
-              <div class="site-cards">
-                <div class="site-card"><i></i><span>김산책 산책러</span><em>★ 4.9 · 128회</em></div>
-                <div class="site-card"><i></i><span>박멍멍 산책러</span><em>★ 4.8 · 96회</em></div>
-                <div class="site-card"><i></i><span>이초코 산책러</span><em>★ 5.0 · 201회</em></div>
-              </div>
-            </div>
-
-            <div class="site-section site-section--tint">
-              <h4>산책 예약하기</h4>
-              <div class="site-form">
-                <div class="site-form__grid">
-                  <i>보호자 이름</i>
-                  <i>연락처 (010-0000-0000)</i>
-                  <i>희망 날짜 · 시간</i>
-                  <i>요청사항 (선택)</i>
+              <div class="set__row">
+                <div class="set__row-text">
+                  <div class="set__row-t">내 도메인 연결</div>
+                  <div class="set__row-d">갖고 있는 주소(예: mungmung.co.kr)를 이 서비스에 연결해요.</div>
                 </div>
-                <b class="site-form__btn">예약 신청</b>
+                <div class="set__row-ctrl">
+                  <button class="btn btn--lite">연결하기</button>
+                </div>
               </div>
-            </div>
-
-            <div class="site-section">
-              <h4>산책 후기</h4>
-              <div class="site-reviews">
-                <div class="site-review"><b>초코가 너무 행복해했어요 🐕</b><span>김산책 산책러 · 2026.07.02</span></div>
-                <div class="site-review"><b>시간 약속 정확하고 사진도 보내주셨어요</b><span>박멍멍 산책러 · 2026.06.28</span></div>
-              </div>
-            </div>
-
-            <div class="site-footer">
-              <b>🐾 멍멍산책</b>
-              <span>이용약관 · 개인정보처리방침 · 문의하기</span>
             </div>
           </div>
+
+          <div class="set__group">
+            <span class="set__group-label">공개 범위</span>
+            <div class="set__card">
+              <div class="set__row">
+                <div class="set__row-text">
+                  <div class="set__row-t">서비스 공개</div>
+                  <div class="set__row-d">끄면 방문자에게 "준비 중" 화면이 보여요.</div>
+                </div>
+                <div class="set__row-ctrl">
+                  <button class="switch is-on" role="switch" aria-checked="true" aria-label="서비스 공개"></button>
+                </div>
+              </div>
+              <div class="set__row">
+                <div class="set__row-text">
+                  <div class="set__row-t">검색엔진 노출</div>
+                  <div class="set__row-d">네이버·구글 검색 결과에 나오게 해요. 제목과 설명은 '검색 노출'에서 바꿀 수 있어요.</div>
+                </div>
+                <div class="set__row-ctrl">
+                  <button class="switch is-on" role="switch" aria-checked="true" aria-label="검색엔진 노출"></button>
+                </div>
+              </div>
+              <div class="serp" aria-label="검색 결과 미리보기">
+                <div class="serp__label">검색 결과에 이렇게 보여요</div>
+                <div class="serp__title">멍멍 산책 예약 — 우리 동네 반려견 산책</div>
+                <div class="serp__url">mungmung-walk.aiapp.site</div>
+                <div class="serp__desc">검증된 산책러와 함께하는 반려견 산책 예약 서비스. 실시간 예약과 후기 확인까지.</div>
+              </div>
+            </div>
+          </div>
+
+          <div class="set__group">
+            <span class="set__group-label">주의가 필요한 설정</span>
+            <div class="set__card set__card--warn">
+              <div class="set__row">
+                <div class="set__row-text">
+                  <div class="set__row-t">서비스 잠시 내리기</div>
+                  <div class="set__row-d">내려두는 동안 방문자에게 "준비 중" 화면이 보여요. 언제든 다시 열 수 있어요.</div>
+                </div>
+                <div class="set__row-ctrl">
+                  <button class="btn btn--warn">잠시 내리기</button>
+                </div>
+              </div>
+            </div>
+          </div>
+
         </div>
       </div>
     </section>
@@ -308,7 +302,7 @@
   </main>
 </div>
 
-<!-- 설정 모달 — 틀만: 탭과 행 구조 (b1과 동일) -->
+<!-- 설정 모달 — 틀만: 탭과 행 구조 (b1과 동일. 계정 설정이며, 우측 관리·설정 패널과는 별개) -->
 <div class="modal-overlay" id="settings-modal" hidden>
   <div class="modal" role="dialog" aria-modal="true" aria-label="설정">
     <aside class="modal__side">
@@ -418,7 +412,7 @@
     notifPop.querySelectorAll(".dot-new").forEach((d) => d.remove());
   });
 
-  /* ── 설정 모달 ── */
+  /* ── 계정 설정 모달 ── */
   const settingsModal = document.getElementById("settings-modal");
   document.getElementById("open-settings").addEventListener("click", () => {
     accountMenu.hidden = true;
@@ -434,14 +428,14 @@
     });
   });
 
-  /* ── 입력창 자동 높이: Enter는 줄바꿈, 내용만큼 자람 (최대 120px) ── */
+  /* 입력창 자동 높이 (Enter = 줄바꿈) */
   const chatInput = document.querySelector(".chatbox textarea");
   chatInput.addEventListener("input", () => {
     chatInput.style.height = "auto";
     chatInput.style.height = Math.min(chatInput.scrollHeight, 120) + "px";
   });
 
-  /* ── 채팅 ↔ 미리보기 너비 드래그 조절 ── */
+  /* 채팅 ↔ 패널 너비 드래그 조절 */
   const divider = document.querySelector(".studio__divider");
   const studio = document.querySelector(".studio");
   divider.addEventListener("pointerdown", (e) => {
@@ -461,6 +455,14 @@
     };
     divider.addEventListener("pointermove", move);
     divider.addEventListener("pointerup", up);
+  });
+
+  /* 설정 스위치 토글 (스캐폴드: 시각 상태만) */
+  document.querySelectorAll(".switch").forEach((sw) => {
+    sw.addEventListener("click", () => {
+      sw.classList.toggle("is-on");
+      sw.setAttribute("aria-checked", String(sw.classList.contains("is-on")));
+    });
   });
 </script>
 

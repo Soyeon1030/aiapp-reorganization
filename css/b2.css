@@ -245,7 +245,7 @@
 /* ── 하단 입력바: 미니 컴포저 (Enter = 줄바꿈, 자동 높이) ── */
 .feed__input {
   border-top: 1px solid var(--color-line);
-  padding: 12px 28px 16px;
+  padding: 16px 20px 16px;
   display: flex;
   justify-content: center;
 }
