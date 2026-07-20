@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>AiApp — 스튜디오 · 브랜드·홍보 (B2)</title>
+<title>AiApp — 스튜디오 · 브랜드·홍보 · 빈 상태 (B2)</title>
 <link rel="stylesheet" href="css/tokens.css">
 <link rel="stylesheet" href="css/components.css">
 <link rel="stylesheet" href="css/b2.css">
@@ -161,7 +161,7 @@
             </div>
           </div>
 
-          <p class="log-line">로고와 홍보 소재는 오른쪽 <b>브랜드·홍보</b>에 모아뒀어요. "가을 이벤트 배너 만들어줘"처럼 말하면 새 소재가 생겨요.</p>
+          <p class="log-line">로고와 홍보 소재는 오른쪽 <b>브랜드·홍보</b> 탭에서 만들 수 있어요. "로고 만들어줘"처럼 말하면 첫 시안이 생겨요.</p>
         </div>
       </div>
 
@@ -197,9 +197,9 @@
           <button class="brand__item is-on"><svg class="ph"><use href="#ph-palette"/></svg> 브랜드 키트</button>
 
           <span class="brand__side-label">홍보 소재</span>
-          <button class="brand__item"><svg class="ph"><use href="#ph-image"/></svg> 홍보 이미지 <span class="brand__count">2</span></button>
-          <button class="brand__item"><svg class="ph"><use href="#ph-film-slate"/></svg> 숏폼 영상 <span class="brand__count">1</span></button>
-          <button class="brand__item"><svg class="ph"><use href="#ph-text-t"/></svg> 홍보 문구 <span class="brand__count">3</span></button>
+          <button class="brand__item"><svg class="ph"><use href="#ph-image"/></svg> 홍보 이미지</button>
+          <button class="brand__item"><svg class="ph"><use href="#ph-film-slate"/></svg> 숏폼 영상</button>
+          <button class="brand__item"><svg class="ph"><use href="#ph-text-t"/></svg> 홍보 문구</button>
         </aside>
 
         <!-- 메인: 브랜드 키트 -->
@@ -207,10 +207,9 @@
           <div class="brand__head">
             <div>
               <h3>브랜드 키트</h3>
-              <p>AI가 만든 우리 서비스의 브랜드 자산이에요. 채팅으로 언제든 바꿀 수 있어요.</p>
-              <p class="hd-hint">＋ 만들기 → 로고 · 홍보 이미지 · 숏폼 영상 · 홍보 문구 중 선택</p>
+              <p>아직 만든 브랜드 자산이 없어요. ＋ 만들기 또는 아래에서 시작해 보세요.</p>
             </div>
-            <!-- 헤더 액션 — 만들기(드롭다운) + 키트 내려받기 -->
+            <!-- 헤더 액션 — 만들기(드롭다운). 빈 상태라 내려받기는 숨김 -->
             <div class="hd-actions">
               <div class="make-menu">
                 <button class="btn btn--primary" id="make-toggle" aria-haspopup="true" aria-expanded="false">
@@ -218,7 +217,7 @@
                 </button>
                 <div class="make-menu__pop" id="make-pop" role="menu" hidden>
                   <!-- 로고는 브리프(선호 색상·타겟층 등)가 필요해 모달로 진입 -->
-                  <button class="make-menu__item" id="make-logo" role="menuitem">
+                  <button class="make-menu__item open-brief" id="make-logo" role="menuitem">
                     <span class="make-menu__ico"><svg class="ph"><use href="#ph-palette"/></svg></span>
                     <span class="make-menu__t"><b>로고</b><small>새 시안 3개</small></span>
                   </button>
@@ -236,21 +235,17 @@
                   </button>
                 </div>
               </div>
-              <button class="btn"><svg class="ph"><use href="#ph-download-simple"/></svg> 키트 내려받기</button>
             </div>
           </div>
 
-          <!-- 로고 — 생성된 로고 하나. 형식(PNG·SVG)만 내려받기 -->
+          <!-- 로고 — 빈 상태 -->
           <div class="brand__group">
             <span class="brand__group-label">로고</span>
-            <div class="logo-card">
-              <span class="logo-mark" style="background:#D98E4A">멍</span>
-              <span class="logo-word">멍멍 산책 예약</span>
-              <span class="logo-sub">MUNGMUNG WALK</span>
-              <div class="logo-dl">
-                <button class="btn btn--lite"><svg class="ph"><use href="#ph-download-simple"/></svg> PNG</button>
-                <button class="btn btn--lite"><svg class="ph"><use href="#ph-download-simple"/></svg> SVG</button>
-              </div>
+            <div class="empty">
+              <span class="empty__ico"><svg class="ph"><use href="#ph-palette"/></svg></span>
+              <b>아직 로고가 없어요</b>
+              <p>서비스 이름과 느낌만 알려주면 로고 시안을 만들어 드려요.</p>
+              <button class="btn btn--primary open-brief"><svg class="ph"><use href="#ph-plus"/></svg> 로고 만들기</button>
             </div>
           </div>
 
@@ -258,56 +253,35 @@
           <div class="upsell">
             <span class="upsell__badge"><svg class="ph"><use href="#ph-sparkle"/></svg></span>
             <div class="upsell__txt">
-              <b>더 완성도 높은 디자인이 필요하세요?</b>
-              <small>전문 디자이너의 손길로 로고·브랜드를 한 단계 업그레이드해 드려요.</small>
+              <b>처음부터 전문 디자인으로 시작할까요?</b>
+              <small>전문 디자이너가 로고·브랜드를 직접 다듬어 드려요.</small>
             </div>
             <button class="btn btn--primary" id="upgrade-btn"><svg class="ph"><use href="#ph-arrow-up"/></svg> 디자인 업그레이드 요청</button>
           </div>
 
-          <!-- 색상 · 글꼴 -->
+          <!-- 색상 · 글꼴 — 빈 상태 -->
           <div class="brand__group">
-            <span class="brand__group-label">색상 · 글꼴 <small>스와치를 누르면 색상 코드가 복사돼요</small></span>
-            <div class="kit2">
-              <div class="swatches">
-                <button class="swatch" title="색상 코드 복사">
-                  <i style="background:#D98E4A"></i><b>멍멍 오렌지</b><small>#D98E4A</small>
-                </button>
-                <button class="swatch" title="색상 코드 복사">
-                  <i style="background:#7A4F28"></i><b>딥 브라운</b><small>#7A4F28</small>
-                </button>
-                <button class="swatch" title="색상 코드 복사">
-                  <i style="background:#FBF3EA"></i><b>크림</b><small>#FBF3EA</small>
-                </button>
-                <button class="swatch" title="색상 코드 복사">
-                  <i style="background:#33291F"></i><b>잉크</b><small>#33291F</small>
-                </button>
+            <span class="brand__group-label">색상 · 글꼴</span>
+            <div class="empty empty--slim">
+              <span class="empty__ico"><svg class="ph"><use href="#ph-palette"/></svg></span>
+              <div class="empty__txt">
+                <b>브랜드 색·글꼴이 아직 없어요</b>
+                <p>로고를 만들면 어울리는 색과 글꼴도 함께 잡아드려요.</p>
               </div>
-              <div class="fonts">
-                <span class="fonts__name">Pretendard</span>
-                <span class="fonts__sample-b">우리 동네 반려견 산책</span>
-                <span class="fonts__sample-r">검증된 산책러와 함께, 실시간 예약까지.</span>
-              </div>
+              <button class="btn open-brief"><svg class="ph"><use href="#ph-plus"/></svg> 만들기</button>
             </div>
           </div>
 
-          <!-- 홍보 소재 -->
+          <!-- 홍보 소재 — 빈 상태 -->
           <div class="brand__group">
-            <span class="brand__group-label">홍보 소재 <small>SNS에 바로 올릴 수 있는 크기로 만들어져요</small></span>
-            <div class="assets">
-              <button class="asset" title="열기">
-                <span class="asset__thumb" style="background:linear-gradient(135deg,#D98E4A,#B26B2C)">가을 산책 이벤트</span>
-                <span class="asset__meta"><svg class="ph"><use href="#ph-image"/></svg> 홍보 이미지 <small>어제</small></span>
-              </button>
-              <button class="asset" title="열기">
-                <span class="asset__thumb" style="background:linear-gradient(135deg,#33291F,#7A4F28)">오픈 기념 -20%</span>
-                <span class="asset__meta"><svg class="ph"><use href="#ph-image"/></svg> 홍보 이미지 <small>3일 전</small></span>
-              </button>
-              <button class="asset" title="열기">
-                <span class="asset__thumb asset__thumb--reel">
-                  <span class="asset__reel-frame" style="background:linear-gradient(160deg,#D98E4A,#7A4F28)">▶</span>
-                </span>
-                <span class="asset__meta"><svg class="ph"><use href="#ph-film-slate"/></svg> 산책 브이로그 15초 <small>1주 전</small></span>
-              </button>
+            <span class="brand__group-label">홍보 소재</span>
+            <div class="empty empty--slim">
+              <span class="empty__ico"><svg class="ph"><use href="#ph-image"/></svg></span>
+              <div class="empty__txt">
+                <b>아직 만든 홍보 소재가 없어요</b>
+                <p>“가을 이벤트 배너 만들어줘”처럼 말하면 새 소재가 생겨요.</p>
+              </div>
+              <button class="btn" data-prompt="가을 이벤트 홍보 이미지 만들어줘"><svg class="ph"><use href="#ph-plus"/></svg> 홍보 소재 만들기</button>
             </div>
           </div>
 
@@ -533,7 +507,7 @@
 
   /* ── 로고 브리프 모달 ── */
   const brief = document.getElementById("logo-brief");
-  document.getElementById("make-logo").addEventListener("click", () => { brief.hidden = false; });
+  document.querySelectorAll(".open-brief").forEach((b) => b.addEventListener("click", () => { brief.hidden = false; }));
   document.getElementById("brief-close").addEventListener("click", () => { brief.hidden = true; });
   brief.addEventListener("click", (e) => { if (e.target === brief) brief.hidden = true; });
   document.addEventListener("keydown", (e) => { if (e.key === "Escape") brief.hidden = true; });
