@@ -266,6 +266,7 @@
         <button class="ptab" onclick="location.href='db.html'"><svg class="ph"><use href="#ph-database"/></svg> 데이터베이스 <i class="ptab__dot"></i></button>
         <button class="ptab" onclick="location.href='brand.html'"><svg class="ph"><use href="#ph-palette"/></svg> 브랜딩·홍보</button>
         <button class="ptab" onclick="location.href='settings.html'"><svg class="ph"><use href="#ph-gear"/></svg> 관리·설정</button>
+        <button class="btn btn--primary ptab-cta" id="publish-open-top">🚀 출시하기</button>
       </div>
 
       <!-- 미리보기 페인 -->
@@ -697,12 +698,15 @@
   const pubModal = document.getElementById("publish-modal");
   const pubSlug = document.getElementById("pub-slug");
   const pubCheck = document.getElementById("pub-check");
-  document.getElementById("publish-open").addEventListener("click", () => {
+  /* 보고 카드 + 탭 바 우측 CTA — 둘 다 같은 출시 모달 */
+  const publishBtns = [document.getElementById("publish-open"), document.getElementById("publish-open-top")];
+  publishBtns.forEach((b) => b.addEventListener("click", () => {
+    if (b.disabled) return;
     pubModal.hidden = false;
     document.getElementById("pub-step-addr").hidden = false;
     document.getElementById("pub-step-done").hidden = true;
     pubSlug.focus();
-  });
+  }));
   document.getElementById("publish-close").addEventListener("click", () => { pubModal.hidden = true; });
   pubModal.addEventListener("click", (e) => { if (e.target === pubModal) pubModal.hidden = true; });
 
@@ -741,8 +745,7 @@
     const rUrl = document.getElementById("report-url");
     rUrl.textContent = "🌐 " + url;
     rUrl.hidden = false;
-    document.getElementById("publish-open").textContent = "✓ 출시됨";
-    document.getElementById("publish-open").disabled = true;
+    publishBtns.forEach((b) => { b.textContent = "✓ 출시됨"; b.disabled = true; });
     /* 채팅에 출시 로그 */
     const line = document.createElement("p");
     line.className = "log-line";
