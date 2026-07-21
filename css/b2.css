@@ -180,6 +180,20 @@
   flex-direction: column;
   gap: 8px;
 }
+/* 카드 머리 — 제목(질문) + 설명문(왜 묻는지·무엇이 달라지는지) */
+.ask__head { padding: 3px 3px 5px; }
+.ask__t {
+  display: block;
+  font-size: var(--text-base);
+  font-weight: 800;
+  letter-spacing: -.01em;
+}
+.ask__d {
+  margin: 3px 0 0;
+  font-size: var(--text-xs);
+  color: var(--color-muted);
+  line-height: 1.55;
+}
 .askopt {
   display: flex;
   flex-direction: column;

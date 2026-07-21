@@ -424,8 +424,12 @@
            모호한 요청은 선택지로 좁히고, 기타는 직접 입력. 옵션 클릭 = 즉답 -->
       <div class="scene" id="scene-ask" hidden>
       <span class="log-user">예약할 때 결제도 받고 싶어요</span>
-      <p class="log-line">좋아요, 결제 기능을 켤게요. 결제를 <b>어떻게 받는 게</b> 좋으세요?</p>
+      <p class="log-line">좋아요, 결제 기능을 켤게요. 하나만 정해 주세요.</p>
       <div class="ask" id="ask-pay">
+        <div class="ask__head">
+          <b class="ask__t">결제는 어떻게 받는 게 좋으세요?</b>
+          <p class="ask__d">방식에 따라 예약 화면과 안내 문구가 달라져요. 나중에 언제든 바꿀 수 있어요.</p>
+        </div>
         <button class="askopt is-on" data-v="예약금만 미리 받기">
           <b>예약금만 미리 받기 <em class="askopt__rec">AI 추천</em></b>
           <small>노쇼를 줄여줘요 — 나머지는 현장에서 받아요</small>

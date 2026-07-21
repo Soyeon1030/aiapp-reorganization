@@ -219,8 +219,12 @@
           <!-- 운영 중 대화 되묻기 (명세 §2.4) — 설계 단계가 아니어도 같은 문법.
                활성 상태: 답을 기다리는 중, 옵션 클릭 = 즉답 후 접힘 -->
           <span class="log-user">후기에 사진도 올릴 수 있게 해줘</span>
-          <p class="log-line">좋아요! 후기 사진 업로드를 켤게요. 사진은 <b>몇 장까지</b> 받을까요?</p>
+          <p class="log-line">좋아요! 후기 사진 업로드를 켤게요. 하나만 정해 주세요.</p>
           <div class="ask" id="ask-photo">
+            <div class="ask__head">
+              <b class="ask__t">사진은 몇 장까지 받을까요?</b>
+              <p class="ask__d">후기 하나에 올릴 수 있는 사진 개수예요. 많을수록 저장 공간을 더 쓰고, 나중에 언제든 바꿀 수 있어요.</p>
+            </div>
             <button class="askopt is-on" data-v="3장까지">
               <b>3장까지 <em class="askopt__rec">AI 추천</em></b>
               <small>보기 좋고 페이지도 가벼워요</small>
@@ -505,11 +509,14 @@
         <div class="cheat__card">
           <div class="cheat__demo">
             <div class="ask" style="padding:9px">
+              <div class="ask__head" style="padding:1px 2px 2px">
+                <b class="ask__t" style="font-size:13px">사진은 몇 장까지 받을까요?</b>
+              </div>
               <button class="askopt is-on"><b>3장까지 <em class="askopt__rec">AI 추천</em></b></button>
               <button class="askopt"><b>제한 없이</b></button>
             </div>
           </div>
-          <div class="cheat__meta"><b>되묻기 카드 (비차단)</b><small>모호한 요청 구체화 · 옵션 ≤4 + 기타 · 추천 선선택 · 활성 중 전송 잠금</small></div>
+          <div class="cheat__meta"><b>되묻기 카드 (비차단)</b><small>제목+설명문으로 질문 명시 · 옵션 ≤4 + 기타 · 추천 선선택 · 활성 중 전송 잠금</small></div>
         </div>
 
         <div class="cheat__card">
