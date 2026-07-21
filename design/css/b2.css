@@ -505,6 +505,13 @@
 }
 .ptab:hover { background: var(--color-surface-sub); }
 .ptab.is-on { background: var(--color-accent-soft); color: var(--color-accent); }
+/* 탭 바 우측 끝 고정 CTA — 출시하기 */
+.ptab-cta {
+  margin-left: auto;
+  font-size: var(--text-sm);
+  padding: 7px 16px;
+  flex-shrink: 0;
+}
 /* 다른 탭에 새 소식이 있을 때 */
 .ptab__dot { width: 6px; height: 6px; border-radius: 50%; background: var(--color-warn); }
 
