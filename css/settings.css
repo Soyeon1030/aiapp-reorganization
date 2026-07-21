@@ -87,6 +87,7 @@
   flex: 1;
   min-width: 0;
   overflow-y: auto;
+  background-color: rgb(249 250 251);  /* 미리보기 페인과 동일 — 사용자 지정 색 */
   padding: 20px 24px 24px;
   display: flex;
   flex-direction: column;
