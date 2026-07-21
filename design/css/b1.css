@@ -117,9 +117,10 @@
 .attach-token__avatar {
   width: 22px; height: 22px;
   border-radius: 6px;
-  color: #fff;
+  background: color-mix(in srgb, var(--av, var(--color-accent)) 16%, var(--color-surface));
+  color: color-mix(in srgb, var(--av, var(--color-accent)) 72%, var(--color-ink));
   font-size: 10.5px;
-  font-weight: 700;
+  font-weight: 800;
   display: flex;
   align-items: center;
   justify-content: center;

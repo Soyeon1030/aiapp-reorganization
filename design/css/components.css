@@ -427,13 +427,16 @@
   max-width: 170px;
 }
 
-/* ── 아바타 (프로젝트 이니셜) ── */
+/* ── 아바타 (프로젝트 이니셜) ──
+   식별색은 inline --av로 받고, 화면에는 연 틴트 배경 + 진한 글자로 —
+   원색 배경이 차분한 UI에서 너무 튀어 소프트 톤으로 통일 (2026-07-21) */
 .avatar {
   width: 42px; height: 42px;
   border-radius: 11px;
-  color: #fff;
+  background: color-mix(in srgb, var(--av, var(--color-accent)) 14%, var(--color-surface));
+  color: color-mix(in srgb, var(--av, var(--color-accent)) 72%, var(--color-ink));
   font-size: 13px;
-  font-weight: 700;
+  font-weight: 800;
   display: flex;
   align-items: center;
   justify-content: center;

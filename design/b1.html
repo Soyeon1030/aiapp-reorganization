@@ -55,13 +55,13 @@
 
     <span class="gnb__sec">최근 프로젝트</span>
     <button class="gnb__row gnb__row--proj" title="청해 검수 pda 웹뷰" onclick="location.href='b2.html'">
-      <span class="avatar avatar--xs" style="background:#43B96E">청검</span><span class="gnb__label">청해 검수 pda 웹뷰</span>
+      <span class="avatar avatar--xs" style="--av:#43B96E">청검</span><span class="gnb__label">청해 검수 pda 웹뷰</span>
     </button>
     <button class="gnb__row gnb__row--proj" title="청해해운 물자 검수 관리 시스템" onclick="location.href='b2.html'">
-      <span class="avatar avatar--xs" style="background:#E4574F">청물</span><span class="gnb__label">청해해운 물자 검수 관리 시스템</span>
+      <span class="avatar avatar--xs" style="--av:#E4574F">청물</span><span class="gnb__label">청해해운 물자 검수 관리 시스템</span>
     </button>
     <button class="gnb__row gnb__row--proj" title="takit" onclick="location.href='b2.html'">
-      <span class="avatar avatar--xs" style="background:#E4507A">ta</span><span class="gnb__label">takit</span>
+      <span class="avatar avatar--xs" style="--av:#E4507A">ta</span><span class="gnb__label">takit</span>
     </button>
     <button class="gnb__row" title="모든 프로젝트">
       <svg class="ph"><use href="#ph-squares-four"/></svg><span class="gnb__label">모든 프로젝트</span>
@@ -167,16 +167,16 @@
         <div class="picker" id="picker-proj" hidden>
           <div class="picker__head">프로젝트 가져오기<small>숏폼·로고 등 파생 작업의 소스로 사용해요</small></div>
           <button class="picker__item" data-name="청해 검수 pda 웹뷰" data-initial="청검" data-color="#43B96E">
-            <span class="avatar avatar--xs" style="background:#43B96E">청검</span>청해 검수 pda 웹뷰<span class="picker__meta">출시됨</span>
+            <span class="avatar avatar--xs" style="--av:#43B96E">청검</span>청해 검수 pda 웹뷰<span class="picker__meta">출시됨</span>
           </button>
           <button class="picker__item" data-name="청해해운 물자 검수 관리 시스템" data-initial="청물" data-color="#E4574F">
-            <span class="avatar avatar--xs" style="background:#E4574F">청물</span>청해해운 물자 검수 관리 시스템<span class="picker__meta">출시됨</span>
+            <span class="avatar avatar--xs" style="--av:#E4574F">청물</span>청해해운 물자 검수 관리 시스템<span class="picker__meta">출시됨</span>
           </button>
           <button class="picker__item" data-name="takit" data-initial="ta" data-color="#E4507A">
-            <span class="avatar avatar--xs" style="background:#E4507A">ta</span>takit<span class="picker__meta">출시됨</span>
+            <span class="avatar avatar--xs" style="--av:#E4507A">ta</span>takit<span class="picker__meta">출시됨</span>
           </button>
           <button class="picker__item" data-name="우리동네 베이커리" data-initial="베" data-color="#7B61C9">
-            <span class="avatar avatar--xs" style="background:#7B61C9">베</span>우리동네 베이커리<span class="picker__meta">초안</span>
+            <span class="avatar avatar--xs" style="--av:#7B61C9">베</span>우리동네 베이커리<span class="picker__meta">초안</span>
           </button>
         </div>
 
@@ -233,7 +233,7 @@
               </span>
             </button>
             <div class="pcard__meta">
-              <span class="avatar avatar--sm" style="background:#43B96E">청검</span>
+              <span class="avatar avatar--sm" style="--av:#43B96E">청검</span>
               <div class="pcard__id">
                 <div class="pcard__title">청해 검수 pda 웹뷰</div>
                 <div class="pcard__status"><i class="dot"></i> 출시됨 · 22시간 전</div>
@@ -265,7 +265,7 @@
               </span>
             </button>
             <div class="pcard__meta">
-              <span class="avatar avatar--sm" style="background:#E4574F">청물</span>
+              <span class="avatar avatar--sm" style="--av:#E4574F">청물</span>
               <div class="pcard__id">
                 <div class="pcard__title">청해해운 물자 검수 관리 시스템</div>
                 <div class="pcard__status"><i class="dot"></i> 출시됨 · 3일 전</div>
@@ -295,7 +295,7 @@
               </span>
             </button>
             <div class="pcard__meta">
-              <span class="avatar avatar--sm" style="background:#E4507A">ta</span>
+              <span class="avatar avatar--sm" style="--av:#E4507A">ta</span>
               <div class="pcard__id">
                 <div class="pcard__title">takit</div>
                 <div class="pcard__status"><i class="dot"></i> 출시됨 · 1주 전</div>
@@ -319,7 +319,7 @@
               <span class="pcard__draft-initial">베</span>
             </button>
             <div class="pcard__meta">
-              <span class="avatar avatar--sm" style="background:#7B61C9">베</span>
+              <span class="avatar avatar--sm" style="--av:#7B61C9">베</span>
               <div class="pcard__id">
                 <div class="pcard__title">우리동네 베이커리</div>
                 <div class="pcard__status"><i class="dot dot--draft"></i> 초안 · 어제</div>
@@ -505,7 +505,7 @@
     if (kind === "proj") {
       const av = document.createElement("span");
       av.className = "attach-token__avatar";
-      av.style.background = opts.color;
+      av.style.setProperty("--av", opts.color);
       av.textContent = opts.initial;
       tok.appendChild(av);
     } else {
