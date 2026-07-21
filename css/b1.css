@@ -148,6 +148,14 @@
 }
 .composer__input::placeholder { color: var(--color-line-strong); }
 .composer__input:focus-visible { outline: none; }
+/* 입력 상한 카운터 — 3,600자(90%)부터 노출, 4,000자 도달 시 경고색 */
+.composer__count {
+  align-self: flex-end;
+  font-size: var(--text-2xs);
+  color: var(--color-muted);
+  font-variant-numeric: tabular-nums;
+}
+.composer__count.is-max { color: var(--color-warn); font-weight: 600; }
 .composer__foot {
   display: flex;
   align-items: center;
