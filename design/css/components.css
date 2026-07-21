@@ -58,7 +58,7 @@
   flex: 1;
 }
 .gnb__sec {
-  font-size: 10px;
+  font-size: 10.5px;
   font-weight: 700;
   color: var(--color-muted);
   letter-spacing: .05em;
@@ -257,7 +257,7 @@
   border-radius: var(--radius-full);
   background: var(--color-danger);
   color: #fff;
-  font-size: 9px;
+  font-size: 9.5px;
   font-weight: 700;
   display: flex;
   align-items: center;
@@ -292,7 +292,7 @@
   color: var(--color-ink);
   border-radius: var(--radius-md);
   padding: 8px 18px;
-  font-size: 13.5px;
+  font-size: 14.5px;
   font-weight: 600;
   box-shadow: var(--shadow-sm);
   transition: filter .15s, border-color .15s;
@@ -326,7 +326,7 @@
   display: inline-flex;
   align-items: center;
   gap: 5px;
-  font-size: 11px;
+  font-size: 11.5px;
   font-weight: 600;
   padding: 2px 9px;
   border-radius: var(--radius-full);
@@ -432,7 +432,7 @@
   width: 42px; height: 42px;
   border-radius: 11px;
   color: #fff;
-  font-size: 12px;
+  font-size: 13px;
   font-weight: 700;
   display: flex;
   align-items: center;
@@ -442,12 +442,12 @@
 .avatar--sm {
   width: 33px; height: 33px;
   border-radius: 9px;
-  font-size: 10.5px;
+  font-size: 11px;
 }
 .avatar--xs {
   width: 24px; height: 24px;
   border-radius: 7px;
-  font-size: 9px;
+  font-size: 9.5px;
 }
 
 /* ── 카드 (기본) ── */
@@ -663,9 +663,9 @@
 }
 .modal__row:last-child { border-bottom: none; }
 .modal__row-text { flex: 1; min-width: 0; }
-.modal__row-t { font-size: 13.5px; font-weight: 700; }
+.modal__row-t { font-size: 14.5px; font-weight: 700; }
 .modal__row-d { font-size: var(--text-xs); color: var(--color-muted); margin-top: 2px; }
-.modal__row .btn { font-size: 12px; padding: 6px 14px; box-shadow: none; flex-shrink: 0; }
+.modal__row .btn { font-size: 13px; padding: 6px 14px; box-shadow: none; flex-shrink: 0; }
 .modal__row--danger .modal__row-t { color: var(--color-danger); }
 
 /* ── 플로팅 헬프 버튼 ── */

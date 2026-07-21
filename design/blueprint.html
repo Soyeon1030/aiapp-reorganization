@@ -18,6 +18,9 @@
   .bp__head h1 { font-size: var(--text-lg); font-weight: 800; letter-spacing: -.01em; margin: 0; }
   .bp__head p { color: var(--color-muted); font-size: var(--text-sm); margin: 5px 0 0; }
 
+  /* 만들기 시작 → 스튜디오 전환: 이 대화 컬럼이 b2의 좌측 피드(chat-feed)로 밀려 들어감 */
+  .bp { view-transition-name: chat-feed; }
+
   /* b2보다 화면이 넓어 대화 호흡만 살짝 보정 */
   .bp .log-user { max-width: 88%; margin-bottom: 6px; }
   .bp .pcard, .bp .tpick, .bp .frec { margin-bottom: 10px; }
@@ -46,6 +49,8 @@
     gap: 8px;
   }
 
+  /* 개발 노트(.spec-fab/.modal--spec/.spec/.flow) 스타일은 b2.css 공용 */
+
   /* ① 기획안 카드 */
   .pcard { border: 1px solid var(--color-line); border-radius: var(--radius-lg); background: var(--color-surface); box-shadow: var(--shadow-sm); overflow: hidden; }
   .pcard__head { display: flex; align-items: center; gap: 10px; padding: 16px 18px 12px; }
@@ -54,7 +59,7 @@
   .pcard__desc { padding: 0 18px; margin: 0 0 14px; font-size: var(--text-sm); color: var(--color-muted); }
   .pcard__sec { padding: 14px 18px; border-top: 1px solid var(--color-line); }
   .pcard__sec-t { display: flex; align-items: center; gap: 7px; font-size: var(--text-2xs); font-weight: 800; color: var(--color-muted); letter-spacing: .04em; margin-bottom: 10px; }
-  .pcard__count { font-family: var(--font-mono); font-size: 10px; color: var(--color-accent); background: var(--color-accent-soft); border-radius: var(--radius-full); padding: 0 7px; }
+  .pcard__count { font-family: var(--font-mono); font-size: 10.5px; color: var(--color-accent); background: var(--color-accent-soft); border-radius: var(--radius-full); padding: 0 7px; }
   .pcard__goal { margin: 0; font-size: var(--text-sm); color: var(--color-ink); line-height: var(--leading-body); }
   .pcard__feats { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
   .pfeat { display: flex; gap: 9px; align-items: flex-start; }
@@ -87,7 +92,7 @@
   .tpl.is-on { border-color: var(--color-accent); box-shadow: var(--shadow-ring); }
   .tpl__thumb { display: flex; align-items: center; justify-content: center; height: 56px; border-radius: 7px; color: #fff; font-size: var(--text-2xs); font-weight: 800; letter-spacing: .04em; margin-bottom: 8px; }
   .tpl__name { font-size: var(--text-xs); font-weight: 800; display: block; }
-  .tpl__sub { font-size: 10px; color: var(--color-muted); }
+  .tpl__sub { font-size: 10.5px; color: var(--color-muted); }
 
   /* ③ 기능 추천 */
   .frec { border: 1px solid var(--color-line); border-radius: var(--radius-lg); background: var(--color-surface); box-shadow: var(--shadow-sm); padding: 16px 18px; }
@@ -101,7 +106,7 @@
   .fchip.is-on .ph { color: var(--color-accent); }
   /* 외부 절차가 필요한 기능 — 지금 안 묻고 출시 후 관리·설정에서 연결 */
   .fchip__note {
-    font-size: 9px;
+    font-size: 9.5px;
     font-weight: 700;
     color: var(--color-warn);
     background: var(--color-warn-soft);
@@ -400,6 +405,100 @@
 
 </div>
 
+<!-- 개발 노트 버튼 + 모달 — 이 화면의 기획을 목업 위에서 바로 확인 -->
+<button class="spec-fab" id="spec-open">📐 개발 노트<small style="font-weight:500;color:var(--color-muted)">이 화면의 기획</small></button>
+
+<div class="modal-overlay" id="spec-modal" hidden>
+  <div class="modal modal--spec" role="dialog" aria-modal="true" aria-label="개발 노트">
+    <!-- 목차 — 클릭하면 본문이 해당 섹션으로 스크롤 -->
+    <aside class="modal__side">
+      <div class="modal__side-title">개발 노트</div>
+      <button class="modal__tab is-on" data-target="#bp-core">핵심 원칙</button>
+      <button class="modal__tab" data-target="#bp-flow">단계 흐름</button>
+      <button class="modal__tab" data-target="#bp-steps">단계별 정보·동작</button>
+      <button class="modal__tab" data-target="#bp-rules5">질의 5원칙</button>
+      <button class="modal__tab" data-target="#bp-impl">구현 규칙</button>
+    </aside>
+    <div class="modal__main spec">
+      <button class="modal__x" id="spec-close" aria-label="닫기">✕</button>
+      <h4>설계안 단계 — 개발 노트 <span style="font-size:11.5px;font-weight:600;color:var(--color-muted)">(명세 §2.4–2.5 발췌)</span></h4>
+
+      <h5 id="bp-core">핵심 원칙</h5>
+      <p>화면에 보이는 모든 정보는 AI 기획 산출물에서 온다 — 화면 전용 데이터를 만들지 않는다. 질문에 답해야 다음 질문이 나타난다(순차 진행). 필드 단위 계약 매핑은 명세 §2.5가 단일 출처.</p>
+
+      <h5 id="bp-flow">단계 흐름</h5>
+      <div class="flow">
+        <div class="flow__node">
+          <span class="flow__who">사용자 · B1</span>
+          <span class="flow__t">아이디어 전송</span>
+          <span class="flow__d">컴포저 + 첨부·작업유형</span>
+        </div>
+        <span class="flow__arrow">→</span>
+        <div class="flow__node flow__node--gate">
+          <span class="flow__who">AI → 승인 대기 🔒</span>
+          <span class="flow__t">① 기획안 카드</span>
+          <span class="flow__d">기획 초안 생성 · 수정 요청 시 부분 재생성</span>
+        </div>
+        <span class="flow__arrow">→</span>
+        <div class="flow__node">
+          <span class="flow__who">사용자 · 원탭</span>
+          <span class="flow__t">② 분위기</span>
+          <span class="flow__d">4종 카드 · 추천 선선택</span>
+        </div>
+        <span class="flow__arrow">→</span>
+        <div class="flow__node">
+          <span class="flow__who">사용자 · 토글</span>
+          <span class="flow__t">③ 기능</span>
+          <span class="flow__d">기본 2개 on · 확정 시 접힘</span>
+        </div>
+        <span class="flow__arrow">→</span>
+        <div class="flow__node flow__node--any">
+          <span class="flow__who">수시 발생</span>
+          <span class="flow__t">④ 되묻기</span>
+          <span class="flow__d">모호한 요청 → 옵션으로 좁힘</span>
+        </div>
+        <span class="flow__arrow">→</span>
+        <div class="flow__node flow__node--go">
+          <span class="flow__who">전이 · building_ui</span>
+          <span class="flow__t">⑤ 만들기 시작</span>
+          <span class="flow__d">확정 계약 스냅샷 → B2</span>
+        </div>
+      </div>
+
+      <h5 id="bp-steps">단계별 정보 · 동작</h5>
+      <table>
+        <thead><tr><th>단계</th><th>보여주는 정보</th><th>사용자 행동</th><th>스킵 시</th></tr></thead>
+        <tbody>
+          <tr><td><b>① 기획안</b></td><td>서비스명 · 소개 · 해결 문제 · 핵심 기능 · 화면 N개 · 데이터 저장소 · 타겟</td><td>[좋아요, 다음으로] 승인 / [수정 요청] → 채팅으로 고쳐 말함</td><td><b>차단</b> — 승인 대기</td></tr>
+          <tr><td><b>② 분위기</b></td><td>스타일 4종 카드 + 직접 입력 (추천 선선택)</td><td>원탭 선택 → 접힘</td><td>추천안 적용</td></tr>
+          <tr><td><b>③ 기능</b></td><td>빈출 기능 칩 (기본 2개 on, 외부 절차엔 '출시 후 연결')</td><td>칩 토글 → [확정] → 접힘</td><td>기본 on 유지</td></tr>
+          <tr><td><b>④ 되묻기</b></td><td>모호한 요청 → 옵션 2~4 (AI 추천 표시) + 기타</td><td>원탭 즉답 / 기타 입력 → 접힘</td><td>AI 추천 적용</td></tr>
+          <tr><td><b>⑤ 시작</b></td><td>확정 요약 + [만들기 시작]</td><td>클릭 → B2 진입</td><td>—</td></tr>
+        </tbody>
+      </table>
+
+      <h5 id="bp-rules5">질의 UX 5원칙</h5>
+      <ul>
+        <li>한 번에 하나 — 여러 답이 필요하면 대화형 스텝으로</li>
+        <li>기본값 선제 선택 — 무응답이면 기본값으로 진행 (스킵 ≠ 실패)</li>
+        <li>선택지 최대 4개 + 직접 입력 — 자유 답변은 카드의 '기타' 입력으로</li>
+        <li>질의 활성·작업 중엔 <b>전송 잠금</b> (타이핑·미리 써두기는 가능) — 답을 먼저 받는다</li>
+        <li>답하면 접힘 — "라벨: 값 ✓" 요약이 채팅에 남고, 클릭 시 재선택</li>
+      </ul>
+
+      <h5 id="bp-impl">구현 규칙</h5>
+      <ul>
+        <li>수정 요청 → 기획 에이전트가 해당 부분만 재생성, 답한 항목은 보존</li>
+        <li>① 승인이 생성 시작의 트리거 — 이 지점 외의 차단 개입은 없음</li>
+        <li>되묻기(④)는 채팅 공통 패턴 — 운영 중(b2)에서도 동일 컴포넌트</li>
+        <li>자율 모드: 비차단 질문 생략, 완료 보고에 "AI가 대신 고른 것" 목록</li>
+      </ul>
+
+      <p class="foot">계약 필드 매핑·상태 머신 등 개발 상세는 저장소 <code>aiapp_에이전트_개편_구현명세.md</code> §2.4–2.5 참고 (초안 단계라 화면에는 싣지 않음).</p>
+    </div>
+  </div>
+</div>
+
 <script>
   /* 사이드바 접기/펼치기 */
   const gnb = document.getElementById("gnb");
@@ -415,6 +514,19 @@
   });
   accountMenu.addEventListener("click", (e) => e.stopPropagation());
   document.addEventListener("click", () => { accountMenu.hidden = true; });
+
+  /* ── 개발 노트 모달 — 목차 클릭 시 본문 스크롤 ── */
+  const specModal = document.getElementById("spec-modal");
+  document.getElementById("spec-open").addEventListener("click", () => { specModal.hidden = false; });
+  document.getElementById("spec-close").addEventListener("click", () => { specModal.hidden = true; });
+  specModal.addEventListener("click", (e) => { if (e.target === specModal) specModal.hidden = true; });
+  document.addEventListener("keydown", (e) => { if (e.key === "Escape") specModal.hidden = true; });
+  specModal.querySelectorAll(".modal__tab").forEach((tab) => {
+    tab.addEventListener("click", () => {
+      specModal.querySelectorAll(".modal__tab").forEach((t) => t.classList.toggle("is-on", t === tab));
+      specModal.querySelector(tab.dataset.target).scrollIntoView({ behavior: "smooth", block: "start" });
+    });
+  });
 
   /* ── 순차 진행 (명세 §2.4) — 답해야 다음 질문이 등장 ── */
   function reveal(id) {
@@ -459,18 +571,27 @@
     frecCard.hidden = true;
     frecAnswer.hidden = false;
     reveal("scene-ask");
+    lockChat(true);   /* 되묻기 활성 → 전송 잠금 */
   });
   frecAnswer.addEventListener("click", () => { frecAnswer.hidden = true; frecCard.hidden = false; });
 
-  /* ④ 되묻기 — 옵션 원탭 즉답, '기타'는 Enter. 답하면 접힘 + 만들기 시작 등장 */
+  /* ④ 되묻기 — 옵션 원탭 즉답, '기타'는 Enter. 답하면 접힘 + 만들기 시작 등장.
+     질의 활성 중에는 하단 컴포저의 전송만 잠금 (타이핑은 가능 — 명세 §2.2.2) */
   const ask = document.getElementById("ask-pay");
   const askAnswer = document.getElementById("ask-pay-answer");
   const askAnswerV = document.getElementById("ask-pay-answer-v");
+  const box = document.getElementById("bp-box");   /* 하단 컴포저 입력 */
+  const BP_PLACEHOLDER = box.getAttribute("placeholder");
+  function lockChat(on) {
+    document.querySelector(".bp-composer .chatbox").classList.toggle("is-locked", on);
+    box.placeholder = on ? "위 질문에 먼저 답해 주세요 ↑ (미리 써두는 건 가능해요)" : BP_PLACEHOLDER;
+  }
   function answerAsk(value) {
     askAnswerV.textContent = value;
     setTimeout(() => {
       ask.hidden = true;
       askAnswer.hidden = false;
+      lockChat(false);
       reveal("scene-go");
     }, 350);
   }
@@ -487,7 +608,7 @@
       answerAsk(e.target.value.trim());
     }
   });
-  askAnswer.addEventListener("click", () => { askAnswer.hidden = true; ask.hidden = false; });
+  askAnswer.addEventListener("click", () => { askAnswer.hidden = true; ask.hidden = false; lockChat(true); });
 
   /* 기능 칩 토글 (직접 추가 제외) — 아이콘 +↔check 스왑.
      data-reveal 칩은 켜질 때 인라인 입력(주소 등)을 함께 펼침 */
@@ -504,8 +625,7 @@
     });
   });
 
-  /* '수정 요청' · '직접 추가' → 하단 컴포저로 포커스 */
-  const box = document.getElementById("bp-box");
+  /* '수정 요청' · '직접 추가' → 하단 컴포저로 포커스 (box는 위에서 선언) */
   document.querySelectorAll(".js-focus-composer").forEach((b) => {
     b.addEventListener("click", () => { box.focus(); box.scrollIntoView({ block: "center" }); });
   });

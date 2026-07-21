@@ -28,7 +28,7 @@
   overflow-y: auto;
 }
 .set__side-label {
-  font-size: 10px;
+  font-size: 10.5px;
   font-weight: 700;
   color: var(--color-muted);
   letter-spacing: .05em;
@@ -53,7 +53,7 @@
 .set__item.is-on .ph { color: var(--color-accent); }
 .set__soon {
   margin-left: auto;
-  font-size: 9px;
+  font-size: 9.5px;
   font-weight: 700;
   color: var(--color-muted);
   background: var(--color-surface-sub);
@@ -63,7 +63,7 @@
 /* 지연 설정 배지 — 출시 후 연결이 필요한 기능 (완료 보고의 report__todo와 짝) */
 .set__need {
   margin-left: auto;
-  font-size: 9px;
+  font-size: 9.5px;
   font-weight: 700;
   color: var(--color-warn);
   background: var(--color-warn-soft);
@@ -108,7 +108,7 @@
 }
 .set__head p {
   margin: 3px 0 0;
-  font-size: 12px;
+  font-size: 13px;
   color: var(--color-muted);
 }
 .set__head .tag { margin-left: auto; flex-shrink: 0; }
@@ -148,7 +148,7 @@
 .set__row:last-child { border-bottom: none; }
 .set__row-text { flex: 1; min-width: 0; }
 .set__row-t {
-  font-size: 13.5px;
+  font-size: 14.5px;
   font-weight: 700;
   display: flex;
   align-items: center;
@@ -166,7 +166,7 @@
   align-items: center;
   gap: var(--space-2);
 }
-.set__row-ctrl .btn { font-size: 12px; padding: 6px 14px; box-shadow: none; }
+.set__row-ctrl .btn { font-size: 13px; padding: 6px 14px; box-shadow: none; }
 
 /* 서비스 주소 — 모노 + 복사 */
 .set__url {
@@ -191,7 +191,7 @@
   padding: 12px 16px;
 }
 .serp__label {
-  font-size: 10px;
+  font-size: 10.5px;
   font-weight: 700;
   color: var(--color-muted);
   letter-spacing: .05em;
