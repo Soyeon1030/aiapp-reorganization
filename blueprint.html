@@ -11,9 +11,19 @@
   /* 설계안 대화 페이지 — 채팅 문법은 b2 스튜디오 피드(b2.css)와 동일:
      사용자 = .log-user 연블루 필, AI = .log-line 플레인 텍스트(아바타·말풍선 없음),
      입력 = .chatbox + .feed__send. 설계안 → 스튜디오로 대화가 그대로 이어지는 느낌 */
-  /* 설계안 대화는 흰 배경 — 카드 구분은 보더가 담당 */
-  .main { overflow-y: auto; background: var(--color-surface); }
-  .bp { max-width: 732px; margin: 0 auto; padding: 30px 26px 40px; }
+  /* 설계안 대화는 흰 배경 — 카드 구분은 보더가 담당.
+     구조는 b2 피드와 동일: 스크롤 영역 + 하단 고정 입력바 */
+  .main { overflow: hidden; display: flex; flex-direction: column; background: var(--color-surface); }
+  .bp-scroll {
+    flex: 1;
+    min-height: 0;
+    overflow-y: auto;
+    scrollbar-width: thin;
+    scrollbar-color: var(--color-line-strong) transparent;
+  }
+  .bp-scroll::-webkit-scrollbar { width: 6px; }
+  .bp-scroll::-webkit-scrollbar-thumb { background: var(--color-line-strong); border-radius: var(--radius-full); }
+  .bp { max-width: 732px; margin: 0 auto; padding: 30px 26px 24px; }
   .bp__head { max-width: 680px; margin: 0 auto 20px; }
   .bp__head h1 { font-size: var(--text-lg); font-weight: 800; letter-spacing: -.01em; margin: 0; }
   .bp__head p { color: var(--color-muted); font-size: var(--text-sm); margin: 5px 0 0; }
@@ -50,6 +60,23 @@
   }
 
   /* 개발 노트(.spec-fab/.modal--spec/.spec/.flow) 스타일은 b2.css 공용 */
+
+  /* 이전 단계로 — 앞 질문 카드를 다시 펼침 (이후 답은 보존, 명세 §2.5) */
+  .q-back {
+    border: none;
+    background: none;
+    padding: 4px 2px;
+    margin-top: 10px;
+    font-size: var(--text-xs);
+    font-weight: 600;
+    color: var(--color-muted);
+    align-self: flex-start;
+  }
+  .q-back:hover { color: var(--color-accent); }
+  .tpick__foot, .frec__foot { display: flex; align-items: center; gap: 10px; }
+  .tpick__foot { margin-top: 14px; }
+  .tpick__foot .q-back, .frec__foot .q-back { margin-top: 0; }
+  .tpick__foot .btn { font-size: var(--text-sm); }
 
   /* ① 기획안 카드 */
   .pcard { border: 1px solid var(--color-line); border-radius: var(--radius-lg); background: var(--color-surface); box-shadow: var(--shadow-sm); overflow: hidden; }
@@ -122,11 +149,14 @@
   .fchip--add .ph { color: var(--color-muted); }
 
   /* 하단 컴포저 — b2 스튜디오와 동일한 .chatbox, sticky로 고정만 */
+  /* 하단 고정 입력바 — 스크롤과 무관하게 항상 화면 아래 (b2 feed__input과 동일 구조) */
   .bp-composer {
-    position: sticky; bottom: 0;
-    max-width: 680px; margin: 8px auto 0;
-    padding: 14px 0 6px;
-    background: linear-gradient(180deg, transparent, var(--color-surface) 30%);
+    flex-shrink: 0;
+    padding: 12px 20px 16px;
+    display: flex;
+    justify-content: center;
+    background: var(--color-surface);
+    border-top: 1px solid var(--color-line);
   }
   .bp-composer .chatbox { background: var(--color-surface); }
 
@@ -201,8 +231,9 @@
     </div>
   </aside>
 
-  <!-- ═══════════ 메인: 설계안 대화 ═══════════ -->
+  <!-- ═══════════ 메인: 설계안 대화 (스크롤 영역 + 하단 고정 입력바) ═══════════ -->
   <main class="main">
+    <div class="bp-scroll">
     <div class="bp">
 
       <div class="bp__head">
@@ -315,6 +346,11 @@
               <svg class="ph"><use href="#ph-pencil"/></svg>
               <input type="text" placeholder="예: 뉴트로 감성 · 다크 모드 · 손그림 느낌">
             </div>
+            <!-- 선택은 고르기만, 진행은 확정 버튼으로 (바로 넘어가지 않음) -->
+            <div class="tpick__foot">
+              <button class="q-back" data-back="pcard">← 이전</button>
+              <button class="btn btn--primary" id="tpick-done">이 분위기로 진행</button>
+            </div>
           </div>
       <!-- 답변 후 접힘 요약 — 분위기 선택 시 위 카드 대신 표시 -->
       <button class="log-answer" id="tpick-answer" hidden>
@@ -344,6 +380,7 @@
               <input type="text" placeholder="활동 지역이나 주소를 알려주세요 — 예: 서울 성동구 (몰라도 진행돼요)">
             </div>
             <div class="frec__foot">
+              <button class="q-back" data-back="style">← 이전</button>
               <button class="btn btn--primary" id="frec-done">선택한 기능으로 진행</button>
             </div>
           </div>
@@ -375,6 +412,7 @@
           <svg class="ph"><use href="#ph-pencil"/></svg>
           <input type="text" id="ask-pay-etc" placeholder="기타 — 원하는 방식을 직접 적어주세요 (Enter)">
         </div>
+        <button class="q-back" data-back="feat">← 이전</button>
       </div>
       <button class="log-answer" id="ask-pay-answer" hidden>
         결제 방식: <b id="ask-pay-answer-v">예약금만 미리 받기</b> ✓ <span>변경</span>
@@ -391,15 +429,16 @@
 
       </div><!-- /chat -->
 
-      <!-- 하단 컴포저 — b2 스튜디오와 동일한 입력박스 -->
-      <div class="bp-composer">
-        <div class="chatbox">
-          <textarea id="bp-box" rows="1" aria-label="추가 요청 입력"
-            placeholder="더 바꾸고 싶은 게 있으면 편하게 말해 주세요 — 예: 타겟을 가족 단위로"></textarea>
-          <button class="feed__send" aria-label="보내기"><svg class="ph"><use href="#ph-arrow-up"/></svg></button>
-        </div>
-      </div>
+    </div>
+    </div><!-- /bp-scroll -->
 
+    <!-- 하단 고정 컴포저 — b2 스튜디오와 동일한 입력박스 -->
+    <div class="bp-composer">
+      <div class="chatbox">
+        <textarea id="bp-box" rows="1" aria-label="추가 요청 입력"
+          placeholder="더 바꾸고 싶은 게 있으면 편하게 말해 주세요 — 예: 타겟을 가족 단위로"></textarea>
+        <button class="feed__send" aria-label="보내기"><svg class="ph"><use href="#ph-arrow-up"/></svg></button>
+      </div>
     </div>
   </main>
 
@@ -470,7 +509,7 @@
         <thead><tr><th>단계</th><th>보여주는 정보</th><th>사용자 행동</th><th>스킵 시</th></tr></thead>
         <tbody>
           <tr><td><b>① 기획안</b></td><td>서비스명 · 소개 · 해결 문제 · 핵심 기능 · 화면 N개 · 데이터 저장소 · 타겟</td><td>[좋아요, 다음으로] 승인 / [수정 요청] → 채팅으로 고쳐 말함</td><td><b>차단</b> — 승인 대기</td></tr>
-          <tr><td><b>② 분위기</b></td><td>스타일 4종 카드 + 직접 입력 (추천 선선택)</td><td>원탭 선택 → 접힘</td><td>추천안 적용</td></tr>
+          <tr><td><b>② 분위기</b></td><td>스타일 4종 카드 + 직접 입력 (추천 선선택)</td><td>선택 후 [이 분위기로 진행] 확정 → 접힘</td><td>추천안 적용</td></tr>
           <tr><td><b>③ 기능</b></td><td>빈출 기능 칩 (기본 2개 on, 외부 절차엔 '출시 후 연결')</td><td>칩 토글 → [확정] → 접힘</td><td>기본 on 유지</td></tr>
           <tr><td><b>④ 되묻기</b></td><td>모호한 요청 → 옵션 2~4 (AI 추천 표시) + 기타</td><td>원탭 즉답 / 기타 입력 → 접힘</td><td>AI 추천 적용</td></tr>
           <tr><td><b>⑤ 시작</b></td><td>확정 요약 + [만들기 시작]</td><td>클릭 → B2 진입</td><td>—</td></tr>
@@ -546,20 +585,31 @@
   });
   pcardAnswer.addEventListener("click", () => { pcardAnswer.hidden = true; pcardEl.hidden = false; });
 
-  /* ② 분위기 선택 → 접힘 + 기능 질문 등장 */
+  /* ② 분위기 — 타일 클릭은 선택만, [이 분위기로 진행] 확정 시 접힘 + 다음 등장 */
   const tpls = document.querySelectorAll(".tpl");
   const tpickCard = document.querySelector(".tpick");
   const tpickAnswer = document.getElementById("tpick-answer");
   tpls.forEach((t) => t.addEventListener("click", () => {
     tpls.forEach((x) => x.classList.toggle("is-on", x === t));
-    document.getElementById("tpick-answer-v").textContent = t.querySelector(".tpl__name").textContent;
-    setTimeout(() => {
-      tpickCard.hidden = true;
-      tpickAnswer.hidden = false;
-      reveal("scene-feat");
-    }, 350);
   }));
+  document.getElementById("tpick-done").addEventListener("click", () => {
+    document.getElementById("tpick-answer-v").textContent =
+      document.querySelector(".tpl.is-on .tpl__name").textContent;
+    tpickCard.hidden = true;
+    tpickAnswer.hidden = false;
+    reveal("scene-feat");
+  });
   tpickAnswer.addEventListener("click", () => { tpickAnswer.hidden = true; tpickCard.hidden = false; });
+
+  /* [← 이전] — 앞 질문 카드를 다시 펼침 (이후 단계 답은 보존) */
+  const REOPEN = {
+    pcard: () => { pcardEl.hidden = false; pcardAnswer.hidden = true; pcardEl.scrollIntoView({ behavior: "smooth", block: "start" }); },
+    style: () => { tpickCard.hidden = false; tpickAnswer.hidden = true; tpickCard.scrollIntoView({ behavior: "smooth", block: "center" }); },
+    feat:  () => { frecCard.hidden = false; frecAnswer.hidden = true; frecCard.scrollIntoView({ behavior: "smooth", block: "center" }); }
+  };
+  document.querySelectorAll(".q-back").forEach((b) => {
+    b.addEventListener("click", () => REOPEN[b.dataset.back]());
+  });
 
   /* ③ 기능 확정 → 접힘 + (사용자 추가 요청) 되묻기 등장 */
   const frecCard = document.querySelector(".frec");
