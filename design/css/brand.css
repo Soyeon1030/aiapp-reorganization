@@ -12,6 +12,197 @@
   display: flex;
   min-height: 0;
   container-type: inline-size;
+  /* 이 패널 전용 보조색 (베타 라벨 등 — 토큰에 없는 색) */
+  --c-beta: #7B61C9;
+  --c-beta-soft: #F0EBFB;
+}
+
+/* ── 만들기 카드 3종 — 기능별 큰 진입 카드 ── */
+.mkgrid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 14px;
+}
+.mk {
+  border: 1px solid var(--color-line);
+  border-radius: var(--radius-lg);
+  background: var(--color-surface);
+  box-shadow: var(--shadow-sm);
+  padding: 18px;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 10px;
+}
+.mk__ico {
+  width: 44px; height: 44px;
+  border-radius: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #fff;
+  background: var(--gradient-accent);
+}
+.mk__ico .ph { width: 20px; height: 20px; }
+.mk__ico--purple { background: var(--c-beta-soft); color: var(--c-beta); }
+.mk__title {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: var(--text-md);
+  font-weight: 800;
+  letter-spacing: -.01em;
+}
+.mk__badge {
+  font-style: normal;
+  font-size: 10px;
+  font-weight: 800;
+  border-radius: var(--radius-full);
+  padding: 2px 8px;
+}
+.mk__badge--bi { color: var(--color-accent-deep); background: var(--color-accent-soft); }
+.mk__badge--beta { color: var(--c-beta); background: var(--c-beta-soft); font-style: italic; }
+.mk__badge--soon { color: var(--color-warn); background: var(--color-warn-soft); }
+.mk__desc {
+  margin: 0;
+  font-size: var(--text-sm);
+  color: var(--color-muted);
+  line-height: 1.55;
+  flex: 1;
+}
+.mk__cta { font-size: var(--text-sm); }
+.mk__note { font-size: var(--text-2xs); color: var(--color-muted); }
+.mk__note b { color: var(--color-ink); }
+/* 준비 중 — 회색 톤, CTA 없음 */
+.mk--soon { background: var(--color-surface-sub); }
+.mk--soon .mk__ico { background: var(--color-line); color: var(--color-muted); }
+.mk--soon .mk__title, .mk--soon .mk__desc { color: var(--color-muted); }
+
+/* ── 내 브랜드 자산 ── */
+.bassets__head {
+  display: flex;
+  align-items: baseline;
+  gap: 10px;
+  margin-bottom: 10px;
+}
+.bassets__head h4 {
+  margin: 0;
+  font-size: var(--text-md);
+  font-weight: 800;
+  letter-spacing: -.01em;
+}
+.bassets__all {
+  margin-left: auto;
+  border: none;
+  background: none;
+  font-size: var(--text-sm);
+  font-weight: 700;
+  color: var(--color-accent);
+}
+.bgrid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 12px;
+}
+.bcard {
+  position: relative;
+  border: 1px solid var(--color-line);
+  border-radius: var(--radius-lg);
+  background: var(--color-surface);
+  box-shadow: var(--shadow-sm);
+  overflow: hidden;
+}
+.bcard__preview {
+  height: 96px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 9px;
+}
+/* 자산 미리보기 조각들 — 브랜드 마크·워드마크·모노 */
+.bmk {
+  width: 30px; height: 30px;
+  border-radius: 50%;
+  background: #D98E4A;
+  color: #fff;
+  font-size: 12px;
+  font-weight: 800;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.bmk--lg { width: 42px; height: 42px; font-size: 16px; }
+.bword { font-size: 17px; font-weight: 800; letter-spacing: -.02em; }
+.bmono { font-size: 18px; font-weight: 900; letter-spacing: .14em; }
+/* 숏폼 썸네일 */
+.bcard__preview--video { background: var(--color-console); position: relative; }
+.bplay {
+  width: 34px; height: 34px;
+  border-radius: 50%;
+  background: color-mix(in srgb, var(--color-surface) 18%, transparent);
+  border: 1.5px solid color-mix(in srgb, var(--color-surface) 60%, transparent);
+  color: #fff;
+  font-size: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding-left: 3px;
+}
+.btime {
+  position: absolute;
+  right: 8px; bottom: 8px;
+  font-family: var(--font-mono);
+  font-size: 10px;
+  color: #fff;
+  background: color-mix(in srgb, var(--color-console) 70%, transparent);
+  border-radius: 5px;
+  padding: 1px 6px;
+}
+.bbeta {
+  position: absolute;
+  left: 10px; top: 8px;
+  font-style: italic;
+  font-size: 10px;
+  font-weight: 700;
+  color: color-mix(in srgb, var(--color-surface) 85%, transparent);
+}
+.badge-applied {
+  position: absolute;
+  left: 10px; top: 10px;
+  z-index: 1;
+  font-size: 10px;
+  font-weight: 800;
+  color: var(--color-ok);
+  background: var(--color-ok-soft);
+  border-radius: var(--radius-full);
+  padding: 2px 9px;
+}
+.bcard__foot {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  border-top: 1px solid var(--color-line);
+  padding: 8px 8px 8px 13px;
+  font-size: var(--text-sm);
+  font-weight: 600;
+}
+.bdl {
+  border: none;
+  background: none;
+  border-radius: var(--radius-sm);
+  width: 28px; height: 28px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--color-muted);
+}
+.bdl:hover { background: var(--color-surface-sub); color: var(--color-ink); }
+.bdl .ph { width: 15px; height: 15px; }
+
+@container (max-width: 760px) {
+  .mkgrid { grid-template-columns: 1fr; }
+  .bgrid { grid-template-columns: repeat(2, 1fr); }
 }
 
 /* ── 사이드바 ── */
