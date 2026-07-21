@@ -215,6 +215,7 @@
     </button>
     <button class="gnb__row" id="notif-btn" title="알림">
       <svg class="ph"><use href="#ph-bell"/></svg><span class="gnb__label">알림</span>
+      <i class="gnb__badge gnb__badge--inline" id="notif-badge">1</i>
     </button>
     <button class="gnb__account" id="account-btn" aria-haspopup="menu" title="계정">
       <span class="gnb__avatar">엠</span><span class="gnb__label">엠바스</span>
@@ -222,12 +223,42 @@
     <div class="menu-pop menu-pop--account" id="account-menu" hidden>
       <div class="menu-pop__id"><b>엠바스</b><small>user@mbaas.kr</small></div>
       <hr>
-      <button><svg class="ph"><use href="#ph-gear"/></svg> 설정</button>
+      <button id="open-settings"><svg class="ph"><use href="#ph-gear"/></svg> 설정</button>
       <button onclick="location.href='plan.html'"><svg class="ph"><use href="#ph-credit-card"/></svg> 요금제 · 결제</button>
       <button><svg class="ph"><use href="#ph-sparkle"/></svg> 크레딧 · 쿠폰</button>
       <button><svg class="ph"><use href="#ph-bell"/></svg> 알림 설정</button>
       <hr>
       <button class="is-danger"><svg class="ph"><use href="#ph-sign-out"/></svg> 로그아웃</button>
+    </div>
+
+    <!-- 알림 패널 — 다른 페이지와 동일 -->
+    <div class="notif-pop" id="notif-pop" hidden>
+      <div class="notif-pop__head">알림 <button id="notif-read">모두 읽음</button></div>
+      <div class="notif-item">
+        <span class="notif-item__ico">📅</span>
+        <div class="notif-item__body">
+          <div class="notif-item__t">새 예약 신청 <i class="dot-new"></i></div>
+          <div class="notif-item__d">박서연 님 — 7/14(화) 10:00 · 확인하고 확정해 주세요</div>
+        </div>
+        <span class="notif-item__time">방금</span>
+      </div>
+      <div class="notif-item">
+        <span class="notif-item__ico notif-item__ico--ok">🚀</span>
+        <div class="notif-item__body">
+          <div class="notif-item__t">출시 완료</div>
+          <div class="notif-item__d">멍멍 산책 예약이 LIVE 상태가 됐어요</div>
+        </div>
+        <span class="notif-item__time">1시간 전</span>
+      </div>
+      <div class="notif-item">
+        <span class="notif-item__ico">💬</span>
+        <div class="notif-item__body">
+          <div class="notif-item__t">새 후기</div>
+          <div class="notif-item__d">"산책러님이 꼼꼼하고 친절해요" 후기가 달렸어요</div>
+        </div>
+        <span class="notif-item__time">어제</span>
+      </div>
+      <div class="notif-pop__foot">문자·알림톡으로 받기는 곧 제공돼요</div>
     </div>
   </aside>
 
@@ -444,6 +475,78 @@
 
 </div>
 
+<!-- 설정 모달 — 틀만: 탭과 행 구조 (다른 페이지와 동일) -->
+<div class="modal-overlay" id="settings-modal" hidden>
+  <div class="modal" role="dialog" aria-modal="true" aria-label="설정">
+    <aside class="modal__side">
+      <div class="modal__side-title">설정</div>
+      <button class="modal__tab is-on" data-tab="general">일반</button>
+      <button class="modal__tab" data-tab="account">계정</button>
+    </aside>
+    <div class="modal__main">
+      <button class="modal__x" id="settings-close" aria-label="닫기">✕</button>
+
+      <div class="modal__pane" data-pane="general">
+        <h4>일반</h4>
+        <div class="modal__row">
+          <div class="modal__row-text">
+            <div class="modal__row-t">언어</div>
+            <div class="modal__row-d">화면에 표시되는 언어를 정해요.</div>
+          </div>
+          <button class="btn">한국어 ▾</button>
+        </div>
+        <div class="modal__row">
+          <div class="modal__row-text">
+            <div class="modal__row-t">테마</div>
+            <div class="modal__row-d">라이트 · 다크 모드를 정해요.</div>
+          </div>
+          <button class="btn">라이트 ▾</button>
+        </div>
+        <div class="modal__row">
+          <div class="modal__row-text">
+            <div class="modal__row-t">시작 화면</div>
+            <div class="modal__row-d">로그인하면 처음 보여줄 화면이에요.</div>
+          </div>
+          <button class="btn">홈 ▾</button>
+        </div>
+      </div>
+
+      <div class="modal__pane" data-pane="account" hidden>
+        <h4>계정</h4>
+        <div class="modal__row">
+          <div class="modal__row-text">
+            <div class="modal__row-t">이름</div>
+            <div class="modal__row-d">엠바스</div>
+          </div>
+          <button class="btn">변경</button>
+        </div>
+        <div class="modal__row">
+          <div class="modal__row-text">
+            <div class="modal__row-t">이메일</div>
+            <div class="modal__row-d">user@mbaas.kr</div>
+          </div>
+          <button class="btn">변경</button>
+        </div>
+        <div class="modal__row">
+          <div class="modal__row-text">
+            <div class="modal__row-t">비밀번호</div>
+            <div class="modal__row-d">마지막 변경: 3개월 전</div>
+          </div>
+          <button class="btn">변경</button>
+        </div>
+        <div class="modal__row modal__row--danger">
+          <div class="modal__row-text">
+            <div class="modal__row-t">회원 탈퇴</div>
+            <div class="modal__row-d">모든 프로젝트와 데이터가 삭제돼요. 되돌릴 수 없어요.</div>
+          </div>
+          <button class="btn btn--warn">탈퇴</button>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</div>
+
 <!-- 개발 노트 버튼 + 모달 — 이 화면의 기획을 목업 위에서 바로 확인 -->
 <button class="spec-fab" id="spec-open">📐 개발 노트<small style="font-weight:500;color:var(--color-muted)">이 화면의 기획</small></button>
 
@@ -553,6 +656,37 @@
   });
   accountMenu.addEventListener("click", (e) => e.stopPropagation());
   document.addEventListener("click", () => { accountMenu.hidden = true; });
+
+  /* 알림 패널 — 다른 페이지와 동일 */
+  const notifPop = document.getElementById("notif-pop");
+  const notifBadge = document.getElementById("notif-badge");
+  document.getElementById("notif-btn").addEventListener("click", (e) => {
+    e.stopPropagation();
+    accountMenu.hidden = true;
+    notifPop.hidden = !notifPop.hidden;
+  });
+  notifPop.addEventListener("click", (e) => e.stopPropagation());
+  document.addEventListener("click", () => { notifPop.hidden = true; });
+  document.getElementById("notif-read").addEventListener("click", () => {
+    notifBadge.hidden = true;
+    notifPop.querySelectorAll(".dot-new").forEach((d) => d.remove());
+  });
+
+  /* 계정 설정 모달 — 다른 페이지와 동일 */
+  const settingsModal = document.getElementById("settings-modal");
+  document.getElementById("open-settings").addEventListener("click", () => {
+    accountMenu.hidden = true;
+    settingsModal.hidden = false;
+  });
+  document.getElementById("settings-close").addEventListener("click", () => { settingsModal.hidden = true; });
+  settingsModal.addEventListener("click", (e) => { if (e.target === settingsModal) settingsModal.hidden = true; });
+  document.addEventListener("keydown", (e) => { if (e.key === "Escape") settingsModal.hidden = true; });
+  settingsModal.querySelectorAll(".modal__tab").forEach((tab) => {
+    tab.addEventListener("click", () => {
+      settingsModal.querySelectorAll(".modal__tab").forEach((t) => t.classList.toggle("is-on", t === tab));
+      settingsModal.querySelectorAll(".modal__pane").forEach((p) => { p.hidden = p.dataset.pane !== tab.dataset.tab; });
+    });
+  });
 
   /* ── 개발 노트 모달 — 목차 클릭 시 본문 스크롤 ── */
   const specModal = document.getElementById("spec-modal");
