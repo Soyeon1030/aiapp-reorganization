@@ -40,13 +40,14 @@
                "Malgun Gothic", "Apple SD Gothic Neo", sans-serif;
   --font-mono: ui-monospace, "Cascadia Code", Consolas, "SF Mono", monospace;
 
-  --text-2xs: 10.5px;   /* 모노 태그, 캡션 최소 */
-  --text-xs: 11.5px;    /* 캡션, 메타 */
-  --text-sm: 12.5px;    /* 보조 본문, 칩 */
-  --text-base: 14px;    /* 기본 UI 텍스트 */
-  --text-md: 15px;      /* 본문 입력 */
-  --text-lg: 18px;      /* 섹션 제목 */
-  --text-xl: 22px;      /* 페이지 제목 */
+  /* 한 단계 상향 (2026-07-21) — 밀도보다 가독 우선 */
+  --text-2xs: 11px;     /* 모노 태그, 캡션 최소 */
+  --text-xs: 12.5px;    /* 캡션, 메타 */
+  --text-sm: 13.5px;    /* 보조 본문, 칩 */
+  --text-base: 15px;    /* 기본 UI 텍스트 */
+  --text-md: 16px;      /* 본문 입력 */
+  --text-lg: 19px;      /* 섹션 제목 */
+  --text-xl: 24px;      /* 페이지 제목 */
   --text-display: clamp(26px, 3.2vw, 34px);  /* 히어로 헤드라인 */
 
   --leading-body: 1.6;

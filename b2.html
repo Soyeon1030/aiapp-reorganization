@@ -142,7 +142,6 @@
             <div class="console-row is-done"><span class="console-row__icon"></span><span>기능 연결</span><span class="console-row__detail">완료</span></div>
             <div class="console-row is-done"><span class="console-row__icon"></span><span>출시 · 운영 준비</span><span class="console-row__detail">완료</span></div>
             <div class="console-card__foot">
-              <span>사용 크레딧 <b>388</b></span>
               <span>🔒 전용 공간에서 안전하게 운영 중</span>
             </div>
           </div>
@@ -204,14 +203,16 @@
 
           <p class="log-line">수정하고 싶은 부분이 있으면 아래 입력창에 편하게 말씀해 주세요 ✏️</p>
 
-          <!-- 다음 행동 추천 -->
+          <!-- 다음 행동 추천 (명세 §2.2.2 Q7) — 출시 보고 직후 1세트.
+               슬롯: 후속 ×2 + 성장 제안 ×2 (할 일은 위 보고 카드의 '설정 필요' 행과 중복이라 생략).
+               문구는 사용자 1인칭 요청문 — 클릭 = 입력창 채움 -->
           <div class="next-sugg">
             <span class="next-sugg__title">이어서 이런 걸 해볼 수 있어요</span>
             <div class="next-sugg__row">
               <button class="next-sugg__chip">홈 문구를 더 따뜻하게 바꿔줘</button>
-              <button class="next-sugg__chip">우리 로고로 바꾸고 싶어</button>
-              <button class="next-sugg__chip">🎨 로고 · 브랜드 만들기</button>
-              <button class="next-sugg__chip">🎬 홍보 숏폼 만들기</button>
+              <button class="next-sugg__chip">우리 로고로 바꿔줘</button>
+              <button class="next-sugg__chip">🎨 새 로고 시안 만들어줘</button>
+              <button class="next-sugg__chip">🎬 홍보 숏폼 만들어줘</button>
             </div>
           </div>
 
@@ -352,6 +353,116 @@
   </main>
 </div>
 
+<!-- 상태 시연 (스캐폴드 전용) — 전송 잠금 규칙 3상태를 직접 눌러서 확인:
+     대기(전송 가능) / 작업 중(전송 잠금+진행 카드 회전) / 질의 중(전송 잠금+되묻기 활성) -->
+<div class="demo-states" role="group" aria-label="상태 시연">
+  <span class="demo-states__label">상태 시연</span>
+  <button data-state="idle">대기</button>
+  <button data-state="busy">작업 중</button>
+  <button data-state="ask" class="is-on">질의 중</button>
+</div>
+
+<!-- 개발 노트 버튼 + 모달 — 이 화면의 기획 (AI 응답 문법 중심) -->
+<button class="spec-fab" id="spec-open">📐 개발 노트<small>이 화면의 기획</small></button>
+
+<div class="modal-overlay" id="spec-modal" hidden>
+  <div class="modal modal--spec" role="dialog" aria-modal="true" aria-label="개발 노트">
+    <!-- 목차 — 클릭하면 본문이 해당 섹션으로 스크롤 -->
+    <aside class="modal__side">
+      <div class="modal__side-title">개발 노트</div>
+      <button class="modal__tab is-on" data-target="#sp-flow">대화 타임라인</button>
+      <button class="modal__tab" data-target="#sp-grammar">AI 응답 문법</button>
+      <button class="modal__tab" data-target="#sp-copy">카피 규칙</button>
+      <button class="modal__tab" data-target="#sp-qa">동작 Q&amp;A</button>
+    </aside>
+    <div class="modal__main spec">
+      <button class="modal__x" id="spec-close" aria-label="닫기">✕</button>
+      <h4>B2 스튜디오 — 개발 노트 <span style="font-size:12px;font-weight:600;color:var(--color-muted)">(명세 §2.2·2.4 발췌)</span></h4>
+
+      <h5 id="sp-flow">대화 타임라인 (이 화면의 채팅을 위에서부터 그대로 따라가면 됨)</h5>
+      <div class="flow">
+        <div class="flow__node">
+          <span class="flow__who">AI</span>
+          <span class="flow__t">분석 로그</span>
+          <span class="flow__d">플레인 텍스트 1~2문장</span>
+        </div>
+        <span class="flow__arrow">→</span>
+        <div class="flow__node">
+          <span class="flow__who">AI · 반복</span>
+          <span class="flow__t">단계 진행</span>
+          <span class="flow__d">구분선 + ✓ 완료 줄 + 상태 카드 갱신</span>
+        </div>
+        <span class="flow__arrow">→</span>
+        <div class="flow__node flow__node--gate">
+          <span class="flow__who">수시 · 차단 ⏸</span>
+          <span class="flow__t">일시정지 질문</span>
+          <span class="flow__d">잔액 부족 등 — 답까지 대기</span>
+        </div>
+        <span class="flow__arrow">→</span>
+        <div class="flow__node flow__node--go">
+          <span class="flow__who">AI · 1회</span>
+          <span class="flow__t">완료 보고</span>
+          <span class="flow__d">LIVE·URL·만든 것·설정 필요</span>
+        </div>
+        <span class="flow__arrow">→</span>
+        <div class="flow__node">
+          <span class="flow__who">AI</span>
+          <span class="flow__t">다음 행동 제안</span>
+          <span class="flow__d">추천 칩 — 클릭 = 프롬프트</span>
+        </div>
+        <span class="flow__arrow">→</span>
+        <div class="flow__node flow__node--any">
+          <span class="flow__who">운영 대화 · 무한</span>
+          <span class="flow__t">수정 요청 ↔ 되묻기</span>
+          <span class="flow__d">모호하면 옵션으로 좁힘</span>
+        </div>
+      </div>
+
+      <h5 id="sp-grammar">AI 응답 문법 — 상황별로 형태가 정해져 있다 (자유 형식 금지)</h5>
+      <table>
+        <thead><tr><th>상황</th><th>형태 (이 화면의 실물)</th><th>규칙</th></tr></thead>
+        <tbody>
+          <tr><td><b>일반 안내·서술</b></td><td>플레인 텍스트 줄</td><td>말풍선·아바타 없음 · 1~2문장 · 해요체</td></tr>
+          <tr><td><b>단계 전환</b></td><td>가는 구분선 + 단계명</td><td>"화면 만들기"처럼 단계명만 — 문장 금지</td></tr>
+          <tr><td><b>작업 완료 사실</b></td><td>✓ 체크 줄</td><td>사실 + 사용자 이득 한 줄 ("테이블 4개 준비 — 데이터 탭에서 확인")</td></tr>
+          <tr><td><b>진행 상태</b></td><td>다크 콘솔 카드</td><td>대화 흐름 속 라이브 위젯 — 행 상태만 갱신, 새 카드 반복 금지</td></tr>
+          <tr><td><b>차단 질문</b></td><td>주황 일시정지 카드 ⏸</td><td>파이프라인 멈춤 · 버튼 2개 · 답 오면 선택 표시로 히스토리에 남김</td></tr>
+          <tr><td><b>모호한 요청</b></td><td>되묻기 카드 (맨 아래 실물)</td><td>옵션 ≤4 + 기타 · AI 추천 선선택 · 원탭 즉답 · 비차단</td></tr>
+          <tr><td><b>출시 완료</b></td><td>초록 보고 카드</td><td>1회만 — LIVE·URL·만든 것 목록·'설정 필요' 행</td></tr>
+          <tr><td><b>완료 직후</b></td><td>다음 행동 추천 칩</td><td>클릭 = 입력창에 프롬프트 채움 (자동 전송 아님)</td></tr>
+          <tr><td><b>단계 실패</b></td><td>오류 카드 (일시정지 카드의 위험 변형)</td><td>자동 재시도 소진 후에만 · 원인 한 줄(쉬운 말) + [다시 시도]/[멈추기] · "만든 것은 그대로" 안내</td></tr>
+        </tbody>
+      </table>
+
+      <h5 id="sp-copy">AI 카피 규칙</h5>
+      <ul>
+        <li>해요체 · 한 메시지 = 한 사실 · 수치와 상태는 카드에, 문장은 짧게</li>
+        <li>개발 용어 번역: 테이블→예약/회원, SSE→실시간 연결, VM→전용 공간</li>
+        <li>가능하면 행동 유도로 끝맺기 — "오른쪽 데이터 탭에서 확인하세요"</li>
+        <li>되돌리기는 "이전으로" (여러 단계 히스토리가 아니므로 '버전' 금지)</li>
+        <li>이모지는 알림성(🔔 📢)만 최소 사용</li>
+      </ul>
+
+      <h5 id="sp-qa">동작 상세 Q&amp;A — 구현 시 헷갈리기 쉬운 지점 (명세 §2.2.2)</h5>
+      <table>
+        <thead><tr><th>질문</th><th>결정</th></tr></thead>
+        <tbody>
+          <tr><td><b>로그는 스트리밍?</b></td><td>줄 단위 완성형 — 타자 효과 없음. 이벤트 1개 = 채팅 요소 1개, 이벤트 type이 위 문법 표와 1:1 (<code>log·step·check·console_update·pause·ask·report·suggest·error</code>). 문구 생성은 전부 서버 책임</td></tr>
+          <tr><td><b>수정 요청 처리 표시?</b></td><td>짧은 작업은 로그 2줄로 끝: "바꾸고 있어요…" → ✓ 완료 + 미리보기 갱신 + '이전으로' 활성화. 큰 작업만 진행 상태 카드 재사용</td></tr>
+          <tr><td><b>되묻기는 언제?</b></td><td>①복수 해석 가능 ②필수 값 누락 — 두 경우만. 취향 차이는 묻지 않고 추천으로 진행 후 보고. 요청당 1회, 꼬리 질문 금지</td></tr>
+          <tr><td><b>질문 무시하고 딴 말 하면?</b></td><td><b>못 보냄</b> — 질의 활성 중엔 <b>전송 잠금</b> (타이핑은 가능, 미리 써두기 OK). 자유 답은 카드의 '기타' 입력으로. 답하면 즉시 해제 (지금 이 화면 하단이 그 상태)</td></tr>
+          <tr><td><b>AI 작업 중 입력 가능?</b></td><td>타이핑은 가능, <b>전송만 잠금</b> — "지금 작업 중이에요, 끝나면 보낼 수 있어요". 완료 시 자동 해제, 써둔 내용 유지. 큐잉 없음</td></tr>
+          <tr><td><b>'AI 추천' 배지 기준?</b></td><td>질문당 1개. ①프로젝트 맥락 정합(기존 선택·브랜드) → ②동종 서비스 모범 사례 → ③동률이면 더 가역적인 쪽. 근거는 옵션 설명 한 줄로 노출, 근거 없으면 배지 없음</td></tr>
+          <tr><td><b>추천 칩("이어서…") 기준?</b></td><td>출시 보고·수정 완료 직후에만 1세트(3~4개, 2개 미만이면 생략). 슬롯 순위: ①할 일(보고 카드와 중복 시 생략) ②방금 작업의 후속 ③성장 제안 ④탐색. 문구는 <b>사용자 1인칭 요청문</b>(클릭 = 입력창 채움), 실행·미클릭 2회면 교체</td></tr>
+          <tr><td><b>재접속 시 복원 범위?</b></td><td>채팅 이력 전체. 카드는 최종 상태(접힘/스킵)로, 미답 차단 카드가 있으면 활성 그대로 + 거기로 스크롤</td></tr>
+        </tbody>
+      </table>
+
+      <p class="foot">계약·상태 머신 등 개발 상세는 저장소 <code>aiapp_에이전트_개편_구현명세.md</code> §2.2·§2.4 참고. 이 화면의 채팅이 곧 응답 문법의 레퍼런스입니다.</p>
+    </div>
+  </div>
+</div>
+
 <!-- 설정 모달 — 틀만: 탭과 행 구조 (b1과 동일) -->
 <div class="modal-overlay" id="settings-modal" hidden>
   <div class="modal" role="dialog" aria-modal="true" aria-label="설정">
@@ -478,12 +589,39 @@
     });
   });
 
-  /* ── 운영 중 되묻기 — 옵션 원탭 즉답, '기타'는 Enter. 답하면 접힘 ── */
+  /* ── 개발 노트 모달 — 목차 클릭 시 본문 스크롤 ── */
+  const specModal = document.getElementById("spec-modal");
+  document.getElementById("spec-open").addEventListener("click", () => { specModal.hidden = false; });
+  document.getElementById("spec-close").addEventListener("click", () => { specModal.hidden = true; });
+  specModal.addEventListener("click", (e) => { if (e.target === specModal) specModal.hidden = true; });
+  document.addEventListener("keydown", (e) => { if (e.key === "Escape") specModal.hidden = true; });
+  specModal.querySelectorAll(".modal__tab").forEach((tab) => {
+    tab.addEventListener("click", () => {
+      specModal.querySelectorAll(".modal__tab").forEach((t) => t.classList.toggle("is-on", t === tab));
+      specModal.querySelector(tab.dataset.target).scrollIntoView({ behavior: "smooth", block: "start" });
+    });
+  });
+
+  /* ── 운영 중 되묻기 — 옵션 원탭 즉답, '기타'는 Enter. 답하면 접힘 ──
+     질의 활성 중에는 채팅 입력 잠금 (명세 §2.2.2 Q5) — 답하면 해제 */
   const ask = document.getElementById("ask-photo");
   const askAnswer = document.getElementById("ask-photo-answer");
+  const CHAT_PLACEHOLDER = "수정하고 싶은 걸 말씀해 주세요 — 예: 메인 색을 초록으로";
+  const ASK_PLACEHOLDER = "위 질문에 먼저 답해 주세요 ↑ (미리 써두는 건 가능해요)";
+  /* 타이핑은 그대로 두고 전송만 잠금/해제 */
+  function lockChat(on, msg) {
+    document.querySelector(".chatbox").classList.toggle("is-locked", on);
+    const input = document.querySelector(".chatbox textarea");
+    input.placeholder = on ? (msg || ASK_PLACEHOLDER) : CHAT_PLACEHOLDER;
+  }
   function answerAsk(value) {
     document.getElementById("ask-photo-answer-v").textContent = value;
-    setTimeout(() => { ask.hidden = true; askAnswer.hidden = false; }, 350);
+    setTimeout(() => {
+      ask.hidden = true;
+      askAnswer.hidden = false;
+      lockChat(false);
+      syncDemo("idle");
+    }, 350);
   }
   ask.querySelectorAll(".askopt").forEach((opt) => {
     opt.addEventListener("click", () => {
@@ -498,7 +636,44 @@
       answerAsk(e.target.value.trim());
     }
   });
-  askAnswer.addEventListener("click", () => { askAnswer.hidden = true; ask.hidden = false; });
+  /* '변경'으로 질문을 다시 열면 재잠금 */
+  askAnswer.addEventListener("click", () => { askAnswer.hidden = true; ask.hidden = false; lockChat(true); syncDemo("ask"); });
+  /* 이 화면은 되묻기가 활성 상태로 시작 → 전송 잠금 */
+  lockChat(true);
+
+  /* ── 상태 시연 스위처 (스캐폴드) — 전송 잠금 규칙을 눈으로 확인 ── */
+  const demoBtns = document.querySelectorAll(".demo-states button");
+  const consoleRows = document.querySelectorAll(".console-card .console-row");
+  const lastRow = consoleRows[consoleRows.length - 1];
+  const lastDetail = lastRow.querySelector(".console-row__detail");
+  function syncDemo(s) {
+    demoBtns.forEach((b) => b.classList.toggle("is-on", b.dataset.state === s));
+  }
+  function setState(s) {
+    syncDemo(s);
+    /* 진행 카드 마지막 행: 작업 중이면 스피너 */
+    lastRow.classList.toggle("is-run", s === "busy");
+    lastRow.classList.toggle("is-done", s !== "busy");
+    lastDetail.textContent = s === "busy" ? "진행 중" : "완료";
+    /* 되묻기 카드 표시 */
+    ask.hidden = s !== "ask";
+    askAnswer.hidden = s !== "idle";
+    /* 전송 잠금 — 사유별 안내 문구 */
+    if (s === "ask") lockChat(true);
+    else if (s === "busy") lockChat(true, "지금 작업 중이에요 — 끝나면 보낼 수 있어요 (미리 써둘 수 있어요)");
+    else lockChat(false);
+  }
+  demoBtns.forEach((b) => b.addEventListener("click", () => setState(b.dataset.state)));
+
+  /* ── 다음 행동 추천 칩 → 입력창 채움 (자동 전송 금지 — 명세 §2.2.2 Q7) ── */
+  document.querySelectorAll(".next-sugg__chip").forEach((chip) => {
+    chip.addEventListener("click", () => {
+      const input = document.querySelector(".chatbox textarea");
+      input.value = chip.textContent.replace(/^[^\p{L}\p{N}]+/u, "").trim();
+      input.dispatchEvent(new Event("input"));
+      input.focus();
+    });
+  });
 
   /* ── 입력창 자동 높이: Enter는 줄바꿈, 내용만큼 자람 (최대 120px) ── */
   const chatInput = document.querySelector(".chatbox textarea");
