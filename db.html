@@ -157,6 +157,9 @@
               <b>멍멍 산책 예약</b>
             </div>
             <a class="report__url" href="#" onclick="return false">🌐 https://mungmung-walk.aiapp.site</a>
+            <button class="report__todo" onclick="location.href='settings.html'">
+              ⚙ 설정이 필요한 기능 1개 — 결제 연동 <span>연결하러 가기 →</span>
+            </button>
             <div class="report__foot">
               <span>사용 크레딧 <b>388</b></span>
               <span>소요 시간 <b>1분 42초</b></span>
@@ -353,14 +356,43 @@
           </div>
           </div><!-- /뷰 1 -->
 
-          <!-- ═══ 뷰 2. 후기 — 게시글형 (feed): 내용이 주인공 ═══ -->
+          <!-- ═══ 뷰 2. 후기 — 게시글형 (feed): 내용이 주인공.
+               대량 대응: 요약 헤더 + 처리 필터(미답변·저평점) + 클램프 + 페이지네이션.
+               parent 슬롯(후기→산책러)은 카드 안 칩으로 — 쇼핑몰이면 상품 칩이 됨 ═══ -->
           <div class="db__view" data-view="reviews" hidden>
             <div class="db__head">
               <div>
                 <h3>후기</h3>
-                <p>방문자가 남긴 후기예요. 부적절한 후기는 숨길 수 있어요.</p>
+                <p>방문자가 남긴 후기예요. 낮은 별점과 미답변부터 챙겨 보세요.</p>
               </div>
               <span class="tag">게시글형</span>
+            </div>
+
+            <!-- 요약 헤더 — 평균 + 별점 분포 -->
+            <div class="rsum">
+              <div class="rsum__avg">
+                <span class="rsum__num">4.8</span>
+                <span class="rsum__stars">★★★★★</span>
+                <span class="rsum__count">후기 5개</span>
+              </div>
+              <div class="rsum__dist">
+                <div class="rsum__row"><b>5★</b><span class="rsum__bar"><i style="width:80%"></i></span><span class="rsum__n">4</span></div>
+                <div class="rsum__row"><b>4★</b><span class="rsum__bar"><i style="width:20%"></i></span><span class="rsum__n">1</span></div>
+                <div class="rsum__row"><b>3★</b><span class="rsum__bar"><i style="width:0%"></i></span><span class="rsum__n">0</span></div>
+                <div class="rsum__row"><b>2★</b><span class="rsum__bar"><i style="width:0%"></i></span><span class="rsum__n">0</span></div>
+                <div class="rsum__row"><b>1★</b><span class="rsum__bar"><i style="width:0%"></i></span><span class="rsum__n">0</span></div>
+              </div>
+            </div>
+
+            <!-- 처리 중심 필터 — 미답변·저평점이 사장님의 할 일 -->
+            <div class="db__filter">
+              <label class="db__search">
+                <svg class="ph"><use href="#ph-magnifying-glass"/></svg>
+                <input placeholder="내용, 작성자로 찾기">
+              </label>
+              <button class="fchip is-on">전체 <b>5</b></button>
+              <button class="fchip">미답변 <b>2</b></button>
+              <button class="fchip">★3 이하 <b>0</b></button>
             </div>
 
             <div class="review">
@@ -368,10 +400,13 @@
                 <span class="inbox__avatar">박</span>
                 <b>박서연</b>
                 <span class="review__stars">★★★★★</span>
+                <span class="tag">🐾 김산책</span>
                 <span class="review__when">7/14</span>
               </div>
-              <p class="review__body">산책러님이 꼼꼼하고 친절해요. 산책 중간에 사진도 보내주셔서 안심됐어요. 다음에도 꼭 부탁드릴게요!</p>
+              <p class="review__body is-clamped">산책러님이 꼼꼼하고 친절해요. 산책 중간에 사진도 보내주셔서 안심됐어요. 비 오는 날이었는데 발도 깨끗하게 닦아서 데려다주시고, 산책 코스도 콩이 컨디션에 맞춰서 조절해 주셨어요. 다음에도 꼭 부탁드릴게요!</p>
+              <button class="review__more">더 보기</button>
               <div class="review__acts">
+                <span class="tag tag--warn">미답변</span>
                 <button class="btn btn--lite">답글</button>
                 <button class="btn">숨기기</button>
               </div>
@@ -382,10 +417,12 @@
                 <span class="inbox__avatar">김</span>
                 <b>김하늘</b>
                 <span class="review__stars">★★★★☆</span>
+                <span class="tag">🐾 이도보</span>
                 <span class="review__when">7/12</span>
               </div>
               <p class="review__body">예약이 정말 간편해요. 시간대 선택이 조금 더 다양하면 좋겠어요.</p>
               <div class="review__acts">
+                <span class="tag tag--warn">미답변</span>
                 <button class="btn btn--lite">답글</button>
                 <button class="btn">숨기기</button>
               </div>
@@ -396,17 +433,19 @@
                 <span class="inbox__avatar">이</span>
                 <b>이보람</b>
                 <span class="review__stars">★★★★★</span>
+                <span class="tag">🐾 김산책</span>
                 <span class="review__when">7/10</span>
               </div>
               <p class="review__body">우리 콩이가 산책러님만 보면 꼬리를 흔들어요. 믿고 맡길 수 있어서 좋습니다.</p>
               <div class="review__acts">
-                <button class="btn btn--lite">답글</button>
+                <span class="tag tag--ok">✓ 답글 완료</span>
+                <button class="btn btn--lite">답글 보기</button>
                 <button class="btn">숨기기</button>
               </div>
             </div>
 
             <div class="db__foot">
-              <span>전체 5개 · 평균 ★4.8</span>
+              <span>전체 5개 중 3개 표시 · ‹ 1 ›</span>
               <span>이 정보는 자동으로 저장되고, 매일 백업돼요</span>
             </div>
           </div><!-- /뷰 2 -->
@@ -420,6 +459,17 @@
               </div>
               <span class="tag">명부형</span>
               <button class="btn"><svg class="ph"><use href="#ph-download-simple"/></svg> 엑셀로 받기</button>
+            </div>
+
+            <!-- 검색 + 속성 필터 -->
+            <div class="db__filter">
+              <label class="db__search">
+                <svg class="ph"><use href="#ph-magnifying-glass"/></svg>
+                <input placeholder="이름, 지역으로 찾기">
+              </label>
+              <button class="fchip is-on">전체 <b>3</b></button>
+              <button class="fchip">신규 <b>1</b></button>
+              <button class="fchip">★4.8 이상 <b>2</b></button>
             </div>
 
             <div class="dir">
@@ -461,6 +511,17 @@
               </div>
               <span class="tag">표형</span>
               <button class="btn"><svg class="ph"><use href="#ph-download-simple"/></svg> 엑셀로 받기</button>
+            </div>
+
+            <!-- 검색 + 상태 필터 -->
+            <div class="db__filter">
+              <label class="db__search">
+                <svg class="ph"><use href="#ph-magnifying-glass"/></svg>
+                <input placeholder="이름, 연락처로 찾기">
+              </label>
+              <button class="fchip is-on">전체 <b>23</b></button>
+              <button class="fchip">활성 <b>21</b></button>
+              <button class="fchip">휴면 <b>2</b></button>
             </div>
 
             <div class="tbl-wrap">
@@ -628,6 +689,24 @@
   /* 대시보드의 [예약 보기] 같은 바로가기 */
   document.querySelectorAll("[data-goto]").forEach((btn) => {
     btn.addEventListener("click", () => showView(btn.dataset.goto));
+  });
+
+  /* 필터 칩 — 뷰마다 하나만 선택 (스캐폴드: 시각 상태만) */
+  document.querySelectorAll(".db__filter").forEach((bar) => {
+    bar.querySelectorAll(".fchip").forEach((chip) => {
+      chip.addEventListener("click", () => {
+        bar.querySelectorAll(".fchip").forEach((c) => c.classList.toggle("is-on", c === chip));
+      });
+    });
+  });
+
+  /* 긴 후기 접기/펼치기 */
+  document.querySelectorAll(".review__more").forEach((btn) => {
+    btn.addEventListener("click", () => {
+      const body = btn.previousElementSibling;
+      const clamped = body.classList.toggle("is-clamped");
+      btn.textContent = clamped ? "더 보기" : "접기";
+    });
   });
 
   /* 입력창 자동 높이 (Enter = 줄바꿈) */
