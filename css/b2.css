@@ -556,15 +556,21 @@
   overflow: hidden;
   text-overflow: ellipsis;
 }
+/* 기본 = 미출시(미리보기), 출시 후 .is-live — 한글이 들어가므로 모노 금지 */
 .pv__badge {
-  font-family: var(--font-mono);
-  font-size: 10px;
-  padding: 2px 9px;
+  font-size: 10.5px;
+  font-weight: 700;
+  padding: 2px 10px;
   border-radius: var(--radius-full);
-  border: 1px solid var(--color-ok);
+  border: 1px solid var(--color-line-strong);
+  color: var(--color-muted);
+  background: var(--color-surface);
+  white-space: nowrap;
+}
+.pv__badge.is-live {
+  border-color: var(--color-ok);
   color: #fff;
   background: var(--color-ok);
-  white-space: nowrap;
 }
 .et-btn {
   border: 1px solid var(--color-line);
@@ -801,7 +807,7 @@
 .spec-fab:hover { border-color: var(--color-accent); color: var(--color-accent); }
 .spec-fab small { font-weight: 500; color: var(--color-muted); }
 /* 좌측 목차(modal__side) + 우측 본문 — 목차 클릭 시 본문 스크롤 */
-.modal--spec { width: min(1060px, 100%); height: min(680px, 100%); }
+.modal--spec { width: min(1060px, 100%); }
 /* 목차 없는 단일 페인(치트시트)은 조금 좁게 */
 .modal--spec:not(:has(.modal__side)) { width: min(880px, 100%); }
 .spec h5 { scroll-margin-top: 10px; }
@@ -974,6 +980,65 @@
 .flow__node--any { border-style: dashed; }
 .flow__node--go { border-color: var(--color-ok); background: var(--color-ok-soft); }
 .flow__node--go .flow__who { color: var(--color-ok); }
+
+/* ── 출시 게이트 — 만들기 완료 후 사용자가 미리보기 확인 → 주소 정하고 직접 출시 ── */
+/* 주소 입력: 슬러그만 편집, 도메인은 고정 표시 */
+.addr-input {
+  display: flex;
+  align-items: center;
+  border: 2px solid var(--color-line-strong);
+  border-radius: var(--radius-md);
+  padding: 4px 14px 4px 6px;
+  transition: border-color .15s;
+}
+.addr-input:focus-within { border-color: var(--color-accent); }
+.addr-input input {
+  flex: 1;
+  min-width: 0;
+  border: none;
+  background: none;
+  outline: none;
+  font-family: var(--font-mono);
+  font-size: 17px;
+  font-weight: 600;
+  color: var(--color-ink);
+  padding: 9px 2px 9px 10px;
+  text-align: right;
+}
+.addr-input .addr-suffix {
+  font-family: var(--font-mono);
+  font-size: 17px;
+  color: var(--color-muted);
+  flex-shrink: 0;
+}
+.addr-check {
+  margin: 8px 0 0;
+  font-size: var(--text-xs);
+  font-weight: 700;
+}
+.addr-check.is-ok { color: var(--color-ok); }
+.addr-check.is-err { color: var(--color-danger); }
+/* 출시 완료 — 주소 + 복사 */
+.pub-url {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  border: 1px solid var(--color-ok);
+  background: var(--color-ok-soft);
+  border-radius: var(--radius-md);
+  padding: 10px 10px 10px 14px;
+  margin-bottom: 14px;
+}
+.pub-url span {
+  flex: 1;
+  min-width: 0;
+  font-family: var(--font-mono);
+  font-size: var(--text-sm);
+  font-weight: 600;
+  color: var(--color-ok);
+  word-break: break-all;
+}
+.pub-url .btn { font-size: 12px; padding: 6px 13px; box-shadow: none; flex-shrink: 0; }
 
 /* ── 상태 시연 스위처 (스캐폴드 전용) — 전송 잠금·질의 규칙을 눈으로 확인.
    점선 보더로 "데모 도구"임을 표시 — 실제 제품 UI 아님 ── */
