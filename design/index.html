@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>AiApp 화면 디자인 — 리뷰 인덱스</title>
+<link rel="stylesheet" href="css/tokens.css">
+<style>
+  body { display: flex; align-items: center; justify-content: center; min-height: 100dvh; background: var(--gradient-bg); }
+  .ix {
+    width: min(560px, calc(100vw - 40px));
+    background: var(--color-surface);
+    border: 1px solid var(--color-line);
+    border-radius: var(--radius-xl);
+    box-shadow: var(--shadow-lg);
+    padding: 30px 32px;
+  }
+  .ix h1 { margin: 0 0 4px; font-size: var(--text-xl); font-weight: 800; letter-spacing: -.01em; }
+  .ix > p { margin: 0 0 20px; font-size: var(--text-sm); color: var(--color-muted); }
+  .ix ol { margin: 0; padding: 0; list-style: none; display: flex; flex-direction: column; gap: 6px; }
+  .ix a {
+    display: flex;
+    align-items: baseline;
+    gap: 10px;
+    border: 1px solid var(--color-line);
+    border-radius: var(--radius-md);
+    padding: 11px 15px;
+    text-decoration: none;
+    color: var(--color-ink);
+    font-size: var(--text-base);
+    font-weight: 700;
+    transition: border-color .15s, box-shadow .15s;
+  }
+  .ix a:hover { border-color: var(--color-accent); box-shadow: var(--shadow-ring); }
+  .ix a small { font-weight: 500; font-size: var(--text-xs); color: var(--color-muted); }
+  .ix a .no {
+    font-family: var(--font-mono);
+    font-size: 10px;
+    color: var(--color-accent);
+    background: var(--color-accent-soft);
+    border-radius: var(--radius-full);
+    padding: 1px 8px;
+  }
+  .ix .foot { margin-top: 18px; font-size: var(--text-2xs); color: var(--color-muted); }
+</style>
+</head>
+<body>
+  <main class="ix">
+    <h1>AiApp 화면 디자인</h1>
+    <p>흐름 순서대로 보는 걸 추천해요 — B1에서 시작하면 클릭으로 이어집니다.</p>
+    <ol>
+      <li><a href="b1.html"><span class="no">B1</span> 시작 화면 <small>컴포저 · 첨부 피커 · 사이드바</small></a></li>
+      <li><a href="blueprint.html"><span class="no">B1→2</span> 설계안 대화 <small>순차 질문 · 되묻기 · 접힘</small></a></li>
+      <li><a href="b2.html"><span class="no">B2</span> 스튜디오 <small>채팅 피드 · 미리보기 · 일시정지 카드</small></a></li>
+      <li><a href="db.html"><span class="no">B2</span> 데이터베이스 탭 <small>뷰 템플릿 4유형 + 요약 대시보드</small></a></li>
+      <li><a href="brand.html"><span class="no">B2</span> 브랜드·홍보 탭 <small>브랜드 키트 · 로고 위저드</small></a></li>
+      <li><a href="brand-empty.html"><span class="no">B2</span> 브랜드·홍보 (빈 상태) <small>첫 진입 자리표시</small></a></li>
+      <li><a href="settings.html"><span class="no">B2</span> 관리·설정 탭 <small>섹션 뷰 · 지연 설정(결제)</small></a></li>
+      <li><a href="plan.html"><span class="no">공통</span> 구독 · 결제 <small>플랜 비교</small></a></li>
+    </ol>
+    <p class="foot">정적 목업입니다 — 데이터는 전부 예시(멍멍 산책 예약). 최신 기준은 저장소 design/ 폴더.</p>
+  </main>
+</body>
+</html>
