@@ -802,6 +802,8 @@
 .spec-fab small { font-weight: 500; color: var(--color-muted); }
 /* 좌측 목차(modal__side) + 우측 본문 — 목차 클릭 시 본문 스크롤 */
 .modal--spec { width: min(1060px, 100%); height: min(680px, 100%); }
+/* 목차 없는 단일 페인(치트시트)은 조금 좁게 */
+.modal--spec:not(:has(.modal__side)) { width: min(880px, 100%); }
 .spec h5 { scroll-margin-top: 10px; }
 
 .spec h5 {
@@ -873,6 +875,65 @@
   padding: 3px 11px;
   margin: 0 0 12px;
 }
+
+/* 치트시트 — 응답 유형마다 "실물 미니 프리뷰 + 한 줄 규칙" 카드.
+   읽는 표가 아니라 보는 카탈로그 */
+.spec__sub { margin: -4px 0 14px; font-size: var(--text-sm); color: var(--color-muted); }
+.cheat {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px;
+  margin: 4px 0 14px;
+}
+.cheat__card {
+  border: 1px solid var(--color-line);
+  border-radius: var(--radius-md);
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+}
+/* 실물 데모 영역 — 실제 컴포넌트를 그대로 렌더 (조작만 차단) */
+.cheat__demo {
+  flex: 1;
+  background: var(--color-bg);
+  padding: 14px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 6px;
+  min-height: 76px;
+  pointer-events: none;
+}
+.cheat__meta {
+  padding: 9px 12px 10px;
+  border-top: 1px solid var(--color-line);
+  background: var(--color-surface);
+}
+.cheat__meta b { display: block; font-size: var(--text-sm); font-weight: 800; }
+.cheat__meta small {
+  display: block;
+  font-size: var(--text-2xs);
+  color: var(--color-muted);
+  line-height: 1.5;
+  margin-top: 1px;
+}
+
+/* 접이식 상세 — 기본은 닫아서 노트를 가볍게 */
+.spec details {
+  border: 1px solid var(--color-line);
+  border-radius: var(--radius-md);
+  padding: 0 14px;
+  margin-bottom: 8px;
+}
+.spec summary {
+  cursor: pointer;
+  font-size: var(--text-sm);
+  font-weight: 700;
+  padding: 11px 0;
+  color: var(--color-ink);
+}
+.spec details[open] summary { border-bottom: 1px solid var(--color-line); margin-bottom: 10px; }
+.spec details > *:last-child { margin-bottom: 12px; }
 
 /* 단계 흐름도 — 외부 라이브러리 없이 CSS 스텝 플로우 */
 .flow {
