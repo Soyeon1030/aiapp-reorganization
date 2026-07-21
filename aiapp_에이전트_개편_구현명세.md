@@ -99,7 +99,7 @@
 | `check` | `text`, `preview_version?` | ✓ 줄 추가 · preview_version 있으면 미리보기 갱신 |
 | `console_update` | `rows[{id,label,state,detail}]`, `footer?` | 기존 진행 카드 patch (최초 1회만 생성) |
 | `pause` | `id`, `severity(warn\|danger)`, `text`, `actions[{id,label}]` | 일시정지/오류 카드 — 답 올 때까지 후속 이벤트 없음 |
-| `ask` | `id`, `text`, `options[{id,label,desc,recommended}]`, `allow_custom` | 되묻기 카드 (비차단 — 스트림 계속) |
+| `ask` | `id`, `title`(질문), `desc`(설명문 — 왜 묻는지·무엇이 달라지는지), `options[{id,label,desc,recommended}]`, `allow_custom` | 되묻기 카드 (비차단 — 스트림 계속) |
 | `report` | `name`, `url`, `items[]`, `todo[{label,section}]` | 완료 보고 카드 + 설정 필요 행 |
 | `suggest` | `chips[{label,prompt}]` | 다음 행동 추천 칩 |
 
@@ -134,7 +134,7 @@
 | 짧은 자유 입력 | 이름, 주소 | 인라인 한 줄 입력 (비워도 진행) | blueprint.html `card-input` |
 | 확인 게이트 | 설계안 승인 | 요약 카드 + [이대로 만들기]/[수정 요청] 버튼 쌍 | blueprint.html `pcard__actions` |
 | 경로 분기 | 바로 만들기 vs 더 다듬기 | 경로 카드 2개 (제목+결과 설명) | brand.html `wpath` |
-| 구체화 질문 (모호한 요청 되묻기) | "결제도 받고 싶어요" → 어떻게? | 옵션 카드(AI 추천 표시, 원탭 즉답) + 기타 직접 입력 — 설계 단계와 운영 중 대화 공통 | blueprint.html·b2.html `ask` |
+| 구체화 질문 (모호한 요청 되묻기) | "결제도 받고 싶어요" → 어떻게? | **제목(질문) + 설명문(왜 묻는지·무엇이 달라지는지)** + 옵션 카드(AI 추천 표시, 원탭 즉답) + 기타 직접 입력 — 설계 단계와 운영 중 대화 공통 | blueprint.html·b2.html `ask` |
 | 실행 중 차단 질문 | 한도 초과, 충돌 | 채팅 인라인 경고 카드 + 버튼, 파이프라인 일시정지 + "답을 기다리고 있어요" 상태 | b2.html `pause-card` (답변된 히스토리 상태) |
 
 **상태 정의**: 질문 카드는 `대기(활성) → 답변됨(요약으로 접힘) / 스킵(기본값 적용 표기)` 세 상태를 가진다. 자율 모드(확인 모드 꺼짐)에서는 비차단 질문을 생략하고 기본값을 쓰되, 완료 보고에 "AI가 대신 고른 것" 목록을 남긴다.
