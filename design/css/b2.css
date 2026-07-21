@@ -614,7 +614,7 @@
   min-height: 0;
   overflow-y: auto;
   padding: var(--space-5);
-  background: var(--color-bg);
+  background-color: rgb(249 250 251);  /* 사용자 지정 색 — 토큰 대신 고정값 유지 */
   container-type: inline-size;   /* 목업 반응형은 패널 폭 기준 (드래그에 반응) */
 }
 .pv__canvas {
