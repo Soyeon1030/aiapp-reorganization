@@ -117,7 +117,6 @@
         </div>
         <span class="notif-item__time">어제</span>
       </div>
-      <div class="notif-pop__foot">문자·알림톡으로 받기는 곧 제공돼요</div>
     </div>
   </aside>
 
@@ -170,15 +169,16 @@
 
           <div class="log-chk">회원 · 예약 접수 · 게시판 연결 완료</div>
 
-          <div class="log-step">출시</div>
+          <div class="log-step">만들기 완료</div>
 
-          <!-- 완료 보고 카드 -->
+          <!-- 완료 보고 카드 — 아직 미출시. 미리보기 확인 → [출시하기]에서 주소를 정하고 공개 -->
           <div class="report">
             <div class="report__head">
-              <span class="live-badge"><i></i>LIVE</span>
+              <span class="live-badge" id="report-live" hidden><i></i>LIVE</span>
+              <span class="tag tag--run" id="report-draft">미리보기 확인 중</span>
               <b>멍멍 산책 예약</b>
             </div>
-            <a class="report__url" href="#" onclick="return false">🌐 https://mungmung-walk.aiapp.site</a>
+            <a class="report__url" id="report-url" href="#" onclick="return false" hidden>🌐 https://mungmung-walk.aiapp.help</a>
             <div class="report__sec">이렇게 만들었어요</div>
             <ul class="report__list">
               <li>화면 6개 — 홈 · 예약 · 후기 · 소개 · 마이 · 로그인</li>
@@ -196,12 +196,12 @@
               <span>소요 시간 <b>1분 42초</b></span>
             </div>
             <div class="report__acts">
-              <button class="btn btn--primary"><svg class="ph"><use href="#ph-globe"/></svg> 공개 설정</button>
+              <button class="btn btn--primary" id="publish-open">🚀 출시하기</button>
               <button class="btn btn--lite"><svg class="ph"><use href="#ph-database"/></svg> 데이터 보기</button>
             </div>
           </div>
 
-          <p class="log-line">수정하고 싶은 부분이 있으면 아래 입력창에 편하게 말씀해 주세요 ✏️</p>
+          <p class="log-line" id="publish-guide">먼저 <b>오른쪽 미리보기</b>를 둘러보세요. 수정할 게 있으면 아래에 말씀해 주시고, 마음에 들면 <b>출시하기</b>로 주소를 정해 공개할 수 있어요 🚀</p>
 
           <!-- 다음 행동 추천 (명세 §2.2.2 Q7) — 출시 보고 직후 1세트.
                슬롯: 후속 ×2 + 성장 제안 ×2 (할 일은 위 보고 카드의 '설정 필요' 행과 중복이라 생략).
@@ -275,8 +275,9 @@
             <button title="모바일"><svg class="ph"><use href="#ph-device-mobile"/></svg></button>
             <button class="is-on" title="데스크톱"><svg class="ph"><use href="#ph-monitor"/></svg></button>
           </div>
-          <span class="pv__addr">https://mungmung-walk.aiapp.site</span>
-          <span class="pv__badge">LIVE</span>
+          <!-- 미출시 상태 — 주소는 출시할 때 정해짐 -->
+          <span class="pv__addr" id="pv-addr">아직 주소가 없어요 — 출시하면 생겨요</span>
+          <span class="pv__badge" id="pv-badge">미리보기</span>
           <button class="et-btn"><svg class="ph"><use href="#ph-pencil-simple"/></svg> 편집</button>
           <button class="et-btn"><svg class="ph"><use href="#ph-sparkle"/></svg> AI 요청</button>
           <!-- 여러 단계 히스토리가 아니라 직전 1회 복귀라 '버전' 대신 '이전' -->
@@ -360,6 +361,47 @@
   <button data-state="idle">대기</button>
   <button data-state="busy">작업 중</button>
   <button data-state="ask" class="is-on">질의 중</button>
+</div>
+
+<!-- 출시 모달 — 주소 설정이 최우선 스텝, 완료 후 안내 (명세 §2.2 출시 게이트) -->
+<div class="modal-overlay" id="publish-modal" hidden>
+  <div class="modal modal--brief wiz" role="dialog" aria-modal="true" aria-label="출시하기">
+    <div class="modal__main">
+      <button class="modal__x" id="publish-close" aria-label="닫기">✕</button>
+      <span class="wiz__badge">🚀 출시하기</span>
+
+      <!-- 1. 배포 주소 설정 (우선) -->
+      <section class="wstep" id="pub-step-addr">
+        <h4 class="wiz__q">어떤 주소로 공개할까요?</h4>
+        <p class="wiz__hint">방문자가 들어올 인터넷 주소예요. 서비스 이름으로 미리 만들어 뒀어요 — 그대로 써도 좋아요.</p>
+        <div class="addr-input">
+          <input id="pub-slug" value="mungmung-walk" spellcheck="false" autocomplete="off" aria-label="배포 주소">
+          <span class="addr-suffix">.aiapp.help</span>
+        </div>
+        <p class="addr-check is-ok" id="pub-check">✓ 사용할 수 있는 주소예요</p>
+        <p class="wiz__hint" style="margin-top:12px">출시하면 이 주소로 <b>누구나 들어올 수 있어요</b>. 출시 전까지는 이 화면의 미리보기에서만 보여요.</p>
+        <footer class="wiz__foot">
+          <span class="wiz__count">출시해도 언제든 수정할 수 있어요</span>
+          <button class="btn btn--primary" id="pub-go">이 주소로 출시하기</button>
+        </footer>
+      </section>
+
+      <!-- 2. 출시 완료 -->
+      <section class="wstep" id="pub-step-done" hidden>
+        <h4 class="wiz__q">출시했어요! 🎉</h4>
+        <p class="wiz__hint">이제 누구나 이 주소로 들어올 수 있어요. 링크를 복사해서 공유해 보세요.</p>
+        <div class="pub-url">
+          <span id="pub-url-text">https://mungmung-walk.aiapp.help</span>
+          <button class="btn" id="pub-copy">복사</button>
+        </div>
+        <p class="wiz__hint">다음으로 — 네이버·구글 <b>검색 노출</b>은 관리·설정에서, 홍보 소재는 브랜딩·홍보에서 이어갈 수 있어요.</p>
+        <footer class="wiz__foot">
+          <span class="wiz__count"></span>
+          <button class="btn btn--primary" id="publish-done-close">확인</button>
+        </footer>
+      </section>
+    </div>
+  </div>
 </div>
 
 <!-- 개발 노트 버튼 + 모달 — 이 화면의 기획 (AI 응답 문법 중심) -->
@@ -473,7 +515,7 @@
           <div class="cheat__demo">
             <div class="report" style="padding:12px; gap:7px">
               <div class="report__head"><span class="live-badge"><i></i>LIVE</span><b>멍멍 산책 예약</b></div>
-              <span class="report__url">🌐 mungmung-walk.aiapp.site</span>
+              <span class="report__url">🌐 mungmung-walk.aiapp.help</span>
             </div>
           </div>
           <div class="cheat__meta"><b>완료 보고 카드</b><small>출시 때 1회 · LIVE·URL·만든 것·'설정 필요' 행</small></div>
@@ -650,6 +692,65 @@
       settingsModal.querySelectorAll(".modal__pane").forEach((p) => { p.hidden = p.dataset.pane !== tab.dataset.tab; });
     });
   });
+
+  /* ── 출시 게이트 — 미리보기 확인 → 주소 설정 → 공개 (명세 §2.2) ── */
+  const pubModal = document.getElementById("publish-modal");
+  const pubSlug = document.getElementById("pub-slug");
+  const pubCheck = document.getElementById("pub-check");
+  document.getElementById("publish-open").addEventListener("click", () => {
+    pubModal.hidden = false;
+    document.getElementById("pub-step-addr").hidden = false;
+    document.getElementById("pub-step-done").hidden = true;
+    pubSlug.focus();
+  });
+  document.getElementById("publish-close").addEventListener("click", () => { pubModal.hidden = true; });
+  pubModal.addEventListener("click", (e) => { if (e.target === pubModal) pubModal.hidden = true; });
+
+  /* 주소 검사 — 형식(소문자·숫자·하이픈, 3자↑) + 중복 체크 (스캐폴드: 예약된 이름 목록으로 시연) */
+  const TAKEN = ["mungmung", "aiapp", "admin", "app", "www"];
+  pubSlug.addEventListener("input", () => {
+    const v = pubSlug.value.trim();
+    let ok = false, msg;
+    if (!/^[a-z0-9-]{3,}$/.test(v)) {
+      msg = "영문 소문자·숫자·하이픈으로 3자 이상 적어주세요";
+    } else if (TAKEN.includes(v)) {
+      msg = "이미 사용 중인 주소예요 — 다른 이름을 적어주세요";
+    } else {
+      ok = true;
+      msg = "✓ 사용할 수 있는 주소예요";
+    }
+    pubCheck.classList.toggle("is-ok", ok);
+    pubCheck.classList.toggle("is-err", !ok);
+    pubCheck.textContent = msg;
+    document.getElementById("pub-go").disabled = !ok;
+  });
+
+  /* 출시 실행 → 완료 스텝 + 화면 상태 전환 (배지·주소·보고 카드·채팅) */
+  document.getElementById("pub-go").addEventListener("click", () => {
+    const url = "https://" + pubSlug.value.trim() + ".aiapp.help";
+    document.getElementById("pub-url-text").textContent = url;
+    document.getElementById("pub-step-addr").hidden = true;
+    document.getElementById("pub-step-done").hidden = false;
+    /* 미리보기 → LIVE */
+    document.getElementById("pv-addr").textContent = url;
+    document.getElementById("pv-badge").textContent = "LIVE";
+    document.getElementById("pv-badge").classList.add("is-live");
+    /* 보고 카드 갱신 */
+    document.getElementById("report-live").hidden = false;
+    document.getElementById("report-draft").hidden = true;
+    const rUrl = document.getElementById("report-url");
+    rUrl.textContent = "🌐 " + url;
+    rUrl.hidden = false;
+    document.getElementById("publish-open").textContent = "✓ 출시됨";
+    document.getElementById("publish-open").disabled = true;
+    /* 채팅에 출시 로그 */
+    const line = document.createElement("p");
+    line.className = "log-line";
+    line.innerHTML = "🚀 출시 완료! 이제 <b>" + pubSlug.value.trim() + ".aiapp.help</b>로 누구나 들어올 수 있어요. 검색 노출 설정은 <b>관리·설정</b>에서 이어가세요.";
+    document.getElementById("publish-guide").after(line);
+  });
+  document.getElementById("pub-copy").addEventListener("click", (e) => { e.target.textContent = "복사됨 ✓"; });
+  document.getElementById("publish-done-close").addEventListener("click", () => { pubModal.hidden = true; });
 
   /* ── 개발 노트 모달 — 목차 클릭 시 본문 스크롤 ── */
   const specModal = document.getElementById("spec-modal");

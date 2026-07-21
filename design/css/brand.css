@@ -679,7 +679,7 @@
 .wiz .modal__main {
   display: flex;
   flex-direction: column;
-  min-height: 380px;
+  min-height: 330px;
 }
 .wiz__badge {
   align-self: flex-start;
