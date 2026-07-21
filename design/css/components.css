@@ -990,3 +990,19 @@
 .demo-states button:hover { background: var(--color-surface-sub); }
 .demo-states button.is-on { background: var(--color-accent-soft); color: var(--color-accent); }
 
+
+/* ── NEW 태그 — 신규 작업 부분에 날짜/시간 표기 (index 업데이트 이력과 동일 시각) ── */
+.new-tag {
+  display: inline-block;
+  font-family: var(--font-mono);
+  font-size: var(--text-2xs);
+  font-weight: 600;
+  color: var(--color-accent);
+  background: var(--color-accent-soft);
+  border-radius: var(--radius-full);
+  padding: 1px 8px;
+  margin-left: 6px;
+  vertical-align: middle;
+  letter-spacing: 0;
+  text-transform: none;
+}
