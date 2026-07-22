@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>AiApp — 설계안 v2 (개선안)</title>
+<title>AiApp — 설계안 v2 · 기획서 3탭 노출</title>
 <link rel="stylesheet" href="css/tokens.css">
 <link rel="stylesheet" href="css/components.css">
 <link rel="stylesheet" href="css/blueprint-v2.css">
@@ -11,214 +11,258 @@
 <body>
 
 <div class="bpv">
+<div class="bpv__wrap">
 
-  <div class="bpv__top">
-    <a class="bpv__back" href="blueprint.html">← 설계안 대화</a>
-    <span class="bpv__crumb">기획 에이전트가 정리한 <b>기획안 전체 보기</b> — 개선안 시안 <span class="new-tag">NEW 07-22 14:48</span></span>
-  </div>
+  <div class="app">
 
-  <main class="bpv__doc">
-
-    <!-- ═══ meta ═══ -->
-    <header class="bhead">
-      <span class="bhead__kicker">이렇게 만들 준비가 됐어요</span>
-      <h1 class="bhead__title">🐾 멍멍 산책 예약</h1>
-      <p class="bhead__one">우리 동네 반려견 산책을 온라인으로 예약받는 서비스예요.</p>
-      <div class="bhead__chips">
-        <span class="meta-chip">🔐 회원 가입·로그인이 있는 서비스</span>
-        <span class="meta-chip meta-chip--ok" id="route-chip">✓ AiApp에서 바로 만들 수 있어요</span>
-      </div>
-    </header>
-
-    <!-- 엔터프라이즈 라우팅일 때만 표시 (상태 시연으로 확인) -->
-    <div class="route-banner" id="route-banner" hidden>
-      <b>이 프로젝트는 상담이 필요해요</b>
-      <p>산책러 실시간 위치 추적과 자동 매칭은 AiApp이 바로 만들 수 있는 범위를 넘어요.
-         나머지(예약·회원·후기)는 지금 방식 그대로 가능하니, 전체를 함께 만들 방법을
-         엔터프라이즈 팀이 안내해 드릴 수 있어요.</p>
-      <button class="btn btn--primary">상담 신청하기</button>
+    <!-- 상단 바 -->
+    <div class="app__topbar">
+      <div class="app__logo"><span class="mk">A</span>AiApp</div>
+      <div class="app__credits">남은 크레딧 <b>1회</b> · 무료 생성</div>
     </div>
 
-    <!-- ═══ understanding[] — confidence가 시각 언어의 핵심 ═══ -->
-    <section class="bsec" aria-label="이렇게 이해했어요">
-      <h2>이렇게 이해했어요 <small>주황색은 제가 추측한 부분 — 먼저 확인해 주세요</small></h2>
-      <div class="und">
-        <div class="und__card">
-          <span class="und__badge und__badge--ok">말씀하신 내용</span>
-          <span class="ico">📅</span>
-          <b>예약 접수</b>
-          <p>손님이 원하는 날짜·시간에 산책 예약을 넣어요.</p>
-        </div>
-        <div class="und__card">
-          <span class="und__badge und__badge--ok">말씀하신 내용</span>
-          <span class="ico">🐕</span>
-          <b>산책러 소개</b>
-          <p>산책러의 경력·사진·소개를 보고 고를 수 있어요.</p>
-        </div>
-        <div class="und__card is-assumed">
-          <span class="und__badge und__badge--warn">추측했어요</span>
-          <span class="ico">⭐</span>
-          <b>후기</b>
-          <p>산책이 끝나면 손님이 별점과 후기를 남겨요. 요청에는 없었지만 필요할 것 같아 넣었어요.</p>
-        </div>
-        <div class="und__card is-assumed">
-          <span class="und__badge und__badge--warn">추측했어요</span>
-          <span class="ico">💬</span>
-          <b>알림톡 안내</b>
-          <p>예약이 확정되면 손님에게 카카오 알림톡으로 알려드려요.</p>
-        </div>
-      </div>
-    </section>
+    <!-- 내 요청 — 사용자가 한 말을 그대로 보여줌 (이해의 기준점) -->
+    <div class="request">
+      <div class="request__lbl">내 요청</div>
+      <div class="request__q"><span class="quote">“</span>동네 반려견 산책 예약받는 사이트 만들어줘<span class="quote">”</span></div>
+    </div>
 
-    <!-- ═══ screens[] — is_core는 파란 테두리 ═══ -->
-    <section class="bsec" aria-label="화면 흐름">
-      <h2>화면 흐름 <small>손님이 쓰는 순서대로 — 파란 테두리가 핵심 화면</small></h2>
-      <div class="scr">
-        <div class="scr__step">
-          <span class="no">1</span>
-          <b>첫 화면</b>
-          <p>서비스 소개와 예약 버튼</p>
-        </div>
-        <span class="scr__arrow">→</span>
-        <div class="scr__step is-core">
-          <span class="no">2</span>
-          <b>산책러 둘러보기</b>
-          <p>경력·별점 보고 산책러 고르기</p>
-          <span class="scr__core-tag">핵심</span>
-        </div>
-        <span class="scr__arrow">→</span>
-        <div class="scr__step is-core">
-          <span class="no">3</span>
-          <b>예약하기</b>
-          <p>날짜·시간·반려견 정보 입력</p>
-          <span class="scr__core-tag">핵심</span>
-        </div>
-        <span class="scr__arrow">→</span>
-        <div class="scr__step">
-          <span class="no">4</span>
-          <b>내 예약</b>
-          <p>예약 확인·취소, 후기 남기기</p>
-        </div>
-        <span class="scr__arrow">→</span>
-        <div class="scr__step">
-          <span class="no">5</span>
-          <b>관리 화면</b>
-          <p>사장님이 예약을 확정·처리</p>
-        </div>
-      </div>
-    </section>
+    <!-- 3탭 — 점진 공개: 90%는 미리보기만 봄 -->
+    <div class="ptabs" role="tablist">
+      <button class="ptabs__tab" role="tab" aria-selected="true" data-tab="pane-preview">
+        미리보기 <span class="hint">· 대부분 여기만 봐요</span>
+      </button>
+      <button class="ptabs__tab" role="tab" aria-selected="false" data-tab="pane-plan">
+        기획서 <span class="badge">화면·데이터</span>
+      </button>
+      <button class="ptabs__tab" role="tab" aria-selected="false" data-tab="pane-advanced">
+        자세히 <span class="badge">문서</span>
+      </button>
+    </div>
 
-    <!-- ═══ data_model[] — 예시값이 이해의 핵심, 상태는 라이프사이클로 ═══ -->
-    <section class="bsec" aria-label="저장하는 정보">
-      <h2>저장하는 정보 <small>서비스가 기억해야 할 것들 — 예시로 보여드려요</small></h2>
-      <div class="ent">
+    <div class="pbody">
 
-        <div class="ent__card">
-          <div class="ent__head"><span class="ico">📅</span><b>예약</b><small>예약 한 건마다 저장돼요</small></div>
-          <div class="ent__rows">
-            <div class="ent__row"><span class="nm">예약자 이름</span><span class="ent__type">글자</span><span class="ent__ex">김하늘</span></div>
-            <div class="ent__row"><span class="nm">연락처</span><span class="ent__type">전화</span><span class="ent__ex">010-1234-5678</span></div>
-            <div class="ent__row"><span class="nm">산책 날짜·시간</span><span class="ent__type">날짜</span><span class="ent__ex">7월 24일 (수) 오후 3시</span></div>
-            <div class="ent__row"><span class="nm">반려견 이름</span><span class="ent__type">글자</span><span class="ent__ex">초코 (푸들 · 4살)</span></div>
-            <div class="ent__row"><span class="nm">상태</span><span class="ent__type">선택</span><span class="ent__ex">대기 · 확정 · 완료 · 취소</span></div>
+      <!-- ══════════ 탭 1: 미리보기 — 결과가 먼저, 확인이 옆에 ══════════ -->
+      <section class="pane is-on" id="pane-preview">
+        <div class="pvgrid">
+
+          <!-- 생성된 사이트 목업 (멍멍 산책 브랜드 — 미리보기 내부 전용 톤) -->
+          <div class="browser">
+            <div class="browser__chrome">
+              <i></i><i></i><i></i>
+              <span class="browser__url">미리보기 · 아직 주소가 없어요 — 출시하면 생겨요</span>
+            </div>
+            <div class="site">
+              <div class="site-hero">
+                <div class="eyebrow">DOG WALKING</div>
+                <h2>🐾 멍멍 산책 예약</h2>
+                <p>믿을 수 있는 동네 산책러에게, 원하는 시간에 미리 예약하세요.</p>
+                <span class="cta">지금 예약하기 →</span>
+              </div>
+              <div class="site-body">
+                <div class="row">산책 코스</div>
+                <div class="svc">
+                  <div class="svc__card"><div class="ic">🐕</div><div class="t">가볍게 한 바퀴</div><div class="d">30분</div></div>
+                  <div class="svc__card"><div class="ic">🌳</div><div class="t">공원 코스</div><div class="d">60분</div></div>
+                  <div class="svc__card"><div class="ic">⚡</div><div class="t">에너지 발산</div><div class="d">90분</div></div>
+                </div>
+              </div>
+            </div>
           </div>
-          <div class="ent__cycle">
-            상태 흐름 — 이 순서대로 관리 화면의 버튼이 돼요:
-            <span class="pill pill--warn">대기</span>→<span class="pill pill--ok">확정</span>→<span class="pill">완료</span>
-            <span style="margin:0 2px">/</span><span class="pill">취소</span>
+
+          <!-- 요약 확인 카드 — understanding[] + 확정 게이트 -->
+          <div class="summary">
+            <div class="summary__head">
+              <span class="ai">A</span>
+              <h3>이렇게 이해했어요</h3>
+            </div>
+            <div class="summary__sub">맞는지 한 번만 확인해 주세요.</div>
+
+            <div class="feat">
+              <div class="feat__item">
+                <div class="ic">📅</div>
+                <div class="tx"><div class="t">예약 접수</div><div class="d">손님이 원하는 날짜·시간에 산책 예약을 넣어요.</div></div>
+              </div>
+              <div class="feat__item">
+                <div class="ic">👥</div>
+                <div class="tx"><div class="t">예약 관리</div><div class="d">사장님이 예약 현황을 보고 확정·취소해요.</div></div>
+              </div>
+              <div class="feat__item">
+                <div class="ic">💬</div>
+                <div class="tx"><div class="t">알림톡 발송</div><div class="d">예약이 확정되면 손님에게 카톡으로 알려줘요.</div></div>
+              </div>
+              <div class="feat__item feat__item--guess">
+                <div class="ic">❓</div>
+                <div class="tx"><div class="t">산책 코스 3종<span class="gtag">추측함</span></div><div class="d">30·60·90분으로 넣어뒀어요. 다르면 알려주세요.</div></div>
+              </div>
+            </div>
+
+            <!-- 확정 게이트 — 클릭 즉시 진행 (승인이 곧 시작), 수정은 대화로 복귀 -->
+            <div class="confirm">
+              <button class="btn btn--primary" onclick="location.href='b2.html'">맞아요, 이대로 만들기</button>
+              <button class="btn" onclick="location.href='blueprint.html'">조금 고칠게요</button>
+              <div class="confirm__warn">지금 만들면 무료 생성 1회가 사용돼요.<br>확정 뒤에도 화면·기능은 계속 수정할 수 있어요.</div>
+            </div>
+          </div>
+
+        </div>
+      </section>
+
+      <!-- ══════════ 탭 2: 기획서 — screens[] + data_model[] ══════════ -->
+      <section class="pane" id="pane-plan">
+
+        <!-- 화면 설계 -->
+        <div class="sec">
+          <div class="sec__h"><span class="n">1</span><h3>어떤 화면이 만들어지나요</h3></div>
+          <p class="sec__desc">손님이 예약하는 흐름을 순서대로 그려봤어요. 파란 테두리가 이 서비스의 핵심 화면이에요.</p>
+          <div class="wflow">
+            <div class="wscreen">
+              <div class="wscreen__frame">
+                <div class="bar b1"></div><div class="bar b2"></div><div class="bar b3"></div>
+                <div class="blue-btn"></div>
+              </div>
+              <div class="wscreen__cap"><span class="step">1 · </span>첫 화면</div>
+            </div>
+            <div class="wscreen">
+              <div class="wscreen__frame is-core">
+                <div class="bar b1"></div>
+                <div class="grid2"><div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div></div>
+                <div class="blue-btn"></div>
+              </div>
+              <div class="wscreen__cap"><span class="step">2 · </span>산책러 고르기</div>
+            </div>
+            <div class="wscreen">
+              <div class="wscreen__frame is-core">
+                <div class="bar b2"></div><div class="bar b1"></div><div class="bar b3"></div>
+                <div class="blue-btn"></div>
+              </div>
+              <div class="wscreen__cap"><span class="step">3 · </span>예약하기</div>
+            </div>
+            <div class="wscreen">
+              <div class="wscreen__frame">
+                <div class="bar b2"></div><div class="bar b1"></div><div class="bar b3"></div><div class="bar b1"></div>
+              </div>
+              <div class="wscreen__cap"><span class="step">4 · </span>예약 완료</div>
+            </div>
+            <div class="wscreen">
+              <div class="wscreen__frame">
+                <div class="bar b2"></div><div class="bar b3"></div><div class="bar b2"></div><div class="bar b3"></div>
+              </div>
+              <div class="wscreen__cap"><span class="step">5 · </span>사장님 관리</div>
+            </div>
+          </div>
+          <div class="wflow-legend"><span class="chip"></span> 파란 화면 = 핵심 기능이 담긴 곳</div>
+        </div>
+
+        <!-- DB 구조 — 개발 용어 없이 -->
+        <div class="sec">
+          <div class="sec__h"><span class="n">2</span><h3>어떤 정보를 저장하나요</h3></div>
+          <p class="sec__desc">이 서비스에 딱 맞게 저장 공간을 새로 설계했어요. 일반 템플릿이 아니라, 요청하신 예약 서비스에 필요한 항목만 담았어요.</p>
+
+          <div class="db-toggle">
+            <button data-db="cards" aria-pressed="true">쉽게 보기</button>
+            <button data-db="sheet" aria-pressed="false">표로 보기</button>
+          </div>
+
+          <!-- 쉽게 보기: 카드형 -->
+          <div class="dbcards" id="db-cards">
+            <div class="dbcard">
+              <div class="dbcard__h"><span class="ic">📅</span><span class="t">예약 <small>예약 한 건마다 저장돼요</small></span></div>
+              <ul>
+                <li><span class="key">예약자 이름</span><span class="ex">예) 김하늘</span><span class="type">글자</span></li>
+                <li><span class="key">연락처</span><span class="ex">예) 010-1234-5678</span><span class="type">전화</span></li>
+                <li><span class="key">산책 일시</span><span class="ex">예) 7월 24일 15:00</span><span class="type">날짜</span></li>
+                <li><span class="key">반려견 이름</span><span class="ex">예) 초코 (푸들 · 4살)</span><span class="type">글자</span></li>
+                <li><span class="key">코스</span><span class="ex">30분 / 60분 / 90분</span><span class="type">선택</span></li>
+                <li><span class="key">상태</span><span class="ex">대기 · 확정 · 완료 · 취소</span><span class="type">선택</span></li>
+              </ul>
+            </div>
+            <div class="dbcard">
+              <div class="dbcard__h"><span class="ic">🐕</span><span class="t">산책러 <small>산책러 한 명마다 저장돼요</small></span></div>
+              <ul>
+                <li><span class="key">이름</span><span class="ex">예) 박산책</span><span class="type">글자</span></li>
+                <li><span class="key">한 줄 소개</span><span class="ex">예) 대형견도 자신 있어요!</span><span class="type">글자</span></li>
+                <li><span class="key">경력</span><span class="ex">예) 3년</span><span class="type">숫자</span></li>
+                <li><span class="key">프로필 사진</span><span class="ex">얼굴이 보이는 사진 1장</span><span class="type">이미지</span></li>
+                <li><span class="key">활동 중</span><span class="ex">예) 활동 중이에요</span><span class="type">참/거짓</span></li>
+              </ul>
+            </div>
+          </div>
+
+          <!-- 표로 보기: 실데이터 느낌 -->
+          <div class="dbsheet" id="db-sheet">
+            <table>
+              <thead><tr><th>예약자</th><th>연락처</th><th>산책 일시</th><th>코스</th><th>상태</th></tr></thead>
+              <tbody>
+                <tr><td>김하늘</td><td>010-1234-5678</td><td>7/24 15:00</td><td>60분</td><td><span class="st st--ok">확정</span></td></tr>
+                <tr><td>이서준</td><td>010-2345-6789</td><td>7/24 17:30</td><td>30분</td><td><span class="st st--wait">대기</span></td></tr>
+                <tr><td>박도윤</td><td>010-3456-7890</td><td>7/25 11:00</td><td>90분</td><td><span class="st st--wait">대기</span></td></tr>
+              </tbody>
+            </table>
+          </div>
+
+          <div class="db-note"><span class="dot"></span> 이 저장 공간은 사장님만 볼 수 있고, 삭제는 실수 방지를 위해 AiApp을 통해서만 할 수 있어요.</div>
+        </div>
+
+      </section>
+
+      <!-- ══════════ 탭 3: 자세히 — documents + 엔터프라이즈 훅 ══════════ -->
+      <section class="pane" id="pane-advanced">
+        <div class="adv-intro">
+          <span class="ic">📂</span>
+          <div>개발·기획을 아는 분을 위한 상세 문서예요. 대부분의 사용자는 안 봐도 괜찮아요. 필요할 때만 열어 보세요.</div>
+        </div>
+
+        <div class="doclist">
+          <div class="doc">
+            <div class="ic">📋</div>
+            <div class="tx">
+              <div class="t">기능 정의서 (PRD)</div>
+              <div class="d">예약·예약관리·알림톡 각 기능이 무엇을 하는지, 어떤 조건에서 동작하는지 정리한 문서예요.</div>
+              <div class="meta">5개 화면 · 8개 기능 · 자동 생성됨</div>
+            </div>
+            <div class="go">→</div>
+          </div>
+
+          <div class="doc">
+            <div class="ic">🗂️</div>
+            <div class="tx">
+              <div class="t">데이터 · 아키텍처 구성</div>
+              <div class="d">저장 공간(예약·산책러) 구조와, 알림톡 발송이 어떻게 연결되는지 보여줘요.</div>
+              <div class="meta">저장 공간 2개 · 알림톡 연동 1건</div>
+            </div>
+            <div class="go">→</div>
+          </div>
+
+          <div class="doc doc--locked">
+            <div class="ic">📥</div>
+            <div class="tx">
+              <div class="t">기획서 파일로 내려받기</div>
+              <div class="d">지금 만들어진 서비스를 바탕으로 정식 기획서를 뽑아 PDF로 저장해요.</div>
+              <div class="meta">외주·투자 제출용으로 활용할 수 있어요</div>
+            </div>
+            <span class="doc__lock">크레딧 사용</span>
           </div>
         </div>
 
-        <div class="ent__card">
-          <div class="ent__head"><span class="ico">🐕</span><b>산책러</b><small>산책러 한 명마다 저장돼요</small></div>
-          <div class="ent__rows">
-            <div class="ent__row"><span class="nm">이름</span><span class="ent__type">글자</span><span class="ent__ex">박산책</span></div>
-            <div class="ent__row"><span class="nm">한 줄 소개</span><span class="ent__type">글자</span><span class="ent__ex">대형견도 자신 있어요!</span></div>
-            <div class="ent__row"><span class="nm">경력 (년)</span><span class="ent__type">숫자</span><span class="ent__ex">3</span></div>
-            <div class="ent__row"><span class="nm">프로필 사진</span><span class="ent__type">이미지</span><span class="ent__ex">얼굴이 보이는 사진 1장</span></div>
-          </div>
+        <div class="ent-hook">
+          <div class="t">🏢 이 요청, 더 크게 만들 수도 있어요</div>
+          <div class="d">지금 요청은 AiApp에서 바로 만들 수 있는 수준이에요 (난이도 3/10). 나중에 결제·정산이나 대량 데이터 분석처럼 더 복잡한 기능이 필요해지면, 엔터프라이즈 상담으로 이어드려요.</div>
         </div>
+      </section>
 
-        <div class="ent__card">
-          <div class="ent__head"><span class="ico">⭐</span><b>후기</b><small>산책이 끝난 뒤 손님이 남겨요</small></div>
-          <div class="ent__rows">
-            <div class="ent__row"><span class="nm">작성자</span><span class="ent__type">글자</span><span class="ent__ex">김하늘</span></div>
-            <div class="ent__row"><span class="nm">내용</span><span class="ent__type">글자</span><span class="ent__ex">초코가 신나서 돌아왔어요 :)</span></div>
-            <div class="ent__row"><span class="nm">별점</span><span class="ent__type">숫자</span><span class="ent__ex">5</span></div>
-            <div class="ent__row"><span class="nm">사장님 답변 여부</span><span class="ent__type">참/거짓</span><span class="ent__ex">아직 안 했어요</span></div>
-          </div>
-        </div>
+    </div>
+  </div>
 
-      </div>
-    </section>
-
-    <!-- ═══ layout ═══ -->
-    <section class="bsec" aria-label="화면 구성">
-      <h2>기본 화면 구성</h2>
-      <div class="lay">
-        <div class="lay__item">🏠 첫 화면 (손님용) <span class="on">넣어요</span></div>
-        <div class="lay__item">📊 현황판 (사장님용) <span class="on">넣어요</span></div>
-        <div class="lay__item">🛠 관리 화면 <span class="on">넣어요</span></div>
-      </div>
-    </section>
-
-    <!-- ═══ features_map — reuse는 안심 신호, custom은 난이도 신호 ═══ -->
-    <section class="bsec" aria-label="기능 구성">
-      <h2>기능 구성 <small>초록색은 이미 준비된 기능 — 새로 만들지 않아요</small></h2>
-      <div class="fmap">
-        <div class="fmap__group">
-          <b>바로 쓰는 기능 <small>— AiApp에 이미 있어요</small></b>
-          <div class="fmap__chips">
-            <span class="fmap__chip">✓ 회원 가입·로그인</span>
-            <span class="fmap__chip">✓ 예약</span>
-            <span class="fmap__chip">✓ 알림톡 발송</span>
-            <span class="fmap__chip">✓ 게시판 (후기)</span>
-          </div>
-        </div>
-        <div class="fmap__group">
-          <b>새로 만드는 기능</b>
-          <div class="fmap__chips" id="custom-chips">
-            <span class="fmap__empty" id="custom-empty">없어요 — 전부 준비된 기능으로 만들 수 있어요.</span>
-            <span class="fmap__chip fmap__chip--custom" data-ent hidden>⚙ 실시간 위치 추적</span>
-            <span class="fmap__chip fmap__chip--custom" data-ent hidden>⚙ 산책러 자동 매칭</span>
-          </div>
-        </div>
-      </div>
-    </section>
-
-    <!-- ═══ documents ═══ -->
-    <section class="bsec" aria-label="문서">
-      <h2>기획 문서로 받기 <small>개발자에게 전달하거나 보관할 수 있어요</small></h2>
-      <div class="docs">
-        <div class="docs__item">
-          <span class="ico">📄</span>
-          <span><b>기획서 (PRD)</b><small>내보내기에 크레딧이 사용돼요</small></span>
-          <button class="btn">받기</button>
-        </div>
-        <div class="docs__item">
-          <span class="ico">🧩</span>
-          <span><b>구조 설명서</b><small>내보내기에 크레딧이 사용돼요</small></span>
-          <button class="btn">받기</button>
-        </div>
-      </div>
-    </section>
-
-  </main>
-
-  <!-- 확정 바 — blueprint 확인 문법과 동일: 클릭 즉시 진행 없음 -->
-  <div class="bpv__foot">
-    <span class="hint">주황색 추측 항목을 확인했다면</span>
-    <button class="btn" onclick="location.href='blueprint.html'">수정할래요</button>
-    <button class="btn btn--primary" onclick="location.href='b2.html'">좋아요, 이대로 만들어 주세요</button>
+  <!-- 누가 어디를 보나 — 노출 구조의 의도 -->
+  <div class="legend">
+    <div class="legend__l"><div class="who">미리보기</div><div class="what">사용자 · 확인용</div><div class="how">결과 + 이해한 내용 요약. 90%가 여기만 봄</div></div>
+    <div class="legend__l"><div class="who">기획서</div><div class="what">사용자 · 열람용</div><div class="how">화면 흐름 + 저장 정보. 보고 싶은 사람만</div></div>
+    <div class="legend__l"><div class="who">자세히</div><div class="what">파워유저 · 비즈니스</div><div class="how">PRD·아키텍처 + 엔터프라이즈 훅</div></div>
+    <div class="legend__l"><div class="who">JSON</div><div class="what">AI · 구현용 (비노출)</div><div class="how">위와 별개로 구조화 스펙을 구현 에이전트에 전달</div></div>
   </div>
 
 </div>
-
-<!-- 상태 시연 — self_serve ↔ enterprise 라우팅이 화면을 어떻게 바꾸는지 -->
-<div class="demo-states" role="group" aria-label="상태 시연">
-  <span class="demo-states__label">상태 시연</span>
-  <button data-route="self_serve" class="is-on">바로 생성</button>
-  <button data-route="enterprise">상담 필요</button>
 </div>
 
 <!-- 개발 노트 버튼 + 모달 — 이 화면의 기획 -->
@@ -228,71 +272,75 @@
   <div class="modal modal--spec" role="dialog" aria-modal="true" aria-label="개발 노트">
     <div class="modal__main spec">
       <button class="modal__x" id="spec-close" aria-label="닫기">✕</button>
-      <h4>설계안 v2 — 개발 노트 <span style="font-size:12px;font-weight:600;color:var(--color-muted)">(기획 에이전트 출력의 시각화)</span><span class="new-tag">NEW 07-22 14:48</span></h4>
+      <h4>설계안 v2 — 기획서 3탭 노출 <span style="font-size:12px;font-weight:600;color:var(--color-muted)">(기획 에이전트 출력의 시각화)</span><span class="new-tag">NEW 07-22 15:10</span></h4>
 
-      <h5>핵심 원칙</h5>
-      <p>이 화면은 기획 에이전트가 출력하는 <b>JSON 하나를 그대로 그린다</b> — 화면 구조가 곧 계약이다. 에이전트 출력은 ① 사용자에게 "이렇게 이해했어요"를 보여주고 ② 구현 에이전트가 그대로 읽는다. 두 목적을 한 데이터로 해결한다.</p>
+      <h5>핵심 원칙 — 결과 먼저, 상세는 점진 공개</h5>
+      <p>기획 에이전트의 JSON 하나가 이 화면 전체의 데이터 출처다. 사용자에게 기획 문서를 읽히지 않는다 — <b>생성된 사이트 미리보기가 첫 화면</b>이고, 옆의 요약 카드로 확인만 받는다. 화면·데이터가 궁금한 사람만 기획서 탭을, 문서가 필요한 사람만 자세히 탭을 연다.</p>
 
-      <h5>섹션 ↔ JSON 매핑</h5>
+      <h5>탭 ↔ 대상 ↔ JSON 매핑</h5>
       <table>
-        <thead><tr><th>화면 섹션</th><th>JSON 키</th><th>표현 규칙</th></tr></thead>
+        <thead><tr><th>탭</th><th>누가 보나</th><th>JSON 출처</th><th>표현 규칙</th></tr></thead>
         <tbody>
-          <tr><td>제목·소개·칩</td><td><code>meta</code></td><td>needs_auth → "회원 가입·로그인이 있는 서비스" 칩. routing → 초록(바로 생성)/주황(상담 필요) 칩</td></tr>
-          <tr><td>상담 배너</td><td><code>meta.routing_reason</code></td><td>enterprise일 때만. "불가능" 금지 — 이유 + 상담 대안으로 서술</td></tr>
-          <tr><td>이렇게 이해했어요</td><td><code>understanding[]</code></td><td><b>confidence가 시각 언어의 핵심</b>: confirmed = "말씀하신 내용", assumed = 주황 카드 + "추측했어요" — 사용자가 가장 먼저 확인할 지점</td></tr>
-          <tr><td>화면 흐름</td><td><code>screens[]</code></td><td>step 순서 가로 배치, is_core = 파란 테두리 + 핵심 태그. 3~5개(최대 6개)</td></tr>
-          <tr><td>저장하는 정보</td><td><code>data_model[]</code></td><td>엔티티 카드: label("예약 한 건마다 저장돼요") + 항목별 <b>예시값 필수</b>. 상태(선택)는 라이프사이클 필을 그대로 — 이 순서가 관리 화면 버튼이 됨</td></tr>
-          <tr><td>기본 화면 구성</td><td><code>layout</code></td><td>home/dashboard/admin → 첫 화면·현황판·관리 화면 ("관리자" 단어 금지)</td></tr>
-          <tr><td>기능 구성</td><td><code>features_map</code></td><td>reuse_baas = 초록 ✓(안심 신호), custom = 주황 ⚙(난이도 신호). custom 비면 "전부 준비된 기능" 문구</td></tr>
-          <tr><td>기획 문서로 받기</td><td><code>documents</code></td><td>PRD·구조 설명서 다운로드. export_requires_credit → "크레딧이 사용돼요" (예상 수치 표기 금지)</td></tr>
+          <tr><td><b>미리보기</b></td><td>모든 사용자 (90%는 여기만)</td><td><code>meta</code> + <code>understanding[]</code></td><td>사이트 목업 + "이렇게 이해했어요" 요약. assumed = 점선 카드 + "추측함" 태그. 확정 버튼이 생성 시작 게이트</td></tr>
+          <tr><td><b>기획서</b></td><td>보고 싶은 사용자</td><td><code>screens[]</code> + <code>data_model[]</code></td><td>화면 = 미니 와이어프레임 썸네일(is_core 파란 테두리). 저장 정보 = 쉽게 보기(카드)/표로 보기 토글, 항목마다 예시값 필수</td></tr>
+          <tr><td><b>자세히</b></td><td>파워유저·비즈니스</td><td><code>documents</code> + <code>meta.difficulty/routing</code></td><td>PRD·아키텍처 문서 행, PDF 내보내기(크레딧 사용 표시). 난이도·엔터프라이즈 훅은 여기서만 노출</td></tr>
+          <tr><td>(비노출)</td><td>구현 에이전트</td><td>JSON 전체</td><td>화면과 같은 데이터 — 화면 전용 데이터를 만들지 않는다</td></tr>
         </tbody>
       </table>
 
       <h5>카피 규칙</h5>
       <ul>
-        <li>개발 용어 금지: 테이블·필드·스키마 → "저장하는 정보"·"항목", 관리자 → "관리 화면"</li>
-        <li>타입은 쉬운 말 7종 고정: 글자 / 숫자 / 날짜 / 전화 / 선택 / 이미지 / 참/거짓</li>
-        <li>추측 항목을 조용히 두지 않는다 — 확정 바 힌트("주황색 추측 항목을 확인했다면")로 확인을 유도</li>
-        <li>확정 문법은 blueprint와 동일: 클릭 즉시 진행 없음, [수정할래요]로 대화 복귀</li>
+        <li>내 요청을 상단에 그대로 인용 — AI 이해의 기준점을 사용자 말로 고정</li>
+        <li>개발 용어 금지: 테이블 → "저장 공간", 필드 → "항목". 타입은 쉬운 말 7종(글자/숫자/날짜/전화/선택/이미지/참·거짓)</li>
+        <li>추측(assumed)은 점선 + "추측함" — "다르면 알려주세요"로 부담 없이 정정 유도</li>
+        <li>크레딧은 실사용만 표기("무료 생성 1회가 사용돼요") — 견적·예상 수치 금지</li>
+        <li>미리보기 주소 표시는 출시 게이트 규칙(§2.2)을 따름 — "아직 주소가 없어요"</li>
       </ul>
 
       <h5>미정 — 협의 필요</h5>
       <ul>
-        <li>이 화면의 위치: 설계안 대화 <b>안</b>의 카드 확장인지, 대화에서 여는 <b>별도 전체 보기</b>(현재 시안)인지</li>
-        <li>추측 항목 개별 수정 UI(카드에서 바로 빼기/바꾸기) vs 채팅으로만 수정(현재 시안)</li>
-        <li>difficulty_level 숫자를 사용자에게 노출할지 — 현재 시안은 숨기고 라우팅 결과만 표시 (추천)</li>
+        <li>이 화면의 진입 시점: 설계안 대화 ①(기획안 카드) 자리를 대체하는지, 승인 후 전체 보기인지</li>
+        <li>미리보기 목업의 충실도: 생성 전 단계에서 어느 수준까지 실제처럼 보여줄지 (기대치 관리)</li>
+        <li>[조금 고칠게요]의 동작: 대화 복귀(현재 시안) vs 요약 카드 인라인 수정</li>
       </ul>
 
-      <p class="foot">에이전트 프롬프트 원문·JSON 스키마는 명세 §2.5 참조. 화면 레퍼런스: <code>design/blueprint-v2.html</code> (상태 시연으로 enterprise 분기 확인).</p>
+      <p class="foot">원본 시안: 저장소 <code>기획서_노출방식_목업.html</code> · 에이전트 프롬프트: <code>agents/planning-agent-prompt.md</code> · 명세 §2.5.</p>
     </div>
   </div>
 </div>
 
 <script>
+  /* 탭 전환 */
+  const tabs = document.querySelectorAll(".ptabs__tab");
+  const panes = document.querySelectorAll(".pane");
+  tabs.forEach((t) => {
+    t.addEventListener("click", () => {
+      tabs.forEach((x) => x.setAttribute("aria-selected", "false"));
+      t.setAttribute("aria-selected", "true");
+      panes.forEach((p) => p.classList.toggle("is-on", p.id === t.dataset.tab));
+    });
+  });
+
+  /* 저장 정보: 쉽게 보기 / 표로 보기 */
+  const dbBtns = document.querySelectorAll(".db-toggle button");
+  const dbCards = document.getElementById("db-cards");
+  const dbSheet = document.getElementById("db-sheet");
+  dbBtns.forEach((b) => {
+    b.addEventListener("click", () => {
+      dbBtns.forEach((x) => x.setAttribute("aria-pressed", "false"));
+      b.setAttribute("aria-pressed", "true");
+      const cards = b.dataset.db === "cards";
+      dbCards.style.display = cards ? "grid" : "none";
+      dbSheet.style.display = cards ? "none" : "block";
+    });
+  });
+
   /* 개발 노트 모달 */
   const specModal = document.getElementById("spec-modal");
   document.getElementById("spec-open").addEventListener("click", () => { specModal.hidden = false; });
   document.getElementById("spec-close").addEventListener("click", () => { specModal.hidden = true; });
   specModal.addEventListener("click", (e) => { if (e.target === specModal) specModal.hidden = true; });
   document.addEventListener("keydown", (e) => { if (e.key === "Escape") specModal.hidden = true; });
-
-  /* 상태 시연 — routing이 화면을 어떻게 바꾸는지 (meta.routing + features_map.custom) */
-  const routeChip = document.getElementById("route-chip");
-  const routeBanner = document.getElementById("route-banner");
-  const customEmpty = document.getElementById("custom-empty");
-  const customChips = document.querySelectorAll("#custom-chips [data-ent]");
-  document.querySelectorAll(".demo-states button").forEach((b) => {
-    b.addEventListener("click", () => {
-      document.querySelectorAll(".demo-states button").forEach((x) => x.classList.toggle("is-on", x === b));
-      const ent = b.dataset.route === "enterprise";
-      routeBanner.hidden = !ent;
-      customEmpty.hidden = ent;
-      customChips.forEach((c) => { c.hidden = !ent; });
-      routeChip.textContent = ent ? "⚠ 상담이 필요한 프로젝트예요" : "✓ AiApp에서 바로 만들 수 있어요";
-      routeChip.classList.toggle("meta-chip--ok", !ent);
-      routeChip.classList.toggle("meta-chip--warn", ent);
-    });
-  });
 </script>
 
 </body>
