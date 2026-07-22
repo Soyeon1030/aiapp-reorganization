@@ -148,6 +148,17 @@
               <span class="plan__kicker">기획안 · 작성 중</span>
               <h2 class="plan__title">청솔 식자재 발주</h2>
               <p class="plan__one">거래처가 온라인으로 발주를 넣고, 사장님이 한 곳에서 처리하는 서비스예요.</p>
+              <!-- 개요 — 제품 목표·배경 (Manifest 절충: 서사는 2줄로 압축) -->
+              <div class="ovw">
+                <div class="ovw__row"><b>목표</b><span>전화·문자로 받던 발주를 온라인 한 곳으로 모아, 누락 없이 처리하는 것</span></div>
+                <div class="ovw__row"><b>배경</b><span>주문이 전화·문자·카톡에 흩어져 있어 놓치거나 잘못 받는 일이 잦아요</span></div>
+              </div>
+              <!-- 속성 — 카테고리·사용자 역할·기기 (에이전트 meta) -->
+              <div class="attrs">
+                <span class="attrs__chip">🗂 주문·발주</span>
+                <span class="attrs__chip">🔐 사장님 + 거래처 로그인</span>
+                <span class="attrs__chip">📱 모바일 중심 · PC 지원</span>
+              </div>
             </header>
 
             <!-- ① 이해 요약 — 처음부터 표시, 답이 "대화로 확정"으로 쌓임 -->
@@ -161,15 +172,35 @@
               </div>
             </section>
 
-            <!-- ④→② 디자인 방향 — 디자인 질의 답이 생기면 나타남 -->
+            <!-- ② 왜 — 사용자 문제 → 해결 → 차별점 -->
+            <section class="psec" aria-label="왜 이렇게 만들었나요">
+              <div class="psec__h"><span class="n">2</span><h3>왜 이렇게 만들었나요</h3></div>
+              <div class="why">
+                <div class="why__row"><span class="why__k why__k--p">문제</span><span>발주가 전화·문자·카톡에 흩어져 누락·오기입이 생겨요.</span></div>
+                <div class="why__row"><span class="why__k why__k--s">해결</span><span>품목 목록에서 골라 담는 온라인 발주 한 곳으로 모아요.</span></div>
+                <div class="why__row"><span class="why__k why__k--d">차별점</span><span>엑셀 정리 없이 접수 → 확정 → 출고가 한 화면에서 끝나요.</span></div>
+              </div>
+            </section>
+
+            <!-- ③ 누가 — 타겟 사용자(역할) + 시나리오 -->
+            <section class="psec" aria-label="누가 어떻게 쓰나요">
+              <div class="psec__h"><span class="n">3</span><h3>누가 어떻게 쓰나요</h3></div>
+              <div class="roles">
+                <div class="roles__card"><span class="ico">🧑‍🍳</span><span class="tx"><b>사장님 (운영)</b><small>발주 확인 · 확정 · 출고 처리 · 거래처 관리</small></span></div>
+                <div class="roles__card"><span class="ico">🏪</span><span class="tx"><b>거래처 담당자 (회원)</b><small>로그인해서 품목 골라 발주 · 내 발주 확인</small></span></div>
+              </div>
+              <p class="scenario">예) 한솥분식 담당자가 밤 10시에 내일 아침 납품 발주를 넣으면, 사장님이 아침에 확정하고 알림톡이 나가요.</p>
+            </section>
+
+            <!-- ④ 디자인 방향 — 디자인 질의 답이 생기면 나타남 -->
             <section class="psec" id="sec-dsg" hidden aria-label="디자인 방향">
-              <div class="psec__h"><span class="n">2</span><h3>디자인 방향</h3><small>대화에서 고르신 대로</small></div>
+              <div class="psec__h"><span class="n">4</span><h3>디자인 방향</h3><small>대화에서 고르신 대로</small></div>
               <div class="dsg" id="dsg"></div>
             </section>
 
             <!-- ③ 화면 흐름 — 질의 완료 시 -->
             <section class="psec" id="sec-flow" hidden aria-label="화면 흐름">
-              <div class="psec__h"><span class="n">3</span><h3>어떤 화면이 만들어지나요</h3><small>거래처가 쓰는 순서대로</small></div>
+              <div class="psec__h"><span class="n">5</span><h3>어떤 화면이 만들어지나요</h3><small>거래처가 쓰는 순서대로</small></div>
               <div class="wflow">
                 <div class="wscreen">
                   <div class="wscreen__frame"><div class="bar b1"></div><div class="bar b2"></div><div class="bar b3"></div><div class="btn-ph"></div></div>
@@ -197,7 +228,7 @@
 
             <!-- ④ 저장하는 정보 — 질의 완료 시 -->
             <section class="psec" id="sec-db" hidden aria-label="저장하는 정보">
-              <div class="psec__h"><span class="n">4</span><h3>어떤 정보를 저장하나요</h3><small>이 서비스에 필요한 항목만</small></div>
+              <div class="psec__h"><span class="n">6</span><h3>어떤 정보를 저장하나요</h3><small>이 서비스에 필요한 항목만</small></div>
               <div class="dbcards">
                 <div class="dbcard">
                   <div class="dbcard__h"><b>발주</b><small>발주 한 건마다 저장돼요</small></div>
@@ -220,6 +251,29 @@
                 </div>
               </div>
             </section>
+
+            <!-- 핵심지표·리스크 — 전문가용, 접이식 (Manifest 절충: 본문에서 분리) -->
+            <details class="plan-more" id="plan-more" hidden>
+              <summary>핵심지표 · 리스크 — 자세히 보기</summary>
+              <div class="plan-more__grid">
+                <div>
+                  <b>이렇게 되면 성공이에요</b>
+                  <ul>
+                    <li>주간 온라인 발주 건수가 꾸준히 늘어요</li>
+                    <li>전화 발주가 온라인으로 옮겨와요 (전환율)</li>
+                    <li>누락·정정 건수가 줄어요</li>
+                  </ul>
+                </div>
+                <div>
+                  <b>조심할 점</b>
+                  <ul>
+                    <li>거래처가 온라인에 익숙하지 않을 수 있어요 → 초기엔 전화 병행 + 사장님이 대신 입력</li>
+                    <li>품목·시세가 자주 바뀌어요 → 품목 수정은 관리 화면에서 바로</li>
+                    <li>아침 피크에 발주가 몰려요 → 마감 시간 안내 문구</li>
+                  </ul>
+                </div>
+              </div>
+            </details>
 
             <!-- 확정 — 질의 완료 시 -->
             <div class="plan__confirm" id="plan-confirm" hidden>
@@ -315,7 +369,7 @@
   <div class="modal modal--spec" role="dialog" aria-modal="true" aria-label="개발 노트">
     <div class="modal__main spec">
       <button class="modal__x" id="spec-close" aria-label="닫기">✕</button>
-      <h4>설계안 v2 — 좌 채팅 · 우 기획안 <span style="font-size:12px;font-weight:600;color:var(--color-muted)">(명세 §2.5)</span><span class="new-tag">NEW 07-22 17:02</span></h4>
+      <h4>설계안 v2 — 좌 채팅 · 우 기획안 <span style="font-size:12px;font-weight:600;color:var(--color-muted)">(명세 §2.5)</span><span class="new-tag">NEW 07-22 17:22</span></h4>
 
       <h5>핵심 원칙 — 채팅으로 묻고, 결과는 아티팩트로 쌓인다</h5>
       <p>레이아웃은 <b>B2 스튜디오와 동일한 2단</b>(좌 채팅 · 리사이저 · 우 패널). 질의는 채팅 문법(되묻기 카드·접힘 재선택·전송 잠금)으로 진행하고, <b>오른쪽 기획안 문서가 답할 때마다 실시간으로 채워진다</b> — 사용자는 자기 답이 기획으로 변환되는 걸 눈으로 확인한다. 설계안 → 스튜디오(좌 채팅 · 우 미리보기)로 구조가 그대로 이어진다.</p>
@@ -363,15 +417,21 @@
         <li>질의 중 컴포저는 타이핑 가능·전송만 잠금 → 기획안 완성 시 해제(수정 = 채팅, 별도 수정 버튼 없음)</li>
       </ul>
 
-      <h5>기획안 문서 ↔ 에이전트 JSON</h5>
+      <h5>기획안 문서 ↔ 에이전트 JSON <span style="font-weight:500;color:var(--color-muted)">(Manifest PRD 절충 — 2026-07-22)</span></h5>
+      <p>Manifest의 기획서 항목을 전부 수용하되, <b>사장님이 확인할 것은 본문에, 전문가용 서사(지표·리스크)는 접이식으로</b> 나눈다. 기존 JSON에 없는 항목은 확장 필드로 제안 (프롬프트 원문 문서 참조).</p>
       <table>
-        <thead><tr><th>섹션</th><th>JSON 출처</th><th>등장 시점</th></tr></thead>
+        <thead><tr><th>섹션 (Manifest 대응)</th><th>JSON 출처</th><th>등장 시점</th></tr></thead>
         <tbody>
-          <tr><td>제목·소개</td><td><code>meta</code></td><td>처음부터</td></tr>
+          <tr><td>제목·한줄정의</td><td><code>meta.project_title/one_liner</code></td><td>처음부터</td></tr>
+          <tr><td>개요 — 목표·배경</td><td><code>meta.goal/background</code> ⊕신규</td><td>처음부터 (각 1문장)</td></tr>
+          <tr><td>속성 태그 — 카테고리·역할·기기</td><td><code>meta.category/roles/devices</code> ⊕신규 (roles는 needs_auth 파생)</td><td>처음부터</td></tr>
           <tr><td>① 이렇게 이해했어요</td><td><code>understanding[]</code></td><td>처음부터 — 답이 "대화로 확정"으로 누적 (요청/대화로 확정/추측 3단 태그)</td></tr>
-          <tr><td>② 디자인 방향</td><td><code>design_tokens</code></td><td>첫 디자인 답부터</td></tr>
-          <tr><td>③ 화면 흐름</td><td><code>screens[]</code></td><td>질의 완료 시 (is_core = 파란 테두리)</td></tr>
-          <tr><td>④ 저장하는 정보</td><td><code>data_model[]</code></td><td>질의 완료 시 (예시값 필수 · 쉬운 타입 7종)</td></tr>
+          <tr><td>② 왜 — 문제·해결·차별점</td><td><code>narrative{problem,solution,edge}</code> ⊕신규</td><td>처음부터 (각 1문장)</td></tr>
+          <tr><td>③ 누가 — 타겟·시나리오</td><td><code>targets[]</code> + <code>scenario</code> ⊕신규</td><td>처음부터 (역할 카드 + 시나리오 1문장)</td></tr>
+          <tr><td>④ 디자인 방향</td><td><code>design_tokens</code></td><td>첫 디자인 답부터</td></tr>
+          <tr><td>⑤ 화면 흐름</td><td><code>screens[]</code></td><td>질의 완료 시 (is_core = 파란 테두리)</td></tr>
+          <tr><td>⑥ 저장하는 정보</td><td><code>data_model[]</code></td><td>질의 완료 시 (예시값 필수 · 쉬운 타입 7종)</td></tr>
+          <tr><td>접이식 — 핵심지표·리스크</td><td><code>metrics[]/risks[]</code> ⊕신규</td><td>질의 완료 시 — 기본 접힘 (사장님 필수 아님, 리스크엔 대응책 한 줄 필수)</td></tr>
           <tr><td>확정</td><td>—</td><td>질의 완료 시 — [맞아요] = 생성 시작 게이트</td></tr>
         </tbody>
       </table>
@@ -544,7 +604,7 @@
       document.getElementById("making").outerHTML =
         `<p class="log-line">기획안을 완성했어요. 오른쪽에서 확인해 주세요 — 고치고 싶은 건 여기로 편하게 말씀해 주세요.</p>`;
       /* 우측: 나머지 섹션 + 확정 공개 */
-      ["sec-flow", "sec-db", "plan-confirm"].forEach((id) => { document.getElementById(id).hidden = false; });
+      ["sec-flow", "sec-db", "plan-more", "plan-confirm"].forEach((id) => { document.getElementById(id).hidden = false; });
       document.querySelector(".plan__kicker").textContent = "기획안 · 완성";
       artStatus.textContent = "확인해 주세요";
       /* 컴포저 해제 — 수정은 채팅으로 */
