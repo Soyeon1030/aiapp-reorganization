@@ -11,7 +11,23 @@
 <body>
 
 <div class="bpv">
-<div class="bpv__wrap">
+<div class="bpv__wrap is-interviewing" id="wrap">
+
+  <!-- ══════════ 인터뷰 — 기획안 전에 선택지 티키타카로 구체화 ══════════
+       규칙: 질문 3개 고정 · 옵션 2~3개 + AI 추천 · 전부 스킵 가능(추천 적용)
+       답은 기획안 요약 카드에서 "대화로 확정"으로 승격됨 -->
+  <section class="itv" id="interview">
+    <div class="itv__head">
+      <span class="ai">A</span>
+      <div>
+        <div class="t">몇 가지만 여쭤볼게요</div>
+        <div class="d">“동네 반려견 산책 예약받는 사이트 만들어줘” — 답하실수록 기획이 정확해져요</div>
+      </div>
+      <div class="itv__dots" id="itv-dots"><i></i><i></i><i></i></div>
+    </div>
+    <div class="itv__log" id="itv-log"></div>
+    <div id="itv-q"></div>
+  </section>
 
   <div class="app">
 
@@ -91,7 +107,8 @@
                 <div class="ic">💬</div>
                 <div class="tx"><div class="t">알림톡 발송</div><div class="d">예약이 확정되면 손님에게 카톡으로 알려줘요.</div></div>
               </div>
-              <div class="feat__item feat__item--guess">
+              <!-- 인터뷰 답이 여기로 승격됨 (JS가 "대화로 확정" 항목 삽입) -->
+              <div class="feat__item feat__item--guess" id="feat-guess">
                 <div class="ic">❓</div>
                 <div class="tx"><div class="t">산책 코스 3종<span class="gtag">추측함</span></div><div class="d">30·60·90분으로 넣어뒀어요. 다르면 알려주세요.</div></div>
               </div>
@@ -274,8 +291,18 @@
       <button class="modal__x" id="spec-close" aria-label="닫기">✕</button>
       <h4>설계안 v2 — 기획서 3탭 노출 <span style="font-size:12px;font-weight:600;color:var(--color-muted)">(기획 에이전트 출력의 시각화)</span><span class="new-tag">NEW 07-22 15:00</span></h4>
 
-      <h5>핵심 원칙 — 결과 먼저, 상세는 점진 공개</h5>
-      <p>기획 에이전트의 JSON 하나가 이 화면 전체의 데이터 출처다. 사용자에게 기획 문서를 읽히지 않는다 — <b>생성된 사이트 미리보기가 첫 화면</b>이고, 옆의 요약 카드로 확인만 받는다. 화면·데이터가 궁금한 사람만 기획서 탭을, 문서가 필요한 사람만 자세히 탭을 연다.</p>
+      <h5>핵심 원칙 — 티키타카로 구체화, 결과 먼저, 상세는 점진 공개</h5>
+      <p>기획 에이전트의 JSON 하나가 이 화면 전체의 데이터 출처다. 흐름은 두 박자: ① 요청 직후 <b>인터뷰(선택지 티키타카)</b>로 서비스의 갈림길만 빠르게 확정하고 ② 기획안은 문서가 아니라 <b>생성된 사이트 미리보기</b>로 먼저 보여준 뒤 요약 카드로 확인만 받는다. 화면·데이터가 궁금한 사람만 기획서 탭을, 문서가 필요한 사람만 자세히 탭을 연다.</p>
+
+      <h5>인터뷰 단계 — 질문의 규칙 <span class="new-tag">NEW 07-22 15:13</span></h5>
+      <ul>
+        <li><b>질문 수 고정 2~3개</b> — 피로 방지. 기준: 답에 따라 <b>화면 모양이나 저장 정보가 실제로 달라지는 갈림길만</b> 묻는다 (예약 방식·산책러 구성·요금). 문구·색처럼 나중에 바꿔도 되는 건 묻지 않는다</li>
+        <li>옵션 2~3개 + <b>✨ AI 추천</b> 표시(§2.4 추천 배지 기준) · 각 옵션에 "고르면 뭐가 달라지는지" 한 줄 설명</li>
+        <li><b>전부 스킵 가능</b> — "잘 모르겠어요"는 추천 적용. 모른다고 흐름이 막히지 않는다</li>
+        <li>답한 질문은 접힌 기록으로 쌓이고, <b>클릭하면 그 질문부터 재선택</b> (blueprint 접힘 문법과 동일)</li>
+        <li>답은 요약 카드에 <b>"대화로 확정"</b>(초록)으로 승격 — 말씀하신 내용 / 대화로 확정 / 추측함(주황)의 3단 신뢰도가 이 화면의 시각 언어</li>
+        <li>다 답하면 "정리하고 있어요…" 비트 후 기획안 공개 — 인터뷰 답은 에이전트 입력의 누적 맥락으로 전달</li>
+      </ul>
 
       <h5>탭 ↔ 대상 ↔ JSON 매핑</h5>
       <table>
@@ -299,7 +326,8 @@
 
       <h5>미정 — 협의 필요</h5>
       <ul>
-        <li>이 화면의 진입 시점: 설계안 대화 ①(기획안 카드) 자리를 대체하는지, 승인 후 전체 보기인지</li>
+        <li>기존 설계안 대화(blueprint ①~⑤)와의 관계: 인터뷰+3탭이 그 자리를 대체하는지, 병행하는지</li>
+        <li>인터뷰 질문을 누가 뽑나: 기획 에이전트가 요청 분석 후 동적 생성(추천) vs 업종별 고정 세트</li>
         <li>미리보기 목업의 충실도: 생성 전 단계에서 어느 수준까지 실제처럼 보여줄지 (기대치 관리)</li>
         <li>[조금 고칠게요]의 동작: 대화 복귀(현재 시안) vs 요약 카드 인라인 수정</li>
       </ul>
@@ -309,7 +337,111 @@
   </div>
 </div>
 
+<!-- 상태 시연 — 인터뷰부터 다시 -->
+<div class="demo-states" role="group" aria-label="상태 시연">
+  <span class="demo-states__label">상태 시연</span>
+  <button onclick="location.reload()">인터뷰 다시 보기</button>
+</div>
+
 <script>
+  /* ══ 인터뷰 — 선택지 티키타카 → 기획안 공개 ══ */
+  const ITV = [
+    { label: "예약 방식", q: "예약은 어떻게 받는 게 좋아요?", hint: "예약 화면의 모양이 달라져요",
+      opts: [
+        { ic: "🗓", t: "원하는 날짜·시간을 자유롭게", d: "손님이 달력에서 직접 골라요", rec: true },
+        { ic: "⏰", t: "정해진 시간대 중에서 선택", d: "오전·오후처럼 시간대를 정해둬요" },
+        { ic: "💬", t: "신청만 받고 채팅으로 확정", d: "일정은 손님과 대화로 조율해요" },
+      ] },
+    { label: "산책러 구성", q: "산책은 몇 분이서 하세요?", hint: "산책러 소개 화면 구성이 달라져요",
+      opts: [
+        { ic: "🙋", t: "저 혼자예요", d: "소개 페이지 하나로 충분해요" },
+        { ic: "👥", t: "2~5명이에요", d: "산책러 고르기 화면을 넣어요", rec: true },
+        { ic: "📈", t: "계속 늘릴 예정이에요", d: "산책러 등록 흐름도 함께 잡아요" },
+      ] },
+    { label: "요금 방식", q: "산책 요금은 어떻게 받을까요?", hint: "지금 정하지 않아도 괜찮아요 — 나중에 바꿀 수 있어요",
+      opts: [
+        { ic: "🤝", t: "현장에서 직접 받아요", d: "사이트는 예약만 받아요", rec: true },
+        { ic: "🏦", t: "계좌이체로 안내해요", d: "예약 완료 화면에 계좌를 보여줘요" },
+        { ic: "💳", t: "온라인 결제까지 받을래요", d: "결제 연결은 출시 후 관리 화면에서 해요" },
+      ] },
+  ];
+  const answers = [];
+  const wrap = document.getElementById("wrap");
+  const itv = document.getElementById("interview");
+  const itvLog = document.getElementById("itv-log");
+  const itvQ = document.getElementById("itv-q");
+  const itvDots = document.querySelectorAll("#itv-dots i");
+
+  function renderQ(i) {
+    const item = ITV[i];
+    itvDots.forEach((d, k) => d.classList.toggle("is-done", k < i));
+    itvQ.innerHTML = `
+      <div class="itv__q">
+        <div class="ask-line">${i + 1}. ${item.q}<small>${item.hint}</small></div>
+        <div class="itv__opts">
+          ${item.opts.map((o, k) => `
+            <button class="itv__opt" data-k="${k}">
+              <span class="ic">${o.ic}</span>
+              <span class="tx"><b>${o.t}</b><small>${o.d}</small></span>
+              ${o.rec ? '<span class="rec">✨ AI 추천</span>' : ""}
+            </button>`).join("")}
+        </div>
+        <div class="itv__foot">
+          ${i > 0 ? '<button class="itv__back" id="itv-back">← 이전 질문</button>' : ""}
+          <button class="itv__skip" id="itv-skip">잘 모르겠어요 — 추천으로 할게요</button>
+        </div>
+      </div>`;
+    itvQ.querySelectorAll(".itv__opt").forEach((btn) => {
+      btn.addEventListener("click", () => answer(i, Number(btn.dataset.k)));
+    });
+    const back = itvQ.querySelector("#itv-back");
+    if (back) back.addEventListener("click", () => { answers.pop(); popLog(); renderQ(i - 1); });
+    itvQ.querySelector("#itv-skip").addEventListener("click", () => {
+      answer(i, ITV[i].opts.findIndex((o) => o.rec));
+    });
+  }
+  function answer(i, k) {
+    answers[i] = k;
+    const o = ITV[i].opts[k];
+    const row = document.createElement("button");
+    row.className = "itv__done";
+    row.innerHTML = `${ITV[i].label} · <b>${o.t}</b><span class="ok">✓ 답했어요</span>`;
+    row.addEventListener("click", () => {   /* 접힌 기록 클릭 = 그 질문부터 재선택 */
+      while (answers.length > i) { answers.pop(); popLog(); }
+      renderQ(i);
+    });
+    itvLog.appendChild(row);
+    if (i + 1 < ITV.length) renderQ(i + 1);
+    else finishItv();
+  }
+  function popLog() { if (itvLog.lastElementChild) itvLog.lastElementChild.remove(); }
+  function finishItv() {
+    itvDots.forEach((d) => d.classList.add("is-done"));
+    itvQ.innerHTML = `
+      <div class="itv__making">
+        <div class="dots"><i></i><i></i><i></i></div>
+        <div class="msg">말씀해 주신 내용으로 기획안을 정리하고 있어요…</div>
+      </div>`;
+    setTimeout(revealPlan, 1600);
+  }
+  function revealPlan() {
+    /* 인터뷰 답을 요약 카드에 "대화로 확정"으로 승격 */
+    const guess = document.getElementById("feat-guess");
+    answers.forEach((k, i) => {
+      const o = ITV[i].opts[k];
+      const el = document.createElement("div");
+      el.className = "feat__item";
+      el.innerHTML = `<div class="ic">${o.ic}</div>
+        <div class="tx"><div class="t">${ITV[i].label} — ${o.t}<span class="gtag gtag--talk">대화로 확정</span></div>
+        <div class="d">${o.d}</div></div>`;
+      guess.parentNode.insertBefore(el, guess);
+    });
+    itv.remove();
+    wrap.classList.remove("is-interviewing");
+    window.scrollTo({ top: 0, behavior: "smooth" });
+  }
+  renderQ(0);
+
   /* 탭 전환 */
   const tabs = document.querySelectorAll(".ptabs__tab");
   const panes = document.querySelectorAll(".pane");
