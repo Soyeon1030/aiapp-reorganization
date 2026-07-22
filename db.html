@@ -624,6 +624,93 @@
   </div>
 </div>
 
+<!-- 개발 노트 버튼 + 모달 — 이 화면의 기획 -->
+<button class="spec-fab" id="spec-open">📐 개발 노트<small>이 화면의 기획</small></button>
+
+<div class="modal-overlay" id="spec-modal" hidden>
+  <div class="modal modal--spec" role="dialog" aria-modal="true" aria-label="개발 노트">
+    <div class="modal__main spec">
+      <button class="modal__x" id="spec-close" aria-label="닫기">✕</button>
+      <h4>데이터베이스 탭 — 개발 노트 <span style="font-size:12px;font-weight:600;color:var(--color-muted)">(명세 §3.2.1 발췌)</span><span class="new-tag">NEW 07-22 10:50</span></h4>
+
+      <h5>핵심 원칙 — 화면은 AI가 그리지 않는다</h5>
+      <p>플랫폼이 <b>고정 템플릿 4유형</b>을 제공하고, AI는 스키마를 만들 때 테이블마다 "템플릿 선택 + 슬롯 매핑" 메타데이터만 출력한다 — 자유 생성 금지, <b>골라서 채우기만 허용</b>. 사용자에게는 개발 용어(테이블·행·컬럼) 대신 콘텐츠 이름(예약·회원·후기)으로, "조회"가 아니라 <b>"처리할 일"</b> 중심으로 보여준다.</p>
+
+      <h5>흐름</h5>
+      <div class="flow">
+        <div class="flow__node">
+          <span class="flow__who">AI</span>
+          <span class="flow__t">스키마 생성</span>
+          <span class="flow__d">아이디어 → 예약·회원·후기…</span>
+        </div>
+        <span class="flow__arrow">→</span>
+        <div class="flow__node">
+          <span class="flow__who">AI</span>
+          <span class="flow__t">템플릿 선택 + 슬롯 매핑</span>
+          <span class="flow__d">테이블당 계약 JSON 1개</span>
+        </div>
+        <span class="flow__arrow">→</span>
+        <div class="flow__node flow__node--gate">
+          <span class="flow__who">플랫폼 · 검증 🔒</span>
+          <span class="flow__t">실패 시 표형 강등</span>
+          <span class="flow__d">파이프라인은 실패하지 않음</span>
+        </div>
+        <span class="flow__arrow">→</span>
+        <div class="flow__node flow__node--go">
+          <span class="flow__who">플랫폼</span>
+          <span class="flow__t">렌더</span>
+          <span class="flow__d">이 화면 — 사이드바로 유형 전환</span>
+        </div>
+      </div>
+
+      <h5>템플릿 4유형 — 이 화면에서 실물 확인</h5>
+      <table>
+        <thead><tr><th>템플릿</th><th>용도</th><th>필수 슬롯</th><th>AI 선택 기준</th></tr></thead>
+        <tbody>
+          <tr><td><b>inbox 인박스형</b><br><small>→ 예약</small></td><td>처리할 일이 쌓임 (예약·문의·주문)</td><td>who · when · status</td><td>상태 enum + 일시 + 주체가 모두 있을 때</td></tr>
+          <tr><td><b>feed 게시글형</b><br><small>→ 후기</small></td><td>내용이 주인공 (후기·게시글·공지)</td><td>author · body · created<br><small>선택: rating · parent · replied</small></td><td>긴 텍스트 본문이 중심일 때</td></tr>
+          <tr><td><b>directory 명부형</b><br><small>→ 회원·산책러</small></td><td>엔티티 목록 (사람·제품·설비)</td><td>name · attrs 2~3</td><td>마스터 데이터일 때</td></tr>
+          <tr><td><b>grid 표형</b></td><td>폴백 — 컬럼 그대로</td><td>없음</td><td><b>매핑이 하나라도 애매하면 무조건</b></td></tr>
+        </tbody>
+      </table>
+      <p>요약(대시보드)은 템플릿이 아니라 <b>자동 생성</b> — 테이블별 건수 스탯 + 일시 필드가 있는 테이블의 최근 7일 추이. 타일 클릭 = 해당 뷰로 이동.</p>
+
+      <h5>모든 뷰 공통 (AI가 지정하지 않아도 슬롯에서 유도)</h5>
+      <ul>
+        <li>검색(who/name/body 대상) · 필터 칩(status/replied/대표 속성 축, 건수 표기) · 엑셀 내보내기 · 페이지네이션</li>
+        <li>상태 색과 행 액션 버튼([확정] 등)은 계약의 status.map/transitions가 결정 — 액션은 호버 숨김 없이 <b>상시 노출</b></li>
+        <li>feed는 대량(수백~수천 건) 기본 내장: 요약 헤더(평균 별점·분포) · 미답변/저평점 필터 · 본문 2~3줄 클램프 · parent 소속 칩(후기→산책러)</li>
+      </ul>
+
+      <details>
+        <summary>테이블당 계약 JSON 예시 (bookings) — 자세한 규칙은 명세 §3.2.1</summary>
+        <pre style="font-size:11px;line-height:1.55;overflow-x:auto;background:var(--color-surface-sub);border-radius:8px;padding:10px 12px;margin:0 0 4px">{
+  "table": "bookings", "label": "예약", "template": "inbox",
+  "slots": { "who": "customer_name", "contact": "phone", "when": "visit_at" },
+  "status": {
+    "field": "state",
+    "map": { "대기": "warn", "확정": "ok", "취소": "muted" },
+    "transitions": [{ "from": "대기", "to": "확정", "label": "확정" }]
+  }
+}</pre>
+      </details>
+
+      <h5>미정 — 협의 필요 (추천만 표시, 확정 아님)</h5>
+      <table>
+        <thead><tr><th>열린 질문</th><th>추천 방향</th></tr></thead>
+        <tbody>
+          <tr><td><b>데이터 직접 편집</b> — 사장님이 행을 손으로 추가·수정·삭제?</td><td>인박스형의 상태 변경만 허용. 행 추가·수정은 채팅으로 AI에게 ("전화 예약 하나 넣어줘")</td></tr>
+          <tr><td><b>스키마 변경</b> — "예약에 주소도 받아줘"</td><td>채팅으로만 — DB 화면에 필드 편집 UI를 두지 않음 (제품 문법 일관성)</td></tr>
+          <tr><td><b>새 데이터 알림</b> — 새 예약이 오면 어떻게 아나?</td><td>사이드바 건수 뱃지 + 인박스 새 행 하이라이트까지만. 푸시·알림톡은 별도 기능 범위</td></tr>
+          <tr><td><b>운영자 권한</b> — 직원 계정, 읽기 전용 공유?</td><td>1차 범위 제외 — 소유자 단일 계정 전제</td></tr>
+        </tbody>
+      </table>
+
+      <p class="foot">전체 명세: 저장소 <code>aiapp_에이전트_개편_구현명세.md</code> §3.2.1 (계약·검증 규칙) · §3.2.2 (지연 설정·폴백).</p>
+    </div>
+  </div>
+</div>
+
 <!-- 헬프 플로팅 버튼 -->
 <button class="help-fab" title="도움말" aria-label="도움말">
   <svg class="ph"><use href="#ph-headset"/></svg>
@@ -670,7 +757,13 @@
   });
   document.getElementById("settings-close").addEventListener("click", () => { settingsModal.hidden = true; });
   settingsModal.addEventListener("click", (e) => { if (e.target === settingsModal) settingsModal.hidden = true; });
-  document.addEventListener("keydown", (e) => { if (e.key === "Escape") settingsModal.hidden = true; });
+  document.addEventListener("keydown", (e) => { if (e.key === "Escape") { settingsModal.hidden = true; specModal.hidden = true; } });
+
+  /* ── 개발 노트 모달 — 열기/닫기 ── */
+  const specModal = document.getElementById("spec-modal");
+  document.getElementById("spec-open").addEventListener("click", () => { specModal.hidden = false; });
+  document.getElementById("spec-close").addEventListener("click", () => { specModal.hidden = true; });
+  specModal.addEventListener("click", (e) => { if (e.target === specModal) specModal.hidden = true; });
   settingsModal.querySelectorAll(".modal__tab").forEach((tab) => {
     tab.addEventListener("click", () => {
       settingsModal.querySelectorAll(".modal__tab").forEach((t) => t.classList.toggle("is-on", t === tab));
