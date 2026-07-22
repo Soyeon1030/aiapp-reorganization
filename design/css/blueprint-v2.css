@@ -248,3 +248,84 @@
 /* 최종 오버라이드 — 이 페이지는 전면 흰 배경 (컴포넌트 기본 그라디언트 무효화) */
 body { background: var(--color-surface); }
 .app, .app > .main, .main { background: var(--color-surface); }
+
+/* ── 기획서 확장 (Manifest 절충, 2026-07-22) ──
+   사장님이 확인할 것은 본문에, 전문가용(지표·리스크)은 접이식으로 */
+
+/* 개요 — 목표·배경 2줄 */
+.ovw { display: flex; flex-direction: column; gap: 4px; margin-top: 6px; }
+.ovw__row { display: flex; gap: 10px; font-size: var(--text-xs); align-items: baseline; }
+.ovw__row b { flex: none; font-weight: 700; color: var(--color-muted); min-width: 30px; }
+.ovw__row span { color: var(--color-ink); }
+
+/* 속성 태그 — 카테고리·역할·기기 */
+.attrs { display: flex; gap: 6px; flex-wrap: wrap; margin-top: 8px; }
+.attrs__chip {
+  font-size: var(--text-2xs);
+  font-weight: 600;
+  border: 1px solid var(--color-line);
+  border-radius: var(--radius-full);
+  padding: 3px 11px;
+  color: var(--color-muted);
+  background: var(--color-surface-sub);
+}
+
+/* 왜 — 문제·해결·차별점 3행 */
+.why { display: flex; flex-direction: column; gap: 8px; font-size: var(--text-xs); }
+.why__row { display: flex; gap: 10px; align-items: baseline; line-height: 1.55; }
+.why__k {
+  flex: none;
+  font-size: var(--text-2xs);
+  font-weight: 700;
+  border-radius: var(--radius-full);
+  padding: 2px 10px;
+  min-width: 52px;
+  text-align: center;
+}
+.why__k--p { color: var(--color-warn); background: var(--color-warn-soft); }
+.why__k--s { color: var(--color-accent-deep); background: var(--color-accent-soft); }
+.why__k--d { color: var(--color-ok); background: var(--color-ok-soft); }
+
+/* 누가 — 역할 카드 + 시나리오 */
+.roles { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+.roles__card {
+  border: 1px solid var(--color-line);
+  border-radius: var(--radius-md);
+  padding: 13px 15px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+.roles__card .ico { font-size: 20px; flex: none; }
+.roles__card .tx b { display: block; font-size: var(--text-xs); font-weight: 700; }
+.roles__card .tx small { display: block; font-size: var(--text-2xs); color: var(--color-muted); margin-top: 2px; line-height: 1.5; }
+.scenario {
+  margin: 0;
+  font-size: var(--text-2xs);
+  color: var(--color-muted);
+  border-left: 3px solid var(--color-line-strong);
+  padding-left: 10px;
+  line-height: 1.6;
+}
+
+/* 핵심지표·리스크 — 접이식 */
+.plan-more {
+  border: 1px dashed var(--color-line-strong);
+  border-radius: var(--radius-md);
+  padding: 0 16px;
+}
+.plan-more summary {
+  cursor: pointer;
+  font-size: var(--text-xs);
+  font-weight: 700;
+  color: var(--color-muted);
+  padding: 12px 0;
+  list-style-position: inside;
+}
+.plan-more summary:hover { color: var(--color-accent); }
+.plan-more__grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; padding: 4px 0 14px; }
+.plan-more__grid b { font-size: var(--text-xs); }
+.plan-more__grid ul { margin: 8px 0 0; padding-left: 16px; }
+.plan-more__grid li { font-size: var(--text-2xs); color: var(--color-muted); line-height: 1.6; margin-bottom: 4px; }
+
+@media (max-width: 620px) { .roles, .plan-more__grid { grid-template-columns: 1fr; } }
