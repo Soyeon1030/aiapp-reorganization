@@ -3,283 +3,138 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>AiApp — 설계안 v2 · 기획서 3탭 노출</title>
+<title>AiApp — 설계안 v2 · 질의 → 기획안 (와이어프레임)</title>
 <link rel="stylesheet" href="css/tokens.css">
 <link rel="stylesheet" href="css/components.css">
 <link rel="stylesheet" href="css/blueprint-v2.css">
 </head>
 <body>
 
-<div class="bpv">
-<div class="bpv__wrap is-interviewing" id="wrap">
+<div class="wf">
 
-  <!-- ══════════ 인터뷰 — 기획안 전에 선택지 티키타카로 구체화 ══════════
-       규칙: 질문 3개 고정 · 옵션 2~3개 + AI 추천 · 전부 스킵 가능(추천 적용)
-       답은 기획안 요약 카드에서 "대화로 확정"으로 승격됨 -->
-  <section class="itv" id="interview">
-    <div class="itv__head">
-      <span class="ai">A</span>
-      <div>
-        <div class="t">몇 가지만 여쭤볼게요</div>
-        <div class="d">“동네 반려견 산책 예약받는 사이트 만들어줘” — 답하실수록 기획이 정확해져요</div>
-      </div>
-      <div class="itv__dots" id="itv-dots"><i></i><i></i><i></i></div>
+  <!-- 상단: 로고 + 단계 스테퍼 (기능 → 디자인 → 기획안) -->
+  <div class="wf__top">
+    <div class="wf__logo"><span class="mk">A</span>AiApp</div>
+    <div class="stepper" id="stepper">
+      <div class="stepper__step is-on" data-step="0"><span class="stepper__no">1</span><span class="lb">기능 질의</span></div>
+      <span class="stepper__bar"></span>
+      <div class="stepper__step" data-step="1"><span class="stepper__no">2</span><span class="lb">디자인 질의</span></div>
+      <span class="stepper__bar"></span>
+      <div class="stepper__step" data-step="2"><span class="stepper__no">3</span><span class="lb">기획안</span></div>
     </div>
+  </div>
+
+  <!-- ══════════ 인터뷰: B1 요청 → 기능 질의 → 디자인 질의 ══════════ -->
+  <section class="itv" id="interview">
+    <!-- B1에서 넘어온 요청 — 이해의 기준점 -->
+    <div class="itv__req">내 요청 · <b>“동네 반려견 산책 예약받는 사이트 만들어줘”</b></div>
     <div class="itv__log" id="itv-log"></div>
     <div id="itv-q"></div>
   </section>
 
-  <div class="pframe">
+  <!-- ══════════ 기획안 — 질의가 끝나면 정리해서 보여줌 (여기까지) ══════════ -->
+  <main class="plan" id="plan" hidden>
 
-    <!-- 상단 바 -->
-    <div class="pframe__topbar">
-      <div class="pframe__logo"><span class="mk">A</span>AiApp</div>
-      <div class="pframe__credits">남은 크레딧 <b>1회</b> · 무료 생성</div>
+    <header class="plan__head">
+      <span class="plan__kicker">기획안</span>
+      <h1 class="plan__title">멍멍 산책 예약</h1>
+      <p class="plan__one">우리 동네 반려견 산책을 온라인으로 예약받는 서비스예요.</p>
+    </header>
+
+    <!-- ① 이해 요약: 요청 · 대화로 확정 · 추측 3단 출처 -->
+    <section class="psec" aria-label="이렇게 이해했어요">
+      <div class="psec__h"><span class="n">1</span><h3>이렇게 이해했어요</h3><small>주황 항목만 한 번 확인해 주세요</small></div>
+      <div class="und" id="und">
+        <div class="und__row"><b>예약 접수</b><span class="d">손님이 원하는 날짜·시간에 산책 예약을 넣어요.</span><span class="und__tag und__tag--req">요청하신 내용</span></div>
+        <div class="und__row"><b>예약 관리</b><span class="d">사장님이 예약 현황을 보고 확정·취소해요.</span><span class="und__tag und__tag--req">요청하신 내용</span></div>
+        <!-- 인터뷰 답이 여기로 삽입됨 (JS) -->
+        <div class="und__row" id="und-guess"><b>산책 코스 3종</b><span class="d">30·60·90분으로 넣어뒀어요. 다르면 알려주세요.</span><span class="und__tag und__tag--guess">추측함</span></div>
+      </div>
+    </section>
+
+    <!-- ② 화면 흐름 -->
+    <section class="psec" aria-label="화면 흐름">
+      <div class="psec__h"><span class="n">2</span><h3>어떤 화면이 만들어지나요</h3><small>손님이 쓰는 순서대로</small></div>
+      <div class="wflow">
+        <div class="wscreen">
+          <div class="wscreen__frame">
+            <div class="bar b1"></div><div class="bar b2"></div><div class="bar b3"></div>
+            <div class="btn-ph"></div>
+          </div>
+          <div class="wscreen__cap"><span class="step">1 · </span>첫 화면</div>
+        </div>
+        <div class="wscreen">
+          <div class="wscreen__frame is-core">
+            <div class="bar b1"></div>
+            <div class="grid2"><div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div></div>
+            <div class="btn-ph"></div>
+          </div>
+          <div class="wscreen__cap"><span class="step">2 · </span>산책러 고르기</div>
+        </div>
+        <div class="wscreen">
+          <div class="wscreen__frame is-core">
+            <div class="bar b2"></div><div class="bar b1"></div><div class="bar b3"></div>
+            <div class="btn-ph"></div>
+          </div>
+          <div class="wscreen__cap"><span class="step">3 · </span>예약하기</div>
+        </div>
+        <div class="wscreen">
+          <div class="wscreen__frame">
+            <div class="bar b2"></div><div class="bar b1"></div><div class="bar b3"></div><div class="bar b1"></div>
+          </div>
+          <div class="wscreen__cap"><span class="step">4 · </span>예약 완료</div>
+        </div>
+        <div class="wscreen">
+          <div class="wscreen__frame">
+            <div class="bar b2"></div><div class="bar b3"></div><div class="bar b2"></div><div class="bar b3"></div>
+          </div>
+          <div class="wscreen__cap"><span class="step">5 · </span>사장님 관리</div>
+        </div>
+      </div>
+      <div class="wflow-note"><span class="sw"></span> 파란 테두리 = 핵심 기능이 담긴 화면</div>
+    </section>
+
+    <!-- ③ 저장하는 정보 -->
+    <section class="psec" aria-label="저장하는 정보">
+      <div class="psec__h"><span class="n">3</span><h3>어떤 정보를 저장하나요</h3><small>이 서비스에 필요한 항목만</small></div>
+      <div class="dbcards">
+        <div class="dbcard">
+          <div class="dbcard__h"><b>예약</b><small>예약 한 건마다 저장돼요</small></div>
+          <ul>
+            <li><span class="key">예약자 이름</span><span class="ex">예) 김하늘</span><span class="type">글자</span></li>
+            <li><span class="key">연락처</span><span class="ex">예) 010-1234-5678</span><span class="type">전화</span></li>
+            <li><span class="key">산책 일시</span><span class="ex">예) 7월 24일 15:00</span><span class="type">날짜</span></li>
+            <li><span class="key">반려견 이름</span><span class="ex">예) 초코 (푸들 · 4살)</span><span class="type">글자</span></li>
+            <li><span class="key">상태</span><span class="ex">대기 · 확정 · 완료 · 취소</span><span class="type">선택</span></li>
+          </ul>
+        </div>
+        <div class="dbcard">
+          <div class="dbcard__h"><b>산책러</b><small>산책러 한 명마다 저장돼요</small></div>
+          <ul>
+            <li><span class="key">이름</span><span class="ex">예) 박산책</span><span class="type">글자</span></li>
+            <li><span class="key">한 줄 소개</span><span class="ex">예) 대형견도 자신 있어요!</span><span class="type">글자</span></li>
+            <li><span class="key">경력</span><span class="ex">예) 3년</span><span class="type">숫자</span></li>
+            <li><span class="key">프로필 사진</span><span class="ex">얼굴이 보이는 사진 1장</span><span class="type">이미지</span></li>
+          </ul>
+        </div>
+      </div>
+    </section>
+
+    <!-- ④ 디자인 방향 — 디자인 질의 답이 그대로 반영됨 (JS) -->
+    <section class="psec" aria-label="디자인 방향">
+      <div class="psec__h"><span class="n">4</span><h3>디자인 방향</h3><small>대화에서 고르신 대로</small></div>
+      <div class="dsg" id="dsg"></div>
+    </section>
+
+    <!-- 확정 — 기획안 확인까지가 이 화면의 범위 -->
+    <div class="plan__confirm">
+      <button class="btn btn--primary">맞아요, 이대로 만들어 주세요</button>
+      <button class="btn" id="plan-redo">조금 고칠게요 — 질문 다시 볼게요</button>
+      <div class="warn">확정 뒤에도 화면·기능·디자인은 계속 수정할 수 있어요.</div>
     </div>
 
-    <!-- 내 요청 — 사용자가 한 말을 그대로 보여줌 (이해의 기준점) -->
-    <div class="request">
-      <div class="request__lbl">내 요청</div>
-      <div class="request__q"><span class="quote">“</span>동네 반려견 산책 예약받는 사이트 만들어줘<span class="quote">”</span></div>
-    </div>
+  </main>
 
-    <!-- 3탭 — 점진 공개: 90%는 미리보기만 봄 -->
-    <div class="ptabs" role="tablist">
-      <button class="ptabs__tab" role="tab" aria-selected="true" data-tab="pane-preview">
-        미리보기 <span class="hint">· 대부분 여기만 봐요</span>
-      </button>
-      <button class="ptabs__tab" role="tab" aria-selected="false" data-tab="pane-plan">
-        기획서 <span class="badge">화면·데이터</span>
-      </button>
-      <button class="ptabs__tab" role="tab" aria-selected="false" data-tab="pane-advanced">
-        자세히 <span class="badge">문서</span>
-      </button>
-    </div>
-
-    <div class="pbody">
-
-      <!-- ══════════ 탭 1: 미리보기 — 결과가 먼저, 확인이 옆에 ══════════ -->
-      <section class="pane is-on" id="pane-preview">
-        <div class="pvgrid">
-
-          <!-- 생성된 사이트 목업 (멍멍 산책 브랜드 — 미리보기 내부 전용 톤) -->
-          <div class="browser">
-            <div class="browser__chrome">
-              <i></i><i></i><i></i>
-              <span class="browser__url">미리보기 · 아직 주소가 없어요 — 출시하면 생겨요</span>
-            </div>
-            <div class="site">
-              <div class="site-hero">
-                <div class="eyebrow">DOG WALKING</div>
-                <h2>🐾 멍멍 산책 예약</h2>
-                <p>믿을 수 있는 동네 산책러에게, 원하는 시간에 미리 예약하세요.</p>
-                <span class="cta">지금 예약하기 →</span>
-              </div>
-              <div class="site-body">
-                <div class="row">산책 코스</div>
-                <div class="svc">
-                  <div class="svc__card"><div class="ic">🐕</div><div class="t">가볍게 한 바퀴</div><div class="d">30분</div></div>
-                  <div class="svc__card"><div class="ic">🌳</div><div class="t">공원 코스</div><div class="d">60분</div></div>
-                  <div class="svc__card"><div class="ic">⚡</div><div class="t">에너지 발산</div><div class="d">90분</div></div>
-                </div>
-              </div>
-            </div>
-          </div>
-
-          <!-- 요약 확인 카드 — understanding[] + 확정 게이트 -->
-          <div class="summary">
-            <div class="summary__head">
-              <span class="ai">A</span>
-              <h3>이렇게 이해했어요</h3>
-            </div>
-            <div class="summary__sub">맞는지 한 번만 확인해 주세요.</div>
-
-            <div class="feat">
-              <div class="feat__item">
-                <div class="ic">📅</div>
-                <div class="tx"><div class="t">예약 접수</div><div class="d">손님이 원하는 날짜·시간에 산책 예약을 넣어요.</div></div>
-              </div>
-              <div class="feat__item">
-                <div class="ic">👥</div>
-                <div class="tx"><div class="t">예약 관리</div><div class="d">사장님이 예약 현황을 보고 확정·취소해요.</div></div>
-              </div>
-              <div class="feat__item">
-                <div class="ic">💬</div>
-                <div class="tx"><div class="t">알림톡 발송</div><div class="d">예약이 확정되면 손님에게 카톡으로 알려줘요.</div></div>
-              </div>
-              <!-- 인터뷰 답이 여기로 승격됨 (JS가 "대화로 확정" 항목 삽입) -->
-              <div class="feat__item feat__item--guess" id="feat-guess">
-                <div class="ic">❓</div>
-                <div class="tx"><div class="t">산책 코스 3종<span class="gtag">추측함</span></div><div class="d">30·60·90분으로 넣어뒀어요. 다르면 알려주세요.</div></div>
-              </div>
-            </div>
-
-            <!-- 확정 게이트 — 클릭 즉시 진행 (승인이 곧 시작), 수정은 대화로 복귀 -->
-            <div class="confirm">
-              <button class="btn btn--primary" onclick="location.href='b2.html'">맞아요, 이대로 만들기</button>
-              <button class="btn" onclick="location.href='blueprint.html'">조금 고칠게요</button>
-              <div class="confirm__warn">지금 만들면 무료 생성 1회가 사용돼요.<br>확정 뒤에도 화면·기능은 계속 수정할 수 있어요.</div>
-            </div>
-          </div>
-
-        </div>
-      </section>
-
-      <!-- ══════════ 탭 2: 기획서 — screens[] + data_model[] ══════════ -->
-      <section class="pane" id="pane-plan">
-
-        <!-- 화면 설계 -->
-        <div class="sec">
-          <div class="sec__h"><span class="n">1</span><h3>어떤 화면이 만들어지나요</h3></div>
-          <p class="sec__desc">손님이 예약하는 흐름을 순서대로 그려봤어요. 파란 테두리가 이 서비스의 핵심 화면이에요.</p>
-          <div class="wflow">
-            <div class="wscreen">
-              <div class="wscreen__frame">
-                <div class="bar b1"></div><div class="bar b2"></div><div class="bar b3"></div>
-                <div class="blue-btn"></div>
-              </div>
-              <div class="wscreen__cap"><span class="step">1 · </span>첫 화면</div>
-            </div>
-            <div class="wscreen">
-              <div class="wscreen__frame is-core">
-                <div class="bar b1"></div>
-                <div class="grid2"><div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div></div>
-                <div class="blue-btn"></div>
-              </div>
-              <div class="wscreen__cap"><span class="step">2 · </span>산책러 고르기</div>
-            </div>
-            <div class="wscreen">
-              <div class="wscreen__frame is-core">
-                <div class="bar b2"></div><div class="bar b1"></div><div class="bar b3"></div>
-                <div class="blue-btn"></div>
-              </div>
-              <div class="wscreen__cap"><span class="step">3 · </span>예약하기</div>
-            </div>
-            <div class="wscreen">
-              <div class="wscreen__frame">
-                <div class="bar b2"></div><div class="bar b1"></div><div class="bar b3"></div><div class="bar b1"></div>
-              </div>
-              <div class="wscreen__cap"><span class="step">4 · </span>예약 완료</div>
-            </div>
-            <div class="wscreen">
-              <div class="wscreen__frame">
-                <div class="bar b2"></div><div class="bar b3"></div><div class="bar b2"></div><div class="bar b3"></div>
-              </div>
-              <div class="wscreen__cap"><span class="step">5 · </span>사장님 관리</div>
-            </div>
-          </div>
-          <div class="wflow-legend"><span class="sw"></span> 파란 화면 = 핵심 기능이 담긴 곳</div>
-        </div>
-
-        <!-- DB 구조 — 개발 용어 없이 -->
-        <div class="sec">
-          <div class="sec__h"><span class="n">2</span><h3>어떤 정보를 저장하나요</h3></div>
-          <p class="sec__desc">이 서비스에 딱 맞게 저장 공간을 새로 설계했어요. 일반 템플릿이 아니라, 요청하신 예약 서비스에 필요한 항목만 담았어요.</p>
-
-          <div class="db-toggle">
-            <button data-db="cards" aria-pressed="true">쉽게 보기</button>
-            <button data-db="sheet" aria-pressed="false">표로 보기</button>
-          </div>
-
-          <!-- 쉽게 보기: 카드형 -->
-          <div class="dbcards" id="db-cards">
-            <div class="dbcard">
-              <div class="dbcard__h"><span class="ic">📅</span><span class="t">예약 <small>예약 한 건마다 저장돼요</small></span></div>
-              <ul>
-                <li><span class="key">예약자 이름</span><span class="ex">예) 김하늘</span><span class="type">글자</span></li>
-                <li><span class="key">연락처</span><span class="ex">예) 010-1234-5678</span><span class="type">전화</span></li>
-                <li><span class="key">산책 일시</span><span class="ex">예) 7월 24일 15:00</span><span class="type">날짜</span></li>
-                <li><span class="key">반려견 이름</span><span class="ex">예) 초코 (푸들 · 4살)</span><span class="type">글자</span></li>
-                <li><span class="key">코스</span><span class="ex">30분 / 60분 / 90분</span><span class="type">선택</span></li>
-                <li><span class="key">상태</span><span class="ex">대기 · 확정 · 완료 · 취소</span><span class="type">선택</span></li>
-              </ul>
-            </div>
-            <div class="dbcard">
-              <div class="dbcard__h"><span class="ic">🐕</span><span class="t">산책러 <small>산책러 한 명마다 저장돼요</small></span></div>
-              <ul>
-                <li><span class="key">이름</span><span class="ex">예) 박산책</span><span class="type">글자</span></li>
-                <li><span class="key">한 줄 소개</span><span class="ex">예) 대형견도 자신 있어요!</span><span class="type">글자</span></li>
-                <li><span class="key">경력</span><span class="ex">예) 3년</span><span class="type">숫자</span></li>
-                <li><span class="key">프로필 사진</span><span class="ex">얼굴이 보이는 사진 1장</span><span class="type">이미지</span></li>
-                <li><span class="key">활동 중</span><span class="ex">예) 활동 중이에요</span><span class="type">참/거짓</span></li>
-              </ul>
-            </div>
-          </div>
-
-          <!-- 표로 보기: 실데이터 느낌 -->
-          <div class="dbsheet" id="db-sheet">
-            <table>
-              <thead><tr><th>예약자</th><th>연락처</th><th>산책 일시</th><th>코스</th><th>상태</th></tr></thead>
-              <tbody>
-                <tr><td>김하늘</td><td>010-1234-5678</td><td>7/24 15:00</td><td>60분</td><td><span class="st st--ok">확정</span></td></tr>
-                <tr><td>이서준</td><td>010-2345-6789</td><td>7/24 17:30</td><td>30분</td><td><span class="st st--wait">대기</span></td></tr>
-                <tr><td>박도윤</td><td>010-3456-7890</td><td>7/25 11:00</td><td>90분</td><td><span class="st st--wait">대기</span></td></tr>
-              </tbody>
-            </table>
-          </div>
-
-          <div class="db-note"><span class="dot"></span> 이 저장 공간은 사장님만 볼 수 있고, 삭제는 실수 방지를 위해 AiApp을 통해서만 할 수 있어요.</div>
-        </div>
-
-      </section>
-
-      <!-- ══════════ 탭 3: 자세히 — documents + 엔터프라이즈 훅 ══════════ -->
-      <section class="pane" id="pane-advanced">
-        <div class="adv-intro">
-          <span class="ic">📂</span>
-          <div>개발·기획을 아는 분을 위한 상세 문서예요. 대부분의 사용자는 안 봐도 괜찮아요. 필요할 때만 열어 보세요.</div>
-        </div>
-
-        <div class="doclist">
-          <div class="doc">
-            <div class="ic">📋</div>
-            <div class="tx">
-              <div class="t">기능 정의서 (PRD)</div>
-              <div class="d">예약·예약관리·알림톡 각 기능이 무엇을 하는지, 어떤 조건에서 동작하는지 정리한 문서예요.</div>
-              <div class="meta">5개 화면 · 8개 기능 · 자동 생성됨</div>
-            </div>
-            <div class="go">→</div>
-          </div>
-
-          <div class="doc">
-            <div class="ic">🗂️</div>
-            <div class="tx">
-              <div class="t">데이터 · 아키텍처 구성</div>
-              <div class="d">저장 공간(예약·산책러) 구조와, 알림톡 발송이 어떻게 연결되는지 보여줘요.</div>
-              <div class="meta">저장 공간 2개 · 알림톡 연동 1건</div>
-            </div>
-            <div class="go">→</div>
-          </div>
-
-          <div class="doc doc--locked">
-            <div class="ic">📥</div>
-            <div class="tx">
-              <div class="t">기획서 파일로 내려받기</div>
-              <div class="d">지금 만들어진 서비스를 바탕으로 정식 기획서를 뽑아 PDF로 저장해요.</div>
-              <div class="meta">외주·투자 제출용으로 활용할 수 있어요</div>
-            </div>
-            <span class="doc__lock">크레딧 사용</span>
-          </div>
-        </div>
-
-        <div class="ent-hook">
-          <div class="t">🏢 이 요청, 더 크게 만들 수도 있어요</div>
-          <div class="d">지금 요청은 AiApp에서 바로 만들 수 있는 수준이에요 (난이도 3/10). 나중에 결제·정산이나 대량 데이터 분석처럼 더 복잡한 기능이 필요해지면, 엔터프라이즈 상담으로 이어드려요.</div>
-        </div>
-      </section>
-
-    </div>
-  </div>
-
-  <!-- 누가 어디를 보나 — 노출 구조의 의도 -->
-  <div class="legend">
-    <div class="legend__l"><div class="who">미리보기</div><div class="what">사용자 · 확인용</div><div class="how">결과 + 이해한 내용 요약. 90%가 여기만 봄</div></div>
-    <div class="legend__l"><div class="who">기획서</div><div class="what">사용자 · 열람용</div><div class="how">화면 흐름 + 저장 정보. 보고 싶은 사람만</div></div>
-    <div class="legend__l"><div class="who">자세히</div><div class="what">파워유저 · 비즈니스</div><div class="how">PRD·아키텍처 + 엔터프라이즈 훅</div></div>
-    <div class="legend__l"><div class="who">JSON</div><div class="what">AI · 구현용 (비노출)</div><div class="how">위와 별개로 구조화 스펙을 구현 에이전트에 전달</div></div>
-  </div>
-
-</div>
 </div>
 
 <!-- 개발 노트 버튼 + 모달 — 이 화면의 기획 -->
@@ -289,101 +144,128 @@
   <div class="modal modal--spec" role="dialog" aria-modal="true" aria-label="개발 노트">
     <div class="modal__main spec">
       <button class="modal__x" id="spec-close" aria-label="닫기">✕</button>
-      <h4>설계안 v2 — 기획서 3탭 노출 <span style="font-size:12px;font-weight:600;color:var(--color-muted)">(기획 에이전트 출력의 시각화)</span><span class="new-tag">NEW 07-22 15:00</span></h4>
+      <h4>설계안 v2 — 질의 → 기획안 <span style="font-size:12px;font-weight:600;color:var(--color-muted)">(와이어프레임 · 명세 §2.5)</span><span class="new-tag">NEW 07-22 16:03</span></h4>
 
-      <h5>핵심 원칙 — 티키타카로 구체화, 결과 먼저, 상세는 점진 공개</h5>
-      <p>기획 에이전트의 JSON 하나가 이 화면 전체의 데이터 출처다. 흐름은 두 박자: ① 요청 직후 <b>인터뷰(선택지 티키타카)</b>로 서비스의 갈림길만 빠르게 확정하고 ② 기획안은 문서가 아니라 <b>생성된 사이트 미리보기</b>로 먼저 보여준 뒤 요약 카드로 확인만 받는다. 화면·데이터가 궁금한 사람만 기획서 탭을, 문서가 필요한 사람만 자세히 탭을 연다.</p>
+      <h5>흐름 — 여기까지가 이 화면의 범위</h5>
+      <div class="flow">
+        <div class="flow__node">
+          <span class="flow__who">B1</span>
+          <span class="flow__t">아이디어 전송</span>
+          <span class="flow__d">한 문장 요청</span>
+        </div>
+        <span class="flow__arrow">→</span>
+        <div class="flow__node">
+          <span class="flow__who">AI ①</span>
+          <span class="flow__t">기능 질의</span>
+          <span class="flow__d">서비스 동작의 갈림길 2개</span>
+        </div>
+        <span class="flow__arrow">→</span>
+        <div class="flow__node">
+          <span class="flow__who">AI ②</span>
+          <span class="flow__t">디자인 질의</span>
+          <span class="flow__d">분위기·글씨 느낌 2개</span>
+        </div>
+        <span class="flow__arrow">→</span>
+        <div class="flow__node flow__node--gate">
+          <span class="flow__who">AI → 확인 대기 🔒</span>
+          <span class="flow__t">기획안 정리</span>
+          <span class="flow__d">이해 요약·화면·데이터·디자인</span>
+        </div>
+      </div>
 
-      <h5>인터뷰 단계 — 질문의 규칙 <span class="new-tag">NEW 07-22 15:13</span></h5>
+      <h5>질의 규칙</h5>
       <ul>
-        <li><b>질문 수 고정 2~3개</b> — 피로 방지. 기준: 답에 따라 <b>화면 모양이나 저장 정보가 실제로 달라지는 갈림길만</b> 묻는다 (예약 방식·산책러 구성·요금). 문구·색처럼 나중에 바꿔도 되는 건 묻지 않는다</li>
-        <li>옵션 2~3개 + <b>✨ AI 추천</b> 표시(§2.4 추천 배지 기준) · 각 옵션에 "고르면 뭐가 달라지는지" 한 줄 설명</li>
-        <li><b>전부 스킵 가능</b> — "잘 모르겠어요"는 추천 적용. 모른다고 흐름이 막히지 않는다</li>
-        <li>답한 질문은 접힌 기록으로 쌓이고, <b>클릭하면 그 질문부터 재선택</b> (blueprint 접힘 문법과 동일)</li>
-        <li>답은 요약 카드에 <b>"대화로 확정"</b>(초록)으로 승격 — 말씀하신 내용 / 대화로 확정 / 추측함(주황)의 3단 신뢰도가 이 화면의 시각 언어</li>
-        <li>다 답하면 "정리하고 있어요…" 비트 후 기획안 공개 — 인터뷰 답은 에이전트 입력의 누적 맥락으로 전달</li>
+        <li><b>기능 질의 먼저, 디자인 질의 나중</b> — 무엇을 만드는지 정해진 뒤에 어떻게 보일지를 묻는다. 단계는 상단 스테퍼(1 기능 → 2 디자인 → 3 기획안)로 항상 보여준다</li>
+        <li>질문 수 고정: 기능 2 + 디자인 2 — 답에 따라 <b>화면·데이터·스타일 토큰이 실제로 갈리는 것만</b> 묻는다</li>
+        <li>옵션 2~3개 + <b>AI 추천</b> 테두리 배지(§2.4 기준) · 디자인 옵션에는 톤 견본(포인트색 띠 + 바탕색)을 함께</li>
+        <li>"잘 모르겠어요" = 추천 적용 · 답한 질문은 접힌 기록, <b>클릭 = 그 질문부터 재선택</b></li>
+        <li>답은 기획안 ①에 "대화로 확정"으로, 디자인 답은 ④ 디자인 방향에 그대로 반영</li>
       </ul>
 
-      <h5>탭 ↔ 대상 ↔ JSON 매핑</h5>
+      <h5>기획안 문서의 구성 ↔ 에이전트 JSON</h5>
       <table>
-        <thead><tr><th>탭</th><th>누가 보나</th><th>JSON 출처</th><th>표현 규칙</th></tr></thead>
+        <thead><tr><th>섹션</th><th>JSON 출처</th><th>규칙</th></tr></thead>
         <tbody>
-          <tr><td><b>미리보기</b></td><td>모든 사용자 (90%는 여기만)</td><td><code>meta</code> + <code>understanding[]</code></td><td>사이트 목업 + "이렇게 이해했어요" 요약. assumed = 점선 카드 + "추측함" 태그. 확정 버튼이 생성 시작 게이트</td></tr>
-          <tr><td><b>기획서</b></td><td>보고 싶은 사용자</td><td><code>screens[]</code> + <code>data_model[]</code></td><td>화면 = 미니 와이어프레임 썸네일(is_core 파란 테두리). 저장 정보 = 쉽게 보기(카드)/표로 보기 토글, 항목마다 예시값 필수</td></tr>
-          <tr><td><b>자세히</b></td><td>파워유저·비즈니스</td><td><code>documents</code> + <code>meta.difficulty/routing</code></td><td>PRD·아키텍처 문서 행, PDF 내보내기(크레딧 사용 표시). 난이도·엔터프라이즈 훅은 여기서만 노출</td></tr>
-          <tr><td>(비노출)</td><td>구현 에이전트</td><td>JSON 전체</td><td>화면과 같은 데이터 — 화면 전용 데이터를 만들지 않는다</td></tr>
+          <tr><td>① 이렇게 이해했어요</td><td><code>understanding[]</code></td><td>출처 3단 태그: 요청하신 내용 / 대화로 확정(파랑) / 추측함(주황) — 추측만 확인시키면 됨</td></tr>
+          <tr><td>② 화면 흐름</td><td><code>screens[]</code></td><td>와이어프레임 썸네일, is_core = 파란 테두리, 3~5개</td></tr>
+          <tr><td>③ 저장하는 정보</td><td><code>data_model[]</code></td><td>개발 용어 금지 · 항목마다 예시값 · 타입은 쉬운 말 7종</td></tr>
+          <tr><td>④ 디자인 방향</td><td><code>design_tokens</code></td><td>디자인 질의 답 = 토큰 세트 선택. 견본과 이름으로 표시</td></tr>
+          <tr><td>확정</td><td>—</td><td>[맞아요] = 생성 시작 게이트 · [조금 고칠게요] = 질의로 복귀. 이 화면은 여기까지</td></tr>
         </tbody>
       </table>
 
-      <h5>카피 규칙</h5>
-      <ul>
-        <li>내 요청을 상단에 그대로 인용 — AI 이해의 기준점을 사용자 말로 고정</li>
-        <li>개발 용어 금지: 테이블 → "저장 공간", 필드 → "항목". 타입은 쉬운 말 7종(글자/숫자/날짜/전화/선택/이미지/참·거짓)</li>
-        <li>추측(assumed)은 점선 + "추측함" — "다르면 알려주세요"로 부담 없이 정정 유도</li>
-        <li>크레딧은 실사용만 표기("무료 생성 1회가 사용돼요") — 견적·예상 수치 금지</li>
-        <li>미리보기 주소 표시는 출시 게이트 규칙(§2.2)을 따름 — "아직 주소가 없어요"</li>
-      </ul>
-
       <h5>미정 — 협의 필요</h5>
       <ul>
-        <li>기존 설계안 대화(blueprint ①~⑤)와의 관계: 인터뷰+3탭이 그 자리를 대체하는지, 병행하는지</li>
-        <li>인터뷰 질문을 누가 뽑나: 기획 에이전트가 요청 분석 후 동적 생성(추천) vs 업종별 고정 세트</li>
-        <li>미리보기 목업의 충실도: 생성 전 단계에서 어느 수준까지 실제처럼 보여줄지 (기대치 관리)</li>
-        <li>[조금 고칠게요]의 동작: 대화 복귀(현재 시안) vs 요약 카드 인라인 수정</li>
+        <li>기존 설계안 대화(blueprint ①~⑤)와의 관계 — 이 흐름이 그 자리를 대체하는지</li>
+        <li>질의를 누가 뽑나: 기획 에이전트가 요청 분석 후 동적 생성(추천) vs 업종별 고정 세트</li>
+        <li>확정 후 화면(생성 진행·미리보기)은 별도 — 이 화면 범위 밖</li>
       </ul>
 
-      <p class="foot">원본 시안: 저장소 <code>기획서_노출방식_목업.html</code> · 에이전트 프롬프트: <code>agents/planning-agent-prompt.md</code> · 명세 §2.5.</p>
+      <p class="foot">에이전트 프롬프트: <code>agents/planning-agent-prompt.md</code> · 전체 명세 §2.5.</p>
     </div>
   </div>
 </div>
 
-<!-- 상태 시연 — 인터뷰부터 다시 -->
-<div class="demo-states" role="group" aria-label="상태 시연">
-  <span class="demo-states__label">상태 시연</span>
-  <button onclick="location.reload()">인터뷰 다시 보기</button>
-</div>
-
 <script>
-  /* ══ 인터뷰 — 선택지 티키타카 → 기획안 공개 ══ */
-  const ITV = [
-    { label: "예약 방식", q: "예약은 어떻게 받는 게 좋아요?", hint: "예약 화면의 모양이 달라져요",
+  /* ══ 질의 데이터 — phase: 기능 → 디자인 ══ */
+  const QS = [
+    { phase: "기능 질의", label: "예약 방식", q: "예약은 어떻게 받는 게 좋아요?", hint: "예약 화면의 모양이 달라져요",
       opts: [
-        { ic: "🗓", t: "원하는 날짜·시간을 자유롭게", d: "손님이 달력에서 직접 골라요", rec: true },
-        { ic: "⏰", t: "정해진 시간대 중에서 선택", d: "오전·오후처럼 시간대를 정해둬요" },
-        { ic: "💬", t: "신청만 받고 채팅으로 확정", d: "일정은 손님과 대화로 조율해요" },
+        { t: "원하는 날짜·시간을 자유롭게", d: "손님이 달력에서 직접 골라요", rec: true },
+        { t: "정해진 시간대 중에서 선택", d: "오전·오후처럼 시간대를 정해둬요" },
+        { t: "신청만 받고 채팅으로 확정", d: "일정은 손님과 대화로 조율해요" },
       ] },
-    { label: "산책러 구성", q: "산책은 몇 분이서 하세요?", hint: "산책러 소개 화면 구성이 달라져요",
+    { phase: "기능 질의", label: "확정 안내", q: "예약이 확정되면 손님에게 어떻게 알릴까요?", hint: "안내 문구와 발송 기능이 달라져요",
       opts: [
-        { ic: "🙋", t: "저 혼자예요", d: "소개 페이지 하나로 충분해요" },
-        { ic: "👥", t: "2~5명이에요", d: "산책러 고르기 화면을 넣어요", rec: true },
-        { ic: "📈", t: "계속 늘릴 예정이에요", d: "산책러 등록 흐름도 함께 잡아요" },
+        { t: "카카오 알림톡으로", d: "확정 즉시 카톡으로 알려드려요", rec: true },
+        { t: "문자(SMS)로", d: "카톡이 없는 손님도 받을 수 있어요" },
+        { t: "따로 안 보내요", d: "손님이 사이트에서 직접 확인해요" },
       ] },
-    { label: "요금 방식", q: "산책 요금은 어떻게 받을까요?", hint: "지금 정하지 않아도 괜찮아요 — 나중에 바꿀 수 있어요",
+    { phase: "디자인 질의", label: "분위기", q: "어떤 분위기가 좋아요?", hint: "색과 사진 톤이 달라져요",
       opts: [
-        { ic: "🤝", t: "현장에서 직접 받아요", d: "사이트는 예약만 받아요", rec: true },
-        { ic: "🏦", t: "계좌이체로 안내해요", d: "예약 완료 화면에 계좌를 보여줘요" },
-        { ic: "💳", t: "온라인 결제까지 받을래요", d: "결제 연결은 출시 후 관리 화면에서 해요" },
+        { t: "포근하고 아늑하게", d: "따뜻한 베이지 + 부드러운 곡선", rec: true, tone: ["#D9A05B", "#F6EFE5"] },
+        { t: "밝고 활기차게", d: "생기 있는 그린 + 큼직한 사진", tone: ["#4C8F4E", "#EDF6EC"] },
+        { t: "깔끔하고 신뢰감 있게", d: "차분한 네이비 + 정돈된 여백", tone: ["#33507E", "#EEF2F8"] },
+      ] },
+    { phase: "디자인 질의", label: "글씨 느낌", q: "글씨는 어떤 느낌이 좋아요?", hint: "제목과 버튼의 인상이 달라져요",
+      opts: [
+        { t: "둥글둥글 친근하게", d: "동네 가게 같은 편안함", rec: true, tone: ["#7B61C9", "#F0EBFB"] },
+        { t: "단정하고 깔끔하게", d: "전문 서비스 같은 정돈감", tone: ["#3B6EF5", "#EAF0FE"] },
       ] },
   ];
   const answers = [];
-  const wrap = document.getElementById("wrap");
   const itv = document.getElementById("interview");
   const itvLog = document.getElementById("itv-log");
   const itvQ = document.getElementById("itv-q");
-  const itvDots = document.querySelectorAll("#itv-dots i");
+  const plan = document.getElementById("plan");
+  const steps = document.querySelectorAll(".stepper__step");
 
+  function phaseIdx(i) { return QS[i].phase === "기능 질의" ? 0 : 1; }
+  function setStepper(n) {   /* n: 0 기능 · 1 디자인 · 2 기획안 */
+    steps.forEach((s, k) => {
+      s.classList.toggle("is-on", k === n);
+      s.classList.toggle("is-done", k < n);
+      s.querySelector(".stepper__no").textContent = k < n ? "✓" : k + 1;
+    });
+  }
+
+  function toneHTML(tone) {
+    return tone ? `<span class="tone"><i style="background:${tone[0]}"></i><i style="background:${tone[1]}"></i></span>` : "";
+  }
   function renderQ(i) {
-    const item = ITV[i];
-    itvDots.forEach((d, k) => d.classList.toggle("is-done", k < i));
+    setStepper(phaseIdx(i));
+    const item = QS[i];
     itvQ.innerHTML = `
       <div class="itv__q">
-        <div class="ask-line">${i + 1}. ${item.q}<small>${item.hint}</small></div>
+        <span class="itv__phase">${item.phase} ${item.phase === "기능 질의" ? (i + 1) : (i - 1)}/2</span>
+        <div class="itv__ask">${item.q}</div>
+        <div class="itv__hint">${item.hint}</div>
         <div class="itv__opts">
           ${item.opts.map((o, k) => `
             <button class="itv__opt" data-k="${k}">
-              <span class="ic">${o.ic}</span>
+              ${toneHTML(o.tone)}
               <span class="tx"><b>${o.t}</b><small>${o.d}</small></span>
-              ${o.rec ? '<span class="rec">✨ AI 추천</span>' : ""}
+              ${o.rec ? '<span class="rec">AI 추천</span>' : ""}
             </button>`).join("")}
         </div>
         <div class="itv__foot">
@@ -397,75 +279,62 @@
     const back = itvQ.querySelector("#itv-back");
     if (back) back.addEventListener("click", () => { answers.pop(); popLog(); renderQ(i - 1); });
     itvQ.querySelector("#itv-skip").addEventListener("click", () => {
-      answer(i, ITV[i].opts.findIndex((o) => o.rec));
+      answer(i, QS[i].opts.findIndex((o) => o.rec));
     });
   }
   function answer(i, k) {
     answers[i] = k;
-    const o = ITV[i].opts[k];
+    const o = QS[i].opts[k];
     const row = document.createElement("button");
     row.className = "itv__done";
-    row.innerHTML = `${ITV[i].label} · <b>${o.t}</b><span class="ok">✓ 답했어요</span>`;
-    row.addEventListener("click", () => {   /* 접힌 기록 클릭 = 그 질문부터 재선택 */
+    row.innerHTML = `${QS[i].label} · <b>${o.t}</b><span class="ok">답했어요 ✓</span>`;
+    row.addEventListener("click", () => {
       while (answers.length > i) { answers.pop(); popLog(); }
       renderQ(i);
     });
     itvLog.appendChild(row);
-    if (i + 1 < ITV.length) renderQ(i + 1);
-    else finishItv();
+    if (i + 1 < QS.length) renderQ(i + 1);
+    else finish();
   }
   function popLog() { if (itvLog.lastElementChild) itvLog.lastElementChild.remove(); }
-  function finishItv() {
-    itvDots.forEach((d) => d.classList.add("is-done"));
+  function finish() {
+    setStepper(2);
     itvQ.innerHTML = `
       <div class="itv__making">
         <div class="dots"><i></i><i></i><i></i></div>
         <div class="msg">말씀해 주신 내용으로 기획안을 정리하고 있어요…</div>
       </div>`;
-    setTimeout(revealPlan, 1600);
+    setTimeout(reveal, 1400);
   }
-  function revealPlan() {
-    /* 인터뷰 답을 요약 카드에 "대화로 확정"으로 승격 */
-    const guess = document.getElementById("feat-guess");
-    answers.forEach((k, i) => {
-      const o = ITV[i].opts[k];
-      const el = document.createElement("div");
-      el.className = "feat__item";
-      el.innerHTML = `<div class="ic">${o.ic}</div>
-        <div class="tx"><div class="t">${ITV[i].label} — ${o.t}<span class="gtag gtag--talk">대화로 확정</span></div>
-        <div class="d">${o.d}</div></div>`;
-      guess.parentNode.insertBefore(el, guess);
+  function reveal() {
+    /* 기능 답 → ① 이해 요약에 "대화로 확정" 행 삽입 */
+    const guess = document.getElementById("und-guess");
+    answers.slice(0, 2).forEach((k, i) => {
+      const o = QS[i].opts[k];
+      const row = document.createElement("div");
+      row.className = "und__row";
+      row.innerHTML = `<b>${QS[i].label}</b><span class="d">${o.t} — ${o.d}</span><span class="und__tag und__tag--talk">대화로 확정</span>`;
+      guess.parentNode.insertBefore(row, guess);
     });
-    itv.remove();
-    wrap.classList.remove("is-interviewing");
+    /* 디자인 답 → ④ 디자인 방향 카드 */
+    const dsg = document.getElementById("dsg");
+    answers.slice(2).forEach((k, i) => {
+      const qi = i + 2;
+      const o = QS[qi].opts[k];
+      dsg.insertAdjacentHTML("beforeend", `
+        <div class="dsg__card">
+          ${toneHTML(o.tone)}
+          <span class="tx"><b>${QS[qi].label} — ${o.t}</b><small>${o.d}</small></span>
+        </div>`);
+    });
+    itv.hidden = true;
+    plan.hidden = false;
     window.scrollTo({ top: 0, behavior: "smooth" });
   }
+  /* [조금 고칠게요] — 질의 처음부터 다시 (와이어프레임 시연용) */
+  document.getElementById("plan-redo").addEventListener("click", () => location.reload());
+
   renderQ(0);
-
-  /* 탭 전환 */
-  const tabs = document.querySelectorAll(".ptabs__tab");
-  const panes = document.querySelectorAll(".pane");
-  tabs.forEach((t) => {
-    t.addEventListener("click", () => {
-      tabs.forEach((x) => x.setAttribute("aria-selected", "false"));
-      t.setAttribute("aria-selected", "true");
-      panes.forEach((p) => p.classList.toggle("is-on", p.id === t.dataset.tab));
-    });
-  });
-
-  /* 저장 정보: 쉽게 보기 / 표로 보기 */
-  const dbBtns = document.querySelectorAll(".db-toggle button");
-  const dbCards = document.getElementById("db-cards");
-  const dbSheet = document.getElementById("db-sheet");
-  dbBtns.forEach((b) => {
-    b.addEventListener("click", () => {
-      dbBtns.forEach((x) => x.setAttribute("aria-pressed", "false"));
-      b.setAttribute("aria-pressed", "true");
-      const cards = b.dataset.db === "cards";
-      dbCards.style.display = cards ? "grid" : "none";
-      dbSheet.style.display = cards ? "none" : "block";
-    });
-  });
 
   /* 개발 노트 모달 */
   const specModal = document.getElementById("spec-modal");
