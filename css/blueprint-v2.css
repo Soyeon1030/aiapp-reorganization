@@ -329,3 +329,8 @@ body { background: var(--color-surface); }
 .plan-more__grid li { font-size: var(--text-2xs); color: var(--color-muted); line-height: 1.6; margin-bottom: 4px; }
 
 @media (max-width: 620px) { .roles, .plan-more__grid { grid-template-columns: 1fr; } }
+
+/* ── 규격 고정 + 값 바인딩 (2026-07-22) — 미확정 값 자리표시 ── */
+.tbd { font-style: normal; color: var(--color-line-strong); }
+.tone--empty { background: repeating-linear-gradient(45deg, var(--color-surface-sub) 0 6px, var(--color-surface) 6px 12px); }
+.plan__confirm .btn:disabled { opacity: .45; cursor: default; }
