@@ -334,3 +334,14 @@ body { background: var(--color-surface); }
 .tbd { font-style: normal; color: var(--color-line-strong); }
 .tone--empty { background: repeating-linear-gradient(45deg, var(--color-surface-sub) 0 6px, var(--color-surface) 6px 12px); }
 .plan__confirm .btn:disabled { opacity: .45; cursor: default; }
+
+/* ── 빈 규격(스켈레톤) — 질의 중 우측: 틀은 그대로, 값 자리만 회색 바 ── */
+.sk-line {
+  display: inline-block;
+  height: 12px;
+  border-radius: 6px;
+  background: var(--color-surface-sub);
+  border: 1px solid var(--color-line);
+}
+.plan-skel .psec { gap: 10px; }
+.plan-skel .plan__head { gap: 10px; }
