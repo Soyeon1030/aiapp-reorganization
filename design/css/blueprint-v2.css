@@ -1,0 +1,325 @@
+/* ============================================================
+   설계안 v2 (개선안) — 기획 에이전트 JSON 출력을 그대로 그리는 화면
+   - 원칙: 이 화면의 모든 섹션은 에이전트 출력 JSON의 키와 1:1 대응
+     (매핑은 화면의 개발 노트 참조). 화면이 계약의 시각화다.
+   - 개발 용어 금지: 테이블→저장하는 정보, 필드→항목, 관리자→관리 화면
+   ============================================================ */
+
+.bpv {
+  min-height: 100dvh;
+  background: var(--color-surface);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 0 20px 120px;
+}
+
+/* ── 상단 바 — 설계안 대화(blueprint)에서 이어지는 문서라는 표시 ── */
+.bpv__top {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 14px 4px;
+  border-bottom: 1px solid var(--color-line);
+  margin-bottom: 28px;
+}
+.bpv__back {
+  border: 1px solid var(--color-line);
+  background: var(--color-surface);
+  border-radius: var(--radius-md);
+  padding: 6px 12px;
+  font-size: var(--text-xs);
+  font-weight: 600;
+  color: var(--color-muted);
+  text-decoration: none;
+}
+.bpv__back:hover { border-color: var(--color-accent); color: var(--color-accent); }
+.bpv__crumb { font-size: var(--text-xs); color: var(--color-muted); }
+.bpv__crumb b { color: var(--color-ink); }
+
+.bpv__doc {
+  width: min(760px, 100%);
+  display: flex;
+  flex-direction: column;
+  gap: 30px;
+}
+
+/* ── 헤더: meta ── */
+.bhead { display: flex; flex-direction: column; gap: 10px; }
+.bhead__kicker {
+  font-size: var(--text-xs);
+  font-weight: 700;
+  color: var(--color-accent);
+  letter-spacing: .03em;
+}
+.bhead__title {
+  margin: 0;
+  font-size: var(--text-display);
+  font-weight: 800;
+  letter-spacing: -.02em;
+  line-height: var(--leading-tight);
+}
+.bhead__one { margin: 0; font-size: var(--text-md); color: var(--color-muted); }
+.bhead__chips { display: flex; gap: 8px; flex-wrap: wrap; margin-top: 4px; }
+.meta-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-size: var(--text-xs);
+  font-weight: 600;
+  border: 1px solid var(--color-line);
+  border-radius: var(--radius-full);
+  padding: 4px 12px;
+  color: var(--color-ink);
+  background: var(--color-surface);
+}
+.meta-chip--ok { border-color: var(--color-ok); color: var(--color-ok); background: var(--color-ok-soft); }
+.meta-chip--warn { border-color: var(--color-warn); color: var(--color-warn); background: var(--color-warn-soft); }
+
+/* 엔터프라이즈 라우팅 배너 (routing="enterprise"일 때만) */
+.route-banner {
+  border: 1px solid var(--color-warn);
+  background: var(--color-warn-soft);
+  border-radius: var(--radius-lg);
+  padding: 14px 18px;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+.route-banner b { font-size: var(--text-sm); }
+.route-banner p { margin: 0; font-size: var(--text-xs); color: var(--color-ink); line-height: 1.6; }
+.route-banner .btn { align-self: flex-start; margin-top: 4px; }
+
+/* ── 공통 섹션 골격 ── */
+.bsec { display: flex; flex-direction: column; gap: 12px; }
+.bsec > h2 {
+  margin: 0;
+  font-size: var(--text-lg);
+  font-weight: 800;
+  letter-spacing: -.01em;
+  display: flex;
+  align-items: baseline;
+  gap: 8px;
+}
+.bsec > h2 small { font-size: var(--text-xs); font-weight: 500; color: var(--color-muted); }
+
+/* ── 이렇게 이해했어요: understanding[] ── */
+.und {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(230px, 1fr));
+  gap: 10px;
+}
+.und__card {
+  border: 1px solid var(--color-line);
+  border-radius: var(--radius-lg);
+  padding: 14px 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+  background: var(--color-surface);
+  position: relative;
+}
+.und__card .ico { font-size: 20px; }
+.und__card b { font-size: var(--text-base); }
+.und__card p { margin: 0; font-size: var(--text-xs); color: var(--color-muted); line-height: 1.55; }
+/* 추측 항목 — 사용자가 가장 먼저 봐야 할 지점이라 조용히 두지 않는다 */
+.und__card.is-assumed { border-color: var(--color-warn); background: var(--color-warn-soft); }
+.und__badge {
+  position: absolute;
+  top: 12px; right: 12px;
+  font-size: var(--text-2xs);
+  font-weight: 700;
+  border-radius: var(--radius-full);
+  padding: 2px 9px;
+}
+.und__badge--ok { color: var(--color-ok); background: var(--color-ok-soft); }
+.und__badge--warn { color: #fff; background: var(--color-warn); }
+
+/* ── 화면 흐름: screens[] ── */
+.scr { display: flex; gap: 8px; align-items: stretch; flex-wrap: wrap; }
+.scr__step {
+  flex: 1 1 120px;
+  min-width: 120px;
+  border: 1.5px solid var(--color-line);
+  border-radius: var(--radius-lg);
+  padding: 12px 13px;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  background: var(--color-surface);
+}
+.scr__step .no {
+  font-family: var(--font-mono);
+  font-size: var(--text-2xs);
+  color: var(--color-muted);
+}
+.scr__step b { font-size: var(--text-sm); }
+.scr__step p { margin: 0; font-size: var(--text-2xs); color: var(--color-muted); line-height: 1.5; }
+/* is_core — 파란 테두리 강조 (에이전트 계약 그대로) */
+.scr__step.is-core { border-color: var(--color-accent); box-shadow: var(--shadow-ring); }
+.scr__step.is-core .no { color: var(--color-accent); }
+.scr__core-tag {
+  align-self: flex-start;
+  font-size: var(--text-2xs);
+  font-weight: 700;
+  color: var(--color-accent);
+  background: var(--color-accent-soft);
+  border-radius: var(--radius-full);
+  padding: 1px 8px;
+}
+.scr__arrow { align-self: center; color: var(--color-line-strong); flex: 0 0 auto; }
+
+/* ── 저장하는 정보: data_model[] ── */
+.ent { display: flex; flex-direction: column; gap: 12px; }
+.ent__card {
+  border: 1px solid var(--color-line);
+  border-radius: var(--radius-lg);
+  overflow: hidden;
+  background: var(--color-surface);
+}
+.ent__head {
+  display: flex;
+  align-items: baseline;
+  gap: 9px;
+  padding: 12px 16px;
+  background: var(--color-surface-sub);
+  border-bottom: 1px solid var(--color-line);
+}
+.ent__head .ico { font-size: 16px; }
+.ent__head b { font-size: var(--text-base); }
+.ent__head small { font-size: var(--text-xs); color: var(--color-muted); }
+.ent__rows { display: flex; flex-direction: column; }
+.ent__row {
+  display: grid;
+  grid-template-columns: 140px 64px 1fr;
+  gap: 12px;
+  align-items: center;
+  padding: 8px 16px;
+  border-bottom: 1px solid var(--color-line);
+  font-size: var(--text-sm);
+}
+.ent__row:last-child { border-bottom: none; }
+.ent__row .nm { font-weight: 600; }
+.ent__type {
+  justify-self: start;
+  font-size: var(--text-2xs);
+  font-weight: 600;
+  color: var(--color-accent-deep);
+  background: var(--color-accent-soft);
+  border-radius: var(--radius-full);
+  padding: 1px 9px;
+  white-space: nowrap;
+}
+.ent__ex { color: var(--color-muted); font-size: var(--text-xs); }
+/* 상태 라이프사이클 — 이 순서가 관리 화면의 버튼이 됨 */
+.ent__cycle {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  flex-wrap: wrap;
+  padding: 10px 16px;
+  background: var(--color-surface-sub);
+  border-top: 1px solid var(--color-line);
+  font-size: var(--text-2xs);
+  color: var(--color-muted);
+}
+.ent__cycle .pill {
+  font-size: var(--text-2xs);
+  font-weight: 700;
+  border-radius: var(--radius-full);
+  padding: 2px 10px;
+  background: var(--color-surface);
+  border: 1px solid var(--color-line-strong);
+  color: var(--color-ink);
+}
+.ent__cycle .pill--warn { border-color: var(--color-warn); color: var(--color-warn); background: var(--color-warn-soft); }
+.ent__cycle .pill--ok { border-color: var(--color-ok); color: var(--color-ok); background: var(--color-ok-soft); }
+
+/* ── 화면 구성: layout ── */
+.lay { display: flex; gap: 10px; flex-wrap: wrap; }
+.lay__item {
+  flex: 1 1 160px;
+  border: 1px solid var(--color-line);
+  border-radius: var(--radius-lg);
+  padding: 12px 15px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-size: var(--text-sm);
+  font-weight: 600;
+  background: var(--color-surface);
+}
+.lay__item .on { margin-left: auto; font-size: var(--text-2xs); font-weight: 700; color: var(--color-ok); }
+.lay__item.is-off { color: var(--color-muted); background: var(--color-surface-sub); }
+.lay__item.is-off .on { color: var(--color-muted); }
+
+/* ── 기능 구성: features_map ── */
+.fmap { display: flex; flex-direction: column; gap: 10px; }
+.fmap__group {
+  border: 1px solid var(--color-line);
+  border-radius: var(--radius-lg);
+  padding: 13px 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+.fmap__group > b { font-size: var(--text-sm); }
+.fmap__group > b small { font-weight: 500; color: var(--color-muted); }
+.fmap__chips { display: flex; gap: 7px; flex-wrap: wrap; }
+.fmap__chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  font-size: var(--text-xs);
+  font-weight: 600;
+  border-radius: var(--radius-full);
+  padding: 4px 12px;
+  background: var(--color-ok-soft);
+  color: var(--color-ok);
+}
+.fmap__chip--custom { background: var(--color-warn-soft); color: var(--color-warn); }
+.fmap__empty { font-size: var(--text-xs); color: var(--color-muted); }
+
+/* ── 문서: documents ── */
+.docs { display: flex; gap: 10px; flex-wrap: wrap; }
+.docs__item {
+  flex: 1 1 220px;
+  border: 1px solid var(--color-line);
+  border-radius: var(--radius-lg);
+  padding: 13px 16px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  background: var(--color-surface);
+}
+.docs__item .ico { font-size: 18px; }
+.docs__item b { font-size: var(--text-sm); display: block; }
+.docs__item small { font-size: var(--text-2xs); color: var(--color-muted); }
+.docs__item .btn { margin-left: auto; }
+
+/* ── 하단 고정 확정 바 — blueprint 확인 문법과 동일 ── */
+.bpv__foot {
+  position: fixed;
+  left: 0; right: 0; bottom: 0;
+  background: color-mix(in srgb, var(--color-surface) 88%, transparent);
+  backdrop-filter: blur(8px);
+  border-top: 1px solid var(--color-line);
+  display: flex;
+  justify-content: center;
+  gap: 10px;
+  padding: 14px 20px;
+  z-index: 5;
+}
+.bpv__foot .hint {
+  align-self: center;
+  font-size: var(--text-xs);
+  color: var(--color-muted);
+  margin-right: 8px;
+}
+
+@media (max-width: 640px) {
+  .ent__row { grid-template-columns: 110px 58px 1fr; gap: 8px; }
+  .scr { flex-direction: column; }
+  .scr__arrow { transform: rotate(90deg); }
+}
