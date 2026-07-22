@@ -290,6 +290,17 @@
         </div>
 
         <div class="pv__viewport">
+          <!-- 생성 중 로딩(스켈레톤 빌드업) — '작업 중' 상태에서 목업 대신 표시.
+               헤더→히어로→카드 순으로 골격이 쌓이며 시머가 흐름 -->
+          <div class="pv-loading" id="pv-loading" hidden>
+            <div class="pv-loading__skel">
+              <div class="sk sk--head"></div>
+              <div class="sk sk--hero"></div>
+              <div class="pv-loading__row"><i class="sk"></i><i class="sk"></i><i class="sk"></i></div>
+              <div class="sk sk--foot"></div>
+            </div>
+            <div class="pv-loading__label">멍멍 산책 예약을 만들고 있어요…</div>
+          </div>
           <!-- 생성된 서비스 목업 (멍멍 산책 브랜드) — 엣지-투-엣지 풀 캔버스 -->
           <div class="pv__canvas">
             <div class="site-nav">
@@ -828,6 +839,9 @@
     lastRow.classList.toggle("is-run", s === "busy");
     lastRow.classList.toggle("is-done", s !== "busy");
     lastDetail.textContent = s === "busy" ? "진행 중" : "완료";
+    /* 미리보기: 작업 중이면 목업 대신 스켈레톤 빌드업 */
+    document.getElementById("pv-loading").hidden = s !== "busy";
+    document.querySelector(".pv__canvas").hidden = s === "busy";
     /* 되묻기 카드 표시 */
     ask.hidden = s !== "ask";
     askAnswer.hidden = s !== "idle";

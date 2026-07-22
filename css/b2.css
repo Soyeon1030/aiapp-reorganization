@@ -617,6 +617,57 @@
   background-color: rgb(249 250 251);  /* 사용자 지정 색 — 토큰 대신 고정값 유지 */
   container-type: inline-size;   /* 목업 반응형은 패널 폭 기준 (드래그에 반응) */
 }
+/* ── 생성 중 로딩 — 스켈레톤 빌드업 ──
+   목업 자리에서 헤더→히어로→카드→푸터가 순서대로 쌓이고(5.2s 루프),
+   각 블록 위로 시머가 흐름. reduced-motion이면 토큰이 정적 표시 */
+.pv-loading {
+  min-height: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 26px;
+}
+.pv-loading__skel {
+  width: min(420px, 82%);
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+.sk {
+  border-radius: var(--radius-sm);
+  background: linear-gradient(100deg,
+    var(--color-line) 40%, var(--color-surface-sub) 50%, var(--color-line) 60%);
+  background-size: 300% 100%;
+  opacity: 0;
+  animation: sk-in 5.2s infinite both, sk-shimmer 1.6s linear infinite;
+}
+.sk--head { height: 28px; width: 46%; }
+.sk--hero { height: 84px; animation-delay: .55s, 0s; }
+.sk--foot { height: 22px; width: 68%; animation-delay: 1.7s, 0s; }
+.pv-loading__row {
+  display: flex;
+  gap: 12px;
+  opacity: 0;
+  animation: sk-in 5.2s infinite both;
+  animation-delay: 1.15s;
+}
+.pv-loading__row .sk { flex: 1; height: 64px; opacity: 1; animation: sk-shimmer 1.6s linear infinite; }
+.pv-loading__label {
+  font-size: var(--text-sm);
+  color: var(--color-muted);
+}
+@keyframes sk-in {
+  0% { opacity: 0; transform: translateY(10px); }
+  8%, 82% { opacity: 1; transform: none; }
+  93%, 100% { opacity: 0; transform: none; }
+}
+@keyframes sk-shimmer { to { background-position: -300% 0; } }
+/* 모션 최소화 환경: 루프가 즉시 끝나 opacity 0으로 남지 않게 정적 표시 */
+@media (prefers-reduced-motion: reduce) {
+  .sk, .pv-loading__row { animation: none; opacity: 1; }
+}
+
 .pv__canvas {
   min-height: 100%;
   display: flex;
