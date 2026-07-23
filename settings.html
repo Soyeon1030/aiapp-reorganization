@@ -708,26 +708,56 @@
 
             <div class="ums-compose">
               <div class="set__card ums-form">
+                <div class="ums-sec">발송 설정</div>
                 <div class="ums-frow">
                   <div class="ums-f"><label>발송대상</label><div class="ums-in" id="ums-target">거래처 (23명) ▾</div></div>
                   <div class="ums-f"><label>발신 번호</label><div class="ums-in">0507-1234-5678 (등록됨) ▾</div></div>
                 </div>
-                <div class="ums-frow">
-                  <div class="ums-f" id="ums-f-tpl"><label>템플릿 <small>알림톡은 승인된 템플릿만 보낼 수 있어요</small></label><div class="ums-in">발주 확정 안내 (승인됨) ▾</div></div>
-                  <div class="ums-f"><label>카테고리</label><div class="ums-in">배송·주문 안내 ▾</div></div>
+
+                <!-- 알림톡 — 승인된 템플릿만 발송 가능, 내용은 템플릿에서 온다 -->
+                <div id="ums-g-kko">
+                  <div class="ums-sec">템플릿 <small>승인된 템플릿만 보낼 수 있어요</small></div>
+                  <div class="ums-f"><label>템플릿 선택</label><div class="ums-in">발주 확정 안내 (승인) ▾</div></div>
+                  <div class="ums-frow">
+                    <div class="ums-f"><label>카테고리</label><div class="ums-in is-ro">배송·주문</div></div>
+                    <div class="ums-f"><label>서브 카테고리</label><div class="ums-in is-ro">주문 처리</div></div>
+                  </div>
+                  <div class="ums-frow">
+                    <div class="ums-f"><label>알림톡 유형</label><div class="ums-in is-ro">기본형 + 버튼</div></div>
+                    <div class="ums-f"><label>강조 유형</label><div class="ums-in is-ro">없음</div></div>
+                  </div>
+                  <div class="ums-f">
+                    <label>내용 <small>템플릿 그대로 나가요 — 변수만 자동으로 채워져요</small></label>
+                    <div class="ums-ro">#{거래처명} 사장님, 발주가 확정됐어요.
+
+품목: #{품목요약}
+납품: #{납품일} 새벽
+
+변경이 필요하면 이 번호로 회신해 주세요.</div>
+                    <small class="ums-cnt">내용을 바꾸려면 템플릿에서 수정하고 다시 검수를 받아야 해요</small>
+                  </div>
                 </div>
-                <div class="ums-f" id="ums-f-title" hidden><label>제목 <small>MMS만 — 30자까지</small></label><div class="ums-in">7월 휴무 안내</div></div>
-                <div class="ums-f">
-                  <label>내용</label>
-                  <textarea rows="6">#{거래처명} 사장님, 발주가 확정됐어요.
+
+                <!-- SMS·MMS — 자유 작성 -->
+                <div id="ums-g-sms" hidden>
+                  <div class="ums-sec">내용 작성</div>
+                  <div class="ums-frow">
+                    <div class="ums-f"><label>템플릿 불러오기 <small>선택</small></label><div class="ums-in">발주 마감 리마인드 ▾</div></div>
+                    <div class="ums-f"><label>제목 <small>MMS만 — 30자까지</small></label><div class="ums-in">7월 휴무 안내</div></div>
+                  </div>
+                  <div class="ums-f">
+                    <label>내용</label>
+                    <textarea rows="6">#{거래처명} 사장님, 발주가 확정됐어요.
 
 품목: #{품목요약}
 납품: #{납품일} 새벽
 
 변경이 필요하면 이 번호로 회신해 주세요.</textarea>
-                  <small class="ums-cnt">변수 #{...}는 발송할 때 받는 분마다 자동으로 채워져요 · 92 / 1,000자</small>
+                    <small class="ums-cnt">변수 #{...}는 발송할 때 받는 분마다 자동으로 채워져요 · 92 / 1,000자</small>
+                  </div>
+                  <div class="ums-f"><label>이미지 첨부 <small>MMS · 1장, 300KB까지</small></label><div class="ums-attach">클릭해서 이미지 올리기</div></div>
                 </div>
-                <div class="ums-f" id="ums-f-img" hidden><label>이미지 첨부 <small>MMS · 1장, 300KB까지</small></label><div class="ums-attach">클릭해서 이미지 올리기</div></div>
+
                 <div class="ums-acts">
                   <button class="btn btn--primary">지금 발송</button>
                   <button class="btn">예약 발송</button>
@@ -1175,9 +1205,8 @@
     o.addEventListener("click", () => {
       document.querySelectorAll("#ums-ch .seg__opt").forEach((x) => x.classList.toggle("is-on", x === o));
       const sms = o.dataset.ch === "sms";
-      document.getElementById("ums-f-tpl").style.opacity = sms ? .45 : 1;
-      document.getElementById("ums-f-title").hidden = !sms;
-      document.getElementById("ums-f-img").hidden = !sms;
+      document.getElementById("ums-g-kko").hidden = sms;
+      document.getElementById("ums-g-sms").hidden = !sms;
       document.getElementById("ums-pv-kko").hidden = sms;
       document.getElementById("ums-pv-sms").hidden = !sms;
     });
