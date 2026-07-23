@@ -338,3 +338,108 @@
 @container (max-width: 700px) {
   .stats { grid-template-columns: repeat(2, 1fr); }
 }
+
+/* ── 검색 노출 점검표 + AI 문구 생성 (2026-07-23, B+C+A 조합) ── */
+.sst {
+  flex: none;
+  width: 22px; height: 22px;
+  border-radius: 50%;
+  display: grid;
+  place-items: center;
+  font-size: 12px;
+  font-weight: 800;
+}
+.sst--ok { background: var(--color-ok-soft); color: var(--color-ok); }
+.sst--todo { background: var(--color-warn-soft); color: var(--color-warn); }
+.sst--auto { background: var(--color-accent-soft); color: var(--color-accent); }
+.sst-auto-label { font-size: var(--text-2xs); font-weight: 700; color: var(--color-accent); }
+
+/* 수정 패널 */
+.seoedit {
+  border-top: 1px solid var(--color-line);
+  background: var(--color-surface-sub);
+  padding: 14px 18px 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+.seoedit__label { font-size: var(--text-2xs); font-weight: 700; color: var(--color-muted); }
+.seoedit__kw { display: flex; gap: 6px; flex-wrap: wrap; }
+.kwchip {
+  border: 1px solid var(--color-line-strong);
+  background: var(--color-surface);
+  color: var(--color-muted);
+  border-radius: var(--radius-full);
+  padding: 4px 12px;
+  font-size: var(--text-xs);
+  font-weight: 600;
+}
+.kwchip.is-on { border-color: var(--color-accent); color: var(--color-accent-deep); background: var(--color-accent-soft); }
+.kwchip--add { border-style: dashed; }
+.seoedit > .btn { align-self: flex-start; }
+.seoedit__out { display: flex; flex-direction: column; gap: 6px; }
+.aiopt {
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+  text-align: left;
+  border: 1.5px solid var(--color-line);
+  border-radius: var(--radius-md);
+  background: var(--color-surface);
+  padding: 9px 12px;
+}
+.aiopt.is-on { border-color: var(--color-accent); }
+.aiopt span { flex: 1; }
+.aiopt b { display: block; font-size: var(--text-xs); font-weight: 700; }
+.aiopt small { display: block; font-size: var(--text-2xs); color: var(--color-muted); margin-top: 1px; line-height: 1.5; }
+.aiopt em {
+  flex: none;
+  font-style: normal;
+  font-size: 10px;
+  font-weight: 700;
+  color: var(--color-accent);
+  border: 1px solid var(--color-accent);
+  border-radius: var(--radius-full);
+  padding: 1px 8px;
+  white-space: nowrap;
+}
+.seoedit__field label { display: flex; justify-content: space-between; font-size: var(--text-2xs); font-weight: 700; margin-bottom: 5px; }
+.seoedit__field label small { font-weight: 500; color: var(--color-muted); }
+.seoedit__field input, .seoedit__field textarea {
+  width: 100%;
+  box-sizing: border-box;
+  border: 1px solid var(--color-line);
+  border-radius: var(--radius-sm);
+  padding: 9px 12px;
+  font-family: inherit;
+  font-size: var(--text-sm);
+  color: var(--color-ink);
+  background: var(--color-surface);
+  resize: none;
+}
+.seoedit__field input:focus-visible, .seoedit__field textarea:focus-visible { outline: 2px solid var(--color-accent); outline-offset: 0; }
+.seoedit__acts { display: flex; gap: 8px; }
+
+/* 카톡 공유 미리보기 */
+.kakao {
+  display: flex;
+  overflow: hidden;
+  border-radius: var(--radius-md);
+  border: 1px solid var(--color-line);
+  background: var(--color-surface);
+}
+.kakao__img {
+  width: 96px;
+  min-height: 76px;
+  background: linear-gradient(160deg, #33507E, #22304A);  /* 청솔 브랜드 톤 — 미리보기 전용 */
+  display: grid;
+  place-items: center;
+  color: #fff;
+  font-size: var(--text-2xs);
+  font-weight: 700;
+  flex: none;
+}
+.kakao__tx { padding: 10px 12px; }
+.kakao__tx b { display: block; font-size: var(--text-xs); }
+.kakao__tx span { display: block; font-size: var(--text-2xs); color: var(--color-muted); margin-top: 2px; line-height: 1.5; }
+.kakao__tx small { display: block; font-family: var(--font-mono); font-size: 9.5px; color: var(--color-line-strong); margin-top: 5px; }
