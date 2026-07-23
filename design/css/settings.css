@@ -965,3 +965,89 @@
 .vm-skel__stats span { height: 84px; }
 .vm-skel__block { flex: 1; min-height: 140px; }
 @keyframes vm-shim { to { background-position: -200% 0; } }
+
+/* ── 게시판 (2026-07-23) — 화면 안 게시판 탭 + 같은 자리 설정 교체 ── */
+.bdtabs {
+  display: flex;
+  gap: 2px;
+  align-items: center;
+  border-bottom: 1px solid var(--color-line);
+}
+.bdtab {
+  border: none;
+  background: none;
+  padding: 8px 13px 11px;
+  margin-bottom: -1px;
+  font-size: var(--text-xs);
+  font-weight: 600;
+  color: var(--color-muted);
+  border-bottom: 2px solid transparent;
+  display: flex;
+  align-items: center;
+  gap: 7px;
+}
+.bdtab b {
+  font-weight: 600;
+  font-size: 10.5px;
+  background: var(--color-surface);
+  border: 1px solid var(--color-line);
+  border-radius: var(--radius-full);
+  padding: 0 7px;
+  color: var(--color-muted);
+}
+.bdtab:hover:not(.is-on) { color: var(--color-ink); }
+.bdtab.is-on { color: var(--color-accent-deep); border-bottom-color: var(--color-accent); }
+.bdtab.is-on b { background: var(--color-accent-soft); border-color: transparent; color: var(--color-accent-deep); }
+.bdtab__new { width: 6px; height: 6px; border-radius: var(--radius-full); background: var(--color-danger); }
+.bd-add {
+  margin-left: auto;
+  margin-bottom: 5px;
+  border: 1px solid var(--color-accent);
+  background: var(--color-accent-soft);
+  color: var(--color-accent-deep);
+  border-radius: var(--radius-sm);
+  padding: 5px 12px;
+  font-size: var(--text-2xs);
+  font-weight: 700;
+}
+/* 설정 뷰 — 같은 자리 교체 */
+.bd-back { display: flex; align-items: center; gap: 10px; }
+.bd-back b { font-size: var(--text-sm); }
+.bd-back .btn { font-size: var(--text-xs); padding: 6px 13px; box-shadow: none; }
+.bd-sec {
+  margin: 2px 0 -8px 2px;
+  font-size: var(--text-xs);
+  font-weight: 700;
+  color: var(--color-muted);
+  letter-spacing: .04em;
+}
+#bd-set { display: flex; flex-direction: column; gap: var(--space-4); }
+.bd-cats { display: flex; flex-wrap: wrap; gap: 6px; justify-content: flex-end; max-width: 320px; }
+.bd-cat {
+  border: 1px solid var(--color-line-strong);
+  background: var(--color-surface);
+  border-radius: var(--radius-full);
+  padding: 3px 11px;
+  font-size: var(--text-2xs);
+  font-weight: 600;
+}
+.bd-cat--add { border-style: dashed; color: var(--color-accent-deep); cursor: pointer; }
+/* 구조 변경 안내 — 생성·변경은 채팅이라는 문법을 화면 안에서 알려준다 */
+.bd-ai {
+  border: 1px dashed var(--color-line-strong);
+  border-radius: var(--radius-md);
+  background: var(--color-surface);
+  padding: 14px 16px;
+}
+.bd-ai b { display: block; font-size: var(--text-xs); margin-bottom: 3px; }
+.bd-ai p { margin: 0 0 10px; font-size: var(--text-2xs); color: var(--color-muted); }
+.bd-ai__ex { display: flex; flex-wrap: wrap; gap: 6px; }
+.bd-ai__ex span {
+  border-radius: var(--radius-full);
+  padding: 4px 12px;
+  font-size: var(--text-2xs);
+  font-weight: 600;
+  color: var(--color-accent-deep);
+  background: var(--color-accent-soft);
+}
+.bd-del { color: var(--color-danger); border-color: var(--color-danger); }

@@ -219,6 +219,7 @@
             <button class="set__item set__item--sub" data-view="msg-tpl">템플릿 <span class="set__need">검수 1</span></button>
             <button class="set__item set__item--sub" data-view="msg-hist">발송이력</button>
           </div>
+          <button class="set__item" data-view="boards"><svg class="ph"><use href="#ph-chat-circle"/></svg> 게시판 <span class="set__need" id="bd-badge">새 글</span></button>
 
           <div class="set__side-foot"><b>✓</b> 바꾸면 바로 적용돼요</div>
         </aside>
@@ -858,6 +859,117 @@
             </div>
           </div>
 
+          <!-- ═══ 게시판 — 생성·구조 변경은 채팅, 운영은 여기. 설정은 같은 자리 뷰 교체 (2026-07-23) ═══ -->
+          <div class="set__view" data-view="boards" hidden>
+            <div class="set__head">
+              <div>
+                <h3>게시판</h3>
+                <p>공지·FAQ·후기 같은 글 공간을 관리해요. 글을 쓰고, 숨기고, 설정을 바꿔요.</p>
+              </div>
+              <button class="btn" id="bd-set-toggle">이 게시판 설정</button>
+              <button class="btn btn--primary" id="bd-write">새 글 쓰기</button>
+            </div>
+
+            <div class="bdtabs" id="bd-tabs">
+              <button class="bdtab is-on" data-b="notice">공지사항 <b>12</b></button>
+              <button class="bdtab" data-b="faq">자주 묻는 질문 <b>8</b></button>
+              <button class="bdtab" data-b="review">거래처 후기 <b>34</b><i class="bdtab__new" title="새 글"></i></button>
+              <button class="bd-add" id="bd-add">+ 새 게시판 — AI에게 말하기</button>
+            </div>
+
+            <!-- 글 목록 -->
+            <div id="bd-list">
+              <div class="set__card">
+                <div class="mem-wrap">
+                  <div class="mem__bar">
+                    <label class="mem__search">
+                      <svg class="ph"><use href="#ph-magnifying-glass"/></svg>
+                      <input id="bd-q" placeholder="제목, 내용으로 찾기">
+                    </label>
+                  </div>
+                  <div class="mem-chips" id="bd-chips"></div>
+                  <table class="mem" aria-label="글 목록">
+                    <thead><tr><th>제목</th><th>분류</th><th>상태</th><th>조회수</th><th>등록일</th></tr></thead>
+                    <tbody id="bd-rows"></tbody>
+                  </table>
+                  <div class="mem__foot" id="bd-foot"></div>
+                </div>
+              </div>
+            </div>
+
+            <!-- 게시판 설정 — 같은 자리 뷰 교체 -->
+            <div id="bd-set" hidden>
+              <div class="bd-back">
+                <button class="btn" id="bd-back-btn">← 목록으로</button>
+                <b id="bd-set-title">공지사항 설정</b>
+              </div>
+              <div class="set__card">
+                <div class="set__row">
+                  <div class="set__row-text">
+                    <div class="set__row-t">게시판 이름 · 설명</div>
+                    <div class="set__row-d" id="bd-set-name"></div>
+                  </div>
+                  <div class="set__row-ctrl"><button class="btn">수정</button></div>
+                </div>
+                <div class="set__row">
+                  <div class="set__row-text">
+                    <div class="set__row-t">게시판 보이기</div>
+                    <div class="set__row-d">끄면 사이트에서 숨겨져요 — 글은 지워지지 않아요.</div>
+                  </div>
+                  <div class="set__row-ctrl"><button class="switch" role="switch" data-k="show" aria-label="게시판 보이기"></button></div>
+                </div>
+                <div class="set__row" data-full>
+                  <div class="set__row-text">
+                    <div class="set__row-t">댓글 허용</div>
+                    <div class="set__row-d">방문자가 글에 댓글을 달 수 있어요.</div>
+                  </div>
+                  <div class="set__row-ctrl"><button class="switch" role="switch" data-k="comment" aria-label="댓글 허용"></button></div>
+                </div>
+                <div class="set__row" data-full>
+                  <div class="set__row-text">
+                    <div class="set__row-t">파일 첨부 허용</div>
+                    <div class="set__row-d">글에 사진·문서를 붙일 수 있어요.</div>
+                  </div>
+                  <div class="set__row-ctrl"><button class="switch" role="switch" data-k="file" aria-label="파일 첨부 허용"></button></div>
+                </div>
+                <div class="set__row">
+                  <div class="set__row-text">
+                    <div class="set__row-t">자세히 보려면 로그인</div>
+                    <div class="set__row-d">목록은 누구나, 본문은 회원만 볼 수 있게 해요.</div>
+                  </div>
+                  <div class="set__row-ctrl"><button class="switch" role="switch" data-k="login" aria-label="상세조회 로그인 필수"></button></div>
+                </div>
+                <div class="set__row">
+                  <div class="set__row-text">
+                    <div class="set__row-t">분류</div>
+                    <div class="set__row-d">글을 묶는 카테고리예요 — 목록에서 필터로 쓰여요.</div>
+                  </div>
+                  <div class="set__row-ctrl"><span class="bd-cats" id="bd-cats"></span></div>
+                </div>
+              </div>
+
+              <p class="bd-sec">구조를 바꾸고 싶다면</p>
+              <div class="bd-ai">
+                <b>필드·모양 변경은 채팅으로 말해 주세요</b>
+                <p>에이전트가 데이터 구조와 화면을 함께 바꿔요 — 예를 들면:</p>
+                <span class="bd-ai__ex"><span>후기에 별점도 받아줘</span><span>공지 목록을 카드형으로 바꿔줘</span><span>글마다 담당자 이름을 남기게 해줘</span></span>
+              </div>
+
+              <div id="bd-danger">
+                <p class="bd-sec">위험 구역</p>
+                <div class="set__card set__card--warn">
+                  <div class="set__row">
+                    <div class="set__row-text">
+                      <div class="set__row-t">게시판 삭제</div>
+                      <div class="set__row-d" id="bd-del-desc"></div>
+                    </div>
+                    <div class="set__row-ctrl"><button class="btn">엑셀로 받기</button><button class="btn bd-del">삭제</button></div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
         </div>
       </div>
     </section>
@@ -1234,6 +1346,116 @@
       g.parentElement.querySelectorAll("button").forEach((x) => x.classList.toggle("is-on", x === g));
     });
   });
+
+  /* ── 게시판 — 탭 전환 + 같은 자리 뷰 교체(목록 ↔ 설정) ── */
+  const BOARDS = {
+    notice: {
+      label: "공지사항", base: true, write: true,
+      name: "공지사항 — 휴무·가격 변동 같은 소식을 알려요",
+      cats: ["휴무 안내", "가격 변동", "신규 품목"],
+      st: { show: true, comment: false, file: true, login: false },
+      chips: ["전체 12", "게시 중 10", "숨김 2"],
+      foot: "전체 12개 — 최근 등록 순이에요.",
+      del: "글 12개가 함께 삭제돼요 — 삭제 전에 엑셀로 받아둘 수 있어요.",
+      rows: [
+        ["7월 27일(월) 정기 휴무 안내", "휴무 안내", true, 214, "2026-07-22 09:10"],
+        ["대파·양파 시세 변동 안내", "가격 변동", true, 158, "2026-07-21 17:40"],
+        ["제주 양파 · 완도 미역 입고", "신규 품목", true, 96, "2026-07-18 08:22"],
+        ["배송 차량 증차 안내", "휴무 안내", false, 41, "2026-07-15 10:05"],
+      ],
+    },
+    faq: {
+      label: "자주 묻는 질문", base: true, write: true,
+      name: "자주 묻는 질문 — 발주·배송에 대한 답을 모아뒀어요",
+      cats: ["발주", "배송", "결제"],
+      st: { show: true, comment: false, file: false, login: false },
+      chips: ["전체 8", "게시 중 8", "숨김 0"],
+      foot: "전체 8개 — 자주 찾는 순서로 정렬돼요.",
+      del: "글 8개가 함께 삭제돼요 — 삭제 전에 엑셀로 받아둘 수 있어요.",
+      rows: [
+        ["발주 마감 시간이 언제인가요?", "발주", true, 512, "2026-07-21 11:00"],
+        ["최소 주문 금액이 있나요?", "발주", true, 388, "2026-07-21 11:02"],
+        ["배송 시간대를 정할 수 있나요?", "배송", true, 265, "2026-07-21 11:05"],
+      ],
+    },
+    review: {
+      label: "거래처 후기", base: false, write: false,
+      name: "거래처 후기 — 별점과 함께 남기는 이용 후기예요 (AI가 만든 게시판)",
+      cats: ["정육", "채소", "배송"],
+      st: { show: true, comment: true, file: true, login: true },
+      chips: ["전체 34", "게시 중 33", "숨김 1"],
+      foot: "전체 34개 — 방문자가 직접 써요. 새 글은 탭에 점으로 표시돼요.",
+      del: "글 34개가 함께 삭제돼요 — 삭제 전에 엑셀로 받아둘 수 있어요.",
+      rows: [
+        ["새벽 배송 정확해서 좋아요 ★4.8", "배송", true, 88, "2026-07-23 07:12"],
+        ["야채 신선도가 꾸준합니다 ★4.5", "채소", true, 64, "2026-07-22 21:44"],
+        ["기사님이 친절하세요 ★5.0", "배송", true, 51, "2026-07-22 08:30"],
+      ],
+    },
+  };
+  let bdKey = "notice";
+  const bdSetView = document.getElementById("bd-set");
+  const bdListView = document.getElementById("bd-list");
+  function bdRender() {
+    const b = BOARDS[bdKey];
+    document.getElementById("bd-rows").innerHTML = b.rows.map((r) => `
+      <tr><td><b>${r[0]}</b></td><td><span class="tag">${r[1]}</span></td>
+      <td><span class="tag ${r[2] ? "tag--ok" : "tag--warn"}">${r[2] ? "게시 중" : "숨김"}</span></td>
+      <td class="meta">${r[3]}</td><td class="meta">${r[4]}</td></tr>`).join("");
+    document.getElementById("bd-chips").innerHTML =
+      b.chips.map((c, i) => `<button class="mem-chip${i === 0 ? " is-on" : ""}">${c}</button>`).join("");
+    document.getElementById("bd-foot").textContent = b.foot;
+    document.getElementById("bd-write").hidden = !b.write;
+    /* 설정 값 채우기 */
+    document.getElementById("bd-set-title").textContent = `${b.label} 설정`;
+    document.getElementById("bd-set-name").textContent = b.name;
+    document.querySelectorAll("#bd-set .switch[data-k]").forEach((sw) => {
+      sw.classList.toggle("is-on", b.st[sw.dataset.k]);
+      sw.setAttribute("aria-checked", b.st[sw.dataset.k]);
+    });
+    /* 기본 게시판은 축소 설정 — 댓글·첨부 행 숨김, 삭제 불가 */
+    document.querySelectorAll("#bd-set [data-full]").forEach((row) => { row.hidden = b.base; });
+    document.getElementById("bd-danger").hidden = b.base;
+    document.getElementById("bd-cats").innerHTML =
+      b.cats.map((c) => `<span class="bd-cat">${c}</span>`).join("") + '<span class="bd-cat bd-cat--add">+ 추가</span>';
+    document.getElementById("bd-del-desc").textContent = b.del;
+  }
+  function bdShowSet(on) {
+    bdListView.hidden = on;
+    bdSetView.hidden = !on;
+    document.getElementById("bd-set-toggle").textContent = on ? "설정 닫기" : "이 게시판 설정";
+  }
+  document.querySelectorAll("#bd-tabs .bdtab").forEach((t) => {
+    t.addEventListener("click", () => {
+      document.querySelectorAll("#bd-tabs .bdtab").forEach((x) => x.classList.toggle("is-on", x === t));
+      bdKey = t.dataset.b;
+      const dot = t.querySelector(".bdtab__new");
+      if (dot) { dot.remove(); const badge = document.getElementById("bd-badge"); if (badge) badge.remove(); }
+      bdRender();
+      bdShowSet(false);
+    });
+  });
+  document.getElementById("bd-set-toggle").addEventListener("click", () => bdShowSet(bdSetView.hidden));
+  document.getElementById("bd-back-btn").addEventListener("click", () => bdShowSet(false));
+  document.querySelectorAll("#bd-set .switch[data-k]").forEach((sw) => {
+    sw.addEventListener("click", () => {
+      BOARDS[bdKey].st[sw.dataset.k] = !BOARDS[bdKey].st[sw.dataset.k];
+      sw.classList.toggle("is-on");
+    });
+  });
+  /* 새 게시판 = 채팅으로 — 좌측 컴포저에 요청문을 채워준다 (자동 전송 금지) */
+  document.getElementById("bd-add").addEventListener("click", () => {
+    const box = document.querySelector(".feed__input textarea, .chatbox textarea");
+    if (box) { box.value = "게시판을 하나 더 만들어줘 — "; box.focus(); }
+  });
+  /* 검색 (스캐폴드: 시각 상태만) */
+  document.getElementById("bd-q").addEventListener("input", (e) => {
+    const q = e.target.value.trim().toLowerCase();
+    document.querySelectorAll("#bd-rows tr").forEach((tr) => {
+      tr.hidden = q !== "" && !tr.textContent.toLowerCase().includes(q);
+    });
+  });
+  bdRender();
 
   /* 딥링크 — 다른 화면(예: 데이터베이스의 "관리 화면 가기")에서 특정 뷰로 진입 */
   const initView = new URLSearchParams(location.search).get("view");
