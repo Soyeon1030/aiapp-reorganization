@@ -472,3 +472,7 @@
 .seoedit__form .seoedit__field input:focus-visible,
 .seoedit__form .seoedit__field textarea:focus-visible { background: var(--color-surface); }
 .seoedit__acts { justify-content: flex-end; }
+
+/* AI 생성 버튼 — 키워드 아래, 도움말과 한 줄 */
+.seoedit__gen { display: flex; align-items: center; gap: 10px; padding-top: 2px; }
+.seoedit__gen small { font-size: var(--text-2xs); color: var(--color-muted); }
