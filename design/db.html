@@ -201,11 +201,10 @@
 
         <!-- 상단 데이터 탭 (테이블명 대신 콘텐츠 이름 + 단위) -->
         <nav class="db-tabs" aria-label="데이터 유형">
-          <button class="db-tab is-on" data-view="bookings"><svg class="ph"><use href="#ph-calendar-blank"/></svg> 발주 <b>3</b><i class="db__new" title="새 발주"></i></button>
-          <button class="db-tab" data-view="members"><svg class="ph"><use href="#ph-user"/></svg> 거래처 <b>23</b></button>
-          <button class="db-tab" data-view="reviews"><svg class="ph"><use href="#ph-chat-circle"/></svg> 품목 <b>5</b></button>
-          <span class="db-tabs__note">✓ 매일 새벽 자동 백업 중</span>
-          <button class="db-qbtn" id="db-q" data-tip="이 화면이 뭐예요?" aria-label="도움말">?</button>
+          <button class="db-tab is-on" data-view="bookings">발주 <b>3</b><i class="db__new" title="새 발주"></i></button>
+          <button class="db-tab" data-view="members">거래처 <b>23</b></button>
+          <button class="db-tab" data-view="reviews">품목 <b>5</b></button>
+          <button class="db-qbtn" id="db-q" data-tip="이 화면이 뭐예요?" data-tip-align="right" aria-label="도움말">?</button>
         </nav>
 
         <!-- 메인: 뷰 전환 -->
@@ -215,11 +214,11 @@
           <div class="db-hello" id="db-hello">
             <svg class="ph"><use href="#ph-database"/></svg>
             <span>
-              <b>여기는 자동으로 쓰이는 장부예요</b>
-              앱이 받은 발주·거래처·품목 정보가 이 표에 그대로 쌓여요. 엑셀 보듯 훑어보기만 하면 돼요 — 승인·처리는 관리 화면에서 해요.
+              <b>여기는 자동으로 채워지는 엑셀이에요</b>
+              사이트에 들어온 정보가 종류별로 이 표에 한 줄씩 쌓여요. 훑어보기만 하면 돼요 — 승인·처리는 관리 화면에서 해요.
             </span>
             <a class="btn" href="settings.html?view=dash">관리 화면 가기</a>
-            <button class="db-hello__x" id="db-hello-x" data-tip="닫아도 위 ? 에서 다시 볼 수 있어요" aria-label="안내 닫기">✕</button>
+            <button class="db-hello__x" id="db-hello-x" data-tip="닫아도 위 ? 에서 다시 볼 수 있어요" data-tip-align="right" aria-label="안내 닫기">✕</button>
           </div>
 
           <!-- ═══ 뷰 1. 예약 — 엑셀형 시트 (대기 행은 처리 버튼 상시 노출) ═══ -->
@@ -512,7 +511,7 @@
       <h5>도움말 장치 (2026-07-23 확정)</h5>
       <p><b>"DB가 뭔지 모르는 사장님"은 플랫폼 고정 카피로 해결한다 — AI가 판단·작성할 것을 늘리지 않는다.</b></p>
       <ul>
-        <li><b>첫 진입 배너</b> — "여기는 자동으로 쓰이는 장부예요" 은유 + [관리 화면 가기]. 계정당 1회 노출, 닫으면 끝</li>
+        <li><b>첫 진입 배너</b> — "여기는 자동으로 채워지는 엑셀이에요" 은유 + [관리 화면 가기]. 계정당 1회 노출, 닫으면 끝. 비유는 장부 대신 <b>엑셀</b>(세대 불문 + 화면 모양과 일치), 주어는 앱·홈페이지 어느 결과물이든 통하게 <b>"사이트"로 중립화</b></li>
         <li><b>탭 우측 ? 버튼</b> — 누르면 같은 배너를 다시 연다 (상시 재열람 — "닫으면 끝"의 보완)</li>
         <li><b>관리 화면 이동</b> — 처리는 여기서 못 하므로, 배너 버튼·각 뷰 안내 문장의 "관리 화면" 링크로 관리·설정(운영 현황)에 바로 넘어간다 (<code>settings.html?view=dash</code> 딥링크)</li>
         <li><b>범위에서 뺀 것</b> — 표별 용어 설명(필드명 툴팁 등)은 앱마다 AI가 문장을 지어야 해 생성 하네스가 늘어남 → 초기 범위 제외. 문구는 전부 플랫폼 공통(어느 앱이든 동일)</li>
