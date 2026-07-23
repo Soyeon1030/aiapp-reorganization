@@ -390,3 +390,6 @@ body { background: var(--color-surface); }
 
 /* 옵션 카드 — 제목·설명 사이 호흡 */
 .askopt .tx small { margin-top: 4px; }
+
+/* 기획안 바 — B2 레일 디자인과 통일 */
+.art__bar { align-items: center; padding: 8px 16px; }
