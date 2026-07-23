@@ -8,7 +8,7 @@
 .studio {
   flex: 1;
   display: grid;
-  grid-template-columns: var(--feed-w, 35%) 6px minmax(0, 1fr);
+  grid-template-columns: var(--feed-w, 28%) 6px minmax(0, 1fr);  /* 채팅은 좁게 — 주인공은 오른쪽 작업물 (2026-07-23 35%→28%) */
   min-height: 0;
 }
 @media (max-width: 900px) {
