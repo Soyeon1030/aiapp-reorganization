@@ -861,6 +861,21 @@
 
           <!-- ═══ 게시판 — 생성·구조 변경은 채팅, 운영은 여기. 설정은 같은 자리 뷰 교체 (2026-07-23) ═══ -->
           <div class="set__view" data-view="boards" hidden>
+            <!-- 글 상세 드로어 — 행 클릭 시 우측에서 열림. 목록을 남겨둔 채 본문·상태를 다룬다 -->
+            <div class="bd-scrim" id="bd-scrim"></div>
+            <aside class="bd-drawer" id="bd-drawer" aria-label="글 상세">
+              <div class="bd-drawer__hd">
+                <b id="bdd-title">글 제목</b>
+                <button class="bd-drawer__x" id="bdd-close" aria-label="닫기">✕</button>
+              </div>
+              <div class="bd-drawer__meta" id="bdd-meta"></div>
+              <div class="bd-drawer__body" id="bdd-body"></div>
+              <div class="bd-drawer__foot">
+                <button class="btn btn--primary" id="bdd-toggle">숨기기</button>
+                <button class="btn">글 수정</button>
+                <small id="bdd-views"></small>
+              </div>
+            </aside>
             <div class="set__head">
               <div>
                 <h3>게시판</h3>
@@ -1355,13 +1370,17 @@
       cats: ["휴무 안내", "가격 변동", "신규 품목"],
       st: { show: true, comment: false, file: true, login: false },
       chips: ["전체 12", "게시 중 10", "숨김 2"],
-      foot: "전체 12개 — 최근 등록 순이에요.",
+      foot: "전체 12개 — 최근 등록 순이에요. 글을 누르면 내용을 볼 수 있어요.",
       del: "글 12개가 함께 삭제돼요 — 삭제 전에 엑셀로 받아둘 수 있어요.",
       rows: [
-        ["7월 27일(월) 정기 휴무 안내", "휴무 안내", true, 214, "2026-07-22 09:10"],
-        ["대파·양파 시세 변동 안내", "가격 변동", true, 158, "2026-07-21 17:40"],
-        ["제주 양파 · 완도 미역 입고", "신규 품목", true, 96, "2026-07-18 08:22"],
-        ["배송 차량 증차 안내", "휴무 안내", false, 41, "2026-07-15 10:05"],
+        ["7월 27일(월) 정기 휴무 안내", "휴무 안내", true, 214, "2026-07-22 09:10",
+         "안녕하세요, 청솔 식자재입니다.\n\n7월 27일(월)은 정기 휴무예요. 26일(일) 밤 10시까지 접수된 발주는 정상적으로 새벽 배송되고, 휴무일 발주는 28일(화) 새벽에 배송돼요.\n\n급한 건은 이 번호로 연락 주세요."],
+        ["대파·양파 시세 변동 안내", "가격 변동", true, 158, "2026-07-21 17:40",
+         "장마 영향으로 대파·양파 시세가 올랐어요.\n\n· 대파 1단 2,500원 → 2,800원\n· 양파 10kg 12,000원 → 13,500원\n\n다음 주 시세는 다시 안내드릴게요."],
+        ["제주 양파 · 완도 미역 입고", "신규 품목", true, 96, "2026-07-18 08:22",
+         "신규 품목이 들어왔어요.\n\n· 제주 양파 10kg — 13,000원\n· 완도 미역 500g — 6,500원\n\n품목 페이지에서 바로 담을 수 있어요."],
+        ["배송 차량 증차 안내", "휴무 안내", false, 41, "2026-07-15 10:05",
+         "새벽 배송 차량이 한 대 늘었어요. 배송 시간대가 안정화될 예정이에요."],
       ],
     },
     faq: {
@@ -1370,12 +1389,15 @@
       cats: ["발주", "배송", "결제"],
       st: { show: true, comment: false, file: false, login: false },
       chips: ["전체 8", "게시 중 8", "숨김 0"],
-      foot: "전체 8개 — 자주 찾는 순서로 정렬돼요.",
+      foot: "전체 8개 — 자주 찾는 순서로 정렬돼요. 글을 누르면 내용을 볼 수 있어요.",
       del: "글 8개가 함께 삭제돼요 — 삭제 전에 엑셀로 받아둘 수 있어요.",
       rows: [
-        ["발주 마감 시간이 언제인가요?", "발주", true, 512, "2026-07-21 11:00"],
-        ["최소 주문 금액이 있나요?", "발주", true, 388, "2026-07-21 11:02"],
-        ["배송 시간대를 정할 수 있나요?", "배송", true, 265, "2026-07-21 11:05"],
+        ["발주 마감 시간이 언제인가요?", "발주", true, 512, "2026-07-21 11:00",
+         "매일 밤 10시예요. 10시 전에 접수된 발주는 다음 날 새벽에 배송되고, 이후 발주는 다음 날 목록으로 넘어가요."],
+        ["최소 주문 금액이 있나요?", "발주", true, 388, "2026-07-21 11:02",
+         "3만 원부터 배송해 드려요. 3만 원 미만은 다음 발주에 합쳐서 보내드릴 수 있어요."],
+        ["배송 시간대를 정할 수 있나요?", "배송", true, 265, "2026-07-21 11:05",
+         "새벽(4~7시) 고정이에요. 특정 시간이 필요하면 발주 요청사항에 남겨 주세요 — 가능한 범위에서 맞춰드려요."],
       ],
     },
     review: {
@@ -1384,12 +1406,15 @@
       cats: ["정육", "채소", "배송"],
       st: { show: true, comment: true, file: true, login: true },
       chips: ["전체 34", "게시 중 33", "숨김 1"],
-      foot: "전체 34개 — 방문자가 직접 써요. 새 글은 탭에 점으로 표시돼요.",
+      foot: "전체 34개 — 방문자가 직접 써요. 글을 누르면 내용을 볼 수 있어요.",
       del: "글 34개가 함께 삭제돼요 — 삭제 전에 엑셀로 받아둘 수 있어요.",
       rows: [
-        ["새벽 배송 정확해서 좋아요 ★4.8", "배송", true, 88, "2026-07-23 07:12"],
-        ["야채 신선도가 꾸준합니다 ★4.5", "채소", true, 64, "2026-07-22 21:44"],
-        ["기사님이 친절하세요 ★5.0", "배송", true, 51, "2026-07-22 08:30"],
+        ["새벽 배송 정확해서 좋아요 ★4.8", "배송", true, 88, "2026-07-23 07:12",
+         "6시 전에 온다고 했는데 정말 매일 5시 40분쯤 도착해요. 개점 준비가 편해졌습니다. — 한솥분식"],
+        ["야채 신선도가 꾸준합니다 ★4.5", "채소", true, 64, "2026-07-22 21:44",
+         "장마철인데도 야채 상태가 일정해요. 대파는 특히 좋습니다. — 부산집 국밥"],
+        ["기사님이 친절하세요 ★5.0", "배송", true, 51, "2026-07-22 08:30",
+         "무거운 건 주방 앞까지 옮겨주시고, 빠진 품목은 바로 연락 주세요. 감사합니다. — 카페 소소"],
       ],
     },
   };
@@ -1398,8 +1423,8 @@
   const bdListView = document.getElementById("bd-list");
   function bdRender() {
     const b = BOARDS[bdKey];
-    document.getElementById("bd-rows").innerHTML = b.rows.map((r) => `
-      <tr><td><b>${r[0]}</b></td><td><span class="tag">${r[1]}</span></td>
+    document.getElementById("bd-rows").innerHTML = b.rows.map((r, i) => `
+      <tr class="bd-row" data-i="${i}"><td><b>${r[0]}</b></td><td><span class="tag">${r[1]}</span></td>
       <td><span class="tag ${r[2] ? "tag--ok" : "tag--warn"}">${r[2] ? "게시 중" : "숨김"}</span></td>
       <td class="meta">${r[3]}</td><td class="meta">${r[4]}</td></tr>`).join("");
     document.getElementById("bd-chips").innerHTML =
@@ -1455,6 +1480,42 @@
       tr.hidden = q !== "" && !tr.textContent.toLowerCase().includes(q);
     });
   });
+  /* 글 상세 드로어 — 행 클릭으로 열고, 게시/숨김을 그 자리에서 전환 */
+  const bdDrawerEl = document.getElementById("bd-drawer");
+  const bdScrim = document.getElementById("bd-scrim");
+  let bddIdx = null;
+  function bddOpen(i) {
+    const r = BOARDS[bdKey].rows[i];
+    bddIdx = i;
+    document.getElementById("bdd-title").textContent = r[0];
+    document.getElementById("bdd-meta").innerHTML =
+      `<span class="tag">${r[1]}</span><span class="tag ${r[2] ? "tag--ok" : "tag--warn"}">${r[2] ? "게시 중" : "숨김"}</span><small>${r[4]}</small>`;
+    document.getElementById("bdd-body").textContent = r[5];
+    document.getElementById("bdd-views").textContent = `조회 ${r[3]}회`;
+    document.getElementById("bdd-toggle").textContent = r[2] ? "숨기기" : "게시하기";
+    bdDrawerEl.classList.add("is-open");
+    bdScrim.classList.add("is-open");
+  }
+  function bddClose() {
+    bdDrawerEl.classList.remove("is-open");
+    bdScrim.classList.remove("is-open");
+    bddIdx = null;
+  }
+  document.getElementById("bd-rows").addEventListener("click", (e) => {
+    const tr = e.target.closest(".bd-row");
+    if (tr) bddOpen(Number(tr.dataset.i));
+  });
+  document.getElementById("bdd-close").addEventListener("click", bddClose);
+  bdScrim.addEventListener("click", bddClose);
+  document.addEventListener("keydown", (e) => { if (e.key === "Escape") bddClose(); });
+  document.getElementById("bdd-toggle").addEventListener("click", () => {
+    if (bddIdx === null) return;
+    const r = BOARDS[bdKey].rows[bddIdx];
+    r[2] = !r[2];
+    bdRender();
+    bddOpen(bddIdx);
+  });
+
   bdRender();
 
   /* 딥링크 — 다른 화면(예: 데이터베이스의 "관리 화면 가기")에서 특정 뷰로 진입 */
