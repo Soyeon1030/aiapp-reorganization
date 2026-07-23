@@ -246,6 +246,20 @@
             발주 마감: <b id="ask-photo-answer-v">전날 밤 10시</b> ✓ <span>변경</span>
           </button>
 
+
+          <!-- 재접속 웨이크 — 전용 공간(micro VM)이 켜질 때. 빌드 연출(?build=1)에서는 제거됨 -->
+          <div id="wake-wrap" hidden>
+            <div class="log-step">다시 열기</div>
+            <p class="log-line">오랜만이에요! 청솔 식자재 발주를 다시 여는 중이에요.</p>
+            <div class="console-card" style="margin:0" aria-label="전용 공간 켜는 중">
+              <span class="console-card__title">전용 공간 켜는 중</span>
+              <div class="console-row is-wait"><span class="console-row__icon"></span><span>전용 컴퓨터 켜기</span><span class="console-row__detail">대기</span></div>
+              <div class="console-row is-wait"><span class="console-row__icon"></span><span>저장된 데이터 연결</span><span class="console-row__detail">대기</span></div>
+              <div class="console-row is-wait"><span class="console-row__icon"></span><span>화면 준비</span><span class="console-row__detail">대기</span></div>
+              <div class="console-card__foot"><span>준비되는 대로 이어서 진행돼요</span></div>
+            </div>
+            <div class="log-chk" id="wake-chk" hidden>준비됐어요 — 이어서 하시던 작업을 계속할 수 있어요.</div>
+          </div>
         </div>
       </div>
 
@@ -831,7 +845,7 @@
 
   /* ── 상태 시연 스위처 (스캐폴드) — 전송 잠금 규칙을 눈으로 확인 ── */
   const demoBtns = document.querySelectorAll(".demo-states button");
-  const consoleRows = document.querySelectorAll(".console-card .console-row");
+  const consoleRows = document.querySelectorAll(".chat > .console-card .console-row");
   const lastRow = consoleRows[consoleRows.length - 1];
   const lastDetail = lastRow.querySelector(".console-row__detail");
   function syncDemo(s) {
@@ -894,6 +908,39 @@
     divider.addEventListener("pointermove", move);
     divider.addEventListener("pointerup", up);
   });
+
+  /* ── 재접속 웨이크 — 전용 컴퓨터(micro VM) 켜는 연출. 빌드 연출과 공존하지 않는다 ── */
+  const wakeWrap = document.getElementById("wake-wrap");
+  if (new URLSearchParams(location.search).has("build")) {
+    wakeWrap.remove();
+  } else {
+    wakeWrap.hidden = false;
+    const wakeRows = wakeWrap.querySelectorAll(".console-row");
+    const wakeDurs = [1500, 1100, 900];
+    let wt = 400;
+    wakeRows.forEach((r, i) => {
+      setTimeout(() => {
+        r.classList.remove("is-wait");
+        r.classList.add("is-run");
+        r.querySelector(".console-row__detail").textContent = "진행 중";
+      }, wt);
+      wt += wakeDurs[i];
+      setTimeout(() => {
+        r.classList.remove("is-run");
+        r.classList.add("is-done");
+        r.querySelector(".console-row__detail").textContent = "완료";
+      }, wt);
+    });
+    setTimeout(() => {
+      document.getElementById("wake-chk").hidden = false;
+      const fs = document.querySelector(".feed__scroll");
+      if (fs) fs.scrollTop = fs.scrollHeight;
+    }, wt + 250);
+    setTimeout(() => {
+      const fs = document.querySelector(".feed__scroll");
+      if (fs) fs.scrollTop = fs.scrollHeight;
+    }, 500);
+  }
 
   /* ── 생성 진행 시퀀스 (?build=1) — 설계안 확정 직후의 연출 재생.
      채팅이 순차적으로 올라오고, 진행 카드가 단계별로 갱신되며,

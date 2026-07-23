@@ -1057,3 +1057,104 @@
 [data-tip][data-tip-align="right"]::after { left: auto; right: 0; transform: none; }
 [data-tip][data-tip-align="right"]:hover::after { transform: none; }
 [data-tip][data-tip-align="right"]::before { left: auto; right: 7px; transform: none; }
+
+/* ── microVM 부팅 스플래시 (공용) — "전용 컴퓨터를 켜고 있어요" ──
+   문구 원칙: 소요 시간·"다음엔 바로" 같은 약속 금지 — 사실만 말한다 */
+.vmboot {
+  position: fixed;
+  inset: 0;
+  z-index: 300;
+  display: grid;
+  place-items: center;
+  background: var(--color-bg);
+}
+.vmboot__card { text-align: center; width: 340px; }
+.vmboot__viz {
+  width: 74px;
+  height: 74px;
+  margin: 0 auto 18px;
+  border-radius: 18px;
+  background: var(--color-surface);
+  border: 1px solid var(--color-line);
+  display: grid;
+  place-items: center;
+  position: relative;
+  box-shadow: 0 8px 26px rgb(46 95 232 / .12);
+}
+.vmboot__viz::after {
+  content: "";
+  position: absolute;
+  inset: -7px;
+  border-radius: 23px;
+  border: 2px solid var(--color-accent);
+  opacity: 0;
+  animation: vmboot-pulse 1.6s ease-out infinite;
+}
+@keyframes vmboot-pulse {
+  0% { opacity: .5; transform: scale(.92); }
+  100% { opacity: 0; transform: scale(1.12); }
+}
+.vmboot__power {
+  width: 26px;
+  height: 26px;
+  border: 3px solid var(--color-accent);
+  border-radius: var(--radius-full);
+  position: relative;
+  display: block;
+}
+.vmboot__power::before {
+  content: "";
+  position: absolute;
+  top: -8px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 5px;
+  height: 13px;
+  background: var(--color-bg);
+}
+.vmboot__power::after {
+  content: "";
+  position: absolute;
+  top: -7px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 3px;
+  height: 12px;
+  background: var(--color-accent);
+  border-radius: 2px;
+}
+.vmboot h3 { margin: 0 0 4px; font-size: var(--text-lg); font-weight: 800; letter-spacing: -.01em; }
+.vmboot__card > p { margin: 0 0 16px; font-size: var(--text-xs); color: var(--color-muted); }
+.vmboot__steps {
+  display: flex;
+  flex-direction: column;
+  gap: 7px;
+  width: 230px;
+  margin: 0 auto;
+  text-align: left;
+}
+.vmboot__step {
+  display: flex;
+  align-items: center;
+  gap: 9px;
+  font-size: var(--text-xs);
+  color: var(--color-muted);
+}
+.vmboot__step i {
+  width: 15px;
+  height: 15px;
+  border-radius: var(--radius-full);
+  border: 2px solid var(--color-line-strong);
+  flex: none;
+  display: grid;
+  place-items: center;
+}
+.vmboot__step.is-run { color: var(--color-ink); font-weight: 600; }
+.vmboot__step.is-run i {
+  border-color: var(--color-accent);
+  border-top-color: transparent;
+  animation: vmboot-spin .8s linear infinite;
+}
+.vmboot__step.is-done i { border-color: var(--color-ok); background: var(--color-ok); }
+.vmboot__step.is-done i::before { content: "✓"; color: #fff; font-size: 9px; font-weight: 800; }
+@keyframes vmboot-spin { to { transform: rotate(360deg); } }
