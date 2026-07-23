@@ -32,28 +32,19 @@
   }
   .pgitem {
     display: block; width: 100%; text-align: left;
-    border: 1px solid var(--color-line); border-radius: 10px; background: #fff;
-    padding: 8px; margin-bottom: 8px;
+    border: none; border-radius: 8px; background: none;
+    padding: 8px 10px; margin-bottom: 2px;
   }
-  .pgitem:hover { border-color: var(--color-accent); }
-  .pgitem.is-on { border-color: var(--color-accent); box-shadow: 0 0 0 2px var(--color-accent-soft); }
-  .pgitem__name { display: flex; align-items: center; gap: 6px; margin-top: 7px; font-size: var(--text-2xs); font-weight: 700; }
-  .pgitem__name em { font-style: normal; color: var(--color-muted); font-weight: 600; }
+  .pgitem:hover { background: var(--color-surface-sub); }
+  .pgitem.is-on { background: var(--color-accent-soft); }
+  .pgitem.is-on .pgitem__name { color: var(--color-accent-deep); }
+  .pgitem__name { display: flex; align-items: center; gap: 8px; font-size: var(--text-xs); font-weight: 600; }
+  .pgitem__name em { font-style: normal; color: var(--color-muted); font-weight: 600; font-size: var(--text-2xs); width: 12px; }
   .pgitem__core {
     margin-left: auto; font-size: 10px; font-weight: 700; color: var(--color-accent-deep);
     background: var(--color-accent-soft); border-radius: 999px; padding: 1px 7px;
   }
-  /* 썸네일 — 로우파이 축소 스케치 */
-  .th {
-    height: 70px; border: 1px solid var(--wb); border-radius: 6px; background: #fff;
-    padding: 7px 8px; display: flex; flex-direction: column; gap: 4px; overflow: hidden;
-  }
-  .th i { display: block; background: #E9E9EC; border-radius: 2px; height: 5px; }
-  .th .dk { background: var(--wink); }
-  .th .row { display: flex; gap: 4px; }
-  .th .row i { flex: 1; }
-  .th .box { background: var(--wbg); border: 1px dashed var(--wb); border-radius: 3px; flex: 1; }
-  .th .circ { width: 16px; height: 16px; border: 1.5px solid var(--wink); border-radius: 50%; margin: 2px auto; flex: none; }
+  .pgitem.is-on .pgitem__core { background: #fff; }
   .wfcanvas {
     max-width: 1080px; margin: 0 auto; background: #fff;
     border: 1px solid var(--wb); border-radius: 12px; overflow: hidden;
@@ -362,26 +353,11 @@
         <!-- 페이지 목록 — 기획안 screens[] 순서 그대로 -->
         <aside class="wfp__pages" id="wfp-pages">
           <div class="wfp__pages-t">페이지 5</div>
-          <button class="pgitem is-on" data-s="0">
-            <span class="th"><i style="width:55%"></i><span class="row" style="flex:1"><span class="box"></span></span><span class="row"><i class="dk" style="width:26%;height:8px"></i><i style="width:22%;height:8px"></i></span><span class="row"><i></i><i></i><i></i></span></span>
-            <span class="pgitem__name"><em>1</em> 첫 화면</span>
-          </button>
-          <button class="pgitem" data-s="1">
-            <span class="th"><i style="width:100%;height:8px"></i><span class="row"><i style="width:14%"></i><i style="width:14%"></i><i style="width:14%"></i></span><span class="row"><i style="width:60%"></i><i class="dk" style="width:14%"></i></span><span class="row"><i style="width:60%"></i><i class="dk" style="width:14%"></i></span><span class="row"><i style="width:60%"></i><i class="dk" style="width:14%"></i></span></span>
-            <span class="pgitem__name"><em>2</em> 품목 고르기 <span class="pgitem__core">핵심</span></span>
-          </button>
-          <button class="pgitem" data-s="2">
-            <span class="th"><span class="row"><i style="flex:1;height:8px"></i><i style="flex:1;height:8px"></i></span><span class="row"><i style="flex:1;height:8px"></i><i style="flex:1;height:8px"></i></span><i style="width:45%"></i><i class="dk" style="width:100%;height:10px"></i></span>
-            <span class="pgitem__name"><em>3</em> 발주하기 <span class="pgitem__core">핵심</span></span>
-          </button>
-          <button class="pgitem" data-s="3">
-            <span class="th"><span class="circ"></span><i style="width:50%;margin:0 auto"></i><i style="width:70%;margin:0 auto"></i><span class="row" style="justify-content:center"><i style="width:24%;height:8px"></i><i class="dk" style="width:24%;height:8px"></i></span></span>
-            <span class="pgitem__name"><em>4</em> 발주 완료</span>
-          </button>
-          <button class="pgitem" data-s="4">
-            <span class="th"><span class="row"><i style="width:16%"></i><i style="width:16%"></i><i style="width:16%"></i><i style="width:16%"></i></span><span class="row"><i style="flex:1"></i><i class="dk" style="width:14%;height:7px"></i></span><span class="row"><i style="flex:1"></i><i style="width:14%;height:7px"></i></span><span class="row"><i style="flex:1"></i><i style="width:14%;height:7px"></i></span></span>
-            <span class="pgitem__name"><em>5</em> 사장님 관리</span>
-          </button>
+          <button class="pgitem is-on" data-s="0"><span class="pgitem__name"><em>1</em> 첫 화면</span></button>
+          <button class="pgitem" data-s="1"><span class="pgitem__name"><em>2</em> 품목 고르기 <span class="pgitem__core">핵심</span></span></button>
+          <button class="pgitem" data-s="2"><span class="pgitem__name"><em>3</em> 발주하기 <span class="pgitem__core">핵심</span></span></button>
+          <button class="pgitem" data-s="3"><span class="pgitem__name"><em>4</em> 발주 완료</span></button>
+          <button class="pgitem" data-s="4"><span class="pgitem__name"><em>5</em> 사장님 관리</span></button>
         </aside>
         </div>
       </section>
