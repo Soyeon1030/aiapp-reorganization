@@ -436,6 +436,9 @@
 .kakao-state__t--goal { color: var(--color-accent-deep); font-weight: 700; }
 .kakao.kakao--card { display: block; } /* 기본 .kakao의 flex를 덮는다 — 세로형(섬네일 상단) */
 .kakao.kakao--card .kakao__hero { display: grid; width: 100%; }
+.kakao.kakao--card .kakao__tx { padding: 13px 16px 15px; }
+.kakao.kakao--card .kakao__tx span { margin-top: 4px; }
+.kakao.kakao--card .kakao__tx small { margin-top: 8px; }
 .kakao__hero {
   display: grid;
   place-items: center;
