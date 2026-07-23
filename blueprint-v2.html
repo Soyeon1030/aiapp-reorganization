@@ -206,11 +206,37 @@
               <div class="prow"><span>시나리오</span><span class="d">한솥분식 담당자가 밤 10시에 내일 아침 납품 발주를 넣으면, 사장님이 아침에 확정하고 알림톡이 나가요</span></div>
             </section>
 
-            <section class="dsec" id="sec-dsg" aria-label="디자인 방향">
-              <h3>디자인 방향 <small>대화에서 고르신 대로</small></h3>
+            <section class="dsec" id="sec-dsg" aria-label="디자인 브리프">
+              <h3>디자인 브리프 <small>대화에서 고르신 대로 — 사이트의 인상이 이렇게 잡혀요</small></h3>
               <div class="dsg">
                 <div class="dsg__card" id="dsg-0"><span class="tone tone--empty"></span><span class="tx"><b>분위기</b><small><i class="tbd">3번 질문에서 정해져요</i></small></span></div>
                 <div class="dsg__card" id="dsg-1"><span class="tone tone--empty"></span><span class="tx"><b>글씨 느낌</b><small><i class="tbd">4번 질문에서 정해져요</i></small></span></div>
+              </div>
+              <div class="brief" id="brief">
+                <div class="brief__row">
+                  <span class="brief__k">컬러</span>
+                  <div class="brief__palette" id="brief-palette">
+                    <span class="pal"><i style="background:#E9EDF3"></i><small>포인트</small></span>
+                    <span class="pal"><i style="background:#E9EDF3"></i><small>진한 포인트</small></span>
+                    <span class="pal"><i style="background:#F4F6FA"></i><small>바탕</small></span>
+                    <span class="pal"><i style="background:#E9EDF3"></i><small>글자</small></span>
+                  </div>
+                </div>
+                <div class="brief__row">
+                  <span class="brief__k">글꼴 느낌</span>
+                  <div class="brief__type" id="brief-type">
+                    <b>내일 아침 식자재, 오늘 밤에 발주하세요</b>
+                    <span>품목을 골라 담으면 끝 — 전화 없이 정확하게 들어갑니다.</span>
+                  </div>
+                </div>
+                <div class="brief__row">
+                  <span class="brief__k">이런 인상</span>
+                  <div class="brief__ui" id="brief-ui">
+                    <i class="bui-btn">발주 시작하기</i>
+                    <i class="bui-card"><b>대파 1단</b><small>채소 · 2,500원</small></i>
+                    <i class="bui-tag">발주 마감 밤 10시</i>
+                  </div>
+                </div>
               </div>
             </section>
 
@@ -631,6 +657,34 @@
     }, 1400);
   }
 
+  /* 분위기·글씨 답 → 디자인 토큰 세트 (design_tokens 시각화) */
+  const TONESETS = [   /* QS 분위기 옵션 순서와 1:1 */
+    { a: "#33507E", ad: "#22304A", bg: "#EEF2F8", ink: "#22304A" },   /* 깔끔·신뢰 네이비 */
+    { a: "#4C8F4E", ad: "#376B39", bg: "#EDF6EC", ink: "#25402A" },   /* 밝고 활기 그린 */
+    { a: "#7A5B3A", ad: "#5E4429", bg: "#F5F0E8", ink: "#3E2F1E" },   /* 든든·클래식 브라운 */
+  ];
+  const FONTSETS = [   /* QS 글씨 옵션 순서와 1:1 */
+    { rad: "8px", w: 700, ls: "-0.015em", label: "단정" },
+    { rad: "14px", w: 800, ls: "0", label: "둥글둥글" },
+  ];
+  function renderBrief() {
+    const t = TONESETS[answers[2]], f = FONTSETS[answers[3]];
+    if (!t || !f) return;
+    const brief = document.getElementById("brief");
+    brief.style.setProperty("--ba", t.a);
+    brief.style.setProperty("--bad", t.ad);
+    brief.style.setProperty("--bbg", t.bg);
+    brief.style.setProperty("--bink", t.ink);
+    brief.style.setProperty("--brad", f.rad);
+    brief.style.setProperty("--bw", f.w);
+    brief.style.setProperty("--bls", f.ls);
+    const names = ["포인트", "진한 포인트", "바탕", "글자"];
+    const vals = [t.a, t.ad, t.bg, t.ink];
+    document.getElementById("brief-palette").innerHTML = names.map((n, i) =>
+      `<span class="pal"><i style="background:${vals[i]}"></i><small>${n}</small><em>${vals[i]}</em></span>`).join("");
+    brief.classList.add("is-bound");
+  }
+
   /* ── 오른쪽: 답 → 규격 고정 문서에 값 바인딩 (재선택 시에도 호출) ── */
   function renderDoc() {
     /* 기능 답 → ① 대화 확정 슬롯 */
@@ -651,6 +705,7 @@
       card.innerHTML = `${toneHTML(o.tone)}<span class="tx"><b>${QS[qi].label} — ${o.t}</b><small>${o.s}</small></span>`;
       card.classList.remove("is-new"); void card.offsetWidth; card.classList.add("is-new");
     });
+    renderBrief();
   }
 
   /* ── 진행 방식 분기 — 기획서를 함께 다듬을지, AI에게 맡길지 ── */
