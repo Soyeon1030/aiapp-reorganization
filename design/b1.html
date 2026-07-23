@@ -650,6 +650,14 @@
 
   /* 입력 상한 카운터 — 4,000자, 90%(3,600자)부터 노출 */
   const ideaInput = document.getElementById("idea-input");
+
+  /* Enter = 전송 → 설계안 v2(질의 티키타카)로 이동 (Shift+Enter는 줄바꿈, IME 조합 중 무시) */
+  ideaInput.addEventListener("keydown", (e) => {
+    if (e.key === "Enter" && !e.shiftKey && !e.isComposing) {
+      e.preventDefault();
+      location.href = "blueprint-v2.html";
+    }
+  });
   const ideaCount = document.getElementById("idea-count");
   ideaInput.addEventListener("input", () => {
     const len = ideaInput.value.length;
