@@ -100,7 +100,9 @@
   gap: var(--space-4);
 }
 
-.set__head { display: flex; align-items: flex-start; gap: var(--space-3); }
+.set__head { display: flex; align-items: flex-start; justify-content: space-between; gap: var(--space-3); }
+/* 컨트롤이 여러 개여도 흩어지지 않게 — 남는 공간은 제목 뒤로만 */
+.set__head > div:first-child { margin-right: auto; }
 .set__head h3 {
   margin: 0;
   font-size: var(--text-lg);
