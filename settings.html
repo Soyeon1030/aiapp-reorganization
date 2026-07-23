@@ -882,6 +882,9 @@
   document.querySelectorAll("[data-goto]").forEach((btn) => {
     btn.addEventListener("click", () => showSetView(btn.dataset.goto));
   });
+  /* 딥링크 — 다른 화면(예: 데이터베이스의 "관리 화면 가기")에서 특정 뷰로 진입 */
+  const initView = new URLSearchParams(location.search).get("view");
+  if (initView && document.querySelector(`.set__view[data-view="${initView}"]`)) showSetView(initView);
 
   /* 설정 스위치 토글 (스캐폴드: 시각 상태만) */
   document.querySelectorAll(".switch").forEach((sw) => {
