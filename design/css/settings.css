@@ -917,7 +917,7 @@
   line-height: 1.6;
 }
 
-/* ── 웨이크 스켈레톤 (운영 현황) — 전용 컴퓨터가 켜질 때까지 뼈대 + 상태 필 ── */
+/* ── 웨이크 스켈레톤 — 현재 미사용 (관리·설정에는 부팅 연출을 두지 않기로, 2026-07-23). 패널 부분 로딩에 재사용 가능 ── */
 .set__view[data-view="dash"] { position: relative; }
 .vm-skel {
   position: absolute;
