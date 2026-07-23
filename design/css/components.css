@@ -919,18 +919,19 @@
   border: none;
   background: none;
   outline: none;
-  font-family: var(--font-mono);
-  font-size: 17px;
-  font-weight: 600;
+  font: inherit;
+  font-size: 15px;
+  font-weight: 700;
   color: var(--color-ink);
-  padding: 9px 2px 9px 10px;
-  text-align: right;
+  padding: 11px 2px 11px 12px;
+  text-align: left;  /* 주소는 왼쪽부터 쓴다 — 접미사만 오른쪽 고정 */
 }
 .addr-input .addr-suffix {
-  font-family: var(--font-mono);
-  font-size: 17px;
+  font-size: 13px;
+  font-weight: 600;
   color: var(--color-muted);
   flex-shrink: 0;
+  padding-right: 6px;
 }
 .addr-check {
   margin: 8px 0 0;
@@ -1158,3 +1159,65 @@
 .vmboot__step.is-done i { border-color: var(--color-ok); background: var(--color-ok); }
 .vmboot__step.is-done i::before { content: "✓"; color: #fff; font-size: 9px; font-weight: 800; line-height: 1; transform: translateY(-.5px); }
 @keyframes vmboot-spin { to { transform: rotate(360deg); } }
+
+
+/* ── 출시 모달 (2026-07-23 개편) — 좁은 카드, 질문→입력→확인→안심 3줄→풀폭 CTA 한 흐름 ── */
+.modal--pub { width: min(440px, 94vw); }
+.modal--pub .modal__main { padding: 30px 28px 24px; }
+.pub__q {
+  margin: 0 0 4px;
+  font-size: var(--text-lg);
+  font-weight: 800;
+  letter-spacing: -.01em;
+}
+.pub__d {
+  margin: 0 0 16px;
+  font-size: var(--text-xs);
+  color: var(--color-muted);
+}
+.modal--pub .addr-check { margin: 8px 2px 16px; }
+/* 안심 체크리스트 — "출시하면 이렇게 돼요"를 버튼 누르기 전에 답한다 */
+.pub-facts {
+  border: 1px solid var(--color-line);
+  border-radius: var(--radius-md);
+  margin-bottom: 18px;
+}
+.pub-fact {
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+  padding: 10px 14px;
+  border-bottom: 1px solid var(--color-line);
+  font-size: var(--text-xs);
+}
+.pub-fact:last-child { border-bottom: none; }
+.pub-fact i {
+  flex: none;
+  width: 17px;
+  height: 17px;
+  margin-top: 1px;
+  border-radius: var(--radius-full);
+  background: var(--color-accent-soft);
+  color: var(--color-accent-deep);
+  display: grid;
+  place-items: center;
+  font-size: 10px;
+  font-weight: 800;
+  font-style: normal;
+}
+.pub-fact span { color: var(--color-muted); line-height: 1.55; }
+.pub-fact b { color: var(--color-ink); }
+.pub-cta {
+  width: 100%;
+  border: none;
+  background: var(--color-accent);
+  color: #fff;
+  border-radius: var(--radius-md);
+  padding: 13px;
+  font-size: var(--text-sm);
+  font-weight: 700;
+  transition: filter .15s;
+}
+.pub-cta:hover { filter: brightness(1.07); }
+.pub-cta:disabled { opacity: .45; }
+.modal--pub .pub-url { margin-bottom: 16px; }
