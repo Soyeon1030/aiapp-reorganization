@@ -185,37 +185,33 @@
     <!-- ── 오른쪽: 패널 (데이터베이스 탭 활성) ── -->
     <section class="panel" aria-label="작업 패널">
       <div class="panel__tabs" role="tablist">
-        <button class="ptab" onclick="location.href='b2.html'"><svg class="ph"><use href="#ph-eye"/></svg> 미리보기</button>
-        <button class="ptab is-on"><svg class="ph"><use href="#ph-database"/></svg> 데이터베이스</button>
-        <button class="ptab" onclick="location.href='brand.html'"><svg class="ph"><use href="#ph-palette"/></svg> 브랜딩·홍보</button>
-        <button class="ptab" onclick="location.href='settings.html'"><svg class="ph"><use href="#ph-gear"/></svg> 관리·설정</button>
+        <div class="ptab-rail">
+        <button class="ptab" onclick="location.href='b2.html'"><svg class="ph"><use href="#ph-eye"/></svg><span class="ptab__label">미리보기</span></button>
+        <button class="ptab is-on"><svg class="ph"><use href="#ph-database"/></svg><span class="ptab__label">데이터베이스</span></button>
+        <button class="ptab" onclick="location.href='brand.html'"><svg class="ph"><use href="#ph-palette"/></svg><span class="ptab__label">브랜딩·홍보</span></button>
+        <button class="ptab" onclick="location.href='settings.html'"><svg class="ph"><use href="#ph-gear"/></svg><span class="ptab__label">관리·설정</span></button>
+        </div>
         <!-- 출시 플로우는 미리보기(b2)에서 진행 -->
         <button class="btn btn--primary ptab-cta" onclick="location.href='b2.html'" title="미리보기에서 출시해요">🚀 출시하기</button>
       </div>
 
-      <!-- 데이터 패널 -->
-      <div class="db">
+      <!-- 데이터 패널 — 엑셀형 재설계 (2026-07-23): 사이드바 → 상단 탭, 전 뷰 시트 통일 -->
+      <div class="db db--sheet">
 
-        <!-- 사이드바: 데이터 유형 (테이블명 대신 콘텐츠 이름 + 단위) -->
-        <aside class="db__side" aria-label="데이터 유형">
-          <button class="db__item" data-view="dash"><svg class="ph"><use href="#ph-chart-bar"/></svg> 요약</button>
-          <span class="db__side-label">데이터</span>
-          <!-- 테이블마다 에이전트가 고른 템플릿 유형으로 렌더 (3.2.1 DB 뷰 템플릿 계약) -->
-          <button class="db__item is-on" data-view="bookings">
-            <svg class="ph"><use href="#ph-calendar-blank"/></svg> 예약
-            <i class="db__new" title="새 예약"></i>
-            <span class="db__count">3건</span>
-          </button>
-          <button class="db__item" data-view="members"><svg class="ph"><use href="#ph-user"/></svg> 회원 <span class="db__count">23명</span></button>
-          <button class="db__item" data-view="reviews"><svg class="ph"><use href="#ph-chat-circle"/></svg> 후기 <span class="db__count">5개</span></button>
-          <button class="db__item" data-view="walkers"><svg class="ph"><use href="#ph-paw-print"/></svg> 산책러 <span class="db__count">3명</span></button>
-          <div class="db__side-foot"><b>✓</b> 매일 새벽 자동 백업 중</div>
-        </aside>
+        <!-- 상단 데이터 탭 (테이블명 대신 콘텐츠 이름 + 단위) -->
+        <nav class="db-tabs" aria-label="데이터 유형">
+          <button class="db-tab" data-view="dash"><svg class="ph"><use href="#ph-chart-bar"/></svg> 요약</button>
+          <button class="db-tab is-on" data-view="bookings"><svg class="ph"><use href="#ph-calendar-blank"/></svg> 예약 <b>3</b><i class="db__new" title="새 예약"></i></button>
+          <button class="db-tab" data-view="members"><svg class="ph"><use href="#ph-user"/></svg> 회원 <b>23</b></button>
+          <button class="db-tab" data-view="reviews"><svg class="ph"><use href="#ph-chat-circle"/></svg> 후기 <b>5</b></button>
+          <button class="db-tab" data-view="walkers"><svg class="ph"><use href="#ph-paw-print"/></svg> 산책러 <b>3</b></button>
+          <span class="db-tabs__note">✓ 매일 새벽 자동 백업 중</span>
+        </nav>
 
-        <!-- 메인: 테이블별 템플릿 뷰 (사이드바에서 전환) -->
+        <!-- 메인: 뷰 전환 -->
         <div class="db__main">
 
-          <!-- ═══ 뷰 0. 요약 — 자동 생성 대시보드 (템플릿 아님) ═══ -->
+          <!-- ═══ 뷰 0. 요약 — 자동 생성 대시보드 ═══ -->
           <div class="db__view" data-view="dash" hidden>
             <div class="db__head">
               <div>
@@ -225,7 +221,6 @@
               <span class="tag">자동 생성</span>
             </div>
 
-            <!-- 스탯 타일 -->
             <div class="stats">
               <div class="stat">
                 <span class="stat__l">오늘 방문자</span>
@@ -249,14 +244,12 @@
               </div>
             </div>
 
-            <!-- 처리할 일 — 인박스로 바로 이동 -->
             <div class="db__banner">
               <svg class="ph"><use href="#ph-bell"/></svg>
               <span>확인을 기다리는 예약이 2건 있어요</span>
               <button class="btn btn--primary" data-goto="bookings">예약 보기</button>
             </div>
 
-            <!-- 최근 7일 방문자 — 단일 시리즈: 범례 없음, 오늘만 직접 라벨 -->
             <div class="chart-card">
               <div class="chart-card__head"><b>최근 7일 방문자</b><span>일별 방문자 수</span></div>
               <div class="bars" role="img" aria-label="최근 7일 방문자 추이 — 오늘 142명, 상승세">
@@ -279,241 +272,76 @@
             </div>
           </div><!-- /뷰 0 -->
 
-          <!-- ═══ 뷰 1. 예약 — 인박스형 (inbox): 처리할 일 중심 ═══ -->
+          <!-- ═══ 뷰 1. 예약 — 엑셀형 시트 (대기 행은 처리 버튼 상시 노출) ═══ -->
           <div class="db__view" data-view="bookings">
-          <div class="db__head">
-            <div>
-              <h3>예약</h3>
-              <p>예약 신청이 들어오면 여기에 자동으로 쌓여요. 엑셀로 내려받을 수도 있어요.</p>
-            </div>
-            <span class="tag">인박스형</span>
-            <button class="btn"><svg class="ph"><use href="#ph-download-simple"/></svg> 엑셀로 받기</button>
-          </div>
-
-          <!-- 새 데이터 도착 배너 -->
-          <div class="db__banner">
-            <svg class="ph"><use href="#ph-bell"/></svg>
-            <span>새 예약 1건이 도착했어요 — 확인하고 확정해 주세요</span>
-            <button class="btn btn--primary">확인하기</button>
-          </div>
-
-          <!-- 검색 + 상태 필터 -->
-          <div class="db__filter">
-            <label class="db__search">
-              <svg class="ph"><use href="#ph-magnifying-glass"/></svg>
-              <input placeholder="이름, 연락처로 찾기">
-            </label>
-            <button class="fchip is-on">전체 <b>3</b></button>
-            <button class="fchip">대기 <b>2</b></button>
-            <button class="fchip">확정 <b>1</b></button>
-          </div>
-
-          <!-- 인박스 리스트: 사람 중심, 대기 건은 처리 버튼 상시 노출 -->
-          <div class="inbox">
-            <div class="inbox__row is-new">
-              <div class="inbox__who">
-                <span class="inbox__avatar">박</span>
-                <div>
-                  <div class="inbox__name">박서연 <span class="tag tag--run">NEW</span></div>
-                  <div class="inbox__phone">010-4477-8899</div>
-                </div>
-              </div>
-              <div class="inbox__when">7/14 (화) 10:00<small>오늘 신청</small></div>
-              <span class="tag tag--warn">대기</span>
-              <div class="inbox__act"><button class="btn btn--primary">확정</button></div>
-            </div>
-
-            <div class="inbox__row">
-              <div class="inbox__who">
-                <span class="inbox__avatar">이</span>
-                <div>
-                  <div class="inbox__name">이보람</div>
-                  <div class="inbox__phone">010-9876-5432</div>
-                </div>
-              </div>
-              <div class="inbox__when">7/13 (월) 11:00<small>어제 신청</small></div>
-              <span class="tag tag--warn">대기</span>
-              <div class="inbox__act"><button class="btn btn--primary">확정</button></div>
-            </div>
-
-            <div class="inbox__row">
-              <div class="inbox__who">
-                <span class="inbox__avatar">김</span>
-                <div>
-                  <div class="inbox__name">김하늘</div>
-                  <div class="inbox__phone">010-1234-5678</div>
-                </div>
-              </div>
-              <div class="inbox__when">7/12 (일) 15:00<small>2일 전 신청</small></div>
-              <span class="tag tag--ok">✓ 확정</span>
-              <div class="inbox__act"><button class="btn">취소</button></div>
-            </div>
-          </div>
-
-          <div class="db__foot">
-            <span>전체 3건 · 대기 2건</span>
-            <span>이 정보는 자동으로 저장되고, 매일 백업돼요</span>
-          </div>
-          </div><!-- /뷰 1 -->
-
-          <!-- ═══ 뷰 2. 후기 — 게시글형 (feed): 내용이 주인공.
-               대량 대응: 요약 헤더 + 처리 필터(미답변·저평점) + 클램프 + 페이지네이션.
-               parent 슬롯(후기→산책러)은 카드 안 칩으로 — 쇼핑몰이면 상품 칩이 됨 ═══ -->
-          <div class="db__view" data-view="reviews" hidden>
             <div class="db__head">
               <div>
-                <h3>후기</h3>
-                <p>방문자가 남긴 후기예요. 낮은 별점과 미답변부터 챙겨 보세요.</p>
+                <h3>예약</h3>
+                <p>예약 신청이 들어오면 여기에 자동으로 쌓여요. 엑셀로 내려받을 수도 있어요.</p>
               </div>
-              <span class="tag">게시글형</span>
-            </div>
-
-            <!-- 요약 헤더 — 평균 + 별점 분포 -->
-            <div class="rsum">
-              <div class="rsum__avg">
-                <span class="rsum__num">4.8</span>
-                <span class="rsum__stars">★★★★★</span>
-                <span class="rsum__count">후기 5개</span>
-              </div>
-              <div class="rsum__dist">
-                <div class="rsum__row"><b>5★</b><span class="rsum__bar"><i style="width:80%"></i></span><span class="rsum__n">4</span></div>
-                <div class="rsum__row"><b>4★</b><span class="rsum__bar"><i style="width:20%"></i></span><span class="rsum__n">1</span></div>
-                <div class="rsum__row"><b>3★</b><span class="rsum__bar"><i style="width:0%"></i></span><span class="rsum__n">0</span></div>
-                <div class="rsum__row"><b>2★</b><span class="rsum__bar"><i style="width:0%"></i></span><span class="rsum__n">0</span></div>
-                <div class="rsum__row"><b>1★</b><span class="rsum__bar"><i style="width:0%"></i></span><span class="rsum__n">0</span></div>
-              </div>
-            </div>
-
-            <!-- 처리 중심 필터 — 미답변·저평점이 사장님의 할 일 -->
-            <div class="db__filter">
-              <label class="db__search">
-                <svg class="ph"><use href="#ph-magnifying-glass"/></svg>
-                <input placeholder="내용, 작성자로 찾기">
-              </label>
-              <button class="fchip is-on">전체 <b>5</b></button>
-              <button class="fchip">미답변 <b>2</b></button>
-              <button class="fchip">★3 이하 <b>0</b></button>
-            </div>
-
-            <div class="review">
-              <div class="review__head">
-                <span class="inbox__avatar">박</span>
-                <b>박서연</b>
-                <span class="review__stars">★★★★★</span>
-                <span class="tag">🐾 김산책</span>
-                <span class="review__when">7/14</span>
-              </div>
-              <p class="review__body is-clamped">산책러님이 꼼꼼하고 친절해요. 산책 중간에 사진도 보내주셔서 안심됐어요. 비 오는 날이었는데 발도 깨끗하게 닦아서 데려다주시고, 산책 코스도 콩이 컨디션에 맞춰서 조절해 주셨어요. 다음에도 꼭 부탁드릴게요!</p>
-              <button class="review__more">더 보기</button>
-              <div class="review__acts">
-                <span class="tag tag--warn">미답변</span>
-                <button class="btn btn--lite">답글</button>
-                <button class="btn">숨기기</button>
-              </div>
-            </div>
-
-            <div class="review">
-              <div class="review__head">
-                <span class="inbox__avatar">김</span>
-                <b>김하늘</b>
-                <span class="review__stars">★★★★☆</span>
-                <span class="tag">🐾 이도보</span>
-                <span class="review__when">7/12</span>
-              </div>
-              <p class="review__body">예약이 정말 간편해요. 시간대 선택이 조금 더 다양하면 좋겠어요.</p>
-              <div class="review__acts">
-                <span class="tag tag--warn">미답변</span>
-                <button class="btn btn--lite">답글</button>
-                <button class="btn">숨기기</button>
-              </div>
-            </div>
-
-            <div class="review">
-              <div class="review__head">
-                <span class="inbox__avatar">이</span>
-                <b>이보람</b>
-                <span class="review__stars">★★★★★</span>
-                <span class="tag">🐾 김산책</span>
-                <span class="review__when">7/10</span>
-              </div>
-              <p class="review__body">우리 콩이가 산책러님만 보면 꼬리를 흔들어요. 믿고 맡길 수 있어서 좋습니다.</p>
-              <div class="review__acts">
-                <span class="tag tag--ok">✓ 답글 완료</span>
-                <button class="btn btn--lite">답글 보기</button>
-                <button class="btn">숨기기</button>
-              </div>
-            </div>
-
-            <div class="db__foot">
-              <span>전체 5개 중 3개 표시 · ‹ 1 ›</span>
-              <span>이 정보는 자동으로 저장되고, 매일 백업돼요</span>
-            </div>
-          </div><!-- /뷰 2 -->
-
-          <!-- ═══ 뷰 3. 산책러 — 명부형 (directory): 엔티티 카드 ═══ -->
-          <div class="db__view" data-view="walkers" hidden>
-            <div class="db__head">
-              <div>
-                <h3>산책러</h3>
-                <p>서비스에 등록된 산책러 명단이에요.</p>
-              </div>
-              <span class="tag">명부형</span>
               <button class="btn"><svg class="ph"><use href="#ph-download-simple"/></svg> 엑셀로 받기</button>
             </div>
 
-            <!-- 검색 + 속성 필터 -->
+            <div class="db__banner">
+              <svg class="ph"><use href="#ph-bell"/></svg>
+              <span>새 예약 1건이 도착했어요 — 확인하고 확정해 주세요</span>
+              <button class="btn btn--primary">확인하기</button>
+            </div>
+
             <div class="db__filter">
               <label class="db__search">
                 <svg class="ph"><use href="#ph-magnifying-glass"/></svg>
-                <input placeholder="이름, 지역으로 찾기">
+                <input placeholder="이름, 연락처로 찾기">
               </label>
               <button class="fchip is-on">전체 <b>3</b></button>
-              <button class="fchip">신규 <b>1</b></button>
-              <button class="fchip">★4.8 이상 <b>2</b></button>
+              <button class="fchip">대기 <b>2</b></button>
+              <button class="fchip">확정 <b>1</b></button>
             </div>
 
-            <div class="dir">
-              <div class="dir__card">
-                <span class="dir__avatar">김</span>
-                <span class="dir__name">김산책</span>
-                <span class="dir__attrs"><span class="tag">강남구</span><span class="tag">경력 3년</span><span class="tag tag--ok">★ 4.9</span></span>
-                <span class="dir__meta">2025.11 등록</span>
-                <button class="btn">프로필</button>
-              </div>
-              <div class="dir__card">
-                <span class="dir__avatar">이</span>
-                <span class="dir__name">이도보</span>
-                <span class="dir__attrs"><span class="tag">서초구</span><span class="tag">경력 2년</span><span class="tag tag--ok">★ 4.8</span></span>
-                <span class="dir__meta">2026.01 등록</span>
-                <button class="btn">프로필</button>
-              </div>
-              <div class="dir__card">
-                <span class="dir__avatar">박</span>
-                <span class="dir__name">박걸음</span>
-                <span class="dir__attrs"><span class="tag">송파구</span><span class="tag">경력 1년</span><span class="tag tag--run">신규</span></span>
-                <span class="dir__meta">2026.06 등록</span>
-                <button class="btn">프로필</button>
-              </div>
+            <div class="sheet">
+              <table>
+                <thead>
+                  <tr><th class="rn">#</th><th>예약자</th><th>연락처</th><th>산책 일시</th><th>반려견</th><th>신청일</th><th>상태</th><th>처리</th></tr>
+                </thead>
+                <tbody>
+                  <tr class="is-new">
+                    <td class="rn">1</td><td><b>박서연</b> <span class="tag tag--run">NEW</span></td><td class="mono">010-4477-8899</td>
+                    <td>7/14 (화) 10:00</td><td>콩이 (푸들)</td><td class="mono">2026-07-14</td>
+                    <td><span class="cellst cellst--wait">● 대기</span></td>
+                    <td class="acts"><button class="btn btn--primary">확정</button><button class="btn">거절</button></td>
+                  </tr>
+                  <tr>
+                    <td class="rn">2</td><td><b>이보람</b></td><td class="mono">010-9876-5432</td>
+                    <td>7/13 (월) 11:00</td><td>두부 (말티즈)</td><td class="mono">2026-07-13</td>
+                    <td><span class="cellst cellst--wait">● 대기</span></td>
+                    <td class="acts"><button class="btn btn--primary">확정</button><button class="btn">거절</button></td>
+                  </tr>
+                  <tr>
+                    <td class="rn">3</td><td><b>김하늘</b></td><td class="mono">010-1234-5678</td>
+                    <td>7/12 (일) 15:00</td><td>구름 (리트리버)</td><td class="mono">2026-07-12</td>
+                    <td><span class="cellst cellst--ok">● 확정</span></td>
+                    <td class="acts"><button class="btn">취소</button></td>
+                  </tr>
+                </tbody>
+              </table>
             </div>
 
             <div class="db__foot">
-              <span>전체 3명</span>
+              <span>전체 3건 · 대기 2건</span>
               <span>이 정보는 자동으로 저장되고, 매일 백업돼요</span>
             </div>
-          </div><!-- /뷰 3 -->
+          </div><!-- /뷰 1 -->
 
-          <!-- ═══ 뷰 4. 회원 — 표형 (grid): 폴백 데이터 그리드 ═══ -->
+          <!-- ═══ 뷰 2. 회원 — 엑셀형 시트 ═══ -->
           <div class="db__view" data-view="members" hidden>
             <div class="db__head">
               <div>
                 <h3>회원</h3>
-                <p>가입한 회원 목록이에요. 컬럼이 많은 데이터는 표로 보여드려요.</p>
+                <p>가입한 회원 목록이에요.</p>
               </div>
-              <span class="tag">표형</span>
               <button class="btn"><svg class="ph"><use href="#ph-download-simple"/></svg> 엑셀로 받기</button>
             </div>
 
-            <!-- 검색 + 상태 필터 -->
             <div class="db__filter">
               <label class="db__search">
                 <svg class="ph"><use href="#ph-magnifying-glass"/></svg>
@@ -524,23 +352,145 @@
               <button class="fchip">휴면 <b>2</b></button>
             </div>
 
-            <div class="tbl-wrap">
-              <table class="tbl">
+            <div class="sheet">
+              <table>
                 <thead>
-                  <tr><th>이름</th><th>연락처</th><th>이메일</th><th>반려견</th><th>가입일</th><th>상태</th></tr>
+                  <tr><th class="rn">#</th><th>이름</th><th>연락처</th><th>이메일</th><th>반려견</th><th>가입일</th><th>상태</th></tr>
                 </thead>
                 <tbody>
-                  <tr><td>박서연</td><td class="mono">010-4477-8899</td><td class="mono">seoyeon@…</td><td>콩이 (푸들)</td><td class="mono">2026-07-14</td><td><span class="tag tag--ok">활성</span></td></tr>
-                  <tr><td>이보람</td><td class="mono">010-9876-5432</td><td class="mono">boram@…</td><td>두부 (말티즈)</td><td class="mono">2026-07-02</td><td><span class="tag tag--ok">활성</span></td></tr>
-                  <tr><td>김하늘</td><td class="mono">010-1234-5678</td><td class="mono">haneul@…</td><td>구름 (리트리버)</td><td class="mono">2026-06-28</td><td><span class="tag tag--ok">활성</span></td></tr>
-                  <tr><td>최다인</td><td class="mono">010-2233-4455</td><td class="mono">dain@…</td><td>보리 (시바)</td><td class="mono">2026-06-21</td><td><span class="tag">휴면</span></td></tr>
-                  <tr><td>정우주</td><td class="mono">010-5566-7788</td><td class="mono">wooju@…</td><td>별이 (믹스)</td><td class="mono">2026-06-15</td><td><span class="tag tag--ok">활성</span></td></tr>
+                  <tr><td class="rn">1</td><td><b>박서연</b></td><td class="mono">010-4477-8899</td><td class="mono">seoyeon@…</td><td>콩이 (푸들)</td><td class="mono">2026-07-14</td><td><span class="cellst cellst--ok">● 활성</span></td></tr>
+                  <tr><td class="rn">2</td><td><b>이보람</b></td><td class="mono">010-9876-5432</td><td class="mono">boram@…</td><td>두부 (말티즈)</td><td class="mono">2026-07-02</td><td><span class="cellst cellst--ok">● 활성</span></td></tr>
+                  <tr><td class="rn">3</td><td><b>김하늘</b></td><td class="mono">010-1234-5678</td><td class="mono">haneul@…</td><td>구름 (리트리버)</td><td class="mono">2026-06-28</td><td><span class="cellst cellst--ok">● 활성</span></td></tr>
+                  <tr><td class="rn">4</td><td><b>최다인</b></td><td class="mono">010-2233-4455</td><td class="mono">dain@…</td><td>보리 (시바)</td><td class="mono">2026-06-21</td><td><span class="cellst cellst--mut">● 휴면</span></td></tr>
+                  <tr><td class="rn">5</td><td><b>정우주</b></td><td class="mono">010-5566-7788</td><td class="mono">wooju@…</td><td>별이 (믹스)</td><td class="mono">2026-06-15</td><td><span class="cellst cellst--ok">● 활성</span></td></tr>
                 </tbody>
               </table>
             </div>
 
             <div class="db__foot">
               <span>전체 23명 중 5명 표시 · ‹ 1 ›</span>
+              <span>이 정보는 자동으로 저장되고, 매일 백업돼요</span>
+            </div>
+          </div><!-- /뷰 2 -->
+
+          <!-- ═══ 뷰 3. 후기 — 엑셀형 시트 (내용 컬럼은 줄바꿈 허용) ═══ -->
+          <div class="db__view" data-view="reviews" hidden>
+            <div class="db__head">
+              <div>
+                <h3>후기</h3>
+                <p>방문자가 남긴 후기예요. 낮은 별점과 미답변부터 챙겨 보세요.</p>
+              </div>
+              <button class="btn"><svg class="ph"><use href="#ph-download-simple"/></svg> 엑셀로 받기</button>
+            </div>
+
+            <div class="db__filter">
+              <label class="db__search">
+                <svg class="ph"><use href="#ph-magnifying-glass"/></svg>
+                <input placeholder="내용, 작성자로 찾기">
+              </label>
+              <button class="fchip is-on">전체 <b>5</b></button>
+              <button class="fchip">미답변 <b>2</b></button>
+              <button class="fchip">★3 이하 <b>0</b></button>
+            </div>
+
+            <div class="sheet">
+              <table>
+                <thead>
+                  <tr><th class="rn">#</th><th>작성자</th><th>별점</th><th>내용</th><th>산책러</th><th>날짜</th><th>답변</th><th>처리</th></tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td class="rn">1</td><td><b>박서연</b></td><td>★ 5.0</td>
+                    <td class="wrap">산책러님이 꼼꼼하고 친절해요. 산책 중간에 사진도 보내주셔서 안심됐어요. 비 오는 날인데 발도 깨끗하게 닦아서…</td>
+                    <td>김산책</td><td class="mono">07-14</td>
+                    <td><span class="cellst cellst--wait">미답변</span></td>
+                    <td class="acts"><button class="btn btn--primary">답글</button></td>
+                  </tr>
+                  <tr>
+                    <td class="rn">2</td><td><b>김하늘</b></td><td>★ 4.0</td>
+                    <td class="wrap">예약이 정말 간편해요. 시간대 선택이 조금 더 다양하면 좋겠어요.</td>
+                    <td>이도보</td><td class="mono">07-12</td>
+                    <td><span class="cellst cellst--wait">미답변</span></td>
+                    <td class="acts"><button class="btn btn--primary">답글</button></td>
+                  </tr>
+                  <tr>
+                    <td class="rn">3</td><td><b>이보람</b></td><td>★ 5.0</td>
+                    <td class="wrap">우리 콩이가 산책러님만 보면 꼬리를 흔들어요. 믿고 맡길 수 있어서 좋습니다.</td>
+                    <td>김산책</td><td class="mono">07-10</td>
+                    <td><span class="cellst cellst--ok">답변 완료</span></td>
+                    <td class="acts"><button class="btn">답글 보기</button></td>
+                  </tr>
+                  <tr>
+                    <td class="rn">4</td><td><b>최다인</b></td><td>★ 5.0</td>
+                    <td class="wrap">시간 약속이 정확하고 산책 일지도 보내주셔서 좋았어요.</td>
+                    <td>박걸음</td><td class="mono">07-06</td>
+                    <td><span class="cellst cellst--ok">답변 완료</span></td>
+                    <td class="acts"><button class="btn">답글 보기</button></td>
+                  </tr>
+                  <tr>
+                    <td class="rn">5</td><td><b>정우주</b></td><td>★ 5.0</td>
+                    <td class="wrap">별이가 낯을 많이 가리는데 금방 친해졌어요. 감사합니다!</td>
+                    <td>이도보</td><td class="mono">07-01</td>
+                    <td><span class="cellst cellst--ok">답변 완료</span></td>
+                    <td class="acts"><button class="btn">답글 보기</button></td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+
+            <div class="db__foot">
+              <span>평균 ★ 4.8 · 전체 5개 · 미답변 2개</span>
+              <span>이 정보는 자동으로 저장되고, 매일 백업돼요</span>
+            </div>
+          </div><!-- /뷰 3 -->
+
+          <!-- ═══ 뷰 4. 산책러 — 엑셀형 시트 ═══ -->
+          <div class="db__view" data-view="walkers" hidden>
+            <div class="db__head">
+              <div>
+                <h3>산책러</h3>
+                <p>서비스에 등록된 산책러 명단이에요.</p>
+              </div>
+              <button class="btn"><svg class="ph"><use href="#ph-download-simple"/></svg> 엑셀로 받기</button>
+            </div>
+
+            <div class="db__filter">
+              <label class="db__search">
+                <svg class="ph"><use href="#ph-magnifying-glass"/></svg>
+                <input placeholder="이름, 지역으로 찾기">
+              </label>
+              <button class="fchip is-on">전체 <b>3</b></button>
+              <button class="fchip">신규 <b>1</b></button>
+              <button class="fchip">★4.8 이상 <b>2</b></button>
+            </div>
+
+            <div class="sheet">
+              <table>
+                <thead>
+                  <tr><th class="rn">#</th><th>이름</th><th>지역</th><th>경력</th><th>평점</th><th>등록일</th><th>상태</th><th>처리</th></tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td class="rn">1</td><td><b>김산책</b></td><td>강남구</td><td>3년</td><td>★ 4.9</td><td class="mono">2025-11</td>
+                    <td><span class="cellst cellst--ok">● 활동 중</span></td>
+                    <td class="acts"><button class="btn">프로필</button></td>
+                  </tr>
+                  <tr>
+                    <td class="rn">2</td><td><b>이도보</b></td><td>서초구</td><td>2년</td><td>★ 4.8</td><td class="mono">2026-01</td>
+                    <td><span class="cellst cellst--ok">● 활동 중</span></td>
+                    <td class="acts"><button class="btn">프로필</button></td>
+                  </tr>
+                  <tr>
+                    <td class="rn">3</td><td><b>박걸음</b> <span class="tag tag--run">신규</span></td><td>송파구</td><td>1년</td><td>★ 5.0</td><td class="mono">2026-06</td>
+                    <td><span class="cellst cellst--ok">● 활동 중</span></td>
+                    <td class="acts"><button class="btn">프로필</button></td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+
+            <div class="db__foot">
+              <span>전체 3명</span>
               <span>이 정보는 자동으로 저장되고, 매일 백업돼요</span>
             </div>
           </div><!-- /뷰 4 -->
@@ -632,6 +582,9 @@
     <div class="modal__main spec">
       <button class="modal__x" id="spec-close" aria-label="닫기">✕</button>
       <h4>데이터베이스 탭 — 개발 노트 <span style="font-size:12px;font-weight:600;color:var(--color-muted)">(명세 §3.2.1 발췌)</span><span class="new-tag">NEW 07-22 10:50</span></h4>
+
+      <h5>표시 방식 전환 (2026-07-23 확정)</h5>
+      <p>유형별 카드 UI(인박스·게시글·명부)는 폐기하고, <b>모든 데이터 뷰를 사용자에게 익숙한 엑셀형 시트로 통일</b>한다 — 격자·행 번호·고정 헤더·행 호버. 데이터 유형 메뉴는 좌측 사이드바에서 <b>상단 탭</b>으로 이동. 요약(대시보드)·검색·필터 칩·엑셀 내보내기·행 처리 버튼(상시 노출)은 유지. 아래 템플릿 계약은 화면 생성이 아니라 <b>시트의 컬럼 구성·필터 축·행 버튼을 결정하는 용도</b>로 유지된다.</p>
 
       <h5>핵심 원칙 — 화면은 AI가 그리지 않는다</h5>
       <p>플랫폼이 <b>고정 템플릿 4유형</b>을 제공하고, AI는 스키마를 만들 때 테이블마다 "템플릿 선택 + 슬롯 매핑" 메타데이터만 출력한다 — 자유 생성 금지, <b>골라서 채우기만 허용</b>. 사용자에게는 개발 용어(테이블·행·컬럼) 대신 콘텐츠 이름(예약·회원·후기)으로, "조회"가 아니라 <b>"처리할 일"</b> 중심으로 보여준다.</p>
@@ -773,10 +726,10 @@
 
   /* ── 데이터 뷰 전환 — 사이드바 항목별 템플릿 유형 ── */
   function showView(key) {
-    document.querySelectorAll(".db__item").forEach((b) => b.classList.toggle("is-on", b.dataset.view === key));
+    document.querySelectorAll(".db-tab").forEach((b) => b.classList.toggle("is-on", b.dataset.view === key));
     document.querySelectorAll(".db__view").forEach((v) => { v.hidden = v.dataset.view !== key; });
   }
-  document.querySelectorAll(".db__item[data-view]").forEach((btn) => {
+  document.querySelectorAll(".db-tab[data-view]").forEach((btn) => {
     btn.addEventListener("click", () => showView(btn.dataset.view));
   });
   /* 대시보드의 [예약 보기] 같은 바로가기 */

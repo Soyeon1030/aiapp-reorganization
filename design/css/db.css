@@ -527,3 +527,94 @@
   .inbox__when { grid-column: 1; }
   .inbox__act { grid-column: 2; grid-row: 2; justify-self: end; }
 }
+
+/* ════════ 엑셀형 재설계 (2026-07-23) — 사이드바 → 상단 탭, 전 뷰 시트 통일 ════════ */
+.db--sheet { flex-direction: column; }
+
+/* 상단 데이터 탭 */
+.db-tabs {
+  display: flex;
+  align-items: center;
+  gap: 2px;
+  padding: 6px 24px 0;
+  border-bottom: 1px solid var(--color-line);
+  background: var(--color-surface);
+  flex-shrink: 0;
+}
+.db-tab {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  border: none;
+  background: none;
+  padding: 10px 14px 12px;
+  margin-bottom: -1px;
+  font-size: var(--text-sm);
+  font-weight: 600;
+  color: var(--color-muted);
+  border-bottom: 2px solid transparent;
+}
+.db-tab .ph { width: 15px; height: 15px; }
+.db-tab b {
+  font-weight: 600;
+  font-size: var(--text-2xs);
+  background: var(--color-surface-sub);
+  border-radius: var(--radius-full);
+  padding: 1px 8px;
+  color: var(--color-muted);
+}
+.db-tab.is-on { color: var(--color-accent-deep); border-bottom-color: var(--color-accent); }
+.db-tab.is-on b { background: var(--color-accent-soft); color: var(--color-accent-deep); }
+.db-tab:hover:not(.is-on) { color: var(--color-ink); }
+.db-tabs__note { margin-left: auto; font-size: var(--text-2xs); color: var(--color-muted); }
+
+/* 엑셀형 시트 — 격자 · 행 번호 · 고정 헤더 */
+.sheet {
+  border: 1px solid var(--color-line-strong);
+  border-radius: var(--radius-sm);
+  overflow: auto;
+  background: var(--color-surface);
+  max-height: 100%;
+}
+.sheet table { width: 100%; border-collapse: collapse; font-size: var(--text-xs); min-width: 680px; }
+.sheet th, .sheet td {
+  border-right: 1px solid var(--color-line);
+  border-bottom: 1px solid var(--color-line);
+  padding: 9px 12px;
+  text-align: left;
+  white-space: nowrap;
+  vertical-align: middle;
+}
+.sheet th:last-child, .sheet td:last-child { border-right: none; }
+.sheet tbody tr:last-child td { border-bottom: none; }
+.sheet thead th {
+  background: var(--color-surface-sub);
+  font-weight: 700;
+  font-size: var(--text-2xs);
+  color: var(--color-muted);
+  position: sticky;
+  top: 0;
+  z-index: 1;
+}
+.sheet .rn {
+  width: 40px;
+  min-width: 40px;
+  text-align: center;
+  background: var(--color-surface-sub);
+  color: var(--color-muted);
+  font-size: var(--text-2xs);
+  font-variant-numeric: tabular-nums;
+}
+.sheet tbody tr:hover td { background: color-mix(in srgb, var(--color-accent-soft) 35%, var(--color-surface)); }
+.sheet tbody tr.is-new td { background: color-mix(in srgb, var(--color-accent-soft) 55%, var(--color-surface)); }
+.sheet td.wrap { white-space: normal; min-width: 280px; max-width: 460px; line-height: 1.55; }
+.sheet .mono { font-family: var(--font-mono); font-size: var(--text-2xs); color: var(--color-muted); }
+.sheet td b { font-weight: 700; }
+.sheet .acts { display: table-cell; }
+.sheet .acts .btn { padding: 4px 11px; font-size: var(--text-2xs); border-radius: 7px; margin-right: 4px; }
+
+/* 셀 상태 표기 — 배지 대신 색 텍스트 (엑셀 톤) */
+.cellst { font-weight: 700; font-size: var(--text-2xs); white-space: nowrap; }
+.cellst--wait { color: var(--color-warn); }
+.cellst--ok { color: var(--color-ok); }
+.cellst--mut { color: var(--color-muted); }
