@@ -1221,3 +1221,14 @@
 .pub-cta:hover { filter: brightness(1.07); }
 .pub-cta:disabled { opacity: .45; }
 .modal--pub .pub-url { margin-bottom: 16px; }
+/* 완료 스텝의 다음 행동 — 행 전체가 클릭 이동 */
+.pub-fact--link {
+  width: 100%;
+  border: none;
+  background: none;
+  font: inherit;
+  text-align: left;
+  cursor: pointer;
+}
+.pub-fact--link:hover { background: var(--color-surface-sub); }
+.pub-fact--link:hover b { color: var(--color-accent-deep); }
