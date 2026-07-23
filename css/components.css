@@ -725,6 +725,13 @@
 /* 목차 없는 단일 페인(치트시트)은 조금 좁게 */
 .modal--spec:not(:has(.modal__side)) { width: min(880px, 100%); }
 .spec h5 { scroll-margin-top: 10px; }
+/* 두괄식 리드 — 노트 맨 위 한 줄 요약 콜아웃 */
+.spec .lead {
+  background: var(--color-accent-soft);
+  border-radius: var(--radius-md);
+  padding: 10px 14px;
+  margin: 0 0 14px;
+}
 
 .spec h5 {
   margin: 18px 0 8px;
