@@ -470,13 +470,29 @@
                 </div>
                 <div class="serp" style="margin-top:0" aria-label="카톡 공유 미리보기">
                   <div class="serp__label">카톡으로 공유하면 이렇게 보여요</div>
-                  <div class="kakao">
-                    <span class="kakao__img">청솔</span>
-                    <span class="kakao__tx">
-                      <b id="seo-kakao-title">청솔 식자재 발주</b>
-                      <span id="seo-kakao-desc">품목을 골라 담는 온라인 발주. 전화 없이 정확하게.</span>
-                      <small>chungsol-order.aiapp.help</small>
-                    </span>
+                  <div class="kakao-duo">
+                    <div class="kakao-state">
+                      <span class="kakao-state__t">지금 — 공유 이미지가 없어서 작게 보여요</span>
+                      <div class="kakao">
+                        <span class="kakao__img">청솔</span>
+                        <span class="kakao__tx">
+                          <b id="seo-kakao-title">청솔 식자재 발주</b>
+                          <span id="seo-kakao-desc">품목을 골라 담는 온라인 발주. 전화 없이 정확하게.</span>
+                          <small>chungsol-order.aiapp.help</small>
+                        </span>
+                      </div>
+                    </div>
+                    <div class="kakao-state">
+                      <span class="kakao-state__t kakao-state__t--goal">공유 이미지를 등록하면 — 크게 보여요</span>
+                      <div class="kakao kakao--card">
+                        <span class="kakao__hero">청솔 식자재</span>
+                        <span class="kakao__tx">
+                          <b id="seo-kakao-title2">청솔 식자재 발주</b>
+                          <span id="seo-kakao-desc2">품목을 골라 담는 온라인 발주. 전화 없이 정확하게.</span>
+                          <small>chungsol-order.aiapp.help</small>
+                        </span>
+                      </div>
+                    </div>
                   </div>
                 </div>
               </div>
@@ -925,6 +941,8 @@
     document.getElementById("seo-serp-desc").textContent = d;
     document.getElementById("seo-kakao-title").textContent = t.split(" — ")[0];
     document.getElementById("seo-kakao-desc").textContent = d;
+    document.getElementById("seo-kakao-title2").textContent = t.split(" — ")[0];
+    document.getElementById("seo-kakao-desc2").textContent = d;
     document.getElementById("seo-row-desc").textContent = t + " · 직접 수정했어요.";
     seoEdit.hidden = true;
   });

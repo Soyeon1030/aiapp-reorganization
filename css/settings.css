@@ -420,7 +420,32 @@
 .seoedit__field input:focus-visible, .seoedit__field textarea:focus-visible { outline: 2px solid var(--color-accent); outline-offset: 0; }
 .seoedit__acts { display: flex; gap: 8px; }
 
-/* 카톡 공유 미리보기 */
+/* 카톡 공유 미리보기 — 전/후 2단: 이미지 없음(가로 소형) vs 등록 후(상단 큰 섬네일) */
+.kakao-duo {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 16px;
+  align-items: start;
+}
+.kakao-state__t {
+  display: block;
+  font-size: var(--text-2xs);
+  color: var(--color-muted);
+  margin-bottom: 7px;
+}
+.kakao-state__t--goal { color: var(--color-accent-deep); font-weight: 700; }
+.kakao.kakao--card { display: block; } /* 기본 .kakao의 flex를 덮는다 — 세로형(섬네일 상단) */
+.kakao.kakao--card .kakao__hero { display: grid; width: 100%; }
+.kakao__hero {
+  display: grid;
+  place-items: center;
+  height: 118px;
+  background: linear-gradient(160deg, #33507E, #22304A);  /* 청솔 브랜드 톤 — 미리보기 전용 */
+  color: #fff;
+  font-size: var(--text-sm);
+  font-weight: 800;
+  letter-spacing: .02em;
+}
 .kakao {
   display: flex;
   overflow: hidden;
