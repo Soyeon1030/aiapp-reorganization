@@ -44,9 +44,6 @@
     <button class="gnb__row gnb__row--proj is-active" title="새 프로젝트">
       <span class="avatar avatar--xs" style="--av:#7B61C9">새</span><span class="gnb__label">새 프로젝트 (설계 중)</span>
     </button>
-    <button class="gnb__row gnb__row--proj" title="멍멍 산책 예약" onclick="location.href='b2.html'">
-      <span class="avatar avatar--xs" style="--av:#D98E4A">멍</span><span class="gnb__label">멍멍 산책 예약</span>
-    </button>
     <button class="gnb__row" title="모든 프로젝트">
       <svg class="ph"><use href="#ph-squares-four"/></svg><span class="gnb__label">모든 프로젝트</span>
     </button>
@@ -78,8 +75,8 @@
       <div class="notif-item">
         <span class="notif-item__ico">📅</span>
         <div class="notif-item__body">
-          <div class="notif-item__t">새 예약 신청 <i class="dot-new"></i></div>
-          <div class="notif-item__d">박서연 님 — 7/14(화) 10:00 · 확인하고 확정해 주세요</div>
+          <div class="notif-item__t">새 발주 접수 <i class="dot-new"></i></div>
+          <div class="notif-item__d">한솥분식 — 내일 오전 납품 · 대파 5단 외 3건</div>
         </div>
         <span class="notif-item__time">방금</span>
       </div>
@@ -87,15 +84,15 @@
         <span class="notif-item__ico notif-item__ico--ok">🚀</span>
         <div class="notif-item__body">
           <div class="notif-item__t">출시 완료</div>
-          <div class="notif-item__d">멍멍 산책 예약이 LIVE 상태가 됐어요</div>
+          <div class="notif-item__d">청솔 식자재 발주가 LIVE 상태가 됐어요</div>
         </div>
         <span class="notif-item__time">1시간 전</span>
       </div>
       <div class="notif-item">
         <span class="notif-item__ico">💬</span>
         <div class="notif-item__body">
-          <div class="notif-item__t">새 후기</div>
-          <div class="notif-item__d">"산책러님이 꼼꼼하고 친절해요" 후기가 달렸어요</div>
+          <div class="notif-item__t">새 거래처 등록</div>
+          <div class="notif-item__d">부산집 국밥이 거래처로 등록했어요</div>
         </div>
         <span class="notif-item__time">어제</span>
       </div>
@@ -306,7 +303,7 @@
 
             <!-- 확정 — 질의 완료 시 -->
             <div class="plan__confirm" id="plan-confirm">
-              <button class="btn btn--primary" disabled onclick="location.href='b2-order.html?build=1'">맞아요, 이대로 만들어 주세요</button>
+              <button class="btn btn--primary" disabled onclick="location.href='b2.html?build=1'">맞아요, 이대로 만들어 주세요</button>
               <div class="warn">질문에 모두 답하면 확정할 수 있어요. 확정 뒤에도 화면·기능·디자인은 계속 수정할 수 있어요.</div>
             </div>
           </div>
@@ -634,7 +631,7 @@
       document.getElementById("making").outerHTML = `
         <p class="log-line">기획안을 완성했어요. 오른쪽에서 확인해 주세요 — 고치고 싶은 건 여기로 편하게 말씀해 주세요.</p>
         <div class="chat-go">
-          <button class="btn btn--primary" onclick="location.href='b2-order.html?build=1'">맞아요, 이대로 만들어 주세요</button>
+          <button class="btn btn--primary" onclick="location.href='b2.html?build=1'">맞아요, 이대로 만들어 주세요</button>
           <small>확정하면 만들기를 시작해요 · 확정 뒤에도 계속 수정할 수 있어요</small>
         </div>`;
       /* 우측: 빈 규격 → JSON 일괄 바인딩된 문서로 교체 */
