@@ -405,17 +405,12 @@
                       <textarea id="seo-desc-in" rows="2">품목을 골라 담는 온라인 발주. 전화 없이 정확하게, 새벽 배송 준비까지.</textarea>
                     </div>
                     <div class="seoedit__field">
-                      <label>검색 키워드 <small>손님이 검색할 만한 단어 — 눌러서 켜고 끄세요</small></label>
-                      <div class="seoedit__kw">
-                        <button class="kwchip is-on">식자재 도매</button>
-                        <button class="kwchip is-on">식당 발주</button>
-                        <button class="kwchip">새벽 배송 식자재</button>
-                        <button class="kwchip kwchip--add">+ 직접 추가</button>
-                      </div>
+                      <label>검색 키워드 <small>손님이 검색할 만한 단어 — 쉼표(,)로 구분해 적어주세요</small></label>
+                      <input id="seo-kw-in" value="식자재 도매, 식당 발주, 새벽 배송 식자재">
                     </div>
                     <div class="seoedit__gen">
                       <button class="btn btn--gen" id="seo-ai">✦ AI가 검색 문구 만들어 주기</button>
-                      <small>켜둔 키워드로 위 제목·소개를 다시 써드려요</small>
+                      <small>적어둔 키워드로 위 제목·소개를 다시 써드려요</small>
                     </div>
                   </div>
 
@@ -930,10 +925,6 @@
     seoEdit.hidden = true;
   });
 
-  /* 키워드 칩 토글 */
-  document.querySelectorAll(".kwchip:not(.kwchip--add)").forEach((c) => {
-    c.addEventListener("click", () => c.classList.toggle("is-on"));
-  });
 </script>
 
 </body>
