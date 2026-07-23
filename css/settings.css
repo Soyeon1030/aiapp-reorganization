@@ -1053,7 +1053,9 @@
 .bd-del { color: var(--color-danger); border-color: var(--color-danger); }
 
 /* ── 글 상세 드로어 — 목록을 남겨둔 채 우측에서 열림 ── */
-.set { position: relative; }
+/* overflow hidden 필수: 닫힌 드로어(translateX 103%)가 패널 밖으로 나가 있어도
+   스크롤 영역을 만들지 않게 여기서 잘라낸다 (변환 요소도 스크롤 오버플로에 포함됨) */
+.set { position: relative; overflow: hidden; }
 .mem tr.bd-row { cursor: pointer; }
 .mem tr.bd-row:hover td { background: var(--color-surface-sub); }
 .bd-scrim {
