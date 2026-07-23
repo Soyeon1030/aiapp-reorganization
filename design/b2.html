@@ -374,6 +374,7 @@
      대기(전송 가능) / 작업 중(전송 잠금+진행 카드 회전) / 질의 중(전송 잠금+되묻기 활성) -->
 <div class="demo-states" role="group" aria-label="상태 시연">
   <span class="demo-states__label">상태 시연</span>
+  <button onclick="location.href='b2.html?build=1'">생성 재생</button>
   <button data-state="idle">대기</button>
   <button data-state="busy">작업 중</button>
   <button data-state="ask" class="is-on">질의 중</button>
@@ -890,6 +891,73 @@
     divider.addEventListener("pointermove", move);
     divider.addEventListener("pointerup", up);
   });
+
+  /* ── 생성 진행 시퀀스 (?build=1) — 설계안 확정 직후의 연출 재생.
+     채팅이 순차적으로 올라오고, 진행 카드가 단계별로 갱신되며,
+     완료 보고가 뜰 때 미리보기 스켈레톤 → 사이트로 완성 ── */
+  if (new URLSearchParams(location.search).has("build")) {
+    const chatEl = document.querySelector(".feed__scroll .chat");
+    const feedScroll = document.querySelector(".feed__scroll");
+    const items = Array.from(chatEl.children);
+    const cutoff = items.findIndex((el) => el.classList.contains("next-sugg"));
+    const rows = document.querySelectorAll(".console-card .console-row");
+    const foot = document.querySelector(".console-card__foot span");
+
+    /* 초기화: 채팅 숨김 · 진행 카드 대기 · 미리보기 스켈레톤 · 전송 잠금 */
+    items.forEach((el) => { el.hidden = true; });
+    rows.forEach((r, i) => {
+      r.classList.remove("is-done", "is-run", "is-wait");
+      r.classList.add(i === 0 ? "is-run" : "is-wait");
+      r.querySelector(".console-row__detail").textContent = i === 0 ? "진행 중" : "대기";
+    });
+    foot.textContent = "🔒 전용 공간에서 만드는 중";
+    document.getElementById("pv-loading").hidden = false;
+    document.querySelector(".pv__canvas").hidden = true;
+    lockChat(true, "지금 만들고 있어요 — 끝나면 보낼 수 있어요 (미리 써둘 수 있어요)");
+
+    /* 단계 진행: n번째까지 완료, next는 진행 중 */
+    function setStage(doneUpto) {
+      rows.forEach((r, i) => {
+        r.classList.remove("is-done", "is-run", "is-wait");
+        const d = r.querySelector(".console-row__detail");
+        if (i <= doneUpto) { r.classList.add("is-done"); d.textContent = "완료"; }
+        else if (i === doneUpto + 1) { r.classList.add("is-run"); d.textContent = "진행 중"; }
+        else { r.classList.add("is-wait"); d.textContent = "대기"; }
+      });
+    }
+    /* 요소 내용 → 단계 매핑 */
+    function onReveal(el) {
+      const t = el.textContent || "";
+      if (el.classList.contains("log-chk") && t.includes("설계안 확인")) setStage(0);
+      if (el.classList.contains("log-chk") && t.includes("화면 6개")) setStage(1);
+      if (el.classList.contains("log-chk") && t.includes("테이블 4개")) setStage(2);
+      if (el.classList.contains("log-chk") && t.includes("게시판 연결")) setStage(3);
+      if (el.classList.contains("report")) {
+        setStage(4);
+        foot.textContent = "🔒 전용 공간에서 안전하게 운영 중";
+        /* 미리보기 완성 — 스켈레톤 → 사이트 */
+        document.getElementById("pv-loading").hidden = true;
+        document.querySelector(".pv__canvas").hidden = false;
+      }
+    }
+    let idx = 0;
+    function next() {
+      if (idx >= items.length) { lockChat(false); return; }
+      const el = items[idx++];
+      el.hidden = false;
+      onReveal(el);
+      feedScroll.scrollTo({ top: feedScroll.scrollHeight, behavior: "smooth" });
+      if (idx <= cutoff + 1) {
+        const delay = el.classList.contains("log-line") ? 900
+          : el.classList.contains("report") ? 1100
+          : el.classList.contains("pause-card") ? 1100 : 650;
+        setTimeout(next, delay);
+      } else {
+        next();   /* 완료 이후(운영 중 시연)는 즉시 표시 */
+      }
+    }
+    setTimeout(next, 500);
+  }
 </script>
 
 </body>
