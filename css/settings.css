@@ -652,7 +652,7 @@
   border: 1px solid var(--color-line);
   background: var(--color-surface);
   border-radius: var(--radius-full);
-  padding: 3px 12px;
+  padding: 4px 12px;
   font-size: var(--text-2xs);
   font-weight: 600;
   color: var(--color-muted);
