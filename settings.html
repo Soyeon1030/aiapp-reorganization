@@ -210,6 +210,15 @@
           <!-- 기능 설정(회원·게시판·알림·결제)·데이터·이력(연락처·되돌리기) 그룹은 2026-07-23 잠정 제거 — 확정된 기능부터 "기능 관리"로 하나씩 추가 -->
           <span class="set__side-label">기능 관리</span>
           <button class="set__item" data-view="members"><svg class="ph"><use href="#ph-user"/></svg> 회원 관리 <span class="set__need" id="mem-badge">대기 1</span></button>
+          <!-- 하위 화면이 여러 개인 기능은 아코디언 — 접으면 배지 합산, 펼치면 하위로 -->
+          <button class="set__item set__item--acc" id="msg-acc" aria-expanded="false"><svg class="ph"><use href="#ph-chat-circle"/></svg> 메시지 <span class="set__need" id="msg-badge">검수 1</span><span class="set__caret" aria-hidden="true"></span></button>
+          <div class="set__sub" id="msg-sub" hidden>
+            <button class="set__item set__item--sub" data-view="msg-dash">대시보드</button>
+            <button class="set__item set__item--sub" data-view="msg-aud">발송대상</button>
+            <button class="set__item set__item--sub" data-view="msg-send">메시지 발송</button>
+            <button class="set__item set__item--sub" data-view="msg-tpl">템플릿 <span class="set__need">검수 1</span></button>
+            <button class="set__item set__item--sub" data-view="msg-hist">발송이력</button>
+          </div>
 
           <div class="set__side-foot"><b>✓</b> 바꾸면 바로 적용돼요</div>
         </aside>
@@ -557,23 +566,6 @@
                     <button class="mem-chip" data-role="admin">관리자 <b>1</b></button>
                   </div>
 
-                  <!-- 메시지 패널 — 선택한 회원에게 알림톡/SMS -->
-                  <div class="mem__msg" id="mem-msg" hidden>
-                    <div class="mem__msg-head">
-                      <b>선택한 회원 <span id="mem-msg-n">0</span>명에게 보내요</b>
-                      <div class="seg seg--sm" id="mem-ch">
-                        <button class="seg__opt is-on">알림톡</button>
-                        <button class="seg__opt">SMS · MMS</button>
-                      </div>
-                    </div>
-                    <textarea id="mem-msg-text" rows="2" placeholder="예: 이번 주 금요일은 휴무예요 — 발주는 목요일까지 부탁드려요."></textarea>
-                    <div class="mem__msg-acts">
-                      <button class="btn btn--primary" id="mem-msg-send">보내기</button>
-                      <button class="btn" id="mem-msg-close">닫기</button>
-                      <small>알림톡이 실패한 번호에는 SMS로 자동 대체 발송돼요.</small>
-                    </div>
-                  </div>
-
                   <table class="mem" aria-label="회원 목록">
                     <thead>
                       <tr>
@@ -610,6 +602,228 @@
                   </table>
                   <div class="mem__foot" id="mem-foot">전체 23명 — 최근 가입 순이에요. 못 찾으면 검색해 보세요. 메시지·탈퇴 버튼은 행에 올리면 나타나요.</div>
                 </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- ═══ 메시지 1. 대시보드 ═══ -->
+          <div class="set__view" data-view="msg-dash" hidden>
+            <div class="set__head">
+              <div>
+                <h3>메시지 대시보드</h3>
+                <p>보낸 메시지가 잘 도착하고 있는지 한눈에 봐요. 매시간 갱신돼요.</p>
+              </div>
+              <span class="tag tag--ok">성공률 98.2%</span>
+            </div>
+
+            <div class="stats">
+              <div class="stat"><span class="stat__l">오늘 발송</span><span class="stat__v">46<small>건</small></span><span class="stat__d">발주 확정 알림 위주</span></div>
+              <div class="stat"><span class="stat__l">이번 주</span><span class="stat__v">312<small>건</small></span><span class="stat__d stat__d--up">▲ 8% 지난주보다</span></div>
+              <div class="stat"><span class="stat__l">이번 달</span><span class="stat__v">1,204<small>건</small></span><span class="stat__d">7월 1일부터</span></div>
+              <div class="stat"><span class="stat__l">발송 성공률</span><span class="stat__v">98.2<small>%</small></span><span class="stat__d">실패분은 SMS 자동 대체 후 수치</span></div>
+            </div>
+
+            <div class="chart-card">
+              <div class="chart-card__head"><b>일별 발송량</b><span>최근 7일</span></div>
+              <div class="bars" role="img" aria-label="최근 7일 발송량 — 오늘 46건">
+                <div class="bar-col" title="7/17 (금) · 38건"><i style="height:56%"></i></div>
+                <div class="bar-col" title="7/18 (토) · 52건"><i style="height:76%"></i></div>
+                <div class="bar-col" title="7/19 (일) · 30건"><i style="height:44%"></i></div>
+                <div class="bar-col" title="7/20 (월) · 44건"><i style="height:64%"></i></div>
+                <div class="bar-col" title="7/21 (화) · 66건"><i style="height:94%"></i></div>
+                <div class="bar-col" title="7/22 (수) · 58건"><i style="height:84%"></i></div>
+                <div class="bar-col is-today" title="7/23 (목) · 46건"><b>46</b><i style="height:67%"></i></div>
+              </div>
+              <div class="bars-x">
+                <span>금</span><span>토</span><span>일</span><span>월</span><span>화</span><span>수</span><span class="is-today">오늘</span>
+              </div>
+            </div>
+
+            <div class="chart-card">
+              <div class="chart-card__head"><b>발송 유형별</b><span>이번 달</span></div>
+              <div class="msgmix">
+                <div class="msgmix__row"><b>알림톡</b><span class="msgmix__bar"><i style="width:72%"></i></span><small>867건 · 72%</small></div>
+                <div class="msgmix__row"><b>SMS</b><span class="msgmix__bar"><i style="width:23%;opacity:.55"></i></span><small>277건 · 23%</small></div>
+                <div class="msgmix__row"><b>MMS</b><span class="msgmix__bar"><i style="width:5%;opacity:.3"></i></span><small>60건 · 5%</small></div>
+              </div>
+              <p class="msgmix__note">알림톡이 기본이고, 실패하면 SMS로 자동 대체돼요 — SMS 수치엔 대체 발송이 포함돼요.</p>
+            </div>
+          </div>
+
+          <!-- ═══ 메시지 2. 발송대상 ═══ -->
+          <div class="set__view" data-view="msg-aud" hidden>
+            <div class="set__head">
+              <div>
+                <h3>발송대상</h3>
+                <p>메시지를 받을 연락처를 그룹으로 관리해요. 수신 동의된 명단이에요.</p>
+              </div>
+              <button class="btn">엑셀로 등록</button>
+              <button class="btn btn--primary">직접 등록</button>
+            </div>
+
+            <div class="ums-aud">
+              <div class="set__card ums-groups">
+                <button class="is-on">전체 <small>41</small></button>
+                <button>거래처 <small>23</small></button>
+                <button>신규 거래처 <small>6</small></button>
+                <button>휴면 <small>12</small></button>
+                <button class="ums-groups__add">+ 그룹 만들기</button>
+              </div>
+              <div class="set__card ums-list">
+                <div class="mem-wrap">
+                  <div class="mem__bar">
+                    <label class="mem__search">
+                      <svg class="ph"><use href="#ph-magnifying-glass"/></svg>
+                      <input placeholder="이름, 전화번호로 찾기">
+                    </label>
+                    <button class="btn" disabled>선택 삭제</button>
+                  </div>
+                  <table class="mem" aria-label="발송대상 목록">
+                    <thead><tr><th class="ck"><input type="checkbox" aria-label="전체 선택"></th><th>이름</th><th>전화번호</th><th>설명</th><th>그룹</th><th></th></tr></thead>
+                    <tbody>
+                      <tr><td class="ck"><input type="checkbox"></td><td><b>한솥분식</b></td><td class="meta">010-4477-8899</td><td class="meta">주 3회 발주 · 야채 위주</td><td><span class="tag">거래처</span></td><td class="mem__acts"><button class="btn">수정</button></td></tr>
+                      <tr><td class="ck"><input type="checkbox"></td><td><b>카페 소소</b></td><td class="meta">010-1234-5678</td><td class="meta">우유·베이커리 정기</td><td><span class="tag">거래처</span></td><td class="mem__acts"><button class="btn">수정</button></td></tr>
+                      <tr><td class="ck"><input type="checkbox"></td><td><b>부산집 국밥</b></td><td class="meta">010-2210-4471</td><td class="meta">신규 — 7월 가입</td><td><span class="tag">신규 거래처</span></td><td class="mem__acts"><button class="btn">수정</button></td></tr>
+                      <tr><td class="ck"><input type="checkbox"></td><td><b>대박정육식당</b></td><td class="meta">010-9876-5432</td><td class="meta">주말 발주 많음</td><td><span class="tag">거래처</span></td><td class="mem__acts"><button class="btn">수정</button></td></tr>
+                    </tbody>
+                  </table>
+                  <div class="mem__foot">전체 41명 — 회원 관리의 회원과 별개인 발송용 명단이에요. 수정·삭제 버튼은 행에 올리면 나타나요.</div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- ═══ 메시지 3. 발송 ═══ -->
+          <div class="set__view" data-view="msg-send" hidden>
+            <div class="set__head">
+              <div>
+                <h3>메시지 발송</h3>
+                <p>대상을 고르고 내용을 쓰면 오른쪽 미리보기 그대로 나가요.</p>
+              </div>
+              <div class="seg" id="ums-ch">
+                <button class="seg__opt is-on" data-ch="kko">알림톡</button>
+                <button class="seg__opt" data-ch="sms">SMS · MMS</button>
+              </div>
+            </div>
+
+            <div class="ums-compose">
+              <div class="set__card ums-form">
+                <div class="ums-frow">
+                  <div class="ums-f"><label>발송대상</label><div class="ums-in" id="ums-target">거래처 (23명) ▾</div></div>
+                  <div class="ums-f"><label>발신 번호</label><div class="ums-in">0507-1234-5678 (등록됨) ▾</div></div>
+                </div>
+                <div class="ums-frow">
+                  <div class="ums-f" id="ums-f-tpl"><label>템플릿 <small>알림톡은 승인된 템플릿만 보낼 수 있어요</small></label><div class="ums-in">발주 확정 안내 (승인됨) ▾</div></div>
+                  <div class="ums-f"><label>카테고리</label><div class="ums-in">배송·주문 안내 ▾</div></div>
+                </div>
+                <div class="ums-f" id="ums-f-title" hidden><label>제목 <small>MMS만 — 30자까지</small></label><div class="ums-in">7월 휴무 안내</div></div>
+                <div class="ums-f">
+                  <label>내용</label>
+                  <textarea rows="6">#{거래처명} 사장님, 발주가 확정됐어요.
+
+품목: #{품목요약}
+납품: #{납품일} 새벽
+
+변경이 필요하면 이 번호로 회신해 주세요.</textarea>
+                  <small class="ums-cnt">변수 #{...}는 발송할 때 받는 분마다 자동으로 채워져요 · 92 / 1,000자</small>
+                </div>
+                <div class="ums-f" id="ums-f-img" hidden><label>이미지 첨부 <small>MMS · 1장, 300KB까지</small></label><div class="ums-attach">클릭해서 이미지 올리기</div></div>
+                <div class="ums-acts">
+                  <button class="btn btn--primary">지금 발송</button>
+                  <button class="btn">예약 발송</button>
+                  <small>발송 전에 나에게 테스트 발송으로 확인할 수 있어요</small>
+                </div>
+              </div>
+
+              <div class="ums-phone">
+                <div class="ums-phone__cap">받는 사람이 보는 화면</div>
+                <div class="ums-kko" id="ums-pv-kko">
+                  <div class="ums-kko__hd">알림톡 · 청솔 식자재</div>
+                  <div class="ums-kko__bd"><b>발주 확정 안내</b>한솥분식 사장님, 발주가 확정됐어요.<br><br>품목: 대파 5단 외 1건<br>납품: 7월 24일 새벽<br><br>변경이 필요하면 이 번호로 회신해 주세요.</div>
+                  <div class="ums-kko__btn">발주 내역 보기</div>
+                </div>
+                <div class="ums-sms" id="ums-pv-sms" hidden>
+                  <div class="ums-sms__from">0507-1234-5678</div>
+                  <div class="ums-sms__img">첨부 이미지</div>
+                  <b>7월 휴무 안내</b>
+                  한솥분식 사장님, 발주가 확정됐어요.<br><br>품목: 대파 5단 외 1건<br>납품: 7월 24일 새벽
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- ═══ 메시지 4. 템플릿 ═══ -->
+          <div class="set__view" data-view="msg-tpl" hidden>
+            <div class="set__head">
+              <div>
+                <h3>템플릿</h3>
+                <p>자주 보내는 메시지를 저장해 두고 골라 써요. 알림톡 템플릿은 카카오 검수를 거쳐요.</p>
+              </div>
+              <button class="btn btn--primary">새 템플릿</button>
+            </div>
+
+            <div class="seg" id="ums-tplseg" style="align-self:flex-start">
+              <button class="seg__opt is-on" data-t="kko">알림톡</button>
+              <button class="seg__opt" data-t="sms">SMS · MMS</button>
+            </div>
+
+            <div class="set__card" id="ums-tpl-kko">
+              <div class="mem-wrap">
+                <table class="mem" aria-label="알림톡 템플릿">
+                  <thead><tr><th>상태</th><th>템플릿 명</th><th>카테고리</th><th>유형</th><th>생성일시</th><th></th></tr></thead>
+                  <tbody>
+                    <tr><td><span class="tag tag--ok">승인</span></td><td><b>발주 확정 안내</b></td><td class="meta">배송·주문</td><td class="meta">기본형 + 버튼</td><td class="meta">07-21 14:02</td><td class="mem__acts"><button class="btn">수정</button></td></tr>
+                    <tr><td><span class="tag tag--ok">승인</span></td><td><b>출고 완료 안내</b></td><td class="meta">배송·주문</td><td class="meta">기본형</td><td class="meta">07-21 14:10</td><td class="mem__acts"><button class="btn">수정</button></td></tr>
+                    <tr><td><span class="tag tag--warn">검수 중</span></td><td><b>휴무 공지</b></td><td class="meta">공지</td><td class="meta">강조표기형</td><td class="meta">07-23 09:40</td><td class="mem__acts"><button class="btn">보기</button></td></tr>
+                    <tr><td><span class="tag tag--bad">반려</span></td><td><b>신규 품목 홍보</b></td><td class="meta">마케팅</td><td class="meta">이미지형</td><td class="meta">07-22 11:15</td><td class="mem__acts"><button class="btn">사유 보기</button></td></tr>
+                  </tbody>
+                </table>
+                <div class="mem__foot">검수는 보통 1~3일 걸려요 · 반려되면 사유를 보고 고쳐서 다시 낼 수 있어요 · 광고성 내용은 알림톡 대신 SMS로 보내야 해요.</div>
+              </div>
+            </div>
+
+            <div class="set__card" id="ums-tpl-sms" hidden>
+              <div class="mem-wrap">
+                <table class="mem" aria-label="SMS/MMS 템플릿">
+                  <thead><tr><th>메시지 타입</th><th>템플릿 명</th><th>카테고리</th><th>생성일시</th><th></th></tr></thead>
+                  <tbody>
+                    <tr><td><span class="tag">SMS</span></td><td><b>발주 마감 리마인드</b></td><td class="meta">안내</td><td class="meta">07-21 15:22</td><td class="mem__acts"><button class="btn">수정</button></td></tr>
+                    <tr><td><span class="tag">MMS</span></td><td><b>7월 휴무 안내</b></td><td class="meta">공지</td><td class="meta">07-22 10:05</td><td class="mem__acts"><button class="btn">수정</button></td></tr>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+
+          <!-- ═══ 메시지 5. 발송이력 ═══ -->
+          <div class="set__view" data-view="msg-hist" hidden>
+            <div class="set__head">
+              <div>
+                <h3>발송이력</h3>
+                <p>보낸 메시지의 결과를 확인해요. 실패 건은 눌러서 원인을 볼 수 있어요.</p>
+              </div>
+              <button class="btn">엑셀로 받기</button>
+            </div>
+
+            <div class="mem-chips">
+              <button class="mem-chip is-on">전체</button>
+              <button class="mem-chip">알림톡</button>
+              <button class="mem-chip">SMS · MMS</button>
+              <button class="mem-chip">실패만</button>
+            </div>
+
+            <div class="set__card">
+              <div class="mem-wrap">
+                <table class="mem" aria-label="발송이력">
+                  <thead><tr><th>타입</th><th>내용</th><th>성공</th><th>실패</th><th>대기</th><th>발송일시</th></tr></thead>
+                  <tbody>
+                    <tr><td><span class="tag">알림톡</span></td><td class="ums-clamp">발주 확정 안내 — 한솥분식 사장님, 발주가 확정됐어요…</td><td class="ums-ok">23</td><td class="meta">0</td><td class="meta">0</td><td class="meta">오늘 09:12</td></tr>
+                    <tr><td><span class="tag">알림톡</span></td><td class="ums-clamp">출고 완료 안내 — 오늘 새벽 출고가 완료됐어요…</td><td class="ums-ok">21</td><td class="ums-bad">2</td><td class="meta">0</td><td class="meta">오늘 06:00</td></tr>
+                    <tr><td><span class="tag">SMS</span></td><td class="ums-clamp">(알림톡 실패 자동 대체) 출고 완료 안내…</td><td class="ums-ok">2</td><td class="meta">0</td><td class="meta">0</td><td class="meta">오늘 06:01</td></tr>
+                    <tr><td><span class="tag">MMS</span></td><td class="ums-clamp">7월 휴무 안내 — 7월 27일(월)은 정기 휴무입니다…</td><td class="ums-ok">39</td><td class="ums-bad">1</td><td class="meta">0</td><td class="meta">어제 17:30</td></tr>
+                    <tr><td><span class="tag">알림톡</span></td><td class="ums-clamp">발주 마감 리마인드 — 오늘 밤 10시에 발주가 마감돼요…</td><td class="meta">—</td><td class="meta">—</td><td class="ums-wait">23</td><td class="meta">오늘 21:00 예약</td></tr>
+                  </tbody>
+                </table>
               </div>
             </div>
           </div>
@@ -780,6 +994,7 @@
   function showSetView(key) {
     document.querySelectorAll(".set__item[data-view]").forEach((b) => b.classList.toggle("is-on", b.dataset.view === key));
     document.querySelectorAll(".set__view").forEach((v) => { v.hidden = v.dataset.view !== key; });
+    msgOpen(key.startsWith("msg-"));
   }
   document.querySelectorAll(".set__item[data-view]").forEach((btn) => {
     btn.addEventListener("click", () => showSetView(btn.dataset.view));
@@ -798,11 +1013,6 @@
     o.addEventListener("click", () => {
       document.querySelectorAll("#mem-join .seg__opt").forEach((x) => x.classList.toggle("is-on", x === o));
       document.getElementById("mem-join-desc").textContent = joinDesc[o.dataset.v];
-    });
-  });
-  document.querySelectorAll("#mem-ch .seg__opt").forEach((o) => {
-    o.addEventListener("click", () => {
-      document.querySelectorAll("#mem-ch .seg__opt").forEach((x) => x.classList.toggle("is-on", x === o));
     });
   });
 
@@ -831,8 +1041,6 @@
     const n = document.querySelectorAll("#mem-rows input[type=checkbox]:checked").length;
     memMsgBtn.disabled = n === 0;
     memMsgBtn.textContent = n ? `메시지 보내기 (${n}명)` : "메시지 보내기";
-    document.getElementById("mem-msg-n").textContent = n;
-    if (n === 0) document.getElementById("mem-msg").hidden = true;
   }
   document.getElementById("mem-rows").addEventListener("change", (e) => {
     if (e.target.matches("input[type=checkbox]")) memSync();
@@ -842,17 +1050,11 @@
     memSync();
   });
 
-  /* 메시지 패널 */
-  memMsgBtn.addEventListener("click", () => { document.getElementById("mem-msg").hidden = false; });
-  document.getElementById("mem-msg-close").addEventListener("click", () => { document.getElementById("mem-msg").hidden = true; });
-  document.getElementById("mem-msg-send").addEventListener("click", () => {
-    const btn = document.getElementById("mem-msg-send");
-    btn.textContent = "보냈어요 ✓";
-    setTimeout(() => {
-      btn.textContent = "보내기";
-      document.getElementById("mem-msg").hidden = true;
-      document.getElementById("mem-msg-text").value = "";
-    }, 1200);
+  /* 메시지 보내기 → 메시지 메뉴의 발송 화면으로 (발송 기능은 한 곳에만) */
+  memMsgBtn.addEventListener("click", () => {
+    const n = document.querySelectorAll("#mem-rows input[type=checkbox]:checked").length;
+    if (n) document.getElementById("ums-target").textContent = `회원 관리에서 선택한 ${n}명 ▾`;
+    showSetView("msg-send");
   });
 
   /* 목록 동작 — 행 메시지(그 회원만 선택 후 패널) · 탈퇴(한 번 더 눌러 확정) */
@@ -862,7 +1064,7 @@
       const ck = tr.querySelector("input[type=checkbox]");
       if (ck) ck.checked = true;
       memSync();
-      document.getElementById("mem-msg").hidden = false;
+      memMsgBtn.click();
     } else if (e.target.classList.contains("mem-out")) {
       if (e.target.textContent === "탈퇴") { e.target.textContent = "한 번 더 누르면 탈퇴"; return; }
       tr.remove();
@@ -955,6 +1157,54 @@
     renderApply();
   });
   renderApply();
+
+  /* ── 메시지 아코디언 — 접으면 배지 합산(부모), 펼치면 하위로 ── */
+  const msgAcc = document.getElementById("msg-acc");
+  const msgSub = document.getElementById("msg-sub");
+  function msgOpen(open) {
+    msgSub.hidden = !open;
+    msgAcc.setAttribute("aria-expanded", open);
+    msgAcc.classList.toggle("is-open", open);
+    const badge = document.getElementById("msg-badge");
+    if (badge) badge.hidden = open;
+  }
+  msgAcc.addEventListener("click", () => msgOpen(msgSub.hidden));
+
+  /* 발송 — 채널 전환: 알림톡(템플릿 필수) vs SMS·MMS(제목·이미지) */
+  document.querySelectorAll("#ums-ch .seg__opt").forEach((o) => {
+    o.addEventListener("click", () => {
+      document.querySelectorAll("#ums-ch .seg__opt").forEach((x) => x.classList.toggle("is-on", x === o));
+      const sms = o.dataset.ch === "sms";
+      document.getElementById("ums-f-tpl").style.opacity = sms ? .45 : 1;
+      document.getElementById("ums-f-title").hidden = !sms;
+      document.getElementById("ums-f-img").hidden = !sms;
+      document.getElementById("ums-pv-kko").hidden = sms;
+      document.getElementById("ums-pv-sms").hidden = !sms;
+    });
+  });
+
+  /* 템플릿 — 알림톡 / SMS·MMS 탭 */
+  document.querySelectorAll("#ums-tplseg .seg__opt").forEach((o) => {
+    o.addEventListener("click", () => {
+      document.querySelectorAll("#ums-tplseg .seg__opt").forEach((x) => x.classList.toggle("is-on", x === o));
+      document.getElementById("ums-tpl-kko").hidden = o.dataset.t !== "kko";
+      document.getElementById("ums-tpl-sms").hidden = o.dataset.t !== "sms";
+    });
+  });
+
+  /* 발송이력 필터 칩 (스캐폴드: 시각 상태만) */
+  document.querySelectorAll('.set__view[data-view="msg-hist"] .mem-chip').forEach((c) => {
+    c.addEventListener("click", () => {
+      c.parentElement.querySelectorAll(".mem-chip").forEach((x) => x.classList.toggle("is-on", x === c));
+    });
+  });
+
+  /* 발송대상 그룹 선택 (스캐폴드: 시각 상태만) */
+  document.querySelectorAll(".ums-groups button:not(.ums-groups__add)").forEach((g) => {
+    g.addEventListener("click", () => {
+      g.parentElement.querySelectorAll("button").forEach((x) => x.classList.toggle("is-on", x === g));
+    });
+  });
 
   /* 딥링크 — 다른 화면(예: 데이터베이스의 "관리 화면 가기")에서 특정 뷰로 진입 */
   const initView = new URLSearchParams(location.search).get("view");
