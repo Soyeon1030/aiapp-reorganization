@@ -450,3 +450,36 @@ body { background: var(--color-surface); }
   border-radius: var(--radius-full);
   padding: 3px 11px;
 }
+
+/* ── 섹션 코멘트 버튼 — 제목 옆, 평소엔 옅게 ── */
+.dsec h3 .cmt {
+  margin-left: auto;
+  border: none;
+  background: none;
+  color: var(--color-line-strong);
+  padding: 2px 4px;
+  border-radius: 6px;
+  transition: color .12s;
+}
+.dsec h3 .cmt .ph { width: 15px; height: 15px; }
+.dsec h3 .cmt:hover { color: var(--color-accent); background: var(--color-accent-soft); }
+
+/* 컴포저 컨텍스트 칩 — 수정 대상 표시 */
+.ctx {
+  max-width: 680px;
+  margin: 0 auto 8px;
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  font-size: var(--text-2xs);
+  font-weight: 600;
+  color: var(--color-accent-deep);
+  background: var(--color-accent-soft);
+  border-radius: var(--radius-full);
+  padding: 5px 12px;
+  width: fit-content;
+}
+.ctx .ph { width: 13px; height: 13px; }
+.ctx b { font-weight: 800; }
+.ctx button { border: none; background: none; color: var(--color-accent-deep); font-size: 11px; opacity: .6; padding: 0 2px; }
+.ctx button:hover { opacity: 1; }

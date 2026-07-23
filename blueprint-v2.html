@@ -22,6 +22,7 @@
 <symbol id="ph-credit-card" viewBox="0 0 256 256"><path d="M224,48H32A16,16,0,0,0,16,64V192a16,16,0,0,0,16,16H224a16,16,0,0,0,16-16V64A16,16,0,0,0,224,48Zm0,16V88H32V64Zm0,128H32V104H224v88Zm-16-24a8,8,0,0,1-8,8H168a8,8,0,0,1,0-16h32A8,8,0,0,1,208,168Zm-64,0a8,8,0,0,1-8,8H120a8,8,0,0,1,0-16h16A8,8,0,0,1,144,168Z"/></symbol>
 <symbol id="ph-sparkle" viewBox="0 0 256 256"><path d="M197.58,129.06,146,110l-19-51.62a15.92,15.92,0,0,0-29.88,0L78,110l-51.62,19a15.92,15.92,0,0,0,0,29.88L78,178l19,51.62a15.92,15.92,0,0,0,29.88,0L146,178l51.62-19a15.92,15.92,0,0,0,0-29.88ZM137,164.22a8,8,0,0,0-4.74,4.74L112,223.85,91.78,169A8,8,0,0,0,87,164.22L32.15,144,87,123.78A8,8,0,0,0,91.78,119L112,64.15,132.22,119a8,8,0,0,0,4.74,4.74L191.85,144ZM144,40a8,8,0,0,1,8-8h16V16a8,8,0,0,1,16,0V32h16a8,8,0,0,1,0,16H184V64a8,8,0,0,1-16,0V48H152A8,8,0,0,1,144,40ZM248,88a8,8,0,0,1-8,8h-8v8a8,8,0,0,1-16,0V96h-8a8,8,0,0,1,0-16h8V72a8,8,0,0,1,16,0v8h8A8,8,0,0,1,248,88Z"/></symbol>
 <symbol id="ph-sign-out" viewBox="0 0 256 256"><path d="M112,216a8,8,0,0,1-8,8H48a16,16,0,0,1-16-16V48A16,16,0,0,1,48,32h56a8,8,0,0,1,0,16H48V208h56A8,8,0,0,1,112,216Zm109.66-93.66-40-40a8,8,0,0,0-11.32,11.32L196.69,120H104a8,8,0,0,0,0,16h92.69l-26.35,26.34a8,8,0,0,0,11.32,11.32l40-40A8,8,0,0,0,221.66,122.34Z"/></symbol>
+<symbol id="ph-chat-circle" viewBox="0 0 256 256"><path d="M128,24A104,104,0,0,0,36.18,176.88L24.83,210.93a16,16,0,0,0,20.24,20.24l34.05-11.35A104,104,0,1,0,128,24Zm0,192a87.87,87.87,0,0,1-44.06-11.81,8,8,0,0,0-6.54-.67L40,216,52.47,178.6a8,8,0,0,0-.66-6.54A88,88,0,1,1,128,216Z"/></symbol>
 <symbol id="ph-arrow-up" viewBox="0 0 256 256"><path d="M205.66,117.66a8,8,0,0,1-11.32,0L136,59.31V216a8,8,0,0,1-16,0V59.31L61.66,117.66a8,8,0,0,1-11.32-11.32l72-72a8,8,0,0,1,11.32,0l72,72A8,8,0,0,1,205.66,117.66Z"/></symbol>
 </svg>
 
@@ -120,6 +121,11 @@
         </div>
         <!-- 컴포저 — 질의 중엔 전송만 잠금 (타이핑은 가능, §2.2.2 Q4) -->
         <div class="bp-composer">
+          <div class="ctx" id="ctx" hidden>
+            <svg class="ph"><use href="#ph-chat-circle"/></svg>
+            수정 대상: <b id="ctx-sec"></b>
+            <button id="ctx-x" aria-label="대상 해제">✕</button>
+          </div>
           <div class="chatbox is-locked" id="chatbox">
             <textarea id="box" rows="1" aria-label="추가 요청 입력"
               placeholder="위 질문에 먼저 답해 주세요 — 기획안이 완성되면 여기로 자유롭게 고칠 수 있어요"></textarea>
@@ -178,13 +184,13 @@
             </header>
 
             <section class="dsec" aria-label="개요">
-              <h3>개요</h3>
+              <h3>개요 <button class="cmt" data-sec="개요" title="이 부분만 수정 요청하기"><svg class="ph"><use href="#ph-chat-circle"/></svg></button></h3>
               <div class="prow"><span>제품 목표</span><span class="d">전화·문자로 받던 발주를 온라인 한 곳으로 모아, 누락 없이 처리하는 것</span></div>
               <div class="prow"><span>배경</span><span class="d">주문이 전화·문자·카톡에 흩어져 있어 놓치거나 잘못 받는 일이 잦아요</span></div>
             </section>
 
             <section class="dsec" aria-label="이렇게 이해했어요">
-              <h3>이렇게 이해했어요 <small>주황 태그만 한 번 확인해 주세요</small></h3>
+              <h3>이렇게 이해했어요 <small>주황 태그만 한 번 확인해 주세요</small> <button class="cmt" data-sec="이렇게 이해했어요" title="이 부분만 수정 요청하기"><svg class="ph"><use href="#ph-chat-circle"/></svg></button></h3>
               <div class="prow"><span>발주 접수</span><span class="d">거래처가 품목·수량을 골라 발주를 넣어요</span><span class="und__tag und__tag--req">요청하신 내용</span></div>
               <div class="prow"><span>발주 관리</span><span class="d">사장님이 발주 현황을 보고 확정·출고 처리해요</span><span class="und__tag und__tag--req">요청하신 내용</span></div>
               <!-- 대화 확정 슬롯 — 규격 고정, 답하면 값만 채워짐 -->
@@ -194,20 +200,20 @@
             </section>
 
             <section class="dsec" aria-label="문제 및 해결방안">
-              <h3>문제 및 해결방안</h3>
+              <h3>문제 및 해결방안 <button class="cmt" data-sec="문제 및 해결방안" title="이 부분만 수정 요청하기"><svg class="ph"><use href="#ph-chat-circle"/></svg></button></h3>
               <div class="prow"><span>사용자 문제</span><span class="d">발주가 전화·문자·카톡에 흩어져 누락·오기입이 생겨요</span></div>
               <div class="prow"><span>해결방안</span><span class="d">품목 목록에서 골라 담는 온라인 발주 한 곳으로 모아요</span></div>
               <div class="prow"><span>차별점</span><span class="d">엑셀 정리 없이 접수 → 확정 → 출고가 한 화면에서 끝나요</span></div>
             </section>
 
             <section class="dsec" aria-label="타겟 및 시나리오">
-              <h3>타겟 및 시나리오</h3>
+              <h3>타겟 및 시나리오 <button class="cmt" data-sec="타겟 및 시나리오" title="이 부분만 수정 요청하기"><svg class="ph"><use href="#ph-chat-circle"/></svg></button></h3>
               <div class="prow"><span>타겟 사용자</span><span class="d"><b>사장님(운영)</b> — 발주 확인·확정·출고 처리<br><b>거래처 담당자(회원)</b> — 로그인해서 품목 골라 발주</span></div>
               <div class="prow"><span>시나리오</span><span class="d">한솥분식 담당자가 밤 10시에 내일 아침 납품 발주를 넣으면, 사장님이 아침에 확정하고 알림톡이 나가요</span></div>
             </section>
 
             <section class="dsec" id="sec-dsg" aria-label="디자인 브리프">
-              <h3>디자인 브리프 <small>대화에서 고르신 대로 — 사이트의 인상이 이렇게 잡혀요</small></h3>
+              <h3>디자인 브리프 <small>대화에서 고르신 대로 — 사이트의 인상이 이렇게 잡혀요</small> <button class="cmt" data-sec="디자인 브리프" title="이 부분만 수정 요청하기"><svg class="ph"><use href="#ph-chat-circle"/></svg></button></h3>
               <div class="dsg">
                 <div class="dsg__card" id="dsg-0"><span class="tone tone--empty"></span><span class="tx"><b>분위기</b><small><i class="tbd">3번 질문에서 정해져요</i></small></span></div>
                 <div class="dsg__card" id="dsg-1"><span class="tone tone--empty"></span><span class="tx"><b>글씨 느낌</b><small><i class="tbd">4번 질문에서 정해져요</i></small></span></div>
@@ -241,7 +247,7 @@
             </section>
 
             <section class="dsec" id="sec-flow" aria-label="화면 흐름">
-              <h3>화면 흐름 <small>거래처가 쓰는 순서대로 — 파란 테두리가 핵심 화면</small></h3>
+              <h3>화면 흐름 <small>거래처가 쓰는 순서대로 — 파란 테두리가 핵심 화면</small> <button class="cmt" data-sec="화면 흐름" title="이 부분만 수정 요청하기"><svg class="ph"><use href="#ph-chat-circle"/></svg></button></h3>
               <div class="wflow">
                 <div class="wscreen">
                   <div class="wscreen__frame"><div class="bar b1"></div><div class="bar b2"></div><div class="bar b3"></div><div class="btn-ph"></div></div>
@@ -267,7 +273,7 @@
             </section>
 
             <section class="dsec" id="sec-db" aria-label="저장하는 정보">
-              <h3>저장하는 정보 <small>이 서비스에 필요한 항목만</small></h3>
+              <h3>저장하는 정보 <small>이 서비스에 필요한 항목만</small> <button class="cmt" data-sec="저장하는 정보" title="이 부분만 수정 요청하기"><svg class="ph"><use href="#ph-chat-circle"/></svg></button></h3>
               <div class="dbcards">
                 <div class="dbcard">
                   <div class="dbcard__h"><b>발주</b><small>발주 한 건마다 저장돼요</small></div>
@@ -292,13 +298,13 @@
             </section>
 
             <section class="dsec" aria-label="성공 위험 요소">
-              <h3>성공 · 위험 요소</h3>
+              <h3>성공 · 위험 요소 <button class="cmt" data-sec="성공 · 위험 요소" title="이 부분만 수정 요청하기"><svg class="ph"><use href="#ph-chat-circle"/></svg></button></h3>
               <div class="prow"><span>핵심지표</span><span class="d">주간 온라인 발주 건수 · 전화→온라인 전환율 · 누락·정정 건수 감소</span></div>
               <div class="prow"><span>리스크</span><span class="d">온라인 전환 저항 → 초기엔 전화 병행 + 사장님 대신 입력<br>품목·시세 변동 잦음 → 품목 수정은 관리 화면에서 바로</span></div>
             </section>
 
             <section class="dsec" aria-label="속성">
-              <h3>속성</h3>
+              <h3>속성 <button class="cmt" data-sec="속성" title="이 부분만 수정 요청하기"><svg class="ph"><use href="#ph-chat-circle"/></svg></button></h3>
               <div class="prow"><span>카테고리</span><span class="d">주문·발주</span></div>
               <div class="prow"><span>사용자 역할</span><span class="d">사장님(운영) + 거래처 담당자(회원 로그인)</span></div>
               <div class="prow"><span>기기</span><span class="d">모바일 중심 · PC 지원</span></div>
@@ -413,13 +419,13 @@
         <span class="flow__arrow">→</span>
         <div class="flow__node">
           <span class="flow__who">AI ①</span>
-          <span class="flow__t">기능 질의 2개</span>
+          <span class="flow__t">기능 질의 N개</span>
           <span class="flow__d">답 → 우측 ①에 "대화로 확정" 행</span>
         </div>
         <span class="flow__arrow">→</span>
         <div class="flow__node">
           <span class="flow__who">AI ②</span>
-          <span class="flow__t">디자인 질의 2개</span>
+          <span class="flow__t">디자인 질의</span>
           <span class="flow__d">답 → 우측 ② 디자인 방향 카드</span>
         </div>
         <span class="flow__arrow">→</span>
@@ -436,7 +442,7 @@
         <li>질의 중 = 빈 규격(스켈레톤): 섹션 제목 6개는 실제, 값 자리는 회색 바 — "무엇이 만들어질지"의 예고편 역할</li>
         <li>질의 완료 = <b>JSON 1회 일괄 바인딩</b>: 스켈레톤이 채워진 문서로 교체(스크롤 맨 위로) · 배지 "대기 중"→"완성" · 확정 버튼 활성</li>
         <li>상단 바 상태 문구: "질문이 끝나면 여기에 채워져요" → 완료 시 "확인해 주세요"</li>
-        <li>완성 후 접힘 재선택으로 답을 바꾸면 해당 슬롯만 즉시 갱신</li>
+        <li>완성 후 접힘 재선택으로 답을 바꾸면 해당 슬롯만 즉시 갱신 · 섹션 제목의 💬 = 그 부분만 수정 요청(컴포저에 대상 칩)</li>
         <li>리사이저는 b2와 동일(기본 채팅 35%, 300~720px 드래그) · 900px 이하 1단</li>
       </ul>
 
@@ -768,6 +774,22 @@
     };
     window.addEventListener("pointermove", move);
     window.addEventListener("pointerup", up);
+  });
+
+  /* ── 섹션 코멘트 — 해당 부분만 수정 요청 (수정 = 채팅 원칙, 대상 지정만 도움) ── */
+  const ctx = document.getElementById("ctx");
+  const ctxSec = document.getElementById("ctx-sec");
+  document.querySelectorAll(".cmt").forEach((btn) => {
+    btn.addEventListener("click", () => {
+      ctxSec.textContent = btn.dataset.sec;
+      ctx.hidden = false;
+      box.placeholder = `${btn.dataset.sec}에서 고치고 싶은 점을 적어주세요`;
+      box.focus();
+    });
+  });
+  document.getElementById("ctx-x").addEventListener("click", () => {
+    ctx.hidden = true;
+    box.placeholder = "고치고 싶은 게 있으면 편하게 말해 주세요 — 예: 품목별 단가도 보여줘";
   });
 
   /* 개발 노트 모달 */
