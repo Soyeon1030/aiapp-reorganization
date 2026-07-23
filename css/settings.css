@@ -446,3 +446,29 @@
 
 /* 미리보기 카드 — 첫 미리보기 위 여백 */
 .set__card > .serp:first-child { margin-top: 16px; }
+
+/* 수정 패널 정돈 (2026-07-23) — 파란 강조는 [적용] 하나만, 단계는 여백·구분으로 */
+.seoedit { gap: 12px; padding: 16px 18px 18px; }
+.btn--gen {
+  align-self: flex-start;
+  border-color: var(--color-line-strong);
+  color: var(--color-accent-deep);
+  background: var(--color-surface);
+  font-weight: 700;
+}
+.btn--gen:hover { border-color: var(--color-accent); }
+.seoedit__out { border-top: 1px dashed var(--color-line-strong); padding-top: 12px; }
+.seoedit__form {
+  background: var(--color-surface);
+  border: 1px solid var(--color-line);
+  border-radius: var(--radius-md);
+  padding: 14px 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+.seoedit__form .seoedit__field input,
+.seoedit__form .seoedit__field textarea { background: var(--color-surface-sub); border-color: transparent; }
+.seoedit__form .seoedit__field input:focus-visible,
+.seoedit__form .seoedit__field textarea:focus-visible { background: var(--color-surface); }
+.seoedit__acts { justify-content: flex-end; }
