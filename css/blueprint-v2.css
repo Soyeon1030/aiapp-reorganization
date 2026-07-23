@@ -387,3 +387,6 @@ body { background: var(--color-surface); }
 /* 완성 후 경로 선택 — 두 버튼 한 줄 */
 .chat-go__row { display: flex; gap: 8px; flex-wrap: wrap; }
 .chat-go__row .btn { align-self: auto; font-size: var(--text-sm); padding: 11px 18px; }
+
+/* 옵션 카드 — 제목·설명 사이 호흡 */
+.askopt .tx small { margin-top: 4px; }
