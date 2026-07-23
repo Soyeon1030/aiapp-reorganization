@@ -345,3 +345,8 @@ body { background: var(--color-surface); }
 }
 .plan-skel .psec { gap: 10px; }
 .plan-skel .plan__head { gap: 10px; }
+
+/* 채팅 쪽 확정 — 기획안 완성 시 문서 버튼과 동일 동작을 채팅에서도 제공 */
+.chat-go { display: flex; flex-direction: column; gap: 7px; margin-top: 2px; }
+.chat-go .btn { align-self: flex-start; font-size: var(--text-sm); padding: 11px 22px; }
+.chat-go small { font-size: var(--text-2xs); color: var(--color-muted); }
