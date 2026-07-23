@@ -209,7 +209,7 @@
 
           <!-- 기능 설정(회원·게시판·알림·결제)·데이터·이력(연락처·되돌리기) 그룹은 2026-07-23 잠정 제거 — 확정된 기능부터 "기능 관리"로 하나씩 추가 -->
           <span class="set__side-label">기능 관리</span>
-          <button class="set__item" data-view="members"><svg class="ph"><use href="#ph-user"/></svg> 회원 관리 <span class="set__need">대기 1</span></button>
+          <button class="set__item" data-view="members"><svg class="ph"><use href="#ph-user"/></svg> 회원 관리 <span class="set__need" id="mem-badge">대기 1</span></button>
 
           <div class="set__side-foot"><b>✓</b> 바꾸면 바로 적용돼요</div>
         </aside>
@@ -493,14 +493,14 @@
           </div>
 
 
-          <!-- ═══ 회원 관리 — 회원 기능을 만들면 자동으로 생기는 관리 화면 ═══ -->
+          <!-- ═══ 회원 관리 — 회원 기능을 만들면 자동으로 생기는 관리 화면 (신청함 분리 + 정돈 테이블, 2026-07-23) ═══ -->
           <div class="set__view" data-view="members" hidden>
             <div class="set__head">
               <div>
                 <h3>회원 관리</h3>
                 <p>회원 기능을 만들어서 생긴 관리 화면이에요. 가입을 승인하고, 메시지를 보내고, 탈퇴를 처리해요.</p>
               </div>
-              <span class="tag tag--ok">회원 23명</span>
+              <span class="tag tag--ok" id="mem-count">회원 23명</span>
             </div>
 
             <div class="set__group">
@@ -521,80 +521,91 @@
               </div>
             </div>
 
+            <!-- 신청함 — 할 일은 목록 밖으로 -->
+            <div class="set__group" id="mem-apply-group">
+              <span class="set__group-label">가입 신청 — 확인이 필요해요</span>
+              <div class="mem-apply">
+                <span class="mavatar" style="background:#B45309">부</span>
+                <span class="mem-apply__txt">
+                  <b>부산집 국밥</b>
+                  <span>busan-gukbap · 010-2210-4471 · 07-23 신청</span>
+                </span>
+                <button class="btn btn--primary mem-ok">승인</button>
+                <button class="btn mem-no">거절</button>
+              </div>
+            </div>
+
             <div class="set__group">
               <span class="set__group-label">회원 목록</span>
               <div class="set__card">
-                <div class="mem__bar">
-                  <label class="mem__search">
-                    <svg class="ph"><use href="#ph-magnifying-glass"/></svg>
-                    <input id="mem-q" placeholder="아이디, 이름, 연락처로 찾기">
-                  </label>
-                  <button class="btn" id="mem-msg-btn" disabled>메시지 보내기</button>
-                </div>
+                <div class="mem-wrap">
+                  <div class="mem__bar">
+                    <label class="mem__search">
+                      <svg class="ph"><use href="#ph-magnifying-glass"/></svg>
+                      <input id="mem-q" placeholder="아이디, 이름, 연락처로 찾기">
+                    </label>
+                    <button class="btn" id="mem-msg-btn" disabled>메시지 보내기</button>
+                  </div>
 
-                <!-- 메시지 패널 — 선택한 회원에게 알림톡/SMS -->
-                <div class="mem__msg" id="mem-msg" hidden>
-                  <div class="mem__msg-head">
-                    <b>선택한 회원 <span id="mem-msg-n">0</span>명에게 보내요</b>
-                    <div class="seg seg--sm" id="mem-ch">
-                      <button class="seg__opt is-on">알림톡</button>
-                      <button class="seg__opt">SMS · MMS</button>
+                  <div class="mem-chips" id="mem-chips">
+                    <button class="mem-chip is-on" data-role="all">전체 <b>23</b></button>
+                    <button class="mem-chip" data-role="normal">일반 <b>22</b></button>
+                    <button class="mem-chip" data-role="admin">관리자 <b>1</b></button>
+                  </div>
+
+                  <!-- 메시지 패널 — 선택한 회원에게 알림톡/SMS -->
+                  <div class="mem__msg" id="mem-msg" hidden>
+                    <div class="mem__msg-head">
+                      <b>선택한 회원 <span id="mem-msg-n">0</span>명에게 보내요</b>
+                      <div class="seg seg--sm" id="mem-ch">
+                        <button class="seg__opt is-on">알림톡</button>
+                        <button class="seg__opt">SMS · MMS</button>
+                      </div>
+                    </div>
+                    <textarea id="mem-msg-text" rows="2" placeholder="예: 이번 주 금요일은 휴무예요 — 발주는 목요일까지 부탁드려요."></textarea>
+                    <div class="mem__msg-acts">
+                      <button class="btn btn--primary" id="mem-msg-send">보내기</button>
+                      <button class="btn" id="mem-msg-close">닫기</button>
+                      <small>알림톡이 실패한 번호에는 SMS로 자동 대체 발송돼요.</small>
                     </div>
                   </div>
-                  <textarea id="mem-msg-text" rows="2" placeholder="예: 이번 주 금요일은 휴무예요 — 발주는 목요일까지 부탁드려요."></textarea>
-                  <div class="mem__msg-acts">
-                    <button class="btn btn--primary" id="mem-msg-send">보내기</button>
-                    <button class="btn" id="mem-msg-close">닫기</button>
-                    <small>알림톡이 실패한 번호에는 SMS로 자동 대체 발송돼요.</small>
-                  </div>
-                </div>
 
-                <table class="mem" aria-label="회원 목록">
-                  <thead>
-                    <tr>
-                      <th class="ck"><input type="checkbox" id="mem-all" aria-label="전체 선택"></th>
-                      <th>아이디</th><th>이름</th><th>권한</th><th>연락처</th><th>최근 접속</th><th>가입일</th><th>관리</th>
-                    </tr>
-                  </thead>
-                  <tbody id="mem-rows">
-                    <tr class="is-wait">
-                      <td class="ck"><input type="checkbox" aria-label="선택"></td>
-                      <td>busan-gukbap</td><td>부산집 국밥</td>
-                      <td><span class="tag tag--warn">승인 대기</span></td>
-                      <td>010-2210-4471</td><td>—</td><td>07-23</td>
-                      <td class="mem__acts"><button class="btn btn--primary mem-ok">승인</button><button class="btn mem-no">거절</button></td>
-                    </tr>
-                    <tr>
-                      <td class="ck"></td>
-                      <td>chungsol</td><td>청솔 식자재 (나)</td>
-                      <td><span class="tag tag--run">관리자</span></td>
-                      <td>010-5500-1234</td><td>방금</td><td>07-21</td>
-                      <td class="mem__acts"><span class="mem__na">—</span></td>
-                    </tr>
-                    <tr>
-                      <td class="ck"><input type="checkbox" aria-label="선택"></td>
-                      <td>hansot-bunsik</td><td>한솥분식</td>
-                      <td><span class="tag">일반</span></td>
-                      <td>010-4477-8899</td><td>어제 22:41</td><td>07-21</td>
-                      <td class="mem__acts"><button class="btn mem-out">탈퇴</button></td>
-                    </tr>
-                    <tr>
-                      <td class="ck"><input type="checkbox" aria-label="선택"></td>
-                      <td>cafe-soso</td><td>카페 소소</td>
-                      <td><span class="tag">일반</span></td>
-                      <td>010-1234-5678</td><td>3일 전</td><td>07-22</td>
-                      <td class="mem__acts"><button class="btn mem-out">탈퇴</button></td>
-                    </tr>
-                    <tr>
-                      <td class="ck"><input type="checkbox" aria-label="선택"></td>
-                      <td>daebak-gogi</td><td>대박정육식당</td>
-                      <td><span class="tag">일반</span></td>
-                      <td>010-9876-5432</td><td>2주 전</td><td>07-22</td>
-                      <td class="mem__acts"><button class="btn mem-out">탈퇴</button></td>
-                    </tr>
-                  </tbody>
-                </table>
-                <div class="mem__foot" id="mem-foot">전체 23명 · 승인 대기 1명 — 최근 가입 순이에요. 못 찾으면 검색해 보세요.</div>
+                  <table class="mem" aria-label="회원 목록">
+                    <thead>
+                      <tr>
+                        <th class="ck"><input type="checkbox" id="mem-all" aria-label="전체 선택"></th>
+                        <th>회원</th><th>연락처</th><th>최근 접속</th><th>가입일</th><th></th>
+                      </tr>
+                    </thead>
+                    <tbody id="mem-rows">
+                      <tr data-role="admin">
+                        <td class="ck"></td>
+                        <td><span class="mwho"><span class="mavatar" style="background:#33507E">청</span><span class="mwho__t"><b>청솔 식자재 (나) <span class="tag tag--run">관리자</span></b><small>chungsol</small></span></span></td>
+                        <td class="meta">010-5500-1234</td><td class="meta">방금</td><td class="meta">07-21</td>
+                        <td class="mem__acts"></td>
+                      </tr>
+                      <tr data-role="normal">
+                        <td class="ck"><input type="checkbox" aria-label="선택"></td>
+                        <td><span class="mwho"><span class="mavatar" style="background:#4A6FA5">한</span><span class="mwho__t"><b>한솥분식</b><small>hansot-bunsik</small></span></span></td>
+                        <td class="meta">010-4477-8899</td><td class="meta">어제 22:41</td><td class="meta">07-21</td>
+                        <td class="mem__acts"><button class="btn mem-dm">메시지</button><button class="btn mem-out">탈퇴</button></td>
+                      </tr>
+                      <tr data-role="normal">
+                        <td class="ck"><input type="checkbox" aria-label="선택"></td>
+                        <td><span class="mwho"><span class="mavatar" style="background:#7C6FA5">카</span><span class="mwho__t"><b>카페 소소</b><small>cafe-soso</small></span></span></td>
+                        <td class="meta">010-1234-5678</td><td class="meta">3일 전</td><td class="meta">07-22</td>
+                        <td class="mem__acts"><button class="btn mem-dm">메시지</button><button class="btn mem-out">탈퇴</button></td>
+                      </tr>
+                      <tr data-role="normal">
+                        <td class="ck"><input type="checkbox" aria-label="선택"></td>
+                        <td><span class="mwho"><span class="mavatar" style="background:#A0713D">대</span><span class="mwho__t"><b>대박정육식당</b><small>daebak-gogi</small></span></span></td>
+                        <td class="meta">010-9876-5432</td><td class="meta">2주 전</td><td class="meta">07-22</td>
+                        <td class="mem__acts"><button class="btn mem-dm">메시지</button><button class="btn mem-out">탈퇴</button></td>
+                      </tr>
+                    </tbody>
+                  </table>
+                  <div class="mem__foot" id="mem-foot">전체 23명 — 최근 가입 순이에요. 못 찾으면 검색해 보세요. 메시지·탈퇴 버튼은 행에 올리면 나타나요.</div>
+                </div>
               </div>
             </div>
           </div>
@@ -773,7 +784,7 @@
     btn.addEventListener("click", () => showSetView(btn.dataset.goto));
   });
 
-  /* ── 회원 관리 ── */
+  /* ── 회원 관리 (신청함 분리 + 정돈 테이블) ── */
   /* 가입 방식 세그먼트 */
   const joinDesc = {
     open: "가입하면 바로 회원이 돼요 — 승인 없이 누구나 쓰는 서비스에 맞아요.",
@@ -791,27 +802,37 @@
     });
   });
 
-  /* 검색 — 아이디·이름·연락처 텍스트 필터 */
-  document.getElementById("mem-q").addEventListener("input", (e) => {
-    const q = e.target.value.trim().toLowerCase();
+  /* 검색 + 권한 필터 칩 — 함께 적용 */
+  let memRole = "all";
+  function memFilter() {
+    const q = document.getElementById("mem-q").value.trim().toLowerCase();
     document.querySelectorAll("#mem-rows tr").forEach((tr) => {
-      tr.hidden = q !== "" && !tr.textContent.toLowerCase().includes(q);
+      const roleHit = memRole === "all" || tr.dataset.role === memRole;
+      const qHit = q === "" || tr.textContent.toLowerCase().includes(q);
+      tr.hidden = !(roleHit && qHit);
+    });
+  }
+  document.getElementById("mem-q").addEventListener("input", memFilter);
+  document.querySelectorAll("#mem-chips .mem-chip").forEach((c) => {
+    c.addEventListener("click", () => {
+      document.querySelectorAll("#mem-chips .mem-chip").forEach((x) => x.classList.toggle("is-on", x === c));
+      memRole = c.dataset.role;
+      memFilter();
     });
   });
 
   /* 선택 → 메시지 버튼 활성화 */
   const memMsgBtn = document.getElementById("mem-msg-btn");
-  function memSelected() {
-    return document.querySelectorAll("#mem-rows input[type=checkbox]:checked").length;
-  }
   function memSync() {
-    const n = memSelected();
+    const n = document.querySelectorAll("#mem-rows input[type=checkbox]:checked").length;
     memMsgBtn.disabled = n === 0;
     memMsgBtn.textContent = n ? `메시지 보내기 (${n}명)` : "메시지 보내기";
     document.getElementById("mem-msg-n").textContent = n;
     if (n === 0) document.getElementById("mem-msg").hidden = true;
   }
-  document.querySelectorAll("#mem-rows input[type=checkbox]").forEach((c) => c.addEventListener("change", memSync));
+  document.getElementById("mem-rows").addEventListener("change", (e) => {
+    if (e.target.matches("input[type=checkbox]")) memSync();
+  });
   document.getElementById("mem-all").addEventListener("change", (e) => {
     document.querySelectorAll("#mem-rows tr:not([hidden]) input[type=checkbox]").forEach((c) => { c.checked = e.target.checked; });
     memSync();
@@ -830,23 +851,49 @@
     }, 1200);
   });
 
-  /* 승인 / 거절 / 탈퇴 (스캐폴드: 행 상태만) */
-  document.querySelectorAll("#mem-rows").forEach((tb) => {
-    tb.addEventListener("click", (e) => {
-      const tr = e.target.closest("tr");
-      if (e.target.classList.contains("mem-ok")) {
-        tr.classList.remove("is-wait");
-        tr.querySelector(".tag").outerHTML = '<span class="tag">일반</span>';
-        tr.querySelector(".mem__acts").innerHTML = '<button class="btn mem-out">탈퇴</button>';
-        tr.children[5].textContent = "방금";
-      } else if (e.target.classList.contains("mem-no")) {
-        tr.remove();
-      } else if (e.target.classList.contains("mem-out")) {
-        if (e.target.textContent === "탈퇴") { e.target.textContent = "한 번 더 누르면 탈퇴"; return; }
-        tr.remove();
-      }
+  /* 목록 동작 — 행 메시지(그 회원만 선택 후 패널) · 탈퇴(한 번 더 눌러 확정) */
+  document.getElementById("mem-rows").addEventListener("click", (e) => {
+    const tr = e.target.closest("tr");
+    if (e.target.classList.contains("mem-dm")) {
+      const ck = tr.querySelector("input[type=checkbox]");
+      if (ck) ck.checked = true;
       memSync();
-    });
+      document.getElementById("mem-msg").hidden = false;
+    } else if (e.target.classList.contains("mem-out")) {
+      if (e.target.textContent === "탈퇴") { e.target.textContent = "한 번 더 누르면 탈퇴"; return; }
+      tr.remove();
+      memSync();
+    }
+  });
+
+  /* 신청함 — 승인하면 목록 맨 위로 들어온다 */
+  const applyGroup = document.getElementById("mem-apply-group");
+  applyGroup.addEventListener("click", (e) => {
+    const card = e.target.closest(".mem-apply");
+    if (!card) return;
+    if (e.target.classList.contains("mem-ok")) {
+      const row = document.createElement("tr");
+      row.dataset.role = "normal";
+      row.innerHTML = `
+        <td class="ck"><input type="checkbox" aria-label="선택"></td>
+        <td><span class="mwho"><span class="mavatar" style="background:#B45309">부</span><span class="mwho__t"><b>부산집 국밥</b><small>busan-gukbap</small></span></span></td>
+        <td class="meta">010-2210-4471</td><td class="meta">방금 가입</td><td class="meta">07-23</td>
+        <td class="mem__acts"><button class="btn mem-dm">메시지</button><button class="btn mem-out">탈퇴</button></td>`;
+      document.getElementById("mem-rows").prepend(row);
+      document.getElementById("mem-count").textContent = "회원 24명";
+      document.querySelector('#mem-chips [data-role="all"] b').textContent = "24";
+      document.querySelector('#mem-chips [data-role="normal"] b').textContent = "23";
+      document.getElementById("mem-foot").textContent = "전체 24명 — 최근 가입 순이에요. 못 찾으면 검색해 보세요. 메시지·탈퇴 버튼은 행에 올리면 나타나요.";
+      card.remove();
+    } else if (e.target.classList.contains("mem-no")) {
+      card.remove();
+    }
+    if (!applyGroup.querySelector(".mem-apply")) {
+      applyGroup.querySelector(".set__group-label").textContent = "가입 신청";
+      applyGroup.insertAdjacentHTML("beforeend", '<div class="mem-empty">지금은 새 신청이 없어요 — 신청이 오면 여기에 떠요.</div>');
+      const badge = document.getElementById("mem-badge");
+      if (badge) badge.remove();
+    }
   });
 
   /* 딥링크 — 다른 화면(예: 데이터베이스의 "관리 화면 가기")에서 특정 뷰로 진입 */
