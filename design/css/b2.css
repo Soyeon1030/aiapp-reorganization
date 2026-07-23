@@ -61,6 +61,13 @@
   flex-direction: column;
   gap: 9px;
 }
+/* 재접속 웨이크 묶음 — 래퍼라 chat의 gap을 못 받으므로 같은 리듬으로 */
+#wake-wrap {
+  display: flex;
+  flex-direction: column;
+  gap: 9px;
+  margin-top: 6px;
+}
 
 /* ── 진행 상태 카드 — 채팅과 같은 라이트 톤 (상태는 아이콘 색이 전달).
    다크 콘솔이 흰 채팅에서 따로 놀아 라이트로 통합 (2026-07-21) ── */
