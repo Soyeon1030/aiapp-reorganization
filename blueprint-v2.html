@@ -590,14 +590,14 @@
     document.getElementById(`ask-${i}`).hidden = false;
   }
 
-  function finish() {
+  function finish(msg) {
     const scene = document.createElement("div");
     scene.className = "scene";
     scene.innerHTML = `
       <div class="log-step">기획안</div>
       <div class="making" id="making">
         <span class="dots"><i></i><i></i><i></i></span>
-        <span class="msg">말씀해 주신 내용으로 기획안을 마무리하고 있어요…</span>
+        <span class="msg">${msg || "말씀해 주신 내용으로 기획안을 마무리하고 있어요…"}</span>
       </div>`;
     chat.appendChild(scene);
     scroll.scrollTo({ top: scroll.scrollHeight, behavior: "smooth" });
@@ -606,7 +606,10 @@
       document.getElementById("making").outerHTML = `
         <p class="log-line">기획안을 완성했어요. 오른쪽에서 확인해 주세요 — 고치고 싶은 건 여기로 편하게 말씀해 주세요.</p>
         <div class="chat-go">
-          <button class="btn btn--primary" onclick="location.href='b2.html?build=1'">맞아요, 이대로 만들어 주세요</button>
+          <div class="chat-go__row">
+            <button class="btn btn--primary" onclick="location.href='b2.html?build=1'">이대로 만들기 시작</button>
+            <button class="btn" onclick="location.href='b2.html?build=1'" title="와이어프레임 검토 화면은 추후 설계 — 시연에서는 동일하게 이동해요">와이어프레임으로 먼저 볼래요</button>
+          </div>
           <small>확정하면 만들기를 시작해요 · 확정 뒤에도 계속 수정할 수 있어요</small>
         </div>`;
       /* 우측: 빈 규격 → JSON 일괄 바인딩된 문서로 교체 */
@@ -648,7 +651,53 @@
     });
   }
 
-  buildScene(0);
+  /* ── 진행 방식 분기 — 기획서를 함께 다듬을지, AI에게 맡길지 ── */
+  function buildModeScene() {
+    const scene = document.createElement("div");
+    scene.className = "scene";
+    scene.id = "scene-mode";
+    scene.innerHTML = `
+      <p class="log-line">시작하기 전에 하나만 정할게요.</p>
+      <div class="ask" id="ask-mode">
+        <div class="ask__head">
+          <b class="ask__t">어떻게 진행할까요?</b>
+          <p class="ask__d">어느 쪽이든 기획안은 확인하고 시작해요. 나중에 언제든 고칠 수 있어요.</p>
+        </div>
+        <button class="askopt is-on" data-mode="guide">
+          <span class="tx"><b>기획서를 함께 다듬을래요 <em class="askopt__rec">AI 추천</em></b><small>질문 4개에 답하면 기획이 정확해져요 (1분)</small></span>
+        </button>
+        <button class="askopt" data-mode="auto">
+          <span class="tx"><b>AI에게 다 맡길래요</b><small>추천값으로 바로 기획안을 만들어요 — 확인만 하면 돼요</small></span>
+        </button>
+      </div>
+      <button class="log-answer" id="ans-mode" hidden>
+        진행 방식: <b id="ans-mode-v"></b> ✓ <span>바꾸려면 클릭</span>
+      </button>`;
+    chat.appendChild(scene);
+    scene.querySelectorAll(".askopt").forEach((btn) => {
+      btn.addEventListener("click", () => pickMode(btn.dataset.mode));
+    });
+    document.getElementById("ans-mode").addEventListener("click", () => {
+      document.getElementById("ans-mode").hidden = true;
+      document.getElementById("ask-mode").hidden = false;
+    });
+  }
+  function pickMode(mode) {
+    const ask = document.getElementById("ask-mode");
+    ask.querySelectorAll(".askopt").forEach((b) => b.classList.toggle("is-on", b.dataset.mode === mode));
+    ask.hidden = true;
+    document.getElementById("ans-mode-v").textContent = mode === "auto" ? "AI에게 다 맡기기" : "기획서 함께 다듬기";
+    document.getElementById("ans-mode").hidden = false;
+    if (mode === "auto") {
+      /* 남은 질문을 전부 AI 추천값으로 채우고 바로 기획안 */
+      QS.forEach((q, i) => { if (answers[i] === undefined) answers[i] = q.opts.findIndex((o) => o.rec); });
+      finish("추천값으로 기획안을 만들고 있어요…");
+    } else if (!document.getElementById("scene-0")) {
+      buildScene(0);
+    }
+    scroll.scrollTo({ top: scroll.scrollHeight, behavior: "smooth" });
+  }
+  buildModeScene();
 
   /* ── 리사이저 — b2와 동일 (채팅 폭 300~720px) ── */
   const studio = document.getElementById("studio");

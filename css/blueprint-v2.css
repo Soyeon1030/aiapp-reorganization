@@ -383,3 +383,7 @@ body { background: var(--color-surface); }
 .dsec .dsg, .dsec .wflow, .dsec .dbcards { margin-top: 12px; }
 /* 스켈레톤도 같은 섹션 골격 사용 */
 .plan-skel .dsec { gap: 8px; }
+
+/* 완성 후 경로 선택 — 두 버튼 한 줄 */
+.chat-go__row { display: flex; gap: 8px; flex-wrap: wrap; }
+.chat-go__row .btn { align-self: auto; font-size: var(--text-sm); padding: 11px 18px; }
