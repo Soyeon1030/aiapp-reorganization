@@ -885,3 +885,20 @@
   ::view-transition-old(*),
   ::view-transition-new(*) { animation: none !important; }
 }
+
+/* ── 패널 탭 레일 (2026-07-23) — 아이콘 레일: 활성 탭만 라벨을 편 필 형태 ── */
+.ptab-rail {
+  display: inline-flex;
+  align-items: center;
+  gap: 2px;
+  border: 1px solid var(--color-line);
+  border-radius: 12px;
+  padding: 3px;
+  background: var(--color-surface);
+}
+.ptab { padding: 7px 10px; color: var(--color-muted); }
+.ptab .ph { width: 17px; height: 17px; }
+.ptab .ptab__label { display: none; }
+.ptab.is-on { background: var(--color-accent-soft); color: var(--color-accent-deep); }
+.ptab.is-on .ptab__label { display: inline; }
+.ptab:hover:not(.is-on) { background: var(--color-surface-sub); color: var(--color-ink); }
