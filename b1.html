@@ -161,7 +161,7 @@
           <button class="chip" id="chip-file"><svg class="ph"><use href="#ph-paperclip"/></svg> 로고·사진</button>
           <button class="chip" id="chip-link"><svg class="ph"><use href="#ph-link"/></svg> 인스타·참고 링크</button>
           <!-- 확인 모드는 옵션이 아니라 기본 동작 — 토글 없음 (2026-07-21) -->
-          <button class="composer__send" title="생성 시작" aria-label="생성 시작" onclick="location.href='blueprint-v2.html'">
+          <button class="composer__send" title="생성 시작" aria-label="생성 시작" onclick="goBoot()">
             <svg class="ph"><use href="#ph-arrow-up"/></svg>
           </button>
         </div>
@@ -488,6 +488,21 @@
   <svg class="ph"><use href="#ph-headset"/></svg>
 </button>
 
+
+<!-- microVM 부팅 스플래시 — 전송하면 전용 컴퓨터가 켜지는 걸 보여주고 설계로 넘어간다. 시간 약속 문구 금지 -->
+<div class="vmboot" id="vmboot" hidden>
+  <div class="vmboot__card">
+    <div class="vmboot__viz"><i class="vmboot__power"></i></div>
+    <h3>전용 컴퓨터를 켜고 있어요</h3>
+    <p>이 서비스만 쓰는 공간을 준비하고 있어요 — 잠시만요.</p>
+    <div class="vmboot__steps">
+      <div class="vmboot__step"><i></i>전용 컴퓨터 켜기</div>
+      <div class="vmboot__step"><i></i>아이디어 전달</div>
+      <div class="vmboot__step"><i></i>설계 시작</div>
+    </div>
+  </div>
+</div>
+
 <script>
   /* 사이드바 접기/펼치기 */
   const gnb = document.getElementById("gnb");
@@ -655,7 +670,7 @@
   ideaInput.addEventListener("keydown", (e) => {
     if (e.key === "Enter" && !e.shiftKey && !e.isComposing) {
       e.preventDefault();
-      location.href = "blueprint-v2.html";
+      goBoot();
     }
   });
   const ideaCount = document.getElementById("idea-count");
@@ -665,6 +680,24 @@
     ideaCount.textContent = `${len.toLocaleString()} / 4,000`;
     ideaCount.classList.toggle("is-max", len >= 4000);
   });
+
+  /* 부팅 스플래시 — 단계가 순서대로 켜진 뒤 설계로 이동 */
+  let bootStarted = false;
+  function goBoot() {
+    if (bootStarted) return;
+    bootStarted = true;
+    const boot = document.getElementById("vmboot");
+    boot.hidden = false;
+    const steps = boot.querySelectorAll(".vmboot__step");
+    const durs = [1300, 1000, 800];
+    let t = 300;
+    steps.forEach((step, i) => {
+      setTimeout(() => step.classList.add("is-run"), t);
+      t += durs[i];
+      setTimeout(() => { step.classList.remove("is-run"); step.classList.add("is-done"); }, t);
+    });
+    setTimeout(() => { location.href = "blueprint-v2.html"; }, t + 400);
+  }
 </script>
 
 </body>

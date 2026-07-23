@@ -229,6 +229,13 @@
           <!-- ═══ 공개·주소 ═══ -->
           <!-- ═══ 뷰 0. 운영 현황 — 요약 대시보드 (DB 탭에서 이동, 2026-07-23) ═══ -->
           <div class="set__view" data-view="dash">
+            <!-- 웨이크 스켈레톤 — 전용 컴퓨터가 켜질 때까지 뼈대 + 상태 필. 시간 약속 문구 금지 -->
+            <div class="vm-skel" id="dash-skel" hidden>
+              <div class="vm-skel__pill" id="dash-pill"><i></i><span id="dash-pill-tx">전용 컴퓨터 켜는 중</span></div>
+              <div class="vm-skel__stats"><span></span><span></span><span></span><span></span></div>
+              <div class="vm-skel__block"></div>
+              <div class="vm-skel__block"></div>
+            </div>
             <div class="db__head" style="display:flex;align-items:flex-start;gap:12px">
               <div>
                 <h3 style="margin:0;font-size:var(--text-lg);font-weight:800;letter-spacing:-.01em">운영 현황</h3>
@@ -1284,6 +1291,18 @@
     seoEdit.hidden = true;
   });
 
+  /* 웨이크 스켈레톤 — 운영 현황으로 시작할 때 전용 컴퓨터 켜는 연출 (스캐폴드: 진입마다 재생) */
+  if (!initView || initView === "dash") {
+    const dashSkel = document.getElementById("dash-skel");
+    dashSkel.hidden = false;
+    setTimeout(() => { document.getElementById("dash-pill-tx").textContent = "거의 다 됐어요 — 데이터 연결 중"; }, 1700);
+    setTimeout(() => {
+      document.getElementById("dash-pill").classList.add("is-ok");
+      document.getElementById("dash-pill-tx").textContent = "켜졌어요";
+    }, 2700);
+    setTimeout(() => { dashSkel.classList.add("is-out"); }, 3300);
+    setTimeout(() => { dashSkel.hidden = true; }, 3700);
+  }
 </script>
 
 </body>
