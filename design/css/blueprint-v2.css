@@ -393,3 +393,60 @@ body { background: var(--color-surface); }
 
 /* 기획안 바 — B2 레일 디자인과 통일 */
 .art__bar { align-items: center; padding: 8px 16px; }
+
+/* ── 디자인 브리프 — design_tokens 시각화 (규격 고정, 답으로 값 바인딩) ── */
+.brief {
+  border: 1px solid var(--color-line);
+  border-radius: var(--radius-md);
+  padding: 4px 16px;
+  display: flex;
+  flex-direction: column;
+}
+.brief__row {
+  display: grid;
+  grid-template-columns: 96px 1fr;
+  gap: 12px;
+  align-items: center;
+  padding: 12px 0;
+  border-bottom: 1px dashed var(--color-line);
+}
+.brief__row:last-child { border-bottom: none; }
+.brief__k { font-size: var(--text-2xs); font-weight: 700; color: var(--color-muted); }
+.brief__palette { display: flex; gap: 14px; flex-wrap: wrap; }
+.pal { display: flex; flex-direction: column; gap: 3px; align-items: flex-start; }
+.pal i { display: block; width: 52px; height: 30px; border-radius: 7px; border: 1px solid var(--color-line); }
+.pal small { font-size: var(--text-2xs); font-weight: 600; color: var(--color-ink); }
+.pal em { font-style: normal; font-family: var(--font-mono); font-size: 9.5px; color: var(--color-muted); }
+/* 글꼴 샘플 · 미니 견본 — 바인딩 전엔 자리표시 톤 */
+.brief__type b { display: block; font-size: var(--text-base); font-weight: var(--bw, 700); letter-spacing: var(--bls, 0); color: var(--bink, var(--color-line-strong)); }
+.brief__type span { display: block; font-size: var(--text-xs); color: var(--color-muted); margin-top: 4px; }
+.brief__ui { display: flex; gap: 10px; align-items: center; flex-wrap: wrap; }
+.brief__ui i { font-style: normal; }
+.bui-btn {
+  background: var(--ba, var(--color-line));
+  color: #fff;
+  font-size: var(--text-xs);
+  font-weight: var(--bw, 700);
+  letter-spacing: var(--bls, 0);
+  border-radius: var(--brad, 10px);
+  padding: 8px 16px;
+}
+.bui-card {
+  display: flex;
+  flex-direction: column;
+  gap: 1px;
+  background: var(--bbg, var(--color-surface-sub));
+  border: 1px solid var(--color-line);
+  border-radius: var(--brad, 10px);
+  padding: 8px 14px;
+}
+.bui-card b { font-size: var(--text-xs); font-weight: var(--bw, 700); color: var(--bink, var(--color-muted)); }
+.bui-card small { font-size: var(--text-2xs); color: var(--color-muted); }
+.bui-tag {
+  font-size: var(--text-2xs);
+  font-weight: 700;
+  color: var(--bad, var(--color-muted));
+  background: var(--bbg, var(--color-surface-sub));
+  border-radius: var(--radius-full);
+  padding: 3px 11px;
+}
