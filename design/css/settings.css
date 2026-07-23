@@ -643,7 +643,7 @@
 }
 .mwho { display: flex; align-items: center; gap: 10px; }
 .mwho__t b { display: flex; align-items: center; gap: 6px; font-size: var(--text-xs); font-weight: 700; }
-.mwho__t small { display: block; font-family: var(--font-mono); font-size: 10px; color: var(--color-muted); margin-top: 1px; }
+.mwho__t small { display: block; font-size: 10.5px; color: var(--color-muted); margin-top: 1px; }  /* 아이디도 일반 글꼴 — 모노 안 씀 */
 /* 권한 필터 칩 */
 .mem-chips { display: flex; gap: 6px; margin-bottom: 12px; }
 .mem-chip {
@@ -698,7 +698,7 @@
 .mem-apl__bar .btn { font-size: var(--text-2xs); padding: 5px 13px; box-shadow: none; }
 .mem-apl__bar .btn:disabled { opacity: .45; }
 .mem-apl__list {
-  max-height: 258px;   /* 5행 남짓 — 넘치면 스크롤, 회원 목록을 밀지 않는다 */
+  max-height: 430px;   /* 펼쳐도 여기까지 — 그 이상은 스크롤, 회원 목록을 밀지 않는다 */
   overflow-y: auto;
   border-radius: var(--radius-sm);
 }
@@ -719,3 +719,18 @@
   color: var(--color-muted);
 }
 .mem-apl .mem-empty { background: var(--color-surface); }
+
+/* 점진 공개 — 더 보기 (신청 리스트는 항상 최신 3건 높이) */
+.mem-apl__more {
+  display: block;
+  width: 100%;
+  margin-top: 8px;
+  border: 1px dashed var(--color-line-strong);
+  background: none;
+  border-radius: var(--radius-sm);
+  padding: 8px;
+  font-size: var(--text-2xs);
+  font-weight: 700;
+  color: var(--color-accent-deep);
+}
+.mem-apl__more:hover { background: var(--color-surface); }
