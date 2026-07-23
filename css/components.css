@@ -1019,6 +1019,7 @@
 [data-tip] { position: relative; }
 [data-tip]::after {
   content: attr(data-tip);
+  display: none; /* opacity만으로 숨기면 화면 밖 툴팁이 스크롤 영역을 만든다 */
   position: absolute;
   top: calc(100% + 7px);
   left: 50%;
@@ -1038,6 +1039,7 @@
 }
 [data-tip]::before {
   content: "";
+  display: none;
   position: absolute;
   top: calc(100% + 2px);
   left: 50%;
@@ -1049,5 +1051,9 @@
   transition: opacity .12s ease;
   z-index: 60;
 }
-[data-tip]:hover::after { opacity: 1; transform: translateX(-50%) translateY(0); }
-[data-tip]:hover::before { opacity: 1; }
+[data-tip]:hover::after { display: block; opacity: 1; transform: translateX(-50%) translateY(0); }
+[data-tip]:hover::before { display: block; opacity: 1; }
+/* 화면 오른쪽 끝 요소용 — 툴팁을 오른쪽 끝에 맞춰 뷰포트 밖으로 나가지 않게 */
+[data-tip][data-tip-align="right"]::after { left: auto; right: 0; transform: none; }
+[data-tip][data-tip-align="right"]:hover::after { transform: none; }
+[data-tip][data-tip-align="right"]::before { left: auto; right: 7px; transform: none; }
