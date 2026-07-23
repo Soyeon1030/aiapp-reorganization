@@ -521,78 +521,20 @@
               </div>
             </div>
 
-            <!-- 신청함 — 할 일은 목록 밖으로 -->
+            <!-- 신청함 — 할 일은 목록 밖으로. 점진 공개: 1~3건 카드 · 4건부터 리스트 3건 + 더 보기 -->
             <div class="set__group" id="mem-apply-group">
               <span class="set__group-label"><span id="mem-apply-label">가입 신청 — 확인이 필요해요</span>
-                <button class="mem-demo" id="mem-many-demo">시연: 신청이 많을 때 (7건)</button>
+                <button class="mem-demo" id="mem-many-demo">시연: 신청 7건일 때</button>
               </span>
-              <div class="mem-apply">
-                <span class="mavatar" style="background:#B45309">부</span>
-                <span class="mem-apply__txt">
-                  <b>부산집 국밥</b>
-                  <span>busan-gukbap · 010-2210-4471 · 07-23 신청</span>
-                </span>
-                <button class="btn btn--primary mem-ok">승인</button>
-                <button class="btn mem-no">거절</button>
-              </div>
 
-              <!-- 신청 다건(4건~) — 카드 대신 컴팩트 리스트 + 선택 일괄 승인 (시연) -->
+              <!-- 1~3건: 카드 -->
+              <div id="mem-apply-cards"></div>
+              <div class="mem-empty" id="mem-apply-empty" hidden>지금은 새 신청이 없어요 — 신청이 오면 여기에 떠요.</div>
+
+              <!-- 4건~: 점진 공개 리스트 (최신 3건 + 더 보기) -->
               <div class="mem-apl" id="mem-apl" hidden>
-                <div class="mem-apl__bar">
-                  <label><input type="checkbox" id="mem-apl-all"> 전체 선택</label>
-                  <button class="btn btn--primary" id="mem-apl-bulk" disabled>선택 승인</button>
-                </div>
-                <div class="mem-apl__list">
-                  <div class="mem-apl__row">
-                    <input type="checkbox" aria-label="선택">
-                    <span class="mavatar" style="background:#B45309">부</span>
-                    <span class="mwho__t" style="flex:1"><b>부산집 국밥</b><small>busan-gukbap · 010-2210-4471 · 07-23 신청</small></span>
-                    <button class="btn btn--primary mem-apl-ok">승인</button>
-                    <button class="btn mem-apl-no">거절</button>
-                  </div>
-                  <div class="mem-apl__row">
-                    <input type="checkbox" aria-label="선택">
-                    <span class="mavatar" style="background:#4A6FA5">미</span>
-                    <span class="mwho__t" style="flex:1"><b>미소김밥</b><small>miso-kimbap · 010-3311-7024 · 07-23 신청</small></span>
-                    <button class="btn btn--primary mem-apl-ok">승인</button>
-                    <button class="btn mem-apl-no">거절</button>
-                  </div>
-                  <div class="mem-apl__row">
-                    <input type="checkbox" aria-label="선택">
-                    <span class="mavatar" style="background:#7C6FA5">온</span>
-                    <span class="mwho__t" style="flex:1"><b>온기죽집</b><small>ongi-juk · 010-8842-1163 · 07-23 신청</small></span>
-                    <button class="btn btn--primary mem-apl-ok">승인</button>
-                    <button class="btn mem-apl-no">거절</button>
-                  </div>
-                  <div class="mem-apl__row">
-                    <input type="checkbox" aria-label="선택">
-                    <span class="mavatar" style="background:#33507E">라</span>
-                    <span class="mwho__t" style="flex:1"><b>라멘 코야</b><small>ramen-koya · 010-5763-9910 · 07-22 신청</small></span>
-                    <button class="btn btn--primary mem-apl-ok">승인</button>
-                    <button class="btn mem-apl-no">거절</button>
-                  </div>
-                  <div class="mem-apl__row">
-                    <input type="checkbox" aria-label="선택">
-                    <span class="mavatar" style="background:#A0713D">골</span>
-                    <span class="mwho__t" style="flex:1"><b>골목떡볶이</b><small>golmok-tteok · 010-2299-4085 · 07-22 신청</small></span>
-                    <button class="btn btn--primary mem-apl-ok">승인</button>
-                    <button class="btn mem-apl-no">거절</button>
-                  </div>
-                  <div class="mem-apl__row">
-                    <input type="checkbox" aria-label="선택">
-                    <span class="mavatar" style="background:#4E7D5B">두</span>
-                    <span class="mwho__t" style="flex:1"><b>두부공방</b><small>dubu-gongbang · 010-7133-2846 · 07-22 신청</small></span>
-                    <button class="btn btn--primary mem-apl-ok">승인</button>
-                    <button class="btn mem-apl-no">거절</button>
-                  </div>
-                  <div class="mem-apl__row">
-                    <input type="checkbox" aria-label="선택">
-                    <span class="mavatar" style="background:#8A5A74">반</span>
-                    <span class="mwho__t" style="flex:1"><b>반찬가게 순이</b><small>banchan-sooni · 010-6420-1177 · 07-21 신청</small></span>
-                    <button class="btn btn--primary mem-apl-ok">승인</button>
-                    <button class="btn mem-apl-no">거절</button>
-                  </div>
-                </div>
+                <div class="mem-apl__list" id="mem-apl-list"></div>
+                <button class="mem-apl__more" id="mem-apl-more">더 보기</button>
                 <div class="mem-apl__hint">신청이 자주 쌓이면 <b>바로 가입</b>으로 바꾸는 것도 방법이에요 — 위 가입 방식에서 바꿀 수 있어요.</div>
               </div>
             </div>
@@ -928,89 +870,91 @@
     }
   });
 
-  /* 신청함 — 승인하면 목록 맨 위로 들어온다 */
-  const applyGroup = document.getElementById("mem-apply-group");
-  applyGroup.addEventListener("click", (e) => {
-    const card = e.target.closest(".mem-apply");
-    if (!card) return;
-    if (e.target.classList.contains("mem-ok")) {
-      const row = document.createElement("tr");
-      row.dataset.role = "normal";
-      row.innerHTML = `
-        <td class="ck"><input type="checkbox" aria-label="선택"></td>
-        <td><span class="mwho"><span class="mavatar" style="background:#B45309">부</span><span class="mwho__t"><b>부산집 국밥</b><small>busan-gukbap</small></span></span></td>
-        <td class="meta">010-2210-4471</td><td class="meta">방금 가입</td><td class="meta">07-23</td>
-        <td class="mem__acts"><button class="btn mem-dm">메시지</button><button class="btn mem-out">탈퇴</button></td>`;
-      document.getElementById("mem-rows").prepend(row);
-      document.getElementById("mem-count").textContent = "회원 24명";
-      document.querySelector('#mem-chips [data-role="all"] b').textContent = "24";
-      document.querySelector('#mem-chips [data-role="normal"] b').textContent = "23";
-      document.getElementById("mem-foot").textContent = "전체 24명 — 최근 가입 순이에요. 못 찾으면 검색해 보세요. 메시지·탈퇴 버튼은 행에 올리면 나타나요.";
-      card.remove();
-    } else if (e.target.classList.contains("mem-no")) {
-      card.remove();
-    }
-    if (!applyGroup.querySelector(".mem-apply")) {
-      applyGroup.querySelector(".set__group-label").textContent = "가입 신청";
-      applyGroup.insertAdjacentHTML("beforeend", '<div class="mem-empty">지금은 새 신청이 없어요 — 신청이 오면 여기에 떠요.</div>');
-      const badge = document.getElementById("mem-badge");
-      if (badge) badge.remove();
-    }
-  });
-
-  /* 신청 다건 시연 — 4건부터는 카드 대신 컴팩트 리스트 + 선택 일괄 승인 */
-  const aplBox = document.getElementById("mem-apl");
+  /* ── 신청함 — 점진 공개: 1~3건 카드, 4건부터 최신 3건 + 더 보기 ── */
+  const APLS = [
+    { ini: "부", c: "#B45309", name: "부산집 국밥", id: "busan-gukbap", phone: "010-2210-4471", d: "오늘" },
+    { ini: "미", c: "#4A6FA5", name: "미소김밥", id: "miso-kimbap", phone: "010-3311-7024", d: "오늘" },
+    { ini: "온", c: "#7C6FA5", name: "온기죽집", id: "ongi-juk", phone: "010-8842-1163", d: "오늘" },
+    { ini: "라", c: "#33507E", name: "라멘 코야", id: "ramen-koya", phone: "010-5763-9910", d: "어제" },
+    { ini: "골", c: "#A0713D", name: "골목떡볶이", id: "golmok-tteok", phone: "010-2299-4085", d: "어제" },
+    { ini: "두", c: "#4E7D5B", name: "두부공방", id: "dubu-gongbang", phone: "010-7133-2846", d: "어제" },
+    { ini: "반", c: "#8A5A74", name: "반찬가게 순이", id: "banchan-sooni", phone: "010-6420-1177", d: "그저께" },
+  ];
+  let aplData = APLS.slice(0, 1);
+  let aplOpen = false, memApproved = 0;
   const aplLabel = document.getElementById("mem-apply-label");
-  const aplDemoBtn = document.getElementById("mem-many-demo");
-  let aplMany = false;
-  function aplCount() { return aplBox.querySelectorAll(".mem-apl__row").length; }
-  function aplChecked() { return aplBox.querySelectorAll(".mem-apl__row input:checked").length; }
-  function aplSync() {
-    const n = aplCount(), k = aplChecked();
-    aplLabel.textContent = n ? `가입 신청 ${n}건 — 확인이 필요해요` : "가입 신청";
-    const badge = document.getElementById("mem-badge");
-    if (badge) badge.textContent = `대기 ${n || 1}`;
-    const bulk = document.getElementById("mem-apl-bulk");
-    bulk.disabled = k === 0;
-    bulk.textContent = k ? `선택 승인 (${k}명)` : "선택 승인";
-    if (n === 0 && !aplBox.querySelector(".mem-empty")) {
-      aplBox.querySelector(".mem-apl__list").insertAdjacentHTML("beforebegin",
-        '<div class="mem-empty">신청을 모두 처리했어요 — 새 신청이 오면 여기에 떠요.</div>');
-      aplBox.querySelector(".mem-apl__bar").hidden = true;
-      aplBox.querySelector(".mem-apl__hint").hidden = true;
-    }
+  const aplInfo = (a) => `${a.id} · ${a.phone} · ${a.d} 신청`;
+  const aplCard = (a) => `<div class="mem-apply" data-id="${a.id}">
+    <span class="mavatar" style="background:${a.c}">${a.ini}</span>
+    <span class="mem-apply__txt"><b>${a.name}</b><span>${aplInfo(a)}</span></span>
+    <button class="btn btn--primary mem-ok">승인</button>
+    <button class="btn mem-no">거절</button>
+  </div>`;
+  const aplRow = (a) => `<div class="mem-apl__row" data-id="${a.id}">
+    <span class="mavatar" style="background:${a.c}">${a.ini}</span>
+    <span class="mwho__t" style="flex:1"><b>${a.name}</b><small>${aplInfo(a)}</small></span>
+    <button class="btn btn--primary mem-ok">승인</button>
+    <button class="btn mem-no">거절</button>
+  </div>`;
+
+  function memCounts() {
+    document.getElementById("mem-count").textContent = `회원 ${23 + memApproved}명`;
+    document.querySelector('#mem-chips [data-role="all"] b').textContent = 23 + memApproved;
+    document.querySelector('#mem-chips [data-role="normal"] b').textContent = 22 + memApproved;
+    document.getElementById("mem-foot").textContent =
+      `전체 ${23 + memApproved}명 — 최근 가입 순이에요. 못 찾으면 검색해 보세요. 메시지·탈퇴 버튼은 행에 올리면 나타나요.`;
   }
-  aplDemoBtn.addEventListener("click", () => {
-    aplMany = !aplMany;
-    aplBox.hidden = !aplMany;
-    document.querySelectorAll("#mem-apply-group .mem-apply, #mem-apply-group .mem-empty").forEach((el) => {
-      if (el.parentElement === aplBox || aplBox.contains(el)) return;
-      el.hidden = aplMany;
-    });
-    aplDemoBtn.textContent = aplMany ? "시연 끝내기 — 신청 1건 상태로" : "시연: 신청이 많을 때 (7건)";
-    if (aplMany) { aplSync(); }
-    else {
-      aplLabel.textContent = "가입 신청 — 확인이 필요해요";
-      const badge = document.getElementById("mem-badge");
-      if (badge) badge.textContent = "대기 1";
+  function renderApply() {
+    const n = aplData.length;
+    document.getElementById("mem-apply-empty").hidden = n !== 0;
+    const cards = document.getElementById("mem-apply-cards");
+    cards.hidden = !(n >= 1 && n <= 3);
+    document.getElementById("mem-apl").hidden = n < 4;
+    if (n >= 1 && n <= 3) cards.innerHTML = aplData.map(aplCard).join("");
+    if (n >= 4) {
+      const rest = aplData.slice(3);
+      document.getElementById("mem-apl-list").innerHTML =
+        aplData.slice(0, 3).map(aplRow).join("") +
+        `<div id="mem-apl-rest"${aplOpen ? "" : " hidden"}>${rest.map(aplRow).join("")}</div>`;
+      document.getElementById("mem-apl-more").textContent = aplOpen ? "접기" : `신청 ${rest.length}건 더 보기`;
     }
+    aplLabel.textContent = n === 0 ? "가입 신청" : n === 1 ? "가입 신청 — 확인이 필요해요" : `가입 신청 ${n}건 — 확인이 필요해요`;
+    const badge = document.getElementById("mem-badge");
+    if (badge) { badge.hidden = n === 0; badge.textContent = `대기 ${n}`; }
+  }
+  function aplApprove(id) {
+    const a = aplData.find((x) => x.id === id);
+    if (!a) return;
+    const row = document.createElement("tr");
+    row.dataset.role = "normal";
+    row.innerHTML = `
+      <td class="ck"><input type="checkbox" aria-label="선택"></td>
+      <td><span class="mwho"><span class="mavatar" style="background:${a.c}">${a.ini}</span><span class="mwho__t"><b>${a.name}</b><small>${a.id}</small></span></span></td>
+      <td class="meta">${a.phone}</td><td class="meta">방금 가입</td><td class="meta">07-23</td>
+      <td class="mem__acts"><button class="btn mem-dm">메시지</button><button class="btn mem-out">탈퇴</button></td>`;
+    document.getElementById("mem-rows").prepend(row);
+    memApproved += 1;
+    memCounts();
+    aplData = aplData.filter((x) => x.id !== id);
+  }
+  document.getElementById("mem-apply-group").addEventListener("click", (e) => {
+    const item = e.target.closest("[data-id]");
+    if (item && e.target.classList.contains("mem-ok")) { aplApprove(item.dataset.id); renderApply(); }
+    else if (item && e.target.classList.contains("mem-no")) { aplData = aplData.filter((x) => x.id !== item.dataset.id); renderApply(); }
   });
-  document.getElementById("mem-apl-all").addEventListener("change", (e) => {
-    aplBox.querySelectorAll(".mem-apl__row input").forEach((c) => { c.checked = e.target.checked; });
-    aplSync();
+  document.getElementById("mem-apl-more").addEventListener("click", () => { aplOpen = !aplOpen; renderApply(); });
+
+  /* 시연 토글 — 1건(카드) ↔ 7건(점진 공개) */
+  const demoBtn = document.getElementById("mem-many-demo");
+  let demoMany = false;
+  demoBtn.addEventListener("click", () => {
+    demoMany = !demoMany;
+    aplData = APLS.slice(0, demoMany ? 7 : 1);
+    aplOpen = false;
+    demoBtn.textContent = demoMany ? "시연 끝내기 — 신청 1건 상태로" : "시연: 신청 7건일 때";
+    renderApply();
   });
-  aplBox.addEventListener("change", (e) => { if (e.target.matches(".mem-apl__row input")) aplSync(); });
-  aplBox.addEventListener("click", (e) => {
-    const row = e.target.closest(".mem-apl__row");
-    if (e.target.id === "mem-apl-bulk") {
-      aplBox.querySelectorAll(".mem-apl__row").forEach((r) => { if (r.querySelector("input").checked) r.remove(); });
-      document.getElementById("mem-apl-all").checked = false;
-      aplSync();
-    } else if (row && (e.target.classList.contains("mem-apl-ok") || e.target.classList.contains("mem-apl-no"))) {
-      row.remove();
-      aplSync();
-    }
-  });
+  renderApply();
 
   /* 딥링크 — 다른 화면(예: 데이터베이스의 "관리 화면 가기")에서 특정 뷰로 진입 */
   const initView = new URLSearchParams(location.search).get("view");
