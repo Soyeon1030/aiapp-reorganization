@@ -662,3 +662,60 @@
 .mem .mem__acts { text-align: right; }
 .mem .mem__acts .btn { opacity: 0; transition: opacity .12s ease; }
 .mem tr:hover .mem__acts .btn { opacity: 1; }
+
+/* 신청 다건(4건~) — 컴팩트 리스트 + 선택 일괄 승인 */
+.mem-demo {
+  margin-left: 8px;
+  border: none;
+  background: none;
+  font-size: 10.5px;
+  font-weight: 600;
+  color: var(--color-accent);
+  text-decoration: underline dotted;
+  text-underline-offset: 3px;
+}
+.mem-apl {
+  border: 1px solid color-mix(in srgb, var(--color-warn) 45%, var(--color-line));
+  background: var(--color-warn-soft);
+  border-radius: var(--radius-md);
+  padding: 10px 12px;
+}
+.mem-apl__bar {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 2px 4px 10px;
+}
+.mem-apl__bar label {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  font-size: var(--text-2xs);
+  font-weight: 600;
+  color: var(--color-muted);
+}
+.mem-apl__bar .btn { font-size: var(--text-2xs); padding: 5px 13px; box-shadow: none; }
+.mem-apl__bar .btn:disabled { opacity: .45; }
+.mem-apl__list {
+  max-height: 258px;   /* 5행 남짓 — 넘치면 스크롤, 회원 목록을 밀지 않는다 */
+  overflow-y: auto;
+  border-radius: var(--radius-sm);
+}
+.mem-apl__row {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  background: var(--color-surface);
+  border: 1px solid var(--color-line);
+  border-radius: var(--radius-sm);
+  padding: 8px 11px;
+}
+.mem-apl__row + .mem-apl__row { margin-top: 6px; }
+.mem-apl__row .btn { flex: none; font-size: var(--text-2xs); padding: 4px 11px; box-shadow: none; }
+.mem-apl__hint {
+  padding: 10px 4px 2px;
+  font-size: var(--text-2xs);
+  color: var(--color-muted);
+}
+.mem-apl .mem-empty { background: var(--color-surface); }
