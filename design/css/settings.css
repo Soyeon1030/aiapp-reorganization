@@ -605,3 +605,60 @@
 .mem__acts .btn + .btn { margin-left: 4px; }
 .mem__na { color: var(--color-line-strong); }
 .mem__foot { margin-top: 10px; font-size: var(--text-2xs); color: var(--color-muted); }
+
+/* ── 회원 관리 v2 — 신청함 분리 + 정돈 테이블 (2026-07-23) ── */
+.mem-wrap { padding: 14px 16px 13px; }
+/* 신청 카드 — 할 일은 목록 밖 노란 카드로 */
+.mem-apply {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  border: 1px solid color-mix(in srgb, var(--color-warn) 45%, var(--color-line));
+  background: var(--color-warn-soft);
+  border-radius: var(--radius-md);
+  padding: 12px 15px;
+}
+.mem-apply + .mem-apply { margin-top: 8px; }
+.mem-apply__txt { flex: 1; min-width: 0; }
+.mem-apply__txt b { display: block; font-size: var(--text-sm); }
+.mem-apply__txt span { font-size: var(--text-2xs); color: var(--color-muted); }
+.mem-apply .btn { flex: none; font-size: var(--text-2xs); padding: 5px 13px; box-shadow: none; }
+.mem-empty {
+  border: 1px dashed var(--color-line-strong);
+  border-radius: var(--radius-md);
+  padding: 12px 15px;
+  font-size: var(--text-xs);
+  color: var(--color-muted);
+}
+/* 사람 묶음 — 아바타 + 이름(권한 칩) + 아이디 */
+.mavatar {
+  width: 30px; height: 30px;
+  border-radius: var(--radius-full);
+  flex: none;
+  display: grid;
+  place-items: center;
+  font-size: var(--text-2xs);
+  font-weight: 800;
+  color: #fff;  /* 아바타 이니셜 — 배경은 회원별 지정색 */
+}
+.mwho { display: flex; align-items: center; gap: 10px; }
+.mwho__t b { display: flex; align-items: center; gap: 6px; font-size: var(--text-xs); font-weight: 700; }
+.mwho__t small { display: block; font-family: var(--font-mono); font-size: 10px; color: var(--color-muted); margin-top: 1px; }
+/* 권한 필터 칩 */
+.mem-chips { display: flex; gap: 6px; margin-bottom: 12px; }
+.mem-chip {
+  border: 1px solid var(--color-line);
+  background: var(--color-surface);
+  border-radius: var(--radius-full);
+  padding: 3px 12px;
+  font-size: var(--text-2xs);
+  font-weight: 600;
+  color: var(--color-muted);
+}
+.mem-chip b { font-weight: 700; }
+.mem-chip.is-on { background: var(--color-accent-soft); border-color: var(--color-accent); color: var(--color-accent-deep); }
+/* 정돈 테이블 — 메타는 조용히, 동작은 호버에만 */
+.mem td.meta { color: var(--color-muted); font-size: var(--text-2xs); white-space: nowrap; }
+.mem .mem__acts { text-align: right; }
+.mem .mem__acts .btn { opacity: 0; transition: opacity .12s ease; }
+.mem tr:hover .mem__acts .btn { opacity: 1; }
