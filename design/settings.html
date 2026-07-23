@@ -395,26 +395,6 @@
 
                 <!-- 수정 패널 (C안) — 키워드 → AI 문구 생성 → 고르기 -->
                 <div class="seoedit" id="seo-edit" hidden>
-                  <div class="seoedit__label">손님이 검색할 만한 단어 — 눌러서 켜고 끄세요</div>
-                  <div class="seoedit__kw">
-                    <button class="kwchip is-on">식자재 도매</button>
-                    <button class="kwchip is-on">식당 발주</button>
-                    <button class="kwchip">새벽 배송 식자재</button>
-                    <button class="kwchip kwchip--add">+ 직접 추가</button>
-                  </div>
-                  <button class="btn btn--gen" id="seo-ai">✦ AI가 검색 문구 만들어 주기</button>
-
-                  <div class="seoedit__out" id="seo-ai-out" hidden>
-                    <div class="seoedit__label" style="color:var(--color-accent)">고른 단어를 넣어 2가지로 지어봤어요 — 하나를 고르세요</div>
-                    <button class="aiopt is-on" data-t="식당 발주는 청솔 식자재 — 새벽 배송 도매" data-d="오늘 밤 발주하면 내일 아침 도착. 품목 골라 담는 온라인 발주.">
-                      <span><b>식당 발주는 청솔 식자재 — 새벽 배송 도매</b><small>오늘 밤 발주하면 내일 아침 도착. 품목 골라 담는 온라인 발주.</small></span>
-                      <em>AI 추천</em>
-                    </button>
-                    <button class="aiopt" data-t="청솔 식자재 발주 — 우리 동네 식자재 도매" data-d="품목을 골라 담는 온라인 발주. 전화 없이 정확하게.">
-                      <span><b>청솔 식자재 발주 — 우리 동네 식자재 도매</b><small>품목을 골라 담는 온라인 발주. 전화 없이 정확하게.</small></span>
-                    </button>
-                  </div>
-
                   <div class="seoedit__form">
                     <div class="seoedit__field">
                       <label>검색 제목 <small id="seo-title-count">27 / 35자 — 이 길이면 잘리지 않아요</small></label>
@@ -424,7 +404,32 @@
                       <label>소개 문구 <small id="seo-desc-count">38 / 80자</small></label>
                       <textarea id="seo-desc-in" rows="2">품목을 골라 담는 온라인 발주. 전화 없이 정확하게, 새벽 배송 준비까지.</textarea>
                     </div>
+                    <div class="seoedit__field">
+                      <label>검색 키워드 <small>손님이 검색할 만한 단어 — 눌러서 켜고 끄세요</small></label>
+                      <div class="seoedit__kw">
+                        <button class="kwchip is-on">식자재 도매</button>
+                        <button class="kwchip is-on">식당 발주</button>
+                        <button class="kwchip">새벽 배송 식자재</button>
+                        <button class="kwchip kwchip--add">+ 직접 추가</button>
+                      </div>
+                    </div>
+                    <div class="seoedit__gen">
+                      <button class="btn btn--gen" id="seo-ai">✦ AI가 검색 문구 만들어 주기</button>
+                      <small>켜둔 키워드로 위 제목·소개를 다시 써드려요</small>
+                    </div>
                   </div>
+
+                  <div class="seoedit__out" id="seo-ai-out" hidden>
+                    <div class="seoedit__label" style="color:var(--color-accent)">키워드를 넣어 2가지로 지어봤어요 — 하나를 고르면 위 칸에 채워져요</div>
+                    <button class="aiopt is-on" data-t="식당 발주는 청솔 식자재 — 새벽 배송 도매" data-d="오늘 밤 발주하면 내일 아침 도착. 품목 골라 담는 온라인 발주.">
+                      <span><b>식당 발주는 청솔 식자재 — 새벽 배송 도매</b><small>오늘 밤 발주하면 내일 아침 도착. 품목 골라 담는 온라인 발주.</small></span>
+                      <em>AI 추천</em>
+                    </button>
+                    <button class="aiopt" data-t="청솔 식자재 발주 — 우리 동네 식자재 도매" data-d="품목을 골라 담는 온라인 발주. 전화 없이 정확하게.">
+                      <span><b>청솔 식자재 발주 — 우리 동네 식자재 도매</b><small>품목을 골라 담는 온라인 발주. 전화 없이 정확하게.</small></span>
+                    </button>
+                  </div>
+
                   <div class="seoedit__acts">
                     <button class="btn" id="seo-edit-close">닫기</button>
                     <button class="btn btn--primary" id="seo-apply">이 문구로 적용</button>
