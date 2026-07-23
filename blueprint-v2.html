@@ -134,7 +134,9 @@
       <!-- ── 오른쪽: 기획안 아티팩트 — 답할 때마다 실시간으로 채워짐 ── -->
       <section class="art">
         <div class="art__bar">
-          <b>기획안</b>
+          <div class="ptab-rail">
+            <button class="ptab is-on"><svg class="ph"><use href="#ph-book-open"/></svg><span class="ptab__label">기획안</span></button>
+          </div>
           <span class="art__status" id="art-status">질문이 끝나면 여기에 채워져요</span>
         </div>
         <div class="art__scroll" id="art-scroll">
@@ -657,35 +659,28 @@
     scene.className = "scene";
     scene.id = "scene-mode";
     scene.innerHTML = `
-      <p class="log-line">시작하기 전에 하나만 정할게요.</p>
-      <div class="ask" id="ask-mode">
-        <div class="ask__head">
-          <b class="ask__t">어떻게 진행할까요?</b>
-          <p class="ask__d">어느 쪽이든 기획안은 확인하고 시작해요. 나중에 언제든 고칠 수 있어요.</p>
+      <p class="log-line">시작하기 전에 하나만 정할게요 — 어느 쪽이든 기획안은 확인하고 시작해요.</p>
+      <div class="chat-go" id="mode-go">
+        <div class="chat-go__row">
+          <button class="btn btn--primary" data-mode="guide">기획서 함께 다듬기</button>
+          <button class="btn" data-mode="auto">AI에게 다 맡기기</button>
         </div>
-        <button class="askopt is-on" data-mode="guide">
-          <span class="tx"><b>기획서를 함께 다듬을래요 <em class="askopt__rec">AI 추천</em></b><small>질문 4개에 답하면 기획이 정확해져요 (1분)</small></span>
-        </button>
-        <button class="askopt" data-mode="auto">
-          <span class="tx"><b>AI에게 다 맡길래요</b><small>추천값으로 바로 기획안을 만들어요 — 확인만 하면 돼요</small></span>
-        </button>
+        <small>함께 다듬기 = 질문 4개에 답해요 (1분) · 맡기기 = 추천값으로 바로 기획안</small>
       </div>
       <button class="log-answer" id="ans-mode" hidden>
         진행 방식: <b id="ans-mode-v"></b> ✓ <span>바꾸려면 클릭</span>
       </button>`;
     chat.appendChild(scene);
-    scene.querySelectorAll(".askopt").forEach((btn) => {
+    scene.querySelectorAll("[data-mode]").forEach((btn) => {
       btn.addEventListener("click", () => pickMode(btn.dataset.mode));
     });
     document.getElementById("ans-mode").addEventListener("click", () => {
       document.getElementById("ans-mode").hidden = true;
-      document.getElementById("ask-mode").hidden = false;
+      document.getElementById("mode-go").hidden = false;
     });
   }
   function pickMode(mode) {
-    const ask = document.getElementById("ask-mode");
-    ask.querySelectorAll(".askopt").forEach((b) => b.classList.toggle("is-on", b.dataset.mode === mode));
-    ask.hidden = true;
+    document.getElementById("mode-go").hidden = true;
     document.getElementById("ans-mode-v").textContent = mode === "auto" ? "AI에게 다 맡기기" : "기획서 함께 다듬기";
     document.getElementById("ans-mode").hidden = false;
     if (mode === "auto") {
