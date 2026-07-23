@@ -1006,3 +1006,41 @@
   letter-spacing: 0;
   text-transform: none;
 }
+
+/* ── 툴팁 (공용) — data-tip 속성이 있는 요소에 호버 시 아래로 표시 ──
+   네이티브 title 대신 사용: 즉시 반응·일관된 스타일. 상단 바 요소도 잘리지 않게 아래 배치 */
+[data-tip] { position: relative; }
+[data-tip]::after {
+  content: attr(data-tip);
+  position: absolute;
+  top: calc(100% + 7px);
+  left: 50%;
+  transform: translateX(-50%) translateY(-2px);
+  background: var(--color-console);
+  color: var(--color-console-ink);
+  font-size: var(--text-2xs);
+  font-weight: 600;
+  line-height: 1;
+  padding: 6px 10px;
+  border-radius: 7px;
+  white-space: nowrap;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity .12s ease, transform .12s ease;
+  z-index: 60;
+}
+[data-tip]::before {
+  content: "";
+  position: absolute;
+  top: calc(100% + 2px);
+  left: 50%;
+  transform: translateX(-50%);
+  border: 5px solid transparent;
+  border-bottom-color: var(--color-console);
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity .12s ease;
+  z-index: 60;
+}
+[data-tip]:hover::after { opacity: 1; transform: translateX(-50%) translateY(0); }
+[data-tip]:hover::before { opacity: 1; }
