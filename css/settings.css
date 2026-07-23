@@ -507,3 +507,101 @@
 
 /* AI 제안 카드 — 제목·설명 간격 */
 .aiopt small { margin-top: 3px; }
+
+/* ── 회원 관리 (2026-07-23) — 기능 관리 첫 화면 ── */
+/* 세그먼트 선택 — 가입 방식·메시지 채널 */
+.seg {
+  display: inline-flex;
+  gap: 2px;
+  padding: 3px;
+  background: var(--color-surface-sub);
+  border-radius: var(--radius-md);
+}
+.seg__opt {
+  border: none;
+  background: none;
+  border-radius: var(--radius-sm);
+  padding: 6px 14px;
+  font-size: var(--text-xs);
+  font-weight: 600;
+  color: var(--color-muted);
+}
+.seg__opt.is-on {
+  background: var(--color-surface);
+  color: var(--color-accent-deep);
+  box-shadow: var(--shadow-sm);
+}
+.seg--sm .seg__opt { padding: 4px 11px; font-size: var(--text-2xs); }
+
+/* 목록 상단 바 — 검색 + 메시지 */
+.mem__bar { display: flex; gap: 10px; margin-bottom: 12px; }
+.mem__search {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  border: 1px solid var(--color-line);
+  border-radius: var(--radius-md);
+  padding: 0 12px;
+  background: var(--color-surface);
+}
+.mem__search .ph { width: 15px; height: 15px; color: var(--color-muted); flex: none; }
+.mem__search input {
+  flex: 1;
+  border: none;
+  outline: none;
+  background: none;
+  font: inherit;
+  font-size: var(--text-xs);
+  padding: 9px 0;
+}
+.mem__bar .btn { flex: none; font-size: var(--text-xs); }
+.mem__bar .btn:disabled { opacity: .45; }
+
+/* 메시지 패널 */
+.mem__msg {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  border: 1px solid var(--color-accent);
+  border-radius: var(--radius-md);
+  background: var(--color-accent-soft);
+  padding: 13px 15px;
+  margin-bottom: 12px;
+}
+.mem__msg-head { display: flex; align-items: center; gap: 10px; }
+.mem__msg-head b { flex: 1; font-size: var(--text-xs); }
+.mem__msg textarea {
+  border: 1px solid var(--color-line);
+  border-radius: var(--radius-sm);
+  background: var(--color-surface);
+  font: inherit;
+  font-size: var(--text-xs);
+  padding: 9px 11px;
+  resize: vertical;
+}
+.mem__msg-acts { display: flex; align-items: center; gap: 8px; }
+.mem__msg-acts .btn { font-size: var(--text-xs); padding: 6px 14px; box-shadow: none; }
+.mem__msg-acts small { margin-left: auto; font-size: var(--text-2xs); color: var(--color-muted); }
+
+/* 회원 테이블 */
+.mem { width: 100%; border-collapse: collapse; font-size: var(--text-xs); }
+.mem th {
+  text-align: left;
+  padding: 8px 10px;
+  border-bottom: 1px solid var(--color-line-strong);
+  font-size: var(--text-2xs);
+  font-weight: 700;
+  color: var(--color-muted);
+  white-space: nowrap;
+}
+.mem td { padding: 10px; border-bottom: 1px solid var(--color-line); vertical-align: middle; }
+.mem tr:last-child td { border-bottom: none; }
+.mem .ck { width: 26px; padding-right: 0; }
+.mem tr.is-wait td { background: var(--color-warn-soft); }
+.mem .tag { font-size: 10.5px; padding: 1px 8px; }
+.mem__acts { white-space: nowrap; }
+.mem__acts .btn { font-size: var(--text-2xs); padding: 4px 10px; box-shadow: none; }
+.mem__acts .btn + .btn { margin-left: 4px; }
+.mem__na { color: var(--color-line-strong); }
+.mem__foot { margin-top: 10px; font-size: var(--text-2xs); color: var(--color-muted); }
