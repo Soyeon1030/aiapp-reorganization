@@ -344,52 +344,124 @@
               </div>
             </div>
           </div>
+          </div>
 
           <!-- ═══ 검색 노출 (SEO) ═══ -->
           <div class="set__view" data-view="seo" hidden>
             <div class="set__head">
               <div>
                 <h3>검색 노출</h3>
-                <p>네이버·구글 검색에서 우리 서비스가 어떻게 보일지 정해요.</p>
+                <p>검색에 잘 나오기 위한 준비 상태예요. 대부분은 이미 자동으로 해뒀어요.</p>
               </div>
-              <span class="tag tag--ok">✓ 노출 중</span>
+              <span class="tag tag--ok">3/4 완료</span>
             </div>
 
+            <!-- 점검표 (B안) — 뭘 했고 뭘 남았는지 한눈에 -->
             <div class="set__group">
-              <span class="set__group-label">노출 설정</span>
+              <span class="set__group-label">점검표</span>
               <div class="set__card">
                 <div class="set__row">
+                  <span class="sst sst--ok">✓</span>
                   <div class="set__row-text">
-                    <div class="set__row-t">검색엔진 노출</div>
-                    <div class="set__row-d">끄면 검색 결과에서 점차 사라져요. 주소로는 계속 접속돼요.</div>
+                    <div class="set__row-t">검색에 보이기</div>
+                    <div class="set__row-d">네이버·구글이 우리 사이트를 찾을 수 있어요. 끄면 검색에서 점차 사라져요.</div>
                   </div>
                   <div class="set__row-ctrl">
-                    <button class="switch is-on" role="switch" aria-checked="true" aria-label="검색엔진 노출"></button>
+                    <button class="switch is-on" role="switch" aria-checked="true" aria-label="검색에 보이기"></button>
                   </div>
                 </div>
+
                 <div class="set__row">
+                  <span class="sst sst--ok">✓</span>
                   <div class="set__row-text">
-                    <div class="set__row-t">검색 제목</div>
-                    <div class="set__row-d">청솔 식자재 발주 — 우리 동네 식자재 도매</div>
+                    <div class="set__row-t">검색 제목 · 소개 문구</div>
+                    <div class="set__row-d" id="seo-row-desc">청솔 식자재 발주 — 우리 동네 식자재 도매 · 만들 때 자동으로 써뒀어요.</div>
                   </div>
                   <div class="set__row-ctrl">
-                    <button class="btn">변경</button>
+                    <button class="btn" id="seo-edit-open">수정</button>
                   </div>
                 </div>
+
+                <!-- 수정 패널 (C안) — 키워드 → AI 문구 생성 → 고르기 -->
+                <div class="seoedit" id="seo-edit" hidden>
+                  <div class="seoedit__label">손님이 검색할 만한 단어 — 눌러서 켜고 끄세요</div>
+                  <div class="seoedit__kw">
+                    <button class="kwchip is-on">식자재 도매</button>
+                    <button class="kwchip is-on">식당 발주</button>
+                    <button class="kwchip">새벽 배송 식자재</button>
+                    <button class="kwchip kwchip--add">+ 직접 추가</button>
+                  </div>
+                  <button class="btn btn--primary" id="seo-ai">AI가 검색 문구 만들어 주기</button>
+
+                  <div class="seoedit__out" id="seo-ai-out" hidden>
+                    <div class="seoedit__label" style="color:var(--color-accent)">고른 단어를 넣어 2가지로 지어봤어요 — 하나를 고르세요</div>
+                    <button class="aiopt is-on" data-t="식당 발주는 청솔 식자재 — 새벽 배송 도매" data-d="오늘 밤 발주하면 내일 아침 도착. 품목 골라 담는 온라인 발주.">
+                      <span><b>식당 발주는 청솔 식자재 — 새벽 배송 도매</b><small>오늘 밤 발주하면 내일 아침 도착. 품목 골라 담는 온라인 발주.</small></span>
+                      <em>AI 추천</em>
+                    </button>
+                    <button class="aiopt" data-t="청솔 식자재 발주 — 우리 동네 식자재 도매" data-d="품목을 골라 담는 온라인 발주. 전화 없이 정확하게.">
+                      <span><b>청솔 식자재 발주 — 우리 동네 식자재 도매</b><small>품목을 골라 담는 온라인 발주. 전화 없이 정확하게.</small></span>
+                    </button>
+                  </div>
+
+                  <div class="seoedit__field">
+                    <label>검색 제목 <small id="seo-title-count">27 / 35자 — 이 길이면 잘리지 않아요</small></label>
+                    <input id="seo-title-in" value="청솔 식자재 발주 — 우리 동네 식자재 도매">
+                  </div>
+                  <div class="seoedit__field">
+                    <label>소개 문구 <small id="seo-desc-count">38 / 80자</small></label>
+                    <textarea id="seo-desc-in" rows="2">품목을 골라 담는 온라인 발주. 전화 없이 정확하게, 새벽 배송 준비까지.</textarea>
+                  </div>
+                  <div class="seoedit__acts">
+                    <button class="btn btn--primary" id="seo-apply">이 문구로 적용</button>
+                    <button class="btn" id="seo-edit-close">닫기</button>
+                  </div>
+                </div>
+
                 <div class="set__row">
+                  <span class="sst sst--todo">!</span>
                   <div class="set__row-text">
-                    <div class="set__row-t">검색 설명</div>
-                    <div class="set__row-d">품목을 골라 담는 온라인 발주. 전화 없이 정확하게, 새벽 배송 준비까지.</div>
+                    <div class="set__row-t">공유 이미지</div>
+                    <div class="set__row-d">카톡으로 공유할 때 뜨는 그림이 아직 없어요 — 로고로 1분 만에 만들 수 있어요.</div>
                   </div>
                   <div class="set__row-ctrl">
-                    <button class="btn">변경</button>
+                    <button class="btn btn--primary" onclick="location.href='brand.html'">설정하기</button>
                   </div>
                 </div>
+
+                <div class="set__row">
+                  <span class="sst sst--auto">A</span>
+                  <div class="set__row-text">
+                    <div class="set__row-t">네이버 · 구글에 알리기</div>
+                    <div class="set__row-d">출시하면 자동으로 알려드려요. 검색에 뜨기까지 보통 며칠 걸려요 — 기다리시면 돼요.</div>
+                  </div>
+                  <div class="set__row-ctrl">
+                    <span class="sst-auto-label">자동 완료</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- 미리보기 (A안) — 밖에서 이렇게 보여요 -->
+            <div class="set__group">
+              <span class="set__group-label">밖에서 이렇게 보여요</span>
+              <div class="set__card">
                 <div class="serp" aria-label="검색 결과 미리보기">
-                  <div class="serp__label">검색 결과에 이렇게 보여요</div>
-                  <div class="serp__title">청솔 식자재 발주 — 우리 동네 식자재 도매</div>
+                  <div class="serp__label">검색하면 이렇게 보여요</div>
+                  <div class="serp__title" id="seo-serp-title">청솔 식자재 발주 — 우리 동네 식자재 도매</div>
                   <div class="serp__url">chungsol-order.aiapp.help</div>
-                  <div class="serp__desc">품목을 골라 담는 온라인 발주. 전화 없이 정확하게, 새벽 배송 준비까지.</div>
+                  <div class="serp__desc" id="seo-serp-desc">품목을 골라 담는 온라인 발주. 전화 없이 정확하게, 새벽 배송 준비까지.</div>
+                </div>
+                <div class="serp" style="margin-top:0" aria-label="카톡 공유 미리보기">
+                  <div class="serp__label">카톡으로 공유하면 이렇게 보여요</div>
+                  <div class="kakao">
+                    <span class="kakao__img">청솔</span>
+                    <span class="kakao__tx">
+                      <b id="seo-kakao-title">청솔 식자재 발주</b>
+                      <span id="seo-kakao-desc">품목을 골라 담는 온라인 발주. 전화 없이 정확하게.</span>
+                      <small>chungsol-order.aiapp.help</small>
+                    </span>
+                  </div>
                 </div>
               </div>
             </div>
@@ -423,6 +495,7 @@
                   <div class="set__row-ctrl"><button class="btn">30일 ▾</button></div>
                 </div>
             </div>
+          </div>
           </div>
 
           <!-- ═══ 게시판·후기 ═══ -->
@@ -496,6 +569,7 @@
                   </div>
                 </div>
             </div>
+          </div>
           </div>
 
           <!-- ═══ 결제 (지연 설정 — 연결 필요) ═══ -->
@@ -616,8 +690,6 @@
                   </div>
                 </div>
               </div>
-            </div>
-          </div>
             </div>
           </div>
 
@@ -801,6 +873,45 @@
       sw.classList.toggle("is-on");
       sw.setAttribute("aria-checked", String(sw.classList.contains("is-on")));
     });
+  });
+
+  /* ── 검색 노출: 수정 패널 + AI 문구 생성 (B+C+A 조합) ── */
+  const seoEdit = document.getElementById("seo-edit");
+  document.getElementById("seo-edit-open").addEventListener("click", () => { seoEdit.hidden = !seoEdit.hidden; });
+  document.getElementById("seo-edit-close").addEventListener("click", () => { seoEdit.hidden = true; });
+  document.getElementById("seo-ai").addEventListener("click", () => {
+    document.getElementById("seo-ai-out").hidden = false;
+  });
+  document.querySelectorAll("#seo-ai-out .aiopt").forEach((opt) => {
+    opt.addEventListener("click", () => {
+      document.querySelectorAll("#seo-ai-out .aiopt").forEach((o) => o.classList.toggle("is-on", o === opt));
+      document.getElementById("seo-title-in").value = opt.dataset.t;
+      document.getElementById("seo-desc-in").value = opt.dataset.d;
+      syncSeoCount();
+    });
+  });
+  const seoTitleIn = document.getElementById("seo-title-in");
+  const seoDescIn = document.getElementById("seo-desc-in");
+  function syncSeoCount() {
+    document.getElementById("seo-title-count").textContent =
+      `${seoTitleIn.value.length} / 35자` + (seoTitleIn.value.length <= 35 ? " — 이 길이면 잘리지 않아요" : " — 뒤가 잘릴 수 있어요");
+    document.getElementById("seo-desc-count").textContent = `${seoDescIn.value.length} / 80자`;
+  }
+  seoTitleIn.addEventListener("input", syncSeoCount);
+  seoDescIn.addEventListener("input", syncSeoCount);
+  document.getElementById("seo-apply").addEventListener("click", () => {
+    const t = seoTitleIn.value, d = seoDescIn.value;
+    document.getElementById("seo-serp-title").textContent = t;
+    document.getElementById("seo-serp-desc").textContent = d;
+    document.getElementById("seo-kakao-title").textContent = t.split(" — ")[0];
+    document.getElementById("seo-kakao-desc").textContent = d;
+    document.getElementById("seo-row-desc").textContent = t + " · 직접 수정했어요.";
+    seoEdit.hidden = true;
+  });
+
+  /* 키워드 칩 토글 */
+  document.querySelectorAll(".kwchip:not(.kwchip--add)").forEach((c) => {
+    c.addEventListener("click", () => c.classList.toggle("is-on"));
   });
 </script>
 
