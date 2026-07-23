@@ -443,3 +443,6 @@
 .kakao__tx b { display: block; font-size: var(--text-xs); }
 .kakao__tx span { display: block; font-size: var(--text-2xs); color: var(--color-muted); margin-top: 2px; line-height: 1.5; }
 .kakao__tx small { display: block; font-family: var(--font-mono); font-size: 9.5px; color: var(--color-line-strong); margin-top: 5px; }
+
+/* 미리보기 카드 — 첫 미리보기 위 여백 */
+.set__card > .serp:first-child { margin-top: 16px; }
