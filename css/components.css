@@ -1156,5 +1156,5 @@
   animation: vmboot-spin .8s linear infinite;
 }
 .vmboot__step.is-done i { border-color: var(--color-ok); background: var(--color-ok); }
-.vmboot__step.is-done i::before { content: "✓"; color: #fff; font-size: 9px; font-weight: 800; }
+.vmboot__step.is-done i::before { content: "✓"; color: #fff; font-size: 9px; font-weight: 800; line-height: 1; transform: translateY(-.5px); }
 @keyframes vmboot-spin { to { transform: rotate(360deg); } }

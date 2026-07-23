@@ -392,6 +392,7 @@
 <div class="demo-states" role="group" aria-label="상태 시연">
   <span class="demo-states__label">상태 시연</span>
   <button onclick="location.href='b2.html?build=1'">생성 재생</button>
+  <button data-state="boot">부팅 중</button>
   <button data-state="idle">대기</button>
   <button data-state="busy">작업 중</button>
   <button data-state="ask" class="is-on">질의 중</button>
@@ -853,11 +854,20 @@
   }
   function setState(s) {
     syncDemo(s);
+    if (s === "boot") {
+      /* 이미 만들어진 프로젝트를 다시 여는 상황 — 부팅이 끝나야 미리보기가 나타난다 */
+      lockChat(true, "전용 공간을 켜는 중이에요 — 준비되면 보낼 수 있어요");
+      ask.hidden = true;
+      askAnswer.hidden = false;
+      playWake(() => setState("ask"));
+      return;
+    }
     /* 진행 카드 마지막 행: 작업 중이면 스피너 */
     lastRow.classList.toggle("is-run", s === "busy");
     lastRow.classList.toggle("is-done", s !== "busy");
     lastDetail.textContent = s === "busy" ? "진행 중" : "완료";
     /* 미리보기: 작업 중이면 목업 대신 스켈레톤 빌드업 */
+    if (s === "busy") document.querySelector(".pv-loading__label").textContent = "청솔 식자재 발주를 만들고 있어요…";
     document.getElementById("pv-loading").hidden = s !== "busy";
     document.querySelector(".pv__canvas").hidden = s === "busy";
     /* 되묻기 카드 표시 */
@@ -909,37 +919,57 @@
     divider.addEventListener("pointerup", up);
   });
 
-  /* ── 재접속 웨이크 — 전용 컴퓨터(micro VM) 켜는 연출. 빌드 연출과 공존하지 않는다 ── */
+  /* ── 재접속 웨이크 — 전용 컴퓨터(micro VM) 켜는 연출. 부팅이 끝나야 미리보기가 나타난다.
+     빌드 연출(?build=1)과는 공존하지 않는다 ── */
   const wakeWrap = document.getElementById("wake-wrap");
-  if (new URLSearchParams(location.search).has("build")) {
-    wakeWrap.remove();
-  } else {
+  let wakeTimers = [];
+  function playWake(onDone) {
+    if (!wakeWrap.isConnected) { if (onDone) onDone(); return; }
+    wakeTimers.forEach(clearTimeout);
+    wakeTimers = [];
     wakeWrap.hidden = false;
+    document.getElementById("wake-chk").hidden = true;
+    document.querySelector(".pv-loading__label").textContent = "청솔 식자재 발주를 여는 중이에요…";
+    document.getElementById("pv-loading").hidden = false;
+    document.querySelector(".pv__canvas").hidden = true;
     const wakeRows = wakeWrap.querySelectorAll(".console-row");
+    wakeRows.forEach((r) => {
+      r.classList.remove("is-run", "is-done");
+      r.classList.add("is-wait");
+      r.querySelector(".console-row__detail").textContent = "대기";
+    });
     const wakeDurs = [1500, 1100, 900];
     let wt = 400;
     wakeRows.forEach((r, i) => {
-      setTimeout(() => {
+      wakeTimers.push(setTimeout(() => {
         r.classList.remove("is-wait");
         r.classList.add("is-run");
         r.querySelector(".console-row__detail").textContent = "진행 중";
-      }, wt);
+      }, wt));
       wt += wakeDurs[i];
-      setTimeout(() => {
+      wakeTimers.push(setTimeout(() => {
         r.classList.remove("is-run");
         r.classList.add("is-done");
         r.querySelector(".console-row__detail").textContent = "완료";
-      }, wt);
+      }, wt));
     });
-    setTimeout(() => {
+    wakeTimers.push(setTimeout(() => {
       document.getElementById("wake-chk").hidden = false;
+      document.getElementById("pv-loading").hidden = true;
+      document.querySelector(".pv__canvas").hidden = false;
       const fs = document.querySelector(".feed__scroll");
       if (fs) fs.scrollTop = fs.scrollHeight;
-    }, wt + 250);
-    setTimeout(() => {
+      if (onDone) onDone();
+    }, wt + 250));
+    wakeTimers.push(setTimeout(() => {
       const fs = document.querySelector(".feed__scroll");
       if (fs) fs.scrollTop = fs.scrollHeight;
-    }, 500);
+    }, 500));
+  }
+  if (new URLSearchParams(location.search).has("build")) {
+    wakeWrap.remove();
+  } else {
+    playWake();
   }
 
   /* ── 생성 진행 시퀀스 (?build=1) — 설계안 확정 직후의 연출 재생.
