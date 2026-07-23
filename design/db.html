@@ -200,7 +200,6 @@
 
         <!-- 상단 데이터 탭 (테이블명 대신 콘텐츠 이름 + 단위) -->
         <nav class="db-tabs" aria-label="데이터 유형">
-          <button class="db-tab" data-view="dash"><svg class="ph"><use href="#ph-chart-bar"/></svg> 요약</button>
           <button class="db-tab is-on" data-view="bookings"><svg class="ph"><use href="#ph-calendar-blank"/></svg> 발주 <b>3</b><i class="db__new" title="새 발주"></i></button>
           <button class="db-tab" data-view="members"><svg class="ph"><use href="#ph-user"/></svg> 거래처 <b>23</b></button>
           <button class="db-tab" data-view="reviews"><svg class="ph"><use href="#ph-chat-circle"/></svg> 품목 <b>5</b></button>
@@ -209,67 +208,6 @@
 
         <!-- 메인: 뷰 전환 -->
         <div class="db__main">
-
-          <!-- ═══ 뷰 0. 요약 — 자동 생성 대시보드 ═══ -->
-          <div class="db__view" data-view="dash" hidden>
-            <div class="db__head">
-              <div>
-                <h3>요약</h3>
-                <p>우리 서비스가 어떻게 돌아가는지 한눈에 봐요.</p>
-              </div>
-              <span class="tag">자동 생성</span>
-            </div>
-
-            <div class="stats">
-              <div class="stat">
-                <span class="stat__l">오늘 발주</span>
-                <span class="stat__v">6<small>건</small></span>
-                <span class="stat__d stat__d--up">▲ 2건 어제보다</span>
-              </div>
-              <div class="stat">
-                <span class="stat__l">이번 주 신규 거래처</span>
-                <span class="stat__v">1<small>곳</small></span>
-                <span class="stat__d">지난주와 같아요</span>
-              </div>
-              <div class="stat">
-                <span class="stat__l">이번 주 발주</span>
-                <span class="stat__v">21<small>건</small></span>
-                <span class="stat__d stat__d--up">▲ 2 지난주보다</span>
-              </div>
-              <div class="stat">
-                <span class="stat__l">미출고</span>
-                <span class="stat__v">2<small>건</small></span>
-                <span class="stat__d">지난주와 같아요</span>
-              </div>
-            </div>
-
-            <div class="db__banner">
-              <svg class="ph"><use href="#ph-bell"/></svg>
-              <span>이번 주 새 발주 21건이 저장됐어요</span>
-              <button class="btn btn--primary" data-goto="bookings">발주 보기</button>
-            </div>
-
-            <div class="chart-card">
-              <div class="chart-card__head"><b>최근 7일 발주</b><span>일별 발주 건수</span></div>
-              <div class="bars" role="img" aria-label="최근 7일 발주 추이 — 오늘 6건, 상승세">
-                <div class="bar-col" title="7/16 (목) · 3건"><i style="height:63%"></i></div>
-                <div class="bar-col" title="7/17 (금) · 4건"><i style="height:69%"></i></div>
-                <div class="bar-col" title="7/18 (토) · 2건"><i style="height:58%"></i></div>
-                <div class="bar-col" title="7/19 (일) · 2건"><i style="height:53%"></i></div>
-                <div class="bar-col" title="7/20 (월) · 4건"><i style="height:74%"></i></div>
-                <div class="bar-col" title="7/21 (화) · 5건"><i style="height:84%"></i></div>
-                <div class="bar-col is-today" title="7/22 (수) · 6건"><b>6</b><i style="height:94%"></i></div>
-              </div>
-              <div class="bars-x">
-                <span>목</span><span>금</span><span>토</span><span>일</span><span>월</span><span>화</span><span class="is-today">오늘</span>
-              </div>
-            </div>
-
-            <div class="db__foot">
-              <span>매일 자정에 갱신돼요</span>
-              <span>이 정보는 자동으로 저장되고, 매일 백업돼요</span>
-            </div>
-          </div><!-- /뷰 0 -->
 
           <!-- ═══ 뷰 1. 예약 — 엑셀형 시트 (대기 행은 처리 버튼 상시 노출) ═══ -->
           <div class="db__view" data-view="bookings">
@@ -536,7 +474,7 @@
           <tr><td><b>grid 표형</b></td><td>폴백 — 컬럼 그대로</td><td>없음</td><td><b>매핑이 하나라도 애매하면 무조건</b></td></tr>
         </tbody>
       </table>
-      <p>요약(대시보드)은 템플릿이 아니라 <b>자동 생성</b> — 테이블별 건수 스탯 + 일시 필드가 있는 테이블의 최근 7일 추이. 타일 클릭 = 해당 뷰로 이동.</p>
+      <p>요약(운영 현황)은 이 탭이 아니라 <b>관리·설정 첫 화면</b>에 있다 (2026-07-23 이동) — DB 탭은 저장소 열람만.</p>
 
       <h5>모든 뷰 공통 (AI가 지정하지 않아도 슬롯에서 유도)</h5>
       <ul>
