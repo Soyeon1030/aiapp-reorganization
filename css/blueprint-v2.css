@@ -242,8 +242,7 @@
   .dbcards, .dsg { grid-template-columns: 1fr; }
 }
 
-/* 개발 노트 버튼 — 이 페이지는 좌측이 컴포저라 우하단으로 이동 */
-.spec-fab { left: auto; right: 22px; }
+/* 개발 노트 버튼 — 좌하단(공용 기본 위치, 2026-07-24 원복: 우하단은 버전 스위치 자리) */
 
 /* 최종 오버라이드 — 이 페이지는 전면 흰 배경 (컴포넌트 기본 그라디언트 무효화) */
 body { background: var(--color-surface); }
