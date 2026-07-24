@@ -484,3 +484,109 @@ body { background: var(--color-surface); }
 .ctx b { font-weight: 800; }
 .ctx button { border: none; background: none; color: var(--color-accent-deep); font-size: 11px; opacity: .6; padding: 0 2px; }
 .ctx button:hover { opacity: 1; }
+
+/* ══ v3 (2026-07-24) — 레일 2탭 · 플로팅 목차 · 행 호버 수정 · 개요 4행 ══ */
+
+/* 레일 디자인 탭 — 새로 채워지면 점 배지 */
+.ptab { position: relative; }
+.ptab__dot {
+  width: 6px;
+  height: 6px;
+  border-radius: var(--radius-full);
+  background: var(--color-danger);
+  margin-left: 2px;
+}
+
+/* 개요 — 한 줄 정의·플랫폼 알약 */
+.prow .tagline { font-size: var(--text-md); font-weight: 800; letter-spacing: -.01em; }
+.prow small { display: block; color: var(--color-muted); font-size: var(--text-2xs); margin-top: 2px; }
+.plat {
+  display: inline-block;
+  font-style: normal;
+  border: 1px solid var(--color-line-strong);
+  border-radius: var(--radius-full);
+  padding: 1px 9px;
+  font-size: var(--text-2xs);
+  font-weight: 700;
+  color: var(--color-muted);
+  margin-right: 4px;
+}
+.plat.is-on { border-color: var(--color-accent); color: var(--color-accent-deep); background: var(--color-accent-soft); }
+
+/* 행 단위 호버 수정 — 항목 줄이 하이라이트되고 버튼이 떠오른다 (💬 아이콘 대체) */
+#plan-doc .prow { position: relative; border-radius: var(--radius-sm); transition: background .12s; }
+#plan-doc .prow:hover { background: var(--color-accent-soft); }
+.fixbtn {
+  position: absolute;
+  top: 50%;
+  right: 4px;
+  transform: translateY(-50%) translateX(3px);
+  border: 1px solid var(--color-accent);
+  background: var(--color-surface);
+  color: var(--color-accent-deep);
+  border-radius: var(--radius-full);
+  padding: 3px 11px;
+  font-size: 10.5px;
+  font-weight: 700;
+  white-space: nowrap;
+  opacity: 0;
+  transition: opacity .12s, transform .12s;
+  box-shadow: var(--shadow-md);
+  z-index: 3;
+}
+#plan-doc .prow:hover .fixbtn { opacity: 1; transform: translateY(-50%); }
+.fixbtn:hover { background: var(--color-accent); color: #fff; }
+
+/* 플로팅 목차 — 문서 왼쪽에 붙어 함께 스크롤(sticky), 기획안 완성 후 표시 */
+.art__scroll.has-toc {
+  display: flex;
+  align-items: flex-start;
+  justify-content: center;
+  gap: 18px;
+}
+/* 목차 폭만큼 오른쪽에 균형추 — 문서가 목차 유무와 무관하게 항상 정중앙 */
+.art__scroll.has-toc::after {
+  content: "";
+  flex: none;
+  width: 150px;
+}
+.plan-col { width: 100%; max-width: 800px; margin: 0 auto; }  /* 목차 없을 땐 블록 가운데 */
+.art__scroll.has-toc .plan-col { flex: 0 1 800px; min-width: 0; margin: 0; }  /* 목차 옆에 딱 붙어(gap 18px) 묶음이 가운데 */
+.plan-toc {
+  position: sticky;
+  top: 10px;   /* sticky 기준점 — 있어야 스크롤을 따라온다 */
+  width: 150px;
+  flex: none;
+  background: color-mix(in srgb, var(--color-surface) 88%, transparent);
+  backdrop-filter: blur(6px);
+  border: 1px solid var(--color-line);
+  border-radius: var(--radius-md);
+  box-shadow: var(--shadow-lg);
+  padding: 10px;
+  display: flex;
+  flex-direction: column;
+  gap: 1px;
+}
+.plan-toc .stab {
+  display: block;
+  width: 100%;
+  text-align: left;
+  border: none;
+  background: none;
+  border-radius: 7px;
+  padding: 5px 9px;
+  font-size: var(--text-2xs);
+  font-weight: 600;
+  color: var(--color-muted);
+}
+.plan-toc .stab:hover { background: var(--color-surface-sub); color: var(--color-ink); }
+.plan-toc .stab.is-on { background: var(--color-accent-soft); color: var(--color-accent-deep); }
+
+/* 의견 확인 — 자유 입력 힌트 */
+.ask__free {
+  border: 1px dashed var(--color-line-strong);
+  border-radius: var(--radius-sm);
+  padding: 9px 13px;
+  font-size: var(--text-2xs);
+  color: var(--color-muted);
+}
