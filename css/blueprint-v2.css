@@ -591,15 +591,16 @@ body { background: var(--color-surface); }
   color: var(--color-muted);
 }
 
-/* ── 문서 서브탭 (2026-07-24 B안) — 기획서 표면 안: 전역 레일(알약)과 구분되는 밑줄 탭.
+/* ── 문서 서브탭 (2026-07-24 B안) — 전역 레일(알약) 아래, 기획서 표면 안의 밑줄 탭 줄.
    기획서·디자인·와이어프레임은 여기서만 오가고, 전역 레일엔 "기획서" 한 자리만 ── */
-.doctab-rail {
-  display: inline-flex;
-  gap: 4px;
-  align-self: stretch;
+.doctab-bar {
+  display: flex;
   align-items: stretch;
-  margin: -8px 0;   /* art__bar 세로 패딩(8px)을 상쇄 — 밑줄이 바 하단 보더에 붙는다 */
+  padding: 0 16px;
+  border-bottom: 1px solid var(--color-line);
+  background: var(--color-surface);
 }
+.doctab-rail { display: inline-flex; gap: 4px; }
 .doctab {
   position: relative;
   border: 0;
@@ -608,7 +609,7 @@ body { background: var(--color-surface); }
   font-size: var(--text-xs);
   font-weight: 600;
   color: var(--color-muted);
-  padding: 0 12px;
+  padding: 9px 12px 10px;
   cursor: pointer;
 }
 .doctab:hover:not(.is-on) { color: var(--color-ink); background: var(--color-surface-sub); }
@@ -632,3 +633,54 @@ body { background: var(--color-surface); }
   border-radius: var(--radius-full);
   background: var(--color-accent);
 }
+
+/* ── 기획서 v1 ↔ v2 시안 스위치 (2026-07-24 회의) — 우패널 우하단 플로팅 ── */
+.art { position: relative; }
+.vswitch {
+  position: absolute;
+  right: 16px;
+  bottom: 14px;
+  z-index: 30;
+  display: inline-flex;
+  gap: 2px;
+  border: 1px solid var(--color-line);
+  border-radius: var(--radius-full);
+  background: var(--color-surface);
+  padding: 3px;
+  box-shadow: 0 4px 14px rgb(30 38 53 / .10);
+}
+.vswitch__b {
+  border: 0;
+  background: none;
+  font: inherit;
+  font-size: var(--text-2xs);
+  font-weight: 700;
+  color: var(--color-muted);
+  padding: 4px 12px;
+  border-radius: var(--radius-full);
+  cursor: pointer;
+}
+.vswitch__b.is-on { background: var(--color-accent); color: #fff; }
+
+/* v2 문서 전용 표기 */
+.v2badge {
+  font-style: normal;
+  font-size: var(--text-2xs);
+  font-weight: 800;
+  color: var(--color-accent-deep);
+  background: var(--color-accent-soft);
+  border-radius: var(--radius-full);
+  padding: 1px 9px;
+  margin-left: 6px;
+}
+.v2note {
+  margin: 0 0 18px;
+  padding: 10px 14px;
+  border: 1px solid var(--color-line);
+  border-left: 3px solid var(--color-accent);
+  border-radius: var(--radius-md);
+  background: var(--color-surface-sub);
+  font-size: var(--text-xs);
+  color: var(--color-muted);
+}
+.v2note b { color: var(--color-ink); }

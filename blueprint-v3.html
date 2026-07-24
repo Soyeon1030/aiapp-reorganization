@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>AiApp — 설계안 v2 · 좌 채팅 + 우 기획안</title>
+<title>AiApp — 기획서 v2 (수집 우선) · 청솔 식자재 발주</title>
 <link rel="stylesheet" href="css/tokens.css">
 <link rel="stylesheet" href="css/components.css">
 <link rel="stylesheet" href="css/b2.css">
@@ -164,24 +164,23 @@
           </div>
         </div>
 
-        <!-- 기획서 버전 스위치 (2026-07-24 회의) — v1(현행) ↔ v2(수집→결과물 중심 재구성 시안) -->
+        <!-- 기획서 버전 스위치 — 이 페이지가 v2 본체(수집 우선 흐름 + 결과물 중심 문서). 파일명은 blueprint-v3이지만 기획서 버전은 v2 -->
         <div class="vswitch" role="group" aria-label="기획서 버전">
-          <button class="vswitch__b is-on">v1</button>
-          <button class="vswitch__b" onclick="location.href='blueprint-v3.html'" title="수집 우선 개선안 — 대화 흐름까지 v2로 열려요">v2</button>
+          <button class="vswitch__b" onclick="location.href='blueprint-v2.html'" title="기존 흐름으로 돌아가요">v1</button>
+          <button class="vswitch__b is-on">v2</button>
         </div>
 
         <div class="art__scroll" id="art-scroll">
 
           <!-- 플로팅 목차 — 문서 왼쪽에 붙어 함께 스크롤(sticky), 기획안 완성 후 표시 -->
           <nav class="plan-toc" id="plan-toc" hidden aria-label="기획안 목차">
-          <button class="stab" data-t="psec-0">개요</button>
-          <button class="stab" data-t="psec-1">이렇게 이해했어요</button>
-          <button class="stab" data-t="psec-2">문제 · 해결</button>
-          <button class="stab" data-t="psec-3">타겟 · 시나리오</button>
-          <button class="stab" data-t="sec-flow">화면 흐름</button>
+          <button class="stab" data-t="sec-ov">개요</button>
+          <button class="stab" data-t="sec-say">배경과 목표</button>
+          <button class="stab" data-t="sec-out">화면 구성</button>
+          <button class="stab" data-t="sec-uflow">사용자 흐름</button>
+          <button class="stab" data-t="sec-feat">기능 목록</button>
           <button class="stab" data-t="sec-db">저장하는 정보</button>
-          <button class="stab" data-t="psec-5">성공 · 위험</button>
-          <button class="stab" data-t="psec-6">속성</button>
+          <button class="stab" data-t="sec-attr">속성</button>
         </nav>
 
           <div class="plan-col">
@@ -195,18 +194,17 @@
             </header>
             <section class="dsec"><h3>개요</h3>
               <span class="sk-line" style="width:84%"></span><span class="sk-line" style="width:76%"></span></section>
-            <section class="dsec"><h3>이렇게 이해했어요</h3>
-              <span class="sk-line" style="width:88%"></span><span class="sk-line" style="width:80%"></span><span class="sk-line" style="width:84%"></span><span class="sk-line" style="width:78%"></span></section>
-            <section class="dsec"><h3>문제 및 해결방안</h3>
-              <span class="sk-line" style="width:82%"></span><span class="sk-line" style="width:78%"></span><span class="sk-line" style="width:70%"></span></section>
-            <section class="dsec"><h3>타겟 및 시나리오</h3>
+            <section class="dsec"><h3>배경과 목표</h3>
+              <span class="sk-line" style="width:88%"></span><span class="sk-line" style="width:80%"></span><span class="sk-line" style="width:84%"></span></section>
+            <section class="dsec"><h3>화면 구성</h3>
+              <div class="attrs"><span class="sk-line" style="width:104px;height:76px"></span><span class="sk-line" style="width:104px;height:76px"></span><span class="sk-line" style="width:104px;height:76px"></span><span class="sk-line" style="width:104px;height:76px"></span></div>
               <span class="sk-line" style="width:86%"></span><span class="sk-line" style="width:74%"></span></section>
-            <section class="dsec"><h3>화면 흐름</h3>
-              <div class="attrs"><span class="sk-line" style="width:104px;height:76px"></span><span class="sk-line" style="width:104px;height:76px"></span><span class="sk-line" style="width:104px;height:76px"></span><span class="sk-line" style="width:104px;height:76px"></span></div></section>
+            <section class="dsec"><h3>사용자 흐름</h3>
+              <span class="sk-line" style="width:80%"></span><span class="sk-line" style="width:72%"></span></section>
+            <section class="dsec"><h3>기능 목록</h3>
+              <span class="sk-line" style="width:84%"></span><span class="sk-line" style="width:78%"></span><span class="sk-line" style="width:82%"></span></section>
             <section class="dsec"><h3>저장하는 정보</h3>
               <div class="dbcards"><span class="sk-line" style="width:100%;height:110px"></span><span class="sk-line" style="width:100%;height:110px"></span></div></section>
-            <section class="dsec"><h3>성공 · 위험 요소</h3>
-              <span class="sk-line" style="width:80%"></span><span class="sk-line" style="width:72%"></span></section>
             <section class="dsec"><h3>속성</h3>
               <span class="sk-line" style="width:64%"></span></section>
           </div>
@@ -219,39 +217,24 @@
               <p class="plan__one">거래처가 온라인으로 발주를 넣고, 사장님이 한 곳에서 처리하는 서비스예요.</p>
             </header>
 
-            <section class="dsec" id="psec-0" aria-label="개요">
+            <section class="dsec" id="sec-ov" aria-label="개요">
               <h3>개요</h3>
               <div class="prow"><span>한 줄 정의</span><span class="d tagline">거래처가 전화 대신 온라인으로 발주하는 B2B 주문 사이트</span></div>
-              <div class="prow"><span>목적</span><span class="d"><b>전화 발주의 누락·착오를 없애고</b>, 밤 주문을 받아 새벽 준비를 빠르게 해요<br><small>지금은 전화·문자 주문을 수기로 옮겨 적어요 — 실수가 생기는 지점</small></span></div>
               <div class="prow"><span>사용자</span><span class="d"><b>주문하는 사람</b> — 거래처 담당자 (식당·카페 38곳, 로그인)<br><b>운영하는 사람</b> — 청솔 사장님 (발주 확정·출고 처리)</span></div>
               <div class="prow"><span>플랫폼</span><span class="d"><em class="plat is-on">모바일 웹 우선</em><em class="plat">PC 지원</em><em class="plat">앱 설치 없음</em><br><small>거래처는 카톡으로 받은 링크에서 바로 주문해요</small></span></div>
             </section>
 
-            <section class="dsec" id="psec-1" aria-label="이렇게 이해했어요">
-              <h3>이렇게 이해했어요 <small>주황 태그만 한 번 확인해 주세요</small></h3>
-              <div class="prow"><span>발주 접수</span><span class="d">거래처가 품목·수량을 골라 발주를 넣어요</span><span class="und__tag und__tag--req">요청하신 내용</span></div>
-              <div class="prow"><span>발주 관리</span><span class="d">사장님이 발주 현황을 보고 확정·출고 처리해요</span><span class="und__tag und__tag--req">요청하신 내용</span></div>
-              <!-- 대화 확정 슬롯 — 규격 고정, 답하면 값만 채워짐 -->
-              <div class="prow" id="slot-0"><span>발주 방식</span><span class="d"><i class="tbd">1번 질문에 답하면 채워져요</i></span><span class="und__tag und__tag--talk" data-tag hidden>대화로 확정</span></div>
-              <div class="prow" id="slot-1"><span>접수 안내</span><span class="d"><i class="tbd">2번 질문에 답하면 채워져요</i></span><span class="und__tag und__tag--talk" data-tag hidden>대화로 확정</span></div>
-              <div class="prow"><span>품목 분류</span><span class="d">채소·정육·수산·공산품 4종으로 넣어뒀어요. 다르면 알려주세요</span><span class="und__tag und__tag--guess">추측함</span></div>
+            <!-- ① 수집 원문 — 첫 질문 3개의 답이 그대로 실린다 (AI 창작 금지) -->
+            <section class="dsec" id="sec-say" aria-label="사장님이 말한 것">
+              <h3>배경과 목표 <small>직접 말씀하신 내용 그대로예요 — AI가 지어내지 않아요</small></h3>
+              <div class="prow" id="say-0"><span>만드는 이유</span><span class="d"><i class="tbd">첫 질문에 답하면 채워져요</i></span></div>
+              <div class="prow" id="say-1"><span>목적</span><span class="d"><i class="tbd">두 번째 질문에 답하면 채워져요</i></span></div>
+              <div class="prow" id="say-2"><span>원하는 결과</span><span class="d"><i class="tbd">세 번째 질문에 답하면 채워져요</i></span></div>
             </section>
 
-            <section class="dsec" id="psec-2" aria-label="문제 및 해결방안">
-              <h3>문제 및 해결방안</h3>
-              <div class="prow"><span>사용자 문제</span><span class="d">발주가 전화·문자·카톡에 흩어져 누락·오기입이 생겨요</span></div>
-              <div class="prow"><span>해결방안</span><span class="d">품목 목록에서 골라 담는 온라인 발주 한 곳으로 모아요</span></div>
-              <div class="prow"><span>차별점</span><span class="d">엑셀 정리 없이 접수 → 확정 → 출고가 한 화면에서 끝나요</span></div>
-            </section>
-
-            <section class="dsec" id="psec-3" aria-label="타겟 및 시나리오">
-              <h3>타겟 및 시나리오</h3>
-              <div class="prow"><span>타겟 사용자</span><span class="d"><b>사장님(운영)</b> — 발주 확인·확정·출고 처리<br><b>거래처 담당자(회원)</b> — 로그인해서 품목 골라 발주</span></div>
-              <div class="prow"><span>시나리오</span><span class="d">한솥분식 담당자가 밤 10시에 내일 아침 납품 발주를 넣으면, 사장님이 아침에 확정하고 알림톡이 나가요</span></div>
-            </section>
-
-            <section class="dsec" id="sec-flow" aria-label="화면 흐름">
-              <h3>화면 흐름 <small>거래처가 쓰는 순서대로 — 파란 테두리가 핵심 화면</small></h3>
+            <!-- ② 결과물 — 문서의 중심: 어떤 사이트가 나오나 -->
+            <section class="dsec" id="sec-out" aria-label="이렇게 나와요">
+              <h3>화면 구성 <small>완성되면 보게 될 화면들</small></h3>
               <div class="wflow">
                 <div class="wscreen">
                   <div class="wscreen__frame"><div class="bar b1"></div><div class="bar b2"></div><div class="bar b3"></div><div class="btn-ph"></div></div>
@@ -274,6 +257,24 @@
                   <div class="wscreen__cap"><span class="step">5 · </span>사장님 관리</div>
                 </div>
               </div>
+              <div class="prow"><span>화면마다 하는 일</span><span class="d"><b>첫 화면</b> — 오늘 주문 가능한 품목과 [발주하기]가 바로 보여요<br><b>품목 고르기</b> — 채소·정육·수산·공산품에서 골라 담아요<br><b>발주하기</b> — 수량·납품 희망일 확인 후 접수해요<br><b>발주 완료</b> — 접수 번호와 함께 알림톡이 나가요<br><b>사장님 관리</b> — 들어온 발주를 확정 → 출고 → 완료로 처리해요</span></div>
+            </section>
+
+            <section class="dsec" id="sec-uflow" aria-label="사용자 흐름">
+              <h3>사용자 흐름</h3>
+              <div class="prow"><span>거래처 (주문)</span><span class="d">카톡 링크 열기 → 로그인 → 품목 담기 → 발주 넣기 → 접수 알림 받기</span></div>
+              <div class="prow"><span>사장님 (운영)</span><span class="d">아침에 정리된 발주 목록 확인 → 확정·출고 처리 → 안내는 자동 발송</span></div>
+            </section>
+
+            <!-- ③ 기능 — AI 추론 + 어느 말에서 나왔는지 근거 -->
+            <section class="dsec" id="sec-feat" aria-label="기능은 이렇게 정했어요">
+              <h3>기능 목록 <small>말씀하신 것에서 추론했어요 — 근거가 이상하면 알려주세요</small></h3>
+              <div class="prow"><span>거래처 로그인</span><span class="d">등록된 거래처만 발주를 넣을 수 있어요<br><small id="feat-login-why">근거 — 목적에서 · 아무나 발주를 넣으면 안 되니까</small></span><span class="und__tag und__tag--talk">말한 것에서</span></div>
+              <div class="prow"><span>접수 알림톡</span><span class="d">발주가 들어오면 거래처에 접수 확인이 자동 발송돼요<br><small id="feat-noti-why">근거 — 원하는 결과에서</small></span><span class="und__tag und__tag--talk">말한 것에서</span></div>
+              <div class="prow"><span>발주 상태 관리</span><span class="d">대기 → 확정 → 출고 → 완료 4단계로 처리 상황이 남아요<br><small id="feat-status-why">근거 — 만드는 이유에서 · 처리 기록이 있어야 실수가 안 남아요</small></span><span class="und__tag und__tag--talk">말한 것에서</span></div>
+              <div class="prow" id="slot-0"><span>발주 방식</span><span class="d"><i class="tbd">발주 방식 질문에 답하면 채워져요</i></span><span class="und__tag und__tag--talk" data-tag hidden>대화로 확정</span></div>
+              <div class="prow" id="slot-1"><span>접수 안내</span><span class="d"><i class="tbd">접수 안내 질문에 답하면 채워져요</i></span><span class="und__tag und__tag--talk" data-tag hidden>대화로 확정</span></div>
+              <div class="prow"><span>품목 분류</span><span class="d">채소·정육·수산·공산품 4종으로 넣어뒀어요. 다르면 알려주세요</span><span class="und__tag und__tag--guess">추측함</span></div>
             </section>
 
             <section class="dsec" id="sec-db" aria-label="저장하는 정보">
@@ -301,26 +302,17 @@
               </div>
             </section>
 
-            <section class="dsec" id="psec-5" aria-label="성공 위험 요소">
-              <h3>성공 · 위험 요소</h3>
-              <div class="prow"><span>핵심지표</span><span class="d">주간 온라인 발주 건수 · 전화→온라인 전환율 · 누락·정정 건수 감소</span></div>
-              <div class="prow"><span>리스크</span><span class="d">온라인 전환 저항 → 초기엔 전화 병행 + 사장님 대신 입력<br>품목·시세 변동 잦음 → 품목 수정은 관리 화면에서 바로</span></div>
-            </section>
-
-            <section class="dsec" id="psec-6" aria-label="속성">
+            <section class="dsec" id="sec-attr" aria-label="속성">
               <h3>속성</h3>
               <div class="prow"><span>카테고리</span><span class="d">주문·발주</span></div>
-              <div class="prow"><span>사용자 역할</span><span class="d">사장님(운영) + 거래처 담당자(회원 로그인)</span></div>
-              <div class="prow"><span>기기</span><span class="d">모바일 중심 · PC 지원</span></div>
+              <div class="prow"><span>역할</span><span class="d">사장님(운영) · 거래처 담당자(회원)</span></div>
+              <div class="prow"><span>기기</span><span class="d">모바일 · PC</span></div>
             </section>
-
-            <!-- 확정 — 질의 완료 시 활성 -->
           </div>
 
-          </div><!-- /plan-col -->
+          </div>
         </div>
 
-        <!-- 디자인 페인 — 디자인 질의가 끝나면 채워진다 (2026-07-24, v3) -->
         <div class="art__scroll" id="design-scroll" hidden>
           <div class="plan-doc" id="design-doc">
             <header class="plan__head">
@@ -756,6 +748,13 @@
       document.getElementById("making").outerHTML =
         `<p class="log-line">기획안을 완성했어요 — 오른쪽에서 확인해 주세요. 이어서 디자인만 정하면 끝이에요.</p>`;
       renderDoc();
+      /* 수집 원문 → 문서 맨 앞 + 기능 추론 근거에 실제 발화 인용 (v3) */
+      colA.forEach((t, i) => {
+        document.getElementById(`say-${i}`).querySelector(".d").innerHTML = `“${t}”`;
+      });
+      if (colA[1]) document.getElementById("feat-login-why").textContent = `근거 — “${colA[1]}”에서 · 아무나 발주를 넣으면 안 되니까`;
+      if (colA[2]) document.getElementById("feat-noti-why").textContent = `근거 — “${colA[2]}”에서`;
+      if (colA[0]) document.getElementById("feat-status-why").textContent = `근거 — “${colA[0]}”에서 · 처리 기록이 있어야 실수가 안 남아요`;
       document.getElementById("plan-skel").hidden = true;
       const doc = document.getElementById("plan-doc");
       doc.hidden = false;
@@ -855,12 +854,76 @@
   }
 
   /* ── 진행 방식 분기 — 기획서를 함께 다듬을지, AI에게 맡길지 ── */
+  /* ══ 수집 단계 (2026-07-24 회의) — 이유·목적·원하는 결과는 사용자에게 직접 듣는다.
+     열린 질문 + 자유 입력이 본체(옵션 없음). AI가 배경을 지어내지 않기 위한 첫 단계 ══ */
+  const COL = [
+    { label: "만드는 이유",
+      lead: "만들기 전에 세 가지만 직접 여쭤볼게요 — 이 부분은 제가 지어내면 안 되는 내용이라, 말씀 그대로 기획서에 실려요.",
+      q: "지금 뭐가 가장 불편해서 만드시나요?",
+      d: "해결하고 싶은 문제를 편하게 적어주세요 — 이 답이 기획서 맨 앞에 실려요.",
+      demo: "밤마다 전화·문자로 들어오는 발주를 수기로 받아 적는데, 빠뜨리거나 잘못 적는 게 자꾸 생겨요" },
+    { label: "목적",
+      lead: "잘 들었어요. 다음이에요.",
+      q: "이 사이트로 뭘 이루고 싶으세요?",
+      d: "한 문장이면 충분해요.",
+      demo: "거래처가 직접 발주를 넣게 해서 접수 실수를 없애고 싶어요" },
+    { label: "원하는 결과",
+      lead: "마지막 질문이에요.",
+      q: "완성되면 어떤 모습이면 성공일까요?",
+      d: "아침 풍경을 상상해서 적어주셔도 좋아요.",
+      demo: "아침에 발주 목록이 정리돼 있고, 거래처엔 접수 확인이 자동으로 가면 좋겠어요" },
+  ];
+  const colA = [];
+  function buildCollect(i) {
+    const item = COL[i];
+    const scene = document.createElement("div");
+    scene.className = "scene";
+    scene.id = `col-scene-${i}`;
+    scene.innerHTML = `
+      ${i === 0 ? '<div class="log-step">이유 · 목적 · 결과 — 직접 들어요</div>' : ""}
+      <p class="log-line">${item.lead}</p>
+      <div class="ask" id="col-${i}">
+        <div class="ask__head">
+          <b class="ask__t">${item.q} <em class="askopt__rec" style="margin-left:4px">${i + 1}/3</em></b>
+          <p class="ask__d">${item.d}</p>
+        </div>
+        <div class="card-input">
+          <svg class="ph"><use href="#ph-pencil-simple"/></svg>
+          <input type="text" id="col-in-${i}" placeholder="편하게 적어주세요 (Enter)">
+        </div>
+        <button class="askopt" id="col-demo-${i}">
+          <span class="tx"><b>“${item.demo}”</b><small>시연용 — 사장님이 이렇게 답했다고 치고 진행해요</small></span>
+        </button>
+      </div>
+      <button class="log-answer" id="col-ans-${i}" hidden>
+        ${item.label}: <b id="col-ans-v-${i}"></b> ✓
+      </button>`;
+    chat.appendChild(scene);
+    const input = document.getElementById(`col-in-${i}`);
+    input.addEventListener("keydown", (e) => {
+      if (e.key === "Enter" && input.value.trim()) colAnswer(i, input.value.trim());
+    });
+    document.getElementById(`col-demo-${i}`).addEventListener("click", () => colAnswer(i, COL[i].demo));
+    scroll.scrollTo({ top: scroll.scrollHeight, behavior: "smooth" });
+  }
+  function colAnswer(i, text) {
+    colA[i] = text;
+    document.getElementById(`col-${i}`).hidden = true;
+    document.getElementById(`col-ans-v-${i}`).textContent = text.length > 34 ? text.slice(0, 34) + "…" : text;
+    document.getElementById(`col-ans-${i}`).hidden = false;
+    if (i + 1 < COL.length) {
+      if (!document.getElementById(`col-scene-${i + 1}`)) buildCollect(i + 1);
+    } else {
+      buildModeScene();   /* 수집 3문이 끝나야 진행 방식 분기 */
+    }
+  }
+
   function buildModeScene() {
     const scene = document.createElement("div");
     scene.className = "scene";
     scene.id = "scene-mode";
     scene.innerHTML = `
-      <p class="log-line">시작하기 전에 하나만 정할게요 — 어느 쪽이든 기획안은 확인하고 시작해요.</p>
+      <p class="log-line">고맙습니다 — 세 가지 모두 기획서에 그대로 실었어요. 이제 진행 방식만 정할게요.</p>
       <div class="chat-go" id="mode-go">
         <div class="chat-go__row">
           <button class="btn btn--primary" data-mode="guide">기획서 함께 다듬기</button>
@@ -893,7 +956,7 @@
     }
     scroll.scrollTo({ top: scroll.scrollHeight, behavior: "smooth" });
   }
-  buildModeScene();
+  buildCollect(0);   /* 첫 단계 = 수집 (2026-07-24 회의) — 이유·목적·결과를 먼저 직접 듣는다 */
 
   /* ── 리사이저 — b2와 동일 (채팅 폭 300~720px) ── */
   const studio = document.getElementById("studio");

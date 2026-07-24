@@ -681,11 +681,14 @@
     ideaCount.classList.toggle("is-max", len >= 4000);
   });
 
-  /* 부팅 스플래시 — 단계가 순서대로 켜진 뒤 설계로 이동 */
+  /* 부팅 스플래시 — 단계가 순서대로 켜진 뒤 설계로 이동
+     2026-07-24 잠정 비활성 (사용자 요청) — 다시 켜려면 SHOW_BOOT_SPLASH = true */
+  const SHOW_BOOT_SPLASH = false;
   let bootStarted = false;
   function goBoot() {
     if (bootStarted) return;
     bootStarted = true;
+    if (!SHOW_BOOT_SPLASH) { location.href = "blueprint-v2.html"; return; }
     const boot = document.getElementById("vmboot");
     boot.hidden = false;
     const steps = boot.querySelectorAll(".vmboot__step");
