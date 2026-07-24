@@ -130,15 +130,30 @@
           <p class="log-line">말씀해주신 아이디어를 분석하고 있어요.</p>
           <p class="log-line"><b>거래처 온라인 발주 접수 + 관리</b> 서비스로 이해했어요. 화면 5개와 기능 3가지를 담은 기획안을 준비할게요.</p>
 
-          <!-- 작업 계획 카드 — 완료 상태 (채팅 v3, 2026-07-24: 고정 단계 콘솔 카드 대체) -->
-          <div class="aiplan" aria-label="작업 계획">
-            <div class="aiplan__hd"><b>작업 계획</b><em>5/5</em></div>
-            <div class="pi is-done"><i></i><span>기획안 내용을 작업 계획으로 옮기기</span></div>
-            <div class="pi is-done"><i></i><span>홈·품목·발주 화면 만들기</span></div>
-            <div class="pi is-done"><i></i><span>발주·거래처 데이터 테이블 만들기</span></div>
-            <div class="pi is-done"><i></i><span>거래처 로그인 · 알림톡 연결하기</span></div>
-            <div class="pi is-done"><i></i><span>전체 흐름 점검하고 미리보기 준비</span></div>
-            <div class="aiplan__now is-idle"><i></i><span>완료 — 모든 작업이 끝났어요 (사용 크레딧 388)</span></div>
+          <!-- 실시간 작업 내용 (채팅 v3.1) — 독립 계획 카드 폐지: 헤더 한 줄 + 펼치면 계획·원문 -->
+          <div class="aidetail">
+            <button class="aidetail__hd" type="button" aria-expanded="false"
+                    onclick="this.parentElement.classList.toggle('is-open');this.setAttribute('aria-expanded',this.parentElement.classList.contains('is-open'))">
+              <span class="aidetail__logo">C</span>
+              <b>실시간 작업 내용<small>작업 완료 — 모든 작업이 끝났어요</small></b>
+              <em class="aidetail__count">5/5</em>
+              <span class="aidetail__time">1:42</span>
+              <span class="aidetail__car">▾</span>
+            </button>
+            <div class="aidetail__bd">
+              <div class="aidetail__sec">작업 계획</div>
+              <div class="aidetail__plan">
+                <div class="pi is-done"><i></i><span>기획안 내용을 작업 계획으로 옮기기</span></div>
+                <div class="pi is-done"><i></i><span>홈·품목·발주 화면 만들기</span></div>
+                <div class="pi is-done"><i></i><span>발주·거래처 데이터 테이블 만들기</span></div>
+                <div class="pi is-done"><i></i><span>거래처 로그인 · 알림톡 연결하기</span></div>
+                <div class="pi is-done"><i></i><span>전체 흐름 점검하고 미리보기 준비</span></div>
+              </div>
+              <div class="aidetail__sec">원문 로그</div>
+              <div class="dline">Single-page B2B order flow — all five plan items completed and verified.</div>
+              <div class="dline">E2E 점검: 발주 접수 → 저장 → 상태 전환 정상.</div>
+              <div class="dline">사용 크레딧 388 — 전용 공간에서 안전하게 운영 중.</div>
+            </div>
           </div>
 
           <span class="log-user">이대로 만들어 주세요</span>

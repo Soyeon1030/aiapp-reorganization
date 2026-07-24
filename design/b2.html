@@ -134,53 +134,47 @@
           <span class="log-user">이대로 만들어 주세요</span>
           <div class="log-chk">설계안 확인 완료 — 만들기 시작</div>
 
-          <p class="log-line" id="g-plan">좋아요, 기획안대로 만들기 시작할게요. 할 일을 정리했어요 — 진행하면서 늘어날 수 있어요.</p>
+          <p class="log-line" id="g-plan">좋아요, 기획안대로 만들기 시작할게요. 진행 상황은 아래 실시간 작업 내용 한 줄에서 볼 수 있어요 — 펼치면 자세한 과정도 보여요.</p>
 
-          <!-- 기본 표면 ① 작업 계획 카드 — 훅(계획·현재 수행)이 여기로 (2026-07-24 v3) -->
-          <div class="aiplan" id="gen-plan" aria-label="작업 계획">
-            <div class="aiplan__hd"><b>작업 계획</b><em id="gen-count">5/5</em></div>
-            <div class="pi is-done" data-i="0"><i></i><span>기획안 내용을 작업 계획으로 옮기기</span></div>
-            <div class="pi is-done" data-i="1"><i></i><span>홈·품목·발주 화면 만들기</span></div>
-            <div class="pi is-done" data-i="2"><i></i><span>발주·거래처 데이터 테이블 만들기</span></div>
-            <div class="pi is-done" data-i="3"><i></i><span>거래처 로그인 · 알림톡 연결하기</span></div>
-            <div class="pi is-done" data-i="4"><i></i><span>전체 흐름 점검하고 미리보기 준비</span></div>
-            <div class="aiplan__now is-idle" id="gen-now"><i></i><span id="gen-now-t">완료 — 모든 작업이 끝났어요</span></div>
-          </div>
-
-          <!-- 기본 표면 ② 실시간 작업 내용 — 기본 접힘. 개발 구현의 원문 스트림이 가공 없이 담기는 자리 -->
+          <!-- 실시간 작업 내용 (채팅 v3.1) — 독립 계획 카드 폐지: 헤더 한 줄이 "지금 하는 일 + 진행률 N/M + 경과 시간" 담당,
+               펼치면 작업 계획 체크리스트 + 원문 스트림(개발 구현 그대로) -->
           <div class="aidetail" id="gen-detail">
             <button class="aidetail__hd" id="gen-detail-hd" aria-expanded="false">
               <span class="aidetail__logo">C</span>
-              <b>실시간 작업 내용<small id="gen-detail-sub">작업 완료</small></b>
+              <b>실시간 작업 내용<small id="gen-now-t">작업 완료 — 모든 작업이 끝났어요</small></b>
+              <em class="aidetail__count" id="gen-count">5/5</em>
               <span class="aidetail__time" id="gen-detail-time">1:42</span>
               <span class="aidetail__car">▾</span>
             </button>
             <div class="aidetail__bd" id="gen-detail-bd">
-              <div class="dline">Single-page B2B order flow, no conflicting ambiguity — delegating screens to the design agent.</div>
-              <div class="dfile"><code>plan/plan.md</code><span class="st">완료</span></div>
-              <div class="dfile"><code>screens/home.tsx</code><span class="st">완료</span></div>
-              <div class="dfile"><code>screens/items.tsx</code><span class="st">완료</span></div>
-              <div class="dmd">- **주요 화면**: 홈 → 품목 고르기 → 발주하기 → 발주 완료 → 사장님 관리
+              <div class="aidetail__sec">작업 계획</div>
+              <div class="aidetail__plan" id="gen-plan">
+                <div class="pi is-done" data-i="0"><i></i><span>기획안 내용을 작업 계획으로 옮기기</span></div>
+                <div class="pi is-done" data-i="1"><i></i><span>홈·품목·발주 화면 만들기</span></div>
+                <div class="pi is-done" data-i="2"><i></i><span>발주·거래처 데이터 테이블 만들기</span></div>
+                <div class="pi is-done" data-i="3"><i></i><span>거래처 로그인 · 알림톡 연결하기</span></div>
+                <div class="pi is-done" data-i="4"><i></i><span>전체 흐름 점검하고 미리보기 준비</span></div>
+              </div>
+              <div class="aidetail__sec">원문 로그</div>
+              <div class="aidetail__raw" id="gen-raw">
+                <div class="dline">Single-page B2B order flow, no conflicting ambiguity — delegating screens to the design agent.</div>
+                <div class="dfile"><code>plan/plan.md</code><span class="st">완료</span></div>
+                <div class="dfile"><code>screens/home.tsx</code><span class="st">완료</span></div>
+                <div class="dfile"><code>screens/items.tsx</code><span class="st">완료</span></div>
+                <div class="dmd">- **주요 화면**: 홈 → 품목 고르기 → 발주하기 → 발주 완료 → 사장님 관리
 - **디자인 방향**: 네이비 신뢰 톤, 발주 버튼 최우선 위계</div>
-              <div class="dfile"><code>db/orders</code><span class="st">완료</span></div>
-              <div class="dfile"><code>db/clients</code><span class="st">완료</span></div>
-              <div class="dline">E2E 점검: 발주 접수 → 저장 → 상태 전환 정상.</div>
+                <div class="dfile"><code>db/orders</code><span class="st">완료</span></div>
+                <div class="dfile"><code>db/clients</code><span class="st">완료</span></div>
+                <div class="dline">E2E 점검: 발주 접수 → 저장 → 상태 전환 정상.</div>
+              </div>
             </div>
           </div>
 
           <div class="log-chk" id="g-chk1">화면 5개 완성 — 오른쪽 미리보기에서 볼 수 있어요</div>
           <div class="log-chk" id="g-chk2">테이블 2개 연결 — 데이터베이스 탭에서 볼 수 있어요</div>
 
-          <!-- 실행 중 차단 질문 (명세 §2.4) — 기존 문법 그대로 -->
-          <div class="pause-card">
-            <div class="pause-card__t">⏸ 잠깐 확인이 필요해요</div>
-            <p class="pause-card__d">크레딧 잔액이 얼마 남지 않았어요 (<b>120</b>). 남은 단계를 진행하면 부족할 수 있어요. 계속할까요?</p>
-            <div class="pause-card__acts">
-              <button class="btn is-chosen">✓ 계속하기</button>
-              <button class="btn" disabled>여기서 멈추기</button>
-              <span class="pause-card__meta">42초 일시정지 · 답하고 이어서 진행됐어요</span>
-            </div>
-          </div>
+          <!-- 실행 중 차단 질문 (명세 §2.4) — 답변이 끝나면 카드가 아니라 한 줄 기록으로 접힘 (v3.1: 카드 과밀 방지) -->
+          <p class="log-gate">⏸ 크레딧 확인으로 잠깐 멈췄어요 — "계속하기"로 답해서 이어서 진행했어요</p>
 
           <p class="log-line" id="g-n3">알림톡은 발신번호 등록(외부 절차)이 필요해요 — 접수 저장까지 만들어 두고, 출시 후 연결로 안내할게요.</p>
           <div class="log-chk" id="g-chk3">거래처 로그인 · 발주 접수 · 알림톡(폴백) 연결 완료</div>
@@ -258,10 +252,11 @@
           </button>
 
 
-          <!-- 재접속 웨이크 — 전용 공간(micro VM)이 켜질 때. 빌드 연출(?build=1)에서는 제거됨 -->
+          <!-- 재접속 웨이크 — 전용 공간(micro VM)이 켜질 때. 빌드 연출(?build=1)에서는 제거됨.
+               카드는 부팅 중에만 보이고, 켜지면 접혀서 ✓ 한 줄만 남는다 (v3.1: 카드 과밀 방지) -->
           <div id="wake-wrap" hidden>
             <p class="log-line">오랜만이에요! 청솔 식자재 발주를 다시 여는 중이에요.</p>
-            <div class="console-card" style="margin:0" aria-label="전용 공간 켜는 중">
+            <div class="console-card" id="wake-card" style="margin:0" aria-label="전용 공간 켜는 중">
               <span class="console-card__title">전용 공간 켜는 중</span>
               <div class="console-row is-wait"><span class="console-row__icon"></span><span>전용 컴퓨터 켜기</span><span class="console-row__detail">대기</span></div>
               <div class="console-row is-wait"><span class="console-row__icon"></span><span>저장된 데이터 연결</span><span class="console-row__detail">대기</span></div>
@@ -458,7 +453,7 @@
     <div class="modal__main spec">
       <button class="modal__x" id="spec-close" aria-label="닫기">✕</button>
       <h4>AI 응답 치트시트 <span style="font-size:12px;font-weight:600;color:var(--color-muted)">(명세 §2.2·2.4)</span></h4>
-      <p class="spec__sub">AI는 아래 <b>8가지 형태로만</b> 답해요 — 자유 형식 금지. 카드 속 미리보기가 실제 컴포넌트 그대로입니다.</p>
+      <p class="spec__sub">AI는 아래 <b>7가지 형태로만</b> 답해요 — 자유 형식 금지. 카드 속 미리보기가 실제 컴포넌트 그대로입니다.</p>
 
       <h5 id="sp-expose">AI 작업 노출 범위 — 어디까지 보여주나 (2026-07-24 v3)</h5>
       <p><b>두 층 + 비노출.</b> 일반 사용자가 보는 기본 표면은 요약만, 원문 스트림은 접힌 "실시간 작업 내용" 패널에, 나머지는 아예 보여주지 않는다. 기준은 개발 문서 "AI 작업 실시간 스트림"과 동일.</p>
@@ -466,7 +461,7 @@
         <thead><tr><th>정보</th><th>노출 위치</th><th>비고</th></tr></thead>
         <tbody>
           <tr><td>짧은 답변 문장 (안내 · 발견 보고)</td><td><b>기본 표면</b></td><td>타이핑 누적 — 해요체, 1~2문장</td></tr>
-          <tr><td>작업 계획 · 현재 수행 (훅)</td><td><b>기본 표면</b> — 계획 카드 + "지금 하는 일" 한 줄</td><td>훅 상태 문구는 이 한 줄로만 — 회전 스택 없음</td></tr>
+          <tr><td>작업 계획 · 현재 수행 (훅)</td><td><b>패널 헤더 한 줄</b> — 지금 하는 일 + 진행률 N/M</td><td>체크리스트 전체는 패널 안 — 독립 계획 카드 없음 (v3.1)</td></tr>
           <tr><td>작업 완료 사실</td><td><b>기본 표면</b> — ✓ 체크 줄</td><td>사실 + 사용자 이득 한 줄</td></tr>
           <tr><td>추론(작업 구상) 원문</td><td>상세 패널</td><td>영문 포함 그대로 — 가공 없음</td></tr>
           <tr><td>파일별 상태 (경로 · 작업 중/완료/실패)</td><td>상세 패널</td><td>경로만 — 내용 없음</td></tr>
@@ -481,7 +476,7 @@
       <ul>
         <li><b>기본 표면 금지어</b> — 파일 경로 · 영문 원문 · 마크다운 문법(**별표** 등)은 기본 표면에 올리지 않는다 (전부 상세 패널 몫)</li>
         <li><b>훅에 없는 이벤트를 요구하지 않는다</b> — 그룹 구분선 · 단계 배지 등은 스펙 제외. 새 요소는 타임라인 아래로만 추가</li>
-        <li><b>상세 패널은 기본 접힘</b> — 헤더에 상태("응답 작성 중"/"작업 완료") + 경과 시간만. 펼침 상태는 세션 동안 유지</li>
+        <li><b>상세 패널은 기본 접힘</b> — 헤더 한 줄이 지금 하는 일 + 진행률 N/M + 경과 시간을 담당. 펼침 상태는 세션 동안 유지</li>
       </ul>
 
       <h5 id="sp-flow">대화 타임라인 (이 화면의 채팅을 위에서부터 그대로 따라가면 됨)</h5>
@@ -495,13 +490,13 @@
         <div class="flow__node">
           <span class="flow__who">AI · 반복</span>
           <span class="flow__t">단계 진행</span>
-          <span class="flow__d">계획 체크 갱신 + "지금 하는 일" + ✓ 완료 줄</span>
+          <span class="flow__d">패널 헤더 갱신(지금 하는 일 · N/M) + ✓ 완료 줄</span>
         </div>
         <span class="flow__arrow">→</span>
         <div class="flow__node flow__node--gate">
           <span class="flow__who">수시 · 차단 ⏸</span>
           <span class="flow__t">일시정지 질문</span>
-          <span class="flow__d">잔액 부족 등 — 답까지 대기</span>
+          <span class="flow__d">잔액 부족 등 — 답까지 대기, 답하면 한 줄로 접힘</span>
         </div>
         <span class="flow__arrow">→</span>
         <div class="flow__node flow__node--go">
@@ -523,7 +518,7 @@
         </div>
       </div>
 
-      <h5 id="sp-grammar">응답 8형태 — 실물 카탈로그</h5>
+      <h5 id="sp-grammar">응답 7형태 — 실물 카탈로그</h5>
       <div class="cheat">
         <div class="cheat__card">
           <div class="cheat__demo">
@@ -537,13 +532,14 @@
             <div class="aidetail">
               <button class="aidetail__hd" type="button">
                 <span class="aidetail__logo">C</span>
-                <b>실시간 작업 내용<small>응답 작성 중</small></b>
+                <b>실시간 작업 내용<small>홈 화면을 그리는 중…</small></b>
+                <em class="aidetail__count">1/5</em>
                 <span class="aidetail__time">0:37</span>
                 <span class="aidetail__car">▾</span>
               </button>
             </div>
           </div>
-          <div class="cheat__meta"><b>실시간 작업 내용 (접힌 상세)</b><small>추론 원문·파일 상태·긴 요약이 가공 없이 담김 · 기본 접힘 — 구분선 폐기 (v3)</small></div>
+          <div class="cheat__meta"><b>실시간 작업 내용 (접힌 상세)</b><small>헤더 한 줄 = 지금 하는 일 + 진행률 N/M + 경과 시간 · 펼치면 계획 체크리스트 + 원문 스트림 — 독립 계획 카드 폐지 (v3.1)</small></div>
         </div>
 
         <div class="cheat__card">
@@ -551,18 +547,6 @@
             <div class="log-chk">테이블 4개 준비 — 데이터 탭에서 확인할 수 있어요</div>
           </div>
           <div class="cheat__meta"><b>✓ 체크 줄</b><small>완료 사실 · 사실 + 사용자 이득 한 줄</small></div>
-        </div>
-
-        <div class="cheat__card">
-          <div class="cheat__demo">
-            <div class="aiplan" style="margin:0">
-              <div class="aiplan__hd"><b>작업 계획</b><em>1/3</em></div>
-              <div class="pi is-done"><i></i><span>기획안 내용 반영</span></div>
-              <div class="pi is-run"><i></i><span>홈·품목·발주 화면 만들기</span></div>
-              <div class="aiplan__now"><i></i><span>홈 화면을 그리는 중…</span></div>
-            </div>
-          </div>
-          <div class="cheat__meta"><b>작업 계획 카드</b><small>체크리스트 N/M + "지금 하는 일" 한 줄 — 훅 상태는 이 줄로만 · 카드 1회 생성 후 제자리 갱신 (v3)</small></div>
         </div>
 
         <div class="cheat__card">
@@ -575,7 +559,7 @@
               </div>
             </div>
           </div>
-          <div class="cheat__meta"><b>일시정지 카드 (차단)</b><small>답 올 때까지 파이프라인 대기 · 실패 시엔 위험 변형(원인 한 줄 + 다시 시도)</small></div>
+          <div class="cheat__meta"><b>일시정지 카드 (차단)</b><small>답 올 때까지 파이프라인 대기 · <b>답변 후엔 한 줄 기록으로 접힘</b>(카드 잔존 금지, v3.1) · 실패 시엔 위험 변형(원인 한 줄 + 다시 시도)</small></div>
         </div>
 
         <div class="cheat__card">
@@ -906,6 +890,10 @@
     /* 진행 카드 마지막 행: 작업 중이면 스피너 */
     lastRow.classList.toggle("is-run", s === "busy");
     lastRow.classList.toggle("is-done", s !== "busy");
+    /* 패널이 접혀 있어도 헤더 한 줄로 진행이 보인다 (v3.1) */
+    document.getElementById("gen-now-t").textContent =
+      s === "busy" ? "발주를 넣어보고 저장까지 확인하는 중…" : "작업 완료 — 모든 작업이 끝났어요";
+    document.getElementById("gen-count").textContent = s === "busy" ? "4/5" : "5/5";
     /* 미리보기: 작업 중이면 목업 대신 스켈레톤 빌드업 */
     if (s === "busy") document.querySelector(".pv-loading__label").textContent = "청솔 식자재 발주를 만들고 있어요…";
     document.getElementById("pv-loading").hidden = s !== "busy";
@@ -968,6 +956,7 @@
     wakeTimers.forEach(clearTimeout);
     wakeTimers = [];
     wakeWrap.hidden = false;
+    document.getElementById("wake-card").hidden = false;
     document.getElementById("wake-chk").hidden = true;
     document.querySelector(".pv-loading__label").textContent = "청솔 식자재 발주를 여는 중이에요…";
     document.getElementById("pv-loading").hidden = false;
@@ -994,6 +983,8 @@
       }, wt));
     });
     wakeTimers.push(setTimeout(() => {
+      /* 켜지면 카드는 접고 ✓ 한 줄만 남긴다 (v3.1) */
+      document.getElementById("wake-card").hidden = true;
       document.getElementById("wake-chk").hidden = false;
       document.getElementById("pv-loading").hidden = true;
       document.querySelector(".pv__canvas").hidden = false;
@@ -1012,8 +1003,8 @@
     playWake();
   }
 
-  /* ── 생성 진행 시퀀스 (?build=1) — v3: 요약 표면(계획 카드·지금 하는 일·짧은 문장·체크)만 순서대로,
-     상세 원문 스트림은 접힌 "실시간 작업 내용" 패널에 흘러든다 (개발 구현 그대로 담는 자리) ── */
+  /* ── 생성 진행 시퀀스 (?build=1) — v3.1: 기본 표면은 짧은 문장 + ✓ 줄만 주루룩.
+     "지금 하는 일 + 진행률 N/M"은 접힌 패널 헤더 한 줄이 담당, 펼치면 계획 체크리스트 + 원문 스트림 ── */
   const genDetail = document.getElementById("gen-detail");
   document.getElementById("gen-detail-hd").addEventListener("click", () => {
     const open = genDetail.classList.toggle("is-open");
@@ -1025,14 +1016,12 @@
     const feedScroll = document.querySelector(".feed__scroll");
     const items = Array.from(chatEl.children);
     const cutoff = items.findIndex((el) => el.classList.contains("next-sugg"));
-    const detailBd = document.getElementById("gen-detail-bd");
-    const detailLines = Array.from(detailBd.children);
+    const rawLines = Array.from(document.querySelectorAll("#gen-raw > *"));
 
     /* 초기화 */
     items.forEach((el) => { el.hidden = true; });
     genPis.forEach((pi) => pi.classList.remove("is-done", "is-run"));
-    detailLines.forEach((l) => { l.hidden = true; });
-    document.getElementById("gen-detail-sub").textContent = "응답 작성 중";
+    rawLines.forEach((l) => { l.hidden = true; });
     document.getElementById("pv-loading").hidden = false;
     document.querySelector(".pv__canvas").hidden = true;
     lockChat(true, "지금 만들고 있어요 — 끝나면 보낼 수 있어요 (미리 써둘 수 있어요)");
@@ -1047,20 +1036,19 @@
       genCountSync();
     }
     function gnow(text) {
-      const n = document.getElementById("gen-now");
-      if (!text) { n.classList.add("is-idle"); document.getElementById("gen-now-t").textContent = "완료 — 모든 작업이 끝났어요"; return; }
-      n.classList.remove("is-idle");
-      document.getElementById("gen-now-t").textContent = text;
+      document.getElementById("gen-now-t").textContent =
+        text || "작업 완료 — 모든 작업이 끝났어요";
     }
     genCountSync();
-    gnow(null);
+    gnow("잠시만요 — 시작할게요");
 
-    /* 상세 스트림 — 빌드 시작 후 정해진 박자로 흘러든다 */
-    let dIdx = 0;
-    function dNext() {
-      if (dIdx < detailLines.length) {
-        detailLines[dIdx++].hidden = false;
-        detailBd.scrollTop = detailBd.scrollHeight;
+    /* 원문 스트림 — 진행 갱신에 맞춰 흘러든다 */
+    let rIdx = 0;
+    function rNext() {
+      if (rIdx < rawLines.length) {
+        rawLines[rIdx++].hidden = false;
+        const bd = document.getElementById("gen-detail-bd");
+        bd.scrollTop = bd.scrollHeight;
       }
     }
     /* 경과 시간 */
@@ -1072,19 +1060,23 @@
     }, 1000);
     document.getElementById("gen-detail-time").textContent = "0:00";
 
-    /* 요소 → 계획 상태 매핑 (훅의 계획/현재 수행 갱신에 해당) */
+    /* 요소 → 진행 갱신 (훅의 계획/현재 수행이 헤더·체크리스트로) */
     const OPS = {
-      "gen-plan":   () => { pset(0, "run"); gnow("기획안 내용을 확인하는 중…"); dNext(); },
-      "gen-detail": () => { pset(0, "done"); pset(1, "run"); gnow("홈 화면을 그리는 중…"); dNext(); dNext(); },
-      "g-chk1":     () => { pset(1, "done"); pset(2, "run"); gnow("데이터 테이블을 만드는 중…"); dNext(); dNext(); },
-      "g-chk2":     () => { pset(2, "done"); pset(3, "run"); gnow("알림톡 연결을 확인하는 중…"); dNext(); dNext(); },
-      "g-chk3":     () => { pset(3, "done"); pset(4, "run"); gnow("발주를 넣어보고 저장까지 확인하는 중…"); dNext(); },
-      "g-chk4":     () => { pset(4, "done"); gnow(null); },
+      "gen-detail": () => {
+        pset(0, "run");
+        gnow("기획안 내용을 확인하는 중…");
+        rNext();
+        setTimeout(() => { pset(0, "done"); pset(1, "run"); gnow("홈 화면을 그리는 중…"); rNext(); rNext(); }, 800);
+      },
+      "g-chk1": () => { pset(1, "done"); pset(2, "run"); gnow("데이터 테이블을 만드는 중…"); rNext(); rNext(); },
+      "g-chk2": () => { pset(2, "done"); pset(3, "run"); gnow("알림톡 연결을 확인하는 중…"); rNext(); rNext(); },
+      "g-chk3": () => { pset(3, "done"); pset(4, "run"); gnow("발주를 넣어보고 저장까지 확인하는 중…"); rNext(); },
+      "g-chk4": () => { pset(4, "done"); gnow(null); },
     };
     function onReveal(el) {
       if (el.id && OPS[el.id]) OPS[el.id]();
       if (el.classList.contains("report")) {
-        document.getElementById("gen-detail-sub").textContent = "작업 완료";
+        gnow(null);
         clearInterval(clock);
         document.getElementById("pv-loading").hidden = true;
         document.querySelector(".pv__canvas").hidden = false;
@@ -1101,7 +1093,7 @@
         const delay = el.classList.contains("log-line") ? 900
           : el.classList.contains("report") ? 1100
           : el.classList.contains("pause-card") ? 1100
-          : el.classList.contains("aiplan") ? 900
+          : el.classList.contains("aidetail") ? 1400
           : el.classList.contains("log-chk") ? 900 : 650;
         setTimeout(next, delay);
       } else {
