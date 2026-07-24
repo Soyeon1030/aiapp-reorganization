@@ -874,7 +874,6 @@
               <div class="bd-drawer__foot">
                 <button class="btn btn--primary" id="bdd-toggle">숨기기</button>
                 <button class="btn">글 수정</button>
-                <small id="bdd-views"></small>
               </div>
             </aside>
             <div class="set__head">
@@ -1493,9 +1492,8 @@
     bddIdx = i;
     document.getElementById("bdd-title").textContent = r[0];
     document.getElementById("bdd-meta").innerHTML =
-      `<span class="tag">${r[1]}</span><span class="tag ${r[2] ? "tag--ok" : "tag--warn"}">${r[2] ? "게시 중" : "숨김"}</span><small>${r[4]}</small>`;
+      `<span class="tag">${r[1]}</span><span class="tag ${r[2] ? "tag--ok" : "tag--warn"}">${r[2] ? "게시 중" : "숨김"}</span><small>${r[4]} · 조회 ${r[3]}회</small>`;
     document.getElementById("bdd-body").textContent = r[5];
-    document.getElementById("bdd-views").textContent = `조회 ${r[3]}회`;
     document.getElementById("bdd-toggle").textContent = r[2] ? "숨기기" : "게시하기";
     bdDrawerEl.classList.add("is-open");
     bdScrim.classList.add("is-open");
