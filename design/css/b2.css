@@ -909,3 +909,102 @@
 .ptab.is-on { background: var(--color-accent-soft); color: var(--color-accent-deep); }
 .ptab.is-on .ptab__label { display: inline; }
 .ptab:hover:not(.is-on) { background: var(--color-surface-sub); color: var(--color-ink); }
+
+/* ── 할 일 위젯 (2026-07-24, Agent SDK TODO 문법) — 고정 단계 콘솔 카드 대체 ── */
+.todo-card {
+  border: 1px solid var(--color-line);
+  border-radius: var(--radius-md);
+  background: var(--color-surface);
+  overflow: hidden;
+}
+.todo-card__hd {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 14px;
+  background: var(--color-surface-sub);
+  border-bottom: 1px solid var(--color-line);
+  font-size: var(--text-2xs);
+  font-weight: 700;
+  color: var(--color-muted);
+  letter-spacing: .03em;
+}
+.todo-card__hd em { font-style: normal; margin-left: auto; font-weight: 600; font-variant-numeric: tabular-nums; }
+.todo-card__foot {
+  padding: 8px 14px;
+  border-top: 1px solid var(--color-line);
+  font-size: var(--text-2xs);
+  color: var(--color-muted);
+}
+.ti {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 7px 14px;
+  font-size: var(--text-xs);
+}
+.ti + .ti { border-top: 1px solid var(--color-line); }
+.ti i {
+  width: 15px;
+  height: 15px;
+  border-radius: var(--radius-full);
+  border: 1.5px solid var(--color-line-strong);
+  flex: none;
+  display: grid;
+  place-items: center;
+  font-style: normal;
+}
+.ti > span { flex: 1; min-width: 0; }
+.ti.is-run { font-weight: 700; }
+.ti.is-run i {
+  border-color: var(--color-accent);
+  border-top-color: transparent;
+  animation: ti-spin .8s linear infinite;
+}
+.ti.is-done { color: var(--color-muted); }
+.ti.is-done i { background: var(--color-ok); border-color: var(--color-ok); }
+.ti.is-done i::before { content: "✓"; color: #fff; font-size: 8.5px; font-weight: 800; }
+.ti__new {
+  margin-left: auto;
+  font-style: normal;
+  font-size: 9.5px;
+  font-weight: 800;
+  color: var(--color-accent-deep);
+  background: var(--color-accent-soft);
+  border-radius: var(--radius-full);
+  padding: 1px 7px;
+  flex: none;
+}
+.ti.is-added { animation: ti-flash 1.6s ease; }
+@keyframes ti-spin { to { transform: rotate(360deg); } }
+@keyframes ti-flash { 0% { background: var(--color-accent-soft); } 100% { background: transparent; } }
+
+/* 접힌 작업 줄 — 같은 할 일 구간의 도구 실행 묶음 (묶음·번역은 클라이언트 책임) */
+.actline {
+  border: 1px solid var(--color-line);
+  border-radius: var(--radius-sm);
+  font-size: var(--text-2xs);
+  overflow: hidden;
+  background: var(--color-surface);
+  cursor: pointer;
+}
+.actline__hd {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 7px 12px;
+  color: var(--color-muted);
+}
+.actline__hd b { color: var(--color-ink); }
+.actline:hover .actline__hd { background: var(--color-surface-sub); }
+.actline__car { font-size: 9px; transition: transform .15s; flex: none; }
+.actline.is-open .actline__car { transform: rotate(90deg); }
+.actline__body {
+  display: none;
+  border-top: 1px solid var(--color-line);
+  padding: 8px 12px 10px;
+  color: var(--color-muted);
+}
+.actline.is-open .actline__body { display: block; }
+.actline__body div { padding: 2px 0; }
+.actline__body div::before { content: "·"; margin-right: 7px; }
