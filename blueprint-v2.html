@@ -140,9 +140,12 @@
       <!-- ── 오른쪽: 기획안 아티팩트 — 답할 때마다 실시간으로 채워짐 ── -->
       <section class="art">
         <div class="art__bar">
-          <div class="ptab-rail">
-            <button class="ptab is-on" id="rail-prd"><svg class="ph"><use href="#ph-book-open"/></svg><span class="ptab__label">기획안</span></button>
-            <button class="ptab" id="rail-dsg"><svg class="ph"><use href="#ph-sparkle"/></svg><span class="ptab__label">디자인</span><i class="ptab__dot" id="rail-dsg-dot" hidden></i></button>
+          <!-- 문서 서브탭 (2026-07-24 B안) — 전역 레일(알약)이 아니라 기획서 표면 안의 밑줄 탭.
+               기획 산출물 3종은 여기서만 오가고, 전역 레일은 "기획서" 한 자리만 차지한다 (상한 5탭) -->
+          <div class="doctab-rail" role="tablist" aria-label="기획 문서">
+            <button class="doctab is-on" id="rail-prd">기획서</button>
+            <button class="doctab" id="rail-dsg">디자인<i class="doctab__dot" id="rail-dsg-dot" hidden></i></button>
+            <button class="doctab" id="rail-wf" onclick="location.href='wireframe.html'" data-tip="구조를 로우파이 화면으로 확인">와이어프레임</button>
           </div>
           <span class="art__status" id="art-status">질문이 끝나면 여기에 채워져요</span>
         </div>
@@ -900,6 +903,8 @@
   }
   railPrd.addEventListener("click", () => showPane("prd"));
   railDsg.addEventListener("click", () => showPane("dsg"));
+  /* 딥링크 — 와이어프레임 화면의 "디자인" 서브탭에서 진입 (B안) */
+  if (new URLSearchParams(location.search).get("pane") === "dsg") showPane("dsg");
 
   /* ── 플로팅 목차 — 클릭 점프 + 스크롤 스파이 ── */
   const artScroll = document.getElementById("art-scroll");

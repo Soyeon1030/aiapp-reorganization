@@ -893,7 +893,9 @@
   ::view-transition-new(*) { animation: none !important; }
 }
 
-/* ── 패널 탭 레일 (2026-07-23) — 아이콘 레일: 활성 탭만 라벨을 편 필 형태 ── */
+/* ── 패널 탭 레일 (2026-07-23) — 2026-07-24 B안: 레일 상한 5탭 + 라벨 상시 노출.
+   메뉴를 놓치는 원인은 라벨 부재 → 항목을 5개로 묶어 라벨을 항상 편다.
+   좁은 폭에서만 비활성 탭이 아이콘으로 접힌다(활성 탭 라벨은 유지) ── */
 .ptab-rail {
   display: inline-flex;
   align-items: center;
@@ -905,10 +907,24 @@
 }
 .ptab { padding: 7px 10px; color: var(--color-muted); }
 .ptab .ph { width: 17px; height: 17px; }
-.ptab .ptab__label { display: none; }
-.ptab.is-on { background: var(--color-accent-soft); color: var(--color-accent-deep); }
-.ptab.is-on .ptab__label { display: inline; }
+.ptab .ptab__label { display: inline; }
+.ptab.is-on { background: var(--color-accent-soft); color: var(--color-accent-deep); font-weight: 700; }
 .ptab:hover:not(.is-on) { background: var(--color-surface-sub); color: var(--color-ink); }
+@media (max-width: 1366px) {
+  .ptab:not(.is-on) .ptab__label { display: none; }
+}
+/* 숫자 배지 — 확인이 필요한 항목 수. 상시 라벨보다 강한 호출은 배지가 담당 */
+.ptab__cnt {
+  font-style: normal;
+  font-size: 10px;
+  font-weight: 800;
+  color: #fff;
+  background: var(--color-accent);
+  border-radius: var(--radius-full);
+  padding: 0 5px;
+  line-height: 15px;
+  margin-left: 2px;
+}
 
 /* ── 할 일 위젯 (2026-07-24, Agent SDK TODO 문법) — 고정 단계 콘솔 카드 대체 ── */
 .todo-card {

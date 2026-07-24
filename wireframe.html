@@ -232,9 +232,11 @@
       <!-- 우측: 와이어프레임 뷰어 -->
       <section class="art wfp">
         <div class="wfp__bar">
-          <div class="ptab-rail">
-            <button class="ptab" data-tip="기획안 다시 보기" onclick="location.href='blueprint-v2.html'"><svg class="ph"><use href="#ph-book-open"/></svg><span class="ptab__label">기획안</span></button>
-            <button class="ptab is-on"><svg class="ph"><use href="#ph-squares-four"/></svg><span class="ptab__label">와이어프레임</span></button>
+          <!-- 문서 서브탭 (2026-07-24 B안) — 기획서 표면 안의 밑줄 탭, 전역 레일과 구분 -->
+          <div class="doctab-rail" role="tablist" aria-label="기획 문서">
+            <button class="doctab" data-tip="기획서 다시 보기" onclick="location.href='blueprint-v2.html'">기획서</button>
+            <button class="doctab" data-tip="디자인 방향 보기" onclick="location.href='blueprint-v2.html?pane=dsg'">디자인</button>
+            <button class="doctab is-on">와이어프레임</button>
           </div>
           <span class="wfp__note">구조 확인용 — 색·브랜딩은 아직이에요</span>
         </div>
