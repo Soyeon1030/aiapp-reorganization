@@ -317,7 +317,7 @@
             <!-- 확정 게이트 (2026-07-24) — 디자인 질의는 사용자가 문서를 확인하고 확정한 뒤에만. 채팅 버튼과 동일 동작 -->
             <div class="plan__confirm">
               <button class="btn btn--primary" id="confirm-plan-doc">이 내용으로 확정하고 디자인 정하기</button>
-              <span class="warn">수정하고 싶은 행은 마우스를 올려 "이 부분 수정하시겠어요?"로 바로 요청할 수 있어요</span>
+              <span class="warn">아직 확정 전이에요 — 바꾸고 싶거나 궁금한 건 왼쪽 채팅에 편하게 적어주세요. 행에 마우스를 올려 바로 요청할 수도 있어요</span>
             </div>
           </div>
 
@@ -762,8 +762,9 @@
         <div class="chat-go" id="confirm-go">
           <div class="chat-go__row">
             <button class="btn btn--primary" id="confirm-plan">이 내용으로 확정하고 디자인 정하기</button>
+            <button class="btn" id="talk-more">더 이야기하며 다듬기</button>
           </div>
-          <small>수정하고 싶은 행은 문서에서 마우스를 올려 바로 요청할 수 있어요 · 문서 맨 아래에서도 확정할 수 있어요</small>
+          <small>확정 전까지는 아래 입력창으로 얼마든지 수정·추가 요청할 수 있어요 — 문서 행에 마우스를 올려 바로 고칠 수도 있어요</small>
         </div>
         <button class="log-answer" id="ans-confirm" hidden>기획서 확정 ✓ — 디자인 질문으로 넘어가요</button>`;
       renderDoc();
@@ -790,6 +791,10 @@
       if (thenDesign) {
         document.getElementById("confirm-plan").addEventListener("click", goDesign);
         document.getElementById("confirm-plan-doc").addEventListener("click", goDesign);
+        /* "더 이야기하며 다듬기" — 컴포저로 시선 이동 (확정은 그대로 남는다) */
+        document.getElementById("talk-more").addEventListener("click", () => {
+          document.getElementById("box").focus();
+        });
       }
       scroll.scrollTo({ top: scroll.scrollHeight, behavior: "smooth" });
     }, 1200);
