@@ -178,7 +178,7 @@
           <button class="stab" data-t="psec-1">이렇게 이해했어요</button>
           <button class="stab" data-t="psec-2">문제 · 해결</button>
           <button class="stab" data-t="psec-3">타겟 · 시나리오</button>
-          <button class="stab" data-t="sec-flow">화면 흐름</button>
+          <button class="stab" data-t="sec-flow">화면 구성</button>
           <button class="stab" data-t="sec-db">저장하는 정보</button>
           <button class="stab" data-t="psec-5">성공 · 위험</button>
           <button class="stab" data-t="psec-6">속성</button>
@@ -201,8 +201,8 @@
               <span class="sk-line" style="width:82%"></span><span class="sk-line" style="width:78%"></span><span class="sk-line" style="width:70%"></span></section>
             <section class="dsec"><h3>타겟 및 시나리오</h3>
               <span class="sk-line" style="width:86%"></span><span class="sk-line" style="width:74%"></span></section>
-            <section class="dsec"><h3>화면 흐름</h3>
-              <div class="attrs"><span class="sk-line" style="width:104px;height:76px"></span><span class="sk-line" style="width:104px;height:76px"></span><span class="sk-line" style="width:104px;height:76px"></span><span class="sk-line" style="width:104px;height:76px"></span></div></section>
+            <section class="dsec"><h3>화면 구성</h3>
+              <span class="sk-line" style="width:100%;height:52px"></span><span class="sk-line" style="width:100%;height:52px"></span><span class="sk-line" style="width:100%;height:52px"></span></section>
             <section class="dsec"><h3>저장하는 정보</h3>
               <div class="dbcards"><span class="sk-line" style="width:100%;height:110px"></span><span class="sk-line" style="width:100%;height:110px"></span></div></section>
             <section class="dsec"><h3>성공 · 위험 요소</h3>
@@ -250,28 +250,47 @@
               <div class="prow"><span>시나리오</span><span class="d">한솥분식 담당자가 밤 10시에 내일 아침 납품 발주를 넣으면, 사장님이 아침에 확정하고 알림톡이 나가요</span></div>
             </section>
 
-            <section class="dsec" id="sec-flow" aria-label="화면 흐름">
-              <h3>화면 흐름 <small>거래처가 쓰는 순서대로 — 파란 테두리가 핵심 화면</small></h3>
-              <div class="wflow">
-                <div class="wscreen">
-                  <div class="wscreen__frame"><div class="bar b1"></div><div class="bar b2"></div><div class="bar b3"></div><div class="btn-ph"></div></div>
-                  <div class="wscreen__cap"><span class="step">1 · </span>첫 화면</div>
+            <section class="dsec" id="sec-flow" aria-label="화면 구성">
+              <h3>화면 구성 <small>화면 5개 — 파란 번호·파란 칩이 핵심이에요</small></h3>
+              <!-- v2와 동일한 B안 슬롯 카드 (2026-07-24) — 번호·이름·역할·구성 칩 전부 screens[] JSON 슬롯 -->
+              <div class="scr">
+                <span class="scr__n">1</span>
+                <div class="scr__tx">
+                  <b>첫 화면</b>
+                  <p>오늘 주문 가능한 품목과 발주 버튼이 바로 보여요</p>
+                  <div class="scr__chips"><i class="core">발주하기 버튼</i><i>오늘의 품목</i><i>최근 발주 내역</i><i>공지</i></div>
                 </div>
-                <div class="wscreen">
-                  <div class="wscreen__frame is-core"><div class="bar b1"></div><div class="grid2"><div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div></div><div class="btn-ph"></div></div>
-                  <div class="wscreen__cap"><span class="step">2 · </span>품목 고르기</div>
+              </div>
+              <div class="scr scr--core">
+                <span class="scr__n">2</span>
+                <div class="scr__tx">
+                  <b>품목 고르기</b>
+                  <p>분류에서 골라 담아요 — 수량은 여기서 정해요</p>
+                  <div class="scr__chips"><i class="core">품목 목록 (분류 4종)</i><i class="core">수량 담기</i><i>검색</i><i>자주 시키는 품목</i></div>
                 </div>
-                <div class="wscreen">
-                  <div class="wscreen__frame is-core"><div class="bar b2"></div><div class="bar b1"></div><div class="bar b3"></div><div class="btn-ph"></div></div>
-                  <div class="wscreen__cap"><span class="step">3 · </span>발주하기</div>
+              </div>
+              <div class="scr scr--core">
+                <span class="scr__n">3</span>
+                <div class="scr__tx">
+                  <b>발주하기</b>
+                  <p>담은 품목과 납품 희망일을 확인하고 접수해요</p>
+                  <div class="scr__chips"><i class="core">담은 품목·수량</i><i class="core">납품 희망일</i><i>요청 메모</i></div>
                 </div>
-                <div class="wscreen">
-                  <div class="wscreen__frame"><div class="bar b2"></div><div class="bar b1"></div><div class="bar b3"></div><div class="bar b1"></div></div>
-                  <div class="wscreen__cap"><span class="step">4 · </span>발주 완료</div>
+              </div>
+              <div class="scr">
+                <span class="scr__n">4</span>
+                <div class="scr__tx">
+                  <b>발주 완료</b>
+                  <p>접수 번호와 함께 알림톡이 나가요</p>
+                  <div class="scr__chips"><i>접수 번호</i><i>알림톡 안내</i></div>
                 </div>
-                <div class="wscreen">
-                  <div class="wscreen__frame"><div class="bar b2"></div><div class="bar b3"></div><div class="bar b2"></div><div class="bar b3"></div></div>
-                  <div class="wscreen__cap"><span class="step">5 · </span>사장님 관리</div>
+              </div>
+              <div class="scr">
+                <span class="scr__n">5</span>
+                <div class="scr__tx">
+                  <b>사장님 관리</b>
+                  <p>들어온 발주를 확정 → 출고 → 완료로 처리해요</p>
+                  <div class="scr__chips"><i class="core">발주 목록 (상태별)</i><i>확정·출고 버튼</i><i>품목 수정</i><i>거래처 관리</i></div>
                 </div>
               </div>
             </section>
