@@ -1127,3 +1127,28 @@
 }
 .bd-drawer__foot .btn { font-size: var(--text-xs); padding: 7px 14px; box-shadow: none; }
 .bd-drawer__foot small { margin-left: auto; font-size: var(--text-2xs); color: var(--color-muted); }
+
+/* 분류 그룹 > 카테고리 — 2단 구조 (기존안 계승) */
+.set__row--col { flex-direction: column; align-items: stretch; gap: 10px; }
+.bd-groups { display: flex; flex-direction: column; gap: 8px; }
+.bd-group { display: flex; align-items: flex-start; gap: 12px; }
+.bd-group > b {
+  flex: none;
+  width: 92px;
+  padding: 4px 0;
+  font-size: var(--text-2xs);
+  font-weight: 700;
+}
+.bd-group .bd-cats { justify-content: flex-start; max-width: none; flex: 1; }
+.bd-group__add {
+  align-self: flex-start;
+  border: 1px dashed var(--color-line-strong);
+  background: none;
+  border-radius: var(--radius-full);
+  padding: 4px 13px;
+  font-size: var(--text-2xs);
+  font-weight: 700;
+  color: var(--color-accent-deep);
+  margin-top: 2px;
+}
+.bd-group__add:hover { background: var(--color-surface); }
