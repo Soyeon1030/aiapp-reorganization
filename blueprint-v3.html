@@ -308,6 +308,12 @@
               <div class="prow"><span>역할</span><span class="d">사장님(운영) · 거래처 담당자(회원)</span></div>
               <div class="prow"><span>기기</span><span class="d">모바일 · PC</span></div>
             </section>
+
+            <!-- 확정 게이트 (2026-07-24) — 디자인 질의는 사용자가 문서를 확인하고 확정한 뒤에만. 채팅 버튼과 동일 동작 -->
+            <div class="plan__confirm">
+              <button class="btn btn--primary" id="confirm-plan-doc">이 내용으로 확정하고 디자인 정하기</button>
+              <span class="warn">수정하고 싶은 행은 마우스를 올려 "이 부분 수정하시겠어요?"로 바로 요청할 수 있어요</span>
+            </div>
           </div>
 
           </div>
@@ -745,8 +751,15 @@
     chat.appendChild(scene);
     scroll.scrollTo({ top: scroll.scrollHeight, behavior: "smooth" });
     setTimeout(() => {
-      document.getElementById("making").outerHTML =
-        `<p class="log-line">기획안을 완성했어요 — 오른쪽에서 확인해 주세요. 이어서 디자인만 정하면 끝이에요.</p>`;
+      document.getElementById("making").outerHTML = `
+        <p class="log-line">기획안을 완성했어요 — 오른쪽에서 천천히 확인해 주세요.</p>
+        <div class="chat-go" id="confirm-go">
+          <div class="chat-go__row">
+            <button class="btn btn--primary" id="confirm-plan">이 내용으로 확정하고 디자인 정하기</button>
+          </div>
+          <small>수정하고 싶은 행은 문서에서 마우스를 올려 바로 요청할 수 있어요 · 문서 맨 아래에서도 확정할 수 있어요</small>
+        </div>
+        <button class="log-answer" id="ans-confirm" hidden>기획서 확정 ✓ — 디자인 질문으로 넘어가요</button>`;
       renderDoc();
       /* 수집 원문 → 문서 맨 앞 + 기능 추론 근거에 실제 발화 인용 (v3) */
       colA.forEach((t, i) => {
@@ -763,8 +776,22 @@
       document.getElementById("plan-toc").hidden = false;
       document.getElementById("art-scroll").classList.add("has-toc");
       document.getElementById("art-scroll").scrollTo({ top: 0 });
-      artStatus.textContent = "기획안 완성 — 디자인을 정하면 디자인 탭이 채워져요";
-      if (thenDesign && !document.getElementById("scene-2")) buildScene(2);
+      artStatus.textContent = "기획안 완성 — 확인 후 확정하면 디자인 질문으로 넘어가요";
+      /* 디자인 질의는 확정 액션(채팅 또는 문서 하단) 뒤에만 시작한다 (2026-07-24) */
+      const goDesign = () => {
+        if (document.getElementById("scene-2")) return;
+        document.getElementById("confirm-go").hidden = true;
+        document.getElementById("ans-confirm").hidden = false;
+        const db = document.getElementById("confirm-plan-doc");
+        db.disabled = true;
+        db.textContent = "확정됨 ✓ — 채팅에서 디자인을 정하고 있어요";
+        buildScene(2);
+        scroll.scrollTo({ top: scroll.scrollHeight, behavior: "smooth" });
+      };
+      if (thenDesign) {
+        document.getElementById("confirm-plan").addEventListener("click", goDesign);
+        document.getElementById("confirm-plan-doc").addEventListener("click", goDesign);
+      }
       scroll.scrollTo({ top: scroll.scrollHeight, behavior: "smooth" });
     }, 1200);
   }
