@@ -231,6 +231,7 @@
             <button class="set__item set__item--sub" data-view="msg-hist">발송이력</button>
           </div>
           <button class="set__item" data-view="boards"><svg class="ph"><use href="#ph-article"/></svg> 게시판 <span class="set__need" id="bd-badge">새 글</span></button>
+          <button class="set__item" data-view="pay"><svg class="ph"><use href="#ph-credit-card"/></svg> 결제 <span class="set__need" id="pay-badge">등록 필요</span></button>
 
         </aside>
 
@@ -1038,6 +1039,97 @@
             <div class="mem-empty">자리만 잡아둔 화면이에요 — 배송비 정책 · 품절 처리 · 주문 마감 시간 설정이 여기 들어와요.</div>
           </div>
 
+          <!-- ═══ 결제(지급대행) — 셀러 등록 폼 ↔ 상태 관리, 같은 자리 뷰 교체 (2026-07-24, 확정 시안) ═══ -->
+          <div class="set__view" data-view="pay" hidden>
+
+            <!-- ① 등록 폼 -->
+            <div id="pay-form">
+              <div class="set__head">
+                <div>
+                  <h3>결제 — 정산 정보 등록</h3>
+                  <p>판매금을 내 계좌로 정산받으려면 결제사(토스페이먼츠)에 판매자 정보를 등록해야 해요.</p>
+                </div>
+                <span class="tag tag--warn">등록 필요</span>
+              </div>
+
+              <div class="set__card ums-form">
+                <div class="ums-f">
+                  <label>사업자 유형</label>
+                  <div class="seg" id="pay-type">
+                    <button class="seg__opt is-on" data-t="ib">개인사업자</button>
+                    <button class="seg__opt" data-t="co">법인사업자</button>
+                    <button class="seg__opt" data-t="in">개인 (사업자 없음)</button>
+                  </div>
+                </div>
+
+                <div class="ums-sec">대표자 정보</div>
+                <div class="ums-frow">
+                  <div class="ums-f"><label id="pay-l-name">대표자명</label><div class="ums-in">김청솔</div></div>
+                  <div class="ums-f" id="pay-f-brn"><label>사업자등록번호 <small>숫자 10자리</small></label><div class="ums-in">123-45-67890</div></div>
+                </div>
+                <div class="ums-frow" id="pay-f-biz2">
+                  <div class="ums-f"><label>상호 <small>선택</small></label><div class="ums-in">청솔 식자재</div></div>
+                  <div class="ums-f"><label>개업일 <small>사업자등록 진위확인에 써요</small></label><div class="ums-in">2019-03-02</div></div>
+                </div>
+                <div class="ums-frow">
+                  <div class="ums-f"><label>이메일 <small>심사 안내가 이 메일로 와요</small></label><div class="ums-in">chungsol@example.com</div></div>
+                  <div class="ums-f"><label>연락처 <small>본인인증에 써요</small></label><div class="ums-in">010-5500-1234</div></div>
+                </div>
+
+                <div class="ums-sec">정산 계좌 <small>— 예금주가 위 정보와 일치해야 해요</small></div>
+                <div class="pay-acct">
+                  <div class="ums-f"><label>은행</label><div class="ums-in">국민은행 ▾</div></div>
+                  <div class="ums-f"><label>계좌번호 <small>숫자만</small></label><div class="ums-in">12345678901234</div></div>
+                  <div class="ums-f"><label>예금주</label><div class="ums-in">김청솔</div></div>
+                  <button class="btn" id="pay-acct-check">예금주 확인</button>
+                </div>
+                <p class="pay-ok" id="pay-acct-ok" hidden>계좌를 확인했어요 — 국민은행 / 김***솔</p>
+
+                <div class="pay-why"><b>왜 필요한가요?</b> — 손님이 결제한 돈은 결제사가 보관했다가 사장님 계좌로 보내줘요(지급대행). 그래서 결제사가 "누구에게 보낼지"를 확인해야 해요. 입력한 정보는 등록에만 쓰이고 암호화되어 전달돼요.</div>
+
+                <button class="pub-cta" id="pay-go">이 정보로 등록하기</button>
+              </div>
+            </div>
+
+            <!-- ② 상태 관리 -->
+            <div id="pay-stat" hidden>
+              <div class="set__head">
+                <div>
+                  <h3>결제 — 정산 상태</h3>
+                  <p>접수됐어요. 저희 확인과 남은 단계를 마치면 지급 한도가 풀려요.</p>
+                </div>
+                <span class="tag tag--warn" id="pay-chip">확인 중</span>
+              </div>
+
+              <div class="set__card">
+                <div class="pay-steps">
+                  <div class="pay-step is-done"><i>✓</i><b>정보 등록</b><small>완료</small></div>
+                  <div class="pay-step is-now" id="pay-st-review"><i>2</i><b>접수 확인</b><small>저희가 검토해요</small></div>
+                  <div class="pay-step" id="pay-st-auth"><i>3</i><b>본인인증</b><small>휴대폰 인증</small></div>
+                  <div class="pay-step" id="pay-st-kyc"><i>4</i><b>KYC 심사</b><small>주 1천만 원 이상 지급 시</small></div>
+                  <div class="pay-step"><i>5</i><b>승인</b><small>한도 없음</small></div>
+                </div>
+                <div class="pay-strip" id="pay-strip">
+                  <b>등록해 주신 정보를 확인하고 있어요 — 시간이 조금 걸릴 수 있어요. 확인이 끝나면 알림과 이메일로 알려드릴게요.</b>
+                  <button class="btn" id="pay-do-review">확인 완료 (시연)</button>
+                </div>
+                <div class="pay-limit">
+                  <div><small>지금 지급 한도</small><b id="pay-lim">지급 불가 (확인 중)</b></div>
+                  <div><small>본인인증 후</small><b>주 1천만 원 미만</b></div>
+                  <div><small>KYC 심사 후</small><b>한도 없음</b></div>
+                </div>
+              </div>
+
+              <p class="bd-sec">등록 정보</p>
+              <div class="set__card">
+                <div class="pay-srow"><span>유형</span><b>개인사업자</b></div>
+                <div class="pay-srow"><span>대표자</span><b>김청솔 · 123-45-67890 (청솔 식자재)</b></div>
+                <div class="pay-srow"><span>연락처</span><b>chungsol@example.com · 010-5500-1234</b></div>
+                <div class="pay-srow"><span>정산 계좌</span><b>국민은행 1234-56**-****34 (김***솔) <span class="tag tag--ok">확인됨</span></b><button class="btn">수정</button></div>
+              </div>
+            </div>
+          </div>
+
         </div>
       </div>
     </section>
@@ -1583,6 +1675,51 @@
     storeAcc.classList.toggle("is-open", open);
   }
   storeAcc.addEventListener("click", () => storeOpen(storeSub.hidden));
+
+  /* ── 결제(지급대행) — 유형 분기 · 예금주 확인 · 등록 → 상태(접수 확인 → 본인인증 → 지급 가능) ── */
+  document.querySelectorAll("#pay-type .seg__opt").forEach((o) => {
+    o.addEventListener("click", () => {
+      document.querySelectorAll("#pay-type .seg__opt").forEach((x) => x.classList.toggle("is-on", x === o));
+      const personal = o.dataset.t === "in";
+      document.getElementById("pay-f-brn").hidden = personal;
+      document.getElementById("pay-f-biz2").hidden = personal;
+      document.getElementById("pay-l-name").textContent = personal ? "이름" : "대표자명";
+    });
+  });
+  document.getElementById("pay-acct-check").addEventListener("click", (e) => {
+    document.getElementById("pay-acct-ok").hidden = false;
+    e.target.textContent = "확인됨 ✓";
+  });
+  const payBadge = document.getElementById("pay-badge");
+  document.getElementById("pay-go").addEventListener("click", () => {
+    document.getElementById("pay-form").hidden = true;
+    document.getElementById("pay-stat").hidden = false;
+    if (payBadge) payBadge.textContent = "확인 중";
+  });
+  document.getElementById("pay-do-review").addEventListener("click", () => {
+    const rv = document.getElementById("pay-st-review");
+    rv.classList.remove("is-now");
+    rv.classList.add("is-done");
+    rv.querySelector("i").textContent = "✓";
+    document.getElementById("pay-st-auth").classList.add("is-now");
+    document.getElementById("pay-chip").textContent = "본인인증 필요";
+    if (payBadge) payBadge.textContent = "본인인증";
+    const strip = document.getElementById("pay-strip");
+    strip.innerHTML = '<b>확인이 끝났어요 — 이제 등록한 휴대폰으로 본인인증을 해 주세요.</b><button class="btn btn--primary" id="pay-do-auth">본인인증 하기</button>';
+    document.getElementById("pay-do-auth").addEventListener("click", () => {
+      const au = document.getElementById("pay-st-auth");
+      au.classList.remove("is-now");
+      au.classList.add("is-done");
+      au.querySelector("i").textContent = "✓";
+      document.getElementById("pay-st-kyc").classList.add("is-now");
+      document.getElementById("pay-chip").textContent = "지급 가능 (주 1천만 원 미만)";
+      document.getElementById("pay-chip").className = "tag tag--ok";
+      if (payBadge) payBadge.remove();
+      strip.classList.add("is-ok");
+      strip.innerHTML = "<b>본인인증 완료 — 주 1천만 원 미만까지 정산받을 수 있어요. 그 이상이 필요해지면 KYC 심사를 안내해 드릴게요 (이메일 발송).</b>";
+      document.getElementById("pay-lim").textContent = "주 1천만 원 미만";
+    });
+  });
 
   /* 딥링크 — 다른 화면(예: 데이터베이스의 "관리 화면 가기")에서 특정 뷰로 진입 */
   const initView = new URLSearchParams(location.search).get("view");
