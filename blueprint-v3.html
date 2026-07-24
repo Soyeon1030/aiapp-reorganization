@@ -197,8 +197,7 @@
             <section class="dsec"><h3>배경과 목표</h3>
               <span class="sk-line" style="width:88%"></span><span class="sk-line" style="width:80%"></span><span class="sk-line" style="width:84%"></span></section>
             <section class="dsec"><h3>화면 구성</h3>
-              <div class="attrs"><span class="sk-line" style="width:104px;height:76px"></span><span class="sk-line" style="width:104px;height:76px"></span><span class="sk-line" style="width:104px;height:76px"></span><span class="sk-line" style="width:104px;height:76px"></span></div>
-              <span class="sk-line" style="width:86%"></span><span class="sk-line" style="width:74%"></span></section>
+              <span class="sk-line" style="width:100%;height:52px"></span><span class="sk-line" style="width:100%;height:52px"></span><span class="sk-line" style="width:100%;height:52px"></span></section>
             <section class="dsec"><h3>사용자 흐름</h3>
               <span class="sk-line" style="width:80%"></span><span class="sk-line" style="width:72%"></span></section>
             <section class="dsec"><h3>기능 목록</h3>
@@ -234,30 +233,48 @@
 
             <!-- ② 결과물 — 문서의 중심: 어떤 사이트가 나오나 -->
             <section class="dsec" id="sec-out" aria-label="이렇게 나와요">
-              <h3>화면 구성 <small>완성되면 보게 될 화면들</small></h3>
-              <div class="wflow">
-                <div class="wscreen">
-                  <div class="wscreen__frame"><div class="bar b1"></div><div class="bar b2"></div><div class="bar b3"></div><div class="btn-ph"></div></div>
-                  <div class="wscreen__cap"><span class="step">1 · </span>첫 화면</div>
-                </div>
-                <div class="wscreen">
-                  <div class="wscreen__frame is-core"><div class="bar b1"></div><div class="grid2"><div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div></div><div class="btn-ph"></div></div>
-                  <div class="wscreen__cap"><span class="step">2 · </span>품목 고르기</div>
-                </div>
-                <div class="wscreen">
-                  <div class="wscreen__frame is-core"><div class="bar b2"></div><div class="bar b1"></div><div class="bar b3"></div><div class="btn-ph"></div></div>
-                  <div class="wscreen__cap"><span class="step">3 · </span>발주하기</div>
-                </div>
-                <div class="wscreen">
-                  <div class="wscreen__frame"><div class="bar b2"></div><div class="bar b1"></div><div class="bar b3"></div><div class="bar b1"></div></div>
-                  <div class="wscreen__cap"><span class="step">4 · </span>발주 완료</div>
-                </div>
-                <div class="wscreen">
-                  <div class="wscreen__frame"><div class="bar b2"></div><div class="bar b3"></div><div class="bar b2"></div><div class="bar b3"></div></div>
-                  <div class="wscreen__cap"><span class="step">5 · </span>사장님 관리</div>
+              <h3>화면 구성 <small>화면 5개 — 파란 번호·파란 칩이 핵심이에요</small></h3>
+              <!-- B안 (2026-07-24 확정) — 썸네일 없는 슬롯 카드: 번호·이름·역할·구성 칩 전부 screens[] JSON 슬롯 -->
+              <div class="scr">
+                <span class="scr__n">1</span>
+                <div class="scr__tx">
+                  <b>첫 화면</b>
+                  <p>오늘 주문 가능한 품목과 발주 버튼이 바로 보여요</p>
+                  <div class="scr__chips"><i class="core">발주하기 버튼</i><i>오늘의 품목</i><i>최근 발주 내역</i><i>공지</i></div>
                 </div>
               </div>
-              <div class="prow"><span>화면마다 하는 일</span><span class="d"><b>첫 화면</b> — 오늘 주문 가능한 품목과 [발주하기]가 바로 보여요<br><b>품목 고르기</b> — 채소·정육·수산·공산품에서 골라 담아요<br><b>발주하기</b> — 수량·납품 희망일 확인 후 접수해요<br><b>발주 완료</b> — 접수 번호와 함께 알림톡이 나가요<br><b>사장님 관리</b> — 들어온 발주를 확정 → 출고 → 완료로 처리해요</span></div>
+              <div class="scr scr--core">
+                <span class="scr__n">2</span>
+                <div class="scr__tx">
+                  <b>품목 고르기</b>
+                  <p>분류에서 골라 담아요 — 수량은 여기서 정해요</p>
+                  <div class="scr__chips"><i class="core">품목 목록 (분류 4종)</i><i class="core">수량 담기</i><i>검색</i><i>자주 시키는 품목</i></div>
+                </div>
+              </div>
+              <div class="scr scr--core">
+                <span class="scr__n">3</span>
+                <div class="scr__tx">
+                  <b>발주하기</b>
+                  <p>담은 품목과 납품 희망일을 확인하고 접수해요</p>
+                  <div class="scr__chips"><i class="core">담은 품목·수량</i><i class="core">납품 희망일</i><i>요청 메모</i></div>
+                </div>
+              </div>
+              <div class="scr">
+                <span class="scr__n">4</span>
+                <div class="scr__tx">
+                  <b>발주 완료</b>
+                  <p>접수 번호와 함께 알림톡이 나가요</p>
+                  <div class="scr__chips"><i>접수 번호</i><i>알림톡 안내</i></div>
+                </div>
+              </div>
+              <div class="scr">
+                <span class="scr__n">5</span>
+                <div class="scr__tx">
+                  <b>사장님 관리</b>
+                  <p>들어온 발주를 확정 → 출고 → 완료로 처리해요</p>
+                  <div class="scr__chips"><i class="core">발주 목록 (상태별)</i><i>확정·출고 버튼</i><i>품목 수정</i><i>거래처 관리</i></div>
+                </div>
+              </div>
             </section>
 
             <section class="dsec" id="sec-uflow" aria-label="사용자 흐름">
